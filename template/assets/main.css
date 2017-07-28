@@ -128,18 +128,6 @@ body {
     overflow-x: hidden;
 }
 
-
-/*.wrapper {
-background-color: #fff;
-position: relative;
-z-index: 1000;
-}
-
-.wrapper_inner {
-width: 100%;
-overflow: hidden;
-}*/
-
 article,
 aside,
 details,
@@ -172,9 +160,9 @@ q:after {
     content: none;
 }
 
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
+a,
+a:visited {
+    color: #3348a7;
 }
 
 * {
@@ -1019,7 +1007,8 @@ fieldset[disabled] .btn {
 
 table {
     border-collapse: collapse;
-    width: 100%
+    border-spacing: 0;
+    width: 100%;
 }
 
 td,
@@ -1027,6 +1016,19 @@ th {
     text-align: left;
     min-width: 120px;
     padding: 10px;
+}
+
+.view-category {
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    -o-transition: all .3s;
+    -moz-transition: all .3s;
+    -webkit-transition: all .3s;
+    -ms-transition: all .3s;
+    transition: all .3s;
+    border-style: hidden;
+    box-shadow: 0 0 0 1px #666;
 }
 
 .view-category td,
@@ -1039,9 +1041,26 @@ th {
 }
 
 .all-books-table th {
+    border-style: hidden;
     color: #fff;
     font-family: "wf_segoe-ui_semibold";
     border-left: 1px solid #dddddd;
+}
+
+.all-books-table {
+    background: #383d61;
+}
+
+.all-books-table tr:nth-child(odd) {
+    background-color: #BFC2D9;
+}
+
+.all-books-table tr:nth-child(even) {
+    background-color: #eeeeee;
+}
+
+.all-books-table tr:first-child {
+    background-color: #383d61;
 }
 
 .checkbox {
@@ -1087,6 +1106,25 @@ th {
     border: 1px dashed #ccc;
 }
 
+.books-book-name {
+    cursor: help;
+}
+
+.books-book-name .tool-tiptext {
+    visibility: hidden;
+    max-width: 360px;
+    background-color: black;
+    color: #fff;
+    border-radius: 6px;
+    padding: 8px;
+    position: absolute;
+    z-index: 1;
+}
+
+.books-book-name:hover .tool-tiptext {
+    visibility: visible;
+}
+
 .view-category label {
     display: block
 }
@@ -1103,10 +1141,6 @@ th {
 
 .section_divider.-narrow {
     max-width: 1170px;
-}
-
-.all-books-table {
-    background: #383d61;
 }
 
 .search-box {
