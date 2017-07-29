@@ -1449,6 +1449,27 @@ body .visible-lg-inline-block {
     width: 100%;
 }
 
+.page_header--title span {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.-blue {
+    color: #0078d7;
+}
+
+.-silver {
+    color: #c0c0c0;
+}
+
+.-gold {
+    color: #ffa700;
+}
+
+.-black {
+    color: #222222;
+}
+
 @media (max-width: 1200px) {
     .layout-header {
         padding: 70px 0;
@@ -1595,6 +1616,9 @@ body .visible-lg-inline-block {
     }
     .page_header--title {
         font-size: 35px;
+    }
+    .page_header--title span {
+        font-size: 14px;
     }
     .text--title {
         font-size: 32px;
