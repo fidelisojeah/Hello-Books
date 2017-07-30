@@ -383,7 +383,7 @@ margin-top: 1.6em;
 }
 
 .section {
-    padding: 90px 0;
+    padding: 70px 0;
     padding-bottom: 30px;
     background-size: cover;
     background: #fff;
@@ -391,7 +391,7 @@ margin-top: 1.6em;
 }
 
 .section.-pattern {
-    padding: 50px;
+    padding: 30px;
     background-size: auto;
     background-repeat: repeat;
 }
@@ -403,10 +403,6 @@ margin-top: 1.6em;
     filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=3, MakeShadow=true, ShadowOpacity=0.30);
     -ms-filter: "progid:DXImageTransform.Microsoft.Blur(PixelRadius=3,MakeShadow=true,ShadowOpacity=0.30)";
     background-color: rgba(100, 100, 100, 0.6);
-}
-
-.innerSection {
-    margin: -60px 0 0;
 }
 
 .innerSection--section {
@@ -1261,6 +1257,10 @@ th {
     margin-top: 70px;
 }
 
+p {
+    padding: 10px;
+}
+
 .form-top {
     overflow: hidden;
     padding: 0 25px 15px 25px;
@@ -1465,11 +1465,24 @@ body .visible-lg-inline-block {
     width: 100%;
 }
 
-.mail-message td {
+.authors {
+    width: 90%;
+}
+
+.mail-message td,
+.authors {
     max-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.athble {
+    width: 700px;
+}
+
+.bkimg {
+    max-width: 350px;
 }
 
 .mail-message th,
@@ -1559,6 +1572,9 @@ td.columnA {
 }
 
 @media (max-width: 1200px) {
+    .athble {
+        width: 500px;
+    }
     .layout-header {
         padding: 70px 0;
     }
@@ -1588,6 +1604,9 @@ td.columnA {
 }
 
 @media (max-width: 991px) {
+    .bkimg {
+        max-width: 170px;
+    }
     .table-outer {
         overflow-x: scroll;
     }
@@ -1692,6 +1711,9 @@ td.columnA {
 }
 
 @media (max-width: 767px) {
+    .athble {
+        width: 300px;
+    }
     .header--inner {
         padding: 10px 0;
     }
