@@ -609,12 +609,19 @@ strong {
     padding-right: 15px;
 }
 
+.layout--header {
+    width: 100%;
+    position: fixed;
+    top: 0px;
+    margin: auto;
+    z-index: 110;
+}
+
 header {
     width: 100%;
     display: inline-block;
     margin: 0;
     vertical-align: middle;
-    position: fixed;
     z-index: 110;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
@@ -630,6 +637,11 @@ header {
     content: "";
     display: table;
     clear: both;
+}
+
+#page-content {
+    position: relative;
+    top: 104px;
 }
 
 .page-header {
@@ -1449,6 +1461,82 @@ body .visible-lg-inline-block {
     width: 100%;
 }
 
+.mail-message {
+    width: 100%;
+}
+
+.mail-message td {
+    max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.mail-message th,
+.columnA {
+    font-weight: bold;
+}
+
+td.columnA {
+    font-style: italic
+}
+
+.mail-message th.columnA {
+    width: 30%;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.modal-header {
+    padding: 12px 16px;
+    background-color: #0078d7;
+    color: white;
+}
+
+.modal-body {
+    padding: 12px 16px;
+}
+
+.modal-header h2 {
+    font-size: 30px
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 .page_header--title span {
     font-weight: bold;
     font-size: 20px;
@@ -1604,6 +1692,19 @@ body .visible-lg-inline-block {
 }
 
 @media (max-width: 767px) {
+    .header--inner {
+        padding: 10px 0;
+    }
+    #page-content {
+        top: 74px;
+    }
+    .header--menu-opener {
+        top: 34px;
+    }
+    .header-nav .menu .menu-item a {
+        line-height: 30px;
+        padding: 3px;
+    }
     .tool-tiptext img {
         max-height: 120px;
     }
