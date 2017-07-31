@@ -354,15 +354,15 @@
         $(function () {
             if ($('.c-hamburger').length) { //for nav menu 
                 const toggleHandler = function toggleHandler(toggle) {
-                    toggle.addEventListener("click", function (e) {
+                    toggle.addEventListener('click', function (e) {
                         e.preventDefault();
-                        this.classList.contains("is-active") === true ? this.classList.remove(
-                            "is-active") : this.classList.add("is-active");
+                        this.classList.contains('is-active') === true ? this.classList.remove(
+                            'is-active') : this.classList.add('is-active');
                         $('.header-nav .menu').slideToggle();
                     });
                 };
 
-                const toggles = document.querySelectorAll(".c-hamburger");
+                const toggles = document.querySelectorAll('.c-hamburger');
 
                 for (let i = toggles.length - 1; i >= 0; i--) {
                     const toggle = toggles[i];
@@ -370,18 +370,43 @@
                 };
             }
             $('#chk_all').change(function () {
-                if ($('#chk_all').prop("checked")) { //if checked
-                    $('.checkbox').prop("checked", false);
-                    $(".checkbox").attr("disabled", true);
-                    $('#chk_all').attr("disabled", false);
-                    $('#chk_all').prop("checked", true);
+                if ($('#chk_all').prop('checked')) { //if checked
+                    $('.checkbox').prop('checked', false);
+                    $('.checkbox').attr('disabled', true);
+                    $('#chk_all').attr('disabled', false);
+                    $('#chk_all').prop('checked', true);
                 } else {
-                    $(".checkbox").attr("disabled", false);
+                    $(".checkbox ").attr("disabled ", false);
                 }
             });
         });
     </script>
-    <script type="text/javascript">
+    <script type="text/javascript ">
+        let msgModalBox = document.getElementById('msg-modal');
+        let closebtn = document.getElementById('closebtn');
+
+        function clsbtn() {
+            msgModalBox.style.display = "none";
+        }
+
+        function borrowBookModal() {
+            //let msgSubject = msgText.getElementsByTagName('td')[0].innerHTML;
+            //let msgTextmsg = msgText.getElementsByTagName('td')[1].innerHTML;
+
+            //document.getElementById('modal-head').innerHTML = 'Subject: ' + msgSubject;
+            //document.getElementById('modal-body').innerHTML = '<p>' + msgTextmsg + '</p>';
+            msgModalBox.style.display = "block";
+        }
+
+        function msgModal(msgText) {
+            let msgSubject = msgText.getElementsByTagName('td')[0].innerHTML;
+            let msgTextmsg = msgText.getElementsByTagName('td')[1].innerHTML;
+
+            document.getElementById('modal-head').innerHTML = 'Subject: ' + msgSubject;
+            document.getElementById('modal-body').innerHTML = '<p>' + msgTextmsg + '</p>';
+            msgModalBox.style.display = "block";
+        }
+
         function bookSearch(searchField) {
             // Declare found as default false
             let found = false;
@@ -406,7 +431,7 @@
                     }
                 }
                 if (found) {
-                    trSearch[i].style.display = "";
+                    trSearch[i].style.display = " ";
                     found = false;
                 } else {
                     trSearch[i].style.display = "none";
@@ -416,13 +441,15 @@
         }
 
         function shwUsrProfile() { //if profile is clicked
-            document.getElementById('profile-stuff').classList.toggle("show");
+            document.getElementById('profile-stuff').classList.toggle('show');
         }
         window.onclick = function (event) { //if any part of window is clicked
-
+            if (event.target.matches('msgModalBox')) {
+                msgModalBox.style.display = "none";
+            }
             if (!event.target.matches('.usrBtn') && !event.target.matches('.menu-item-Usr')) { //if outside the profile is clicked
 
-                const dropdowns = document.getElementsByClassName("profile-dropdown");
+                const dropdowns = document.getElementsByClassName('profile-dropdown');
 
                 for (let i = 0; i < dropdowns.length; i++) {
                     let openDropdown = dropdowns[i];

@@ -1,0 +1,19 @@
+{
+    "Authors": [{
+        "AuthorFirstname": "Anon",
+        "AuthorLastname": "Anonymous",
+        "DOB": "1900-01-01",
+        "AuthorID": "001"
+    }, {
+        "AuthorFirstname": "Lurlene",
+        "AuthorLastname": "McDaniel",
+        "DOB": "1944-04-05",
+        "AuthorID": "002"
+    }, {
+        "AuthorFirstname": "Kirby",
+        "AuthorLastname": "Larson",
+        "DOB": "1954-08-17",
+        "AuthorID": "003"
+    }]
+
+}
