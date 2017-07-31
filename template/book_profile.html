@@ -203,7 +203,7 @@
                         <div class="container">
                             <ul class="breadcrumbs--list">
                                 <li class="breadcrumbs--item"><a href="#" class="breadcrumbs--link">Home</a></li>
-                                <li class="breadcrumbs--item"><a href="#" class="breadcrumbs--link">Library</a></li>
+                                <li class="breadcrumbs--item"><a href="view_lib.html" class="breadcrumbs--link">Library</a></li>
                                 <li class="breadcrumbs--item"><a href="user_profile.html" class="breadcrumbs--link -active">Book</a></li>
                             </ul>
                         </div>
@@ -235,13 +235,23 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="section_divider"></div>
+                <div class="section">
+                    <div class="container">
+                        <p> You have borrowed this book
+                            <span style="color:#Fa6330">2</span> times,
+                            <a href="book_review.html" style="color:#33c330;font-style:italic">Review?</a>
+                        </p>
+                        <p>Most recent time borrowed was on: <span style="color:#Fa6330">24th June, 2017</span></p>
+                        <p>There are <span style="color:#Fa6330">2</span> Versions of this book available</p>
+                        <button class="btn" onclick="borrowBookModal()">Borrow Book</button>
+                        <button class="btn has-tooltip" onclick="borrowBookModal()" disabled>Borrow Book
+                            <span class="tool-tiptext">Book not available</span></button></div>
+                </div>
                 <div class="section -pattern -light">
-                    <p> You have borrowed this book <span style="color:#Fa6330">2</span> times,</p>
-                    <p>Most recent time borrowed was on: <span style="color:#Fa6330">24th June, 2017</span></p>
-                    <p>There are <span style="color:#Fa6330">2</span> Versions of this book available</p>
-                    <button class="btn" onclick="borrowBookModal()">Borrow Book</button>
-                    <button class="btn" onclick="borrowBookModal()" disabled>Borrow Book</button>
+                    <div class="container">
+                        Book rating:
+                    </div>
                 </div>
 
                 <div class="layout--footer">
@@ -301,8 +311,11 @@
                 <h2 id="modal-head">Borrow Book:</h2>
             </div>
             <div class="modal-body" id="modal-body">
-                <p>Info About book here</p>
-                <p>More later...</p>
+                <p>Your membership level does not enable you borrow this book at the moment</p>
+                <p>You have borrowed maximum number of books available to you</p>
+                <a href="membership.html"><button class="btn">Upgrade Membership</button></a>
+                <p>--Or--</p>
+                <a href="user_profile.html"><button class="btn">Return Books</button></a>
             </div>
         </div>
     </div>

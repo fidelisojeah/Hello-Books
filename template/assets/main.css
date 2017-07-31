@@ -1159,7 +1159,7 @@ th {
     cursor: help;
 }
 
-.books-book-name .tool-tiptext {
+.tool-tiptext {
     text-align: justify;
     visibility: hidden;
     display: inline-block;
@@ -1178,7 +1178,8 @@ th {
     float: left;
 }
 
-.books-book-name:hover .tool-tiptext {
+.books-book-name:hover .tool-tiptext,
+.has-tooltip:hover .tool-tiptext{
     visibility: visible;
 }
 
