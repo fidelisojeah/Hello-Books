@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="assets/scripts/jquery.min.js"></script>
     <link rel="stylesheet" href="assets/main.css">
     <!--<link rel="stylesheet" href="assets/responsive.css">
     <link rel="stylesheet" href="assets/dynamic.css">-->
@@ -376,7 +376,7 @@
                     $('#chk_all').attr('disabled', false);
                     $('#chk_all').prop('checked', true);
                 } else {
-                    $(".checkbox ").attr("disabled ", false);
+                    $('.checkbox').attr('disabled', false);
                 }
             });
         });
@@ -390,11 +390,6 @@
         }
 
         function borrowBookModal() {
-            //let msgSubject = msgText.getElementsByTagName('td')[0].innerHTML;
-            //let msgTextmsg = msgText.getElementsByTagName('td')[1].innerHTML;
-
-            //document.getElementById('modal-head').innerHTML = 'Subject: ' + msgSubject;
-            //document.getElementById('modal-body').innerHTML = '<p>' + msgTextmsg + '</p>';
             msgModalBox.style.display = "block";
         }
 
@@ -431,7 +426,7 @@
                     }
                 }
                 if (found) {
-                    trSearch[i].style.display = " ";
+                    trSearch[i].style.display = "";
                     found = false;
                 } else {
                     trSearch[i].style.display = "none";
