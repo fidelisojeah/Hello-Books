@@ -650,6 +650,84 @@ strong {
     }
 }
 
+.carousel-based {
+    margin-bottom: 20px;
+}
+
+.left {
+    float: left;
+}
+
+.div-book-panel {
+    display: inline-block;
+    width: 25%;
+}
+
+.div-book-panel a {
+    display: block;
+    padding-bottom: 10px;
+}
+
+.ratings-panel {
+    color: #707070;
+    display: block;
+    font-size: 12px;
+}
+
+.review-stars {
+    background: url('images/stars.png') no-repeat -3px -20px;
+    background-size: 80px;
+    display: inline-block;
+    position: relative;
+    top: 1px;
+    height: 14px;
+    width: 74px;
+}
+
+.review-stars span {
+    background: url('images/stars.png') no-repeat -3px -37px;
+    background-size: 80px;
+    display: block;
+    height: 14px;
+    width: 74px;
+}
+
+.review-stars span.s4-5 {
+    width: 67px;
+}
+
+.review-stars span.s4-0 {
+    width: 60px;
+}
+
+.review-stars span.s3-5 {
+    width: 52px;
+}
+
+.review-stars span.s3-0 {
+    width: 45px;
+}
+
+.review-stars span.s2-5 {
+    width: 37px;
+}
+
+.review-stars span.s2-0 {
+    width: 30px;
+}
+
+.review-stars span.s1-5 {
+    width: 22px;
+}
+
+.review-stars span.s1-0 {
+    width: 15px;
+}
+
+.review-stars span.s0-5 {
+    width: 7px;
+}
+
 .layout--header {
     width: 100%;
     position: fixed;
@@ -695,6 +773,155 @@ header {
     font-family: "wf_segoe-ui_semilight";
     font-size: 60px;
     color: #fff;
+}
+
+.-top-picks {
+    font-size: 30px;
+}
+
+.top-inner--picks {
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    margin-top: 10px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.row-carousel {
+    width: 100%;
+}
+
+.row-carousel-inner {
+    position: relative;
+    height: 100%;
+}
+
+.carousel-nav {
+    height: 280px;
+    visibility: visible;
+}
+
+.a-carousel-button {
+    position: relative;
+    top: 40%;
+}
+
+.a-button {
+    background: #e7e9ec;
+    border-radius: 5px;
+    border-color: #ADB1B8 #A2A6AC #8D9096;
+    border-style: solid;
+    border-width: 1px;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0;
+    text-align: center;
+    text-decoration: none!important;
+    vertical-align: middle;
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+/*
+
+*/
+
+.a-button .button-inner {
+    padding: 6px;
+    line-height: 0;
+    height: auto;
+    display: block;
+}
+
+.h-icon {
+    width: 15px;
+    height: 19px;
+    margin: 3px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.carousel-nav {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    width: 4rem;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+}
+
+.carousel-items {
+    margin: 0 40px;
+    overflow: hidden;
+    min-height: 10px;
+    position: relative;
+}
+
+.carousel-items .carousel-viewport {
+    width: 100%;
+    overflow: hidden;
+    height: 100%;
+}
+
+.carousel-items ol {
+    margin: 0;
+    list-style-type: none;
+    height: 100%;
+    white-space: nowrap;
+    overflow-x: visible;
+    color: #111;
+    letter-spacing: -4px;
+}
+
+.carousel-left .a-button .button-inner i {
+    background: url('images/stars.png') no-repeat -55px -3px;
+    background-size: 100px;
+}
+
+.carousel-right .a-button .button-inner i {
+    background: url('images/stars.png') no-repeat -28px -3px;
+    background-size: 100px;
+}
+
+.carousel-right {
+    text-align: right;
+    right: 0;
+    padding-right: 3px;
+}
+
+.carousel-card {
+    vertical-align: top;
+    text-align: left;
+    overflow: hidden;
+    margin-left: 16px;
+    width: 160px;
+    min-height: 100%;
+    list-style-type: none;
+    display: inline-block;
+    white-space: normal;
+    letter-spacing: normal;
+}
+
+.carousel-card .a {
+    width: 100%;
+}
+
+.top-inner--picks .carousel-image {
+    margin-bottom: 6px!important;
+}
+
+.c-row {
+    width: 100%;
+}
+
+.c-small-text {
+    font-size: 13px!important;
+    line-height: 19.5px!important;
 }
 
 .breadcrumbs {
@@ -1940,6 +2167,9 @@ td.columnA {
 }
 
 @media (max-width: 992px) {
+    .slide-container {
+        max-height: 300px;
+    }
     .header {
         padding: 0;
     }
@@ -2027,6 +2257,9 @@ td.columnA {
 }
 
 @media (max-width:480px) {
+    .div-book-panel {
+        font-size: 13px;
+    }
     .tabbed-header ul>li {
         width: 100%;
         text-align: center;
