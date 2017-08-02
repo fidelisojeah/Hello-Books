@@ -22,12 +22,12 @@ module.exports = {
       phoneNumber: {
         type: Sequelize.STRING,
       },
-      username: {
-        type: Sequelize.STRING,
+      usernameID: {
+        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
           model: 'UserLoginDetails',
-          key: 'username',
+          key: 'id',
         },
       },
       createdAt: {

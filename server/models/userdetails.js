@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
       associate: (models) => {
         // associations can be defined here
         UserDetails.belongsTo(models.UserLoginDetails, {
-          foreignKey: 'username',
-          as: 'username',
+          foreignKey: 'usernameID',
+          as: 'usrname',
         });
       },
     },

@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       associate: (models) => {
         // associations can be defined here
         UserLoginDetails.has(models.UserDetails, {
-          foreignKey: 'username',
+          foreignKey: 'usernameID',
           as: 'usrDetails',
         });
       },

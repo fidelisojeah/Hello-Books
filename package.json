@@ -1,14 +1,14 @@
 {
-  "name": "airbnb-style",
-  "version": "2.0.0",
+  "name": "hellobooks",
+  "version": "1.0.5",
   "description": "A mostly reasonable approach to JavaScript.",
   "scripts": {
     "preinstall": "npm run install:config && npm run install:config:base",
     "install:config": "cd packages/eslint-config-airbnb && npm prune && npm install",
     "install:config:base": "cd packages/eslint-config-airbnb-base && npm prune && npm install",
-    "lint": "markdownlint --config linters/.markdownlint.json README.md */README.md",
+    "lint": "markdownlint --config linters/.markdownlint.json",
     "pretest": "npm run --silent lint",
-    "test": "npm run --silent test:config && npm run --silent test:config:base",
+    "test": "NODE_ENV=test mocha",
     "test:config": "cd packages/eslint-config-airbnb; npm test",
     "test:config:base": "cd packages/eslint-config-airbnb-base; npm test",
     "pretravis": "npm run --silent lint",
@@ -38,7 +38,7 @@
   "homepage": "https://github.com/airbnb/javascript",
   "devDependencies": {
     "babel-eslint": "^7.2.3",
-    "eslint": "^4.3.0",
+    "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-config-airbnb-base": "^11.3.1",
     "eslint-plugin-import": "^2.7.0",
@@ -46,9 +46,11 @@
     "eslint-plugin-react": "^7.1.0",
     "markdownlint-cli": "^0.3.1",
     "nodemon": "^1.11.0",
-    "prettier-eslint": "^6.4.2"
+    "prettier-eslint": "^6.4.2",
+    "supertest": "^3.0.0"
   },
   "dependencies": {
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.17.2",
     "eslint-config-airbnb": "^15.1.0",
     "express": "^4.15.3",
@@ -57,5 +59,8 @@
     "pg-hstore": "^2.3.2",
     "sequelize": "^4.4.2"
   },
-  "main": "index.js"
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  }
 }
