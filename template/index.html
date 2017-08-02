@@ -193,45 +193,29 @@
             </div>
             <div id="page-content">
                 <div class="layout--container">
-                    <div class="layout-header">
-                        <div class="container">
-                            <h1 class="page_header--title">View Library</h1>
+                    <div class="layout-header" style="padding:0">
+                        <div class="container-fluid slide-container">
+                            <div class="slides fade">
+                                <img src="assets/images/untitled.jpg" style="width:100%">
+                                <div class="caption-text">slide 1</div>
+                            </div>
+                            <div class="slides fade">
+                                <img src="assets/images/untitled.jpg" style="width:100%">
+                                <div class="caption-text">slide 2</div>
+                            </div>
+                            <div class="slides fade">
+                                <img src="assets/images/untitled.jpg" style="width:100%">
+                                <div class="caption-text">slide 3</div>
+                            </div>
                         </div>
                     </div>
-                    <nav class="breadcrumbs">
-                        <div class="container">
-                            <ul class="breadcrumbs--list">
-                                <li class="breadcrumbs--item"><a href="#" class="breadcrumbs--link">Home</a></li>
-                                <li class="breadcrumbs--item"><a href="#" class="breadcrumbs--link -active">All Books</a></li>
-                            </ul>
-                        </div>
-                    </nav>
+
                     <div class="section">
                         <div class="container">
                             <div class="innerSection">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="innerSection--section">
-                                            <div class="innerSection--section_title">View Categories</div>
-                                            <form>
-                                                <table class="view-category">
-                                                    <tr>
-                                                        <td><label><input type="checkbox" class="checkbox" id="chk_all" name="categories" value="All">All</label></td>
-                                                        <th><label><input type="checkbox" class="checkbox" name = "categories" value="Adventure">Adventure</label></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><label><input type="checkbox" class="checkbox" name = "categories" value="Drama">Drama</label></td>
-                                                        <td><label><input type="checkbox" class="checkbox" name="categories" value="Classic"/>Classic</label></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><label><input type="checkbox" class="checkbox" name = "categories" value="Educational">Educational</label></td>
-                                                        <td><label><input type="checkbox" class="checkbox" name = "categories" value="Mature">Mature</label></td>
-                                                    </tr>
-                                                </table>
+                                <h1 class="page_header--title -black" style="text-align: center;">Top Picks</h1>
+                                <div class="top-inner--picks">
 
-                                            </form>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -346,7 +330,6 @@
                         </footer>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -383,6 +366,22 @@
         });
     </script>
     <script type="text/javascript ">
+        let slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+
+            let slides = document.getElementsByClassName('slides');
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.display = 'none';
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) {
+                slideIndex = 1
+            }
+            slides[slideIndex - 1].style.display = "block";
+            setTimeout(showSlides, 3000); // Change image every 2 seconds
+        }
         let msgModalBox = document.getElementById('msg-modal');
         let closebtn = document.getElementById('closebtn');
 
