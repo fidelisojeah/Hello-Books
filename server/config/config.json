@@ -9,7 +9,7 @@
   },
   "test": {
     "username": "usrhello",
-    "password": null,
+    "password": "HelloBooksPassword$",
     "database": "dbhellobooks_test",
     "host": "127.0.0.1",
     "port": 5432,
