@@ -12,13 +12,14 @@
     "test:config": "cd packages/eslint-config-airbnb; npm test",
     "test:config:base": "cd packages/eslint-config-airbnb-base; npm test",
     "pretravis": "npm run --silent lint",
+    "start:dev": "nodemon ./bin/www",
     "travis": "npm run --silent travis:config && npm run --silent travis:config:base",
     "travis:config": "cd packages/eslint-config-airbnb; npm run travis",
     "travis:config:base": "cd packages/eslint-config-airbnb-base; npm run travis"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/airbnb/javascript.git"
+    "url": "git+https://github.com/airbnb/javascript.git"
   },
   "keywords": [
     "style guide",
@@ -44,9 +45,17 @@
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0",
     "markdownlint-cli": "^0.3.1",
+    "nodemon": "^1.11.0",
     "prettier-eslint": "^6.4.2"
   },
   "dependencies": {
-    "eslint-config-airbnb": "^15.1.0"
-  }
+    "body-parser": "^1.17.2",
+    "eslint-config-airbnb": "^15.1.0",
+    "express": "^4.15.3",
+    "morgan": "^1.8.2",
+    "pg": "^7.0.2",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.4.2"
+  },
+  "main": "index.js"
 }
