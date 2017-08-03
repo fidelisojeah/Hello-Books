@@ -1,37 +1,40 @@
 const {
   UserDetails,
-  UserLoginDetails,
+  UserLogin,
 } = require('./server/models');
+
 const bcrypt = require('bcrypt');
 
 const saltRounds = 10;
 const userName = 'test_user';
 const pswd = 'aNewpassword12$$081978';
-// const pswdan = 'whatever';
 
-let th;
+// const pswdan = 'whatever';
 bcrypt.hash(pswd, saltRounds, (err, hash) => {
-  UserLoginDetails.create({
+
+  UserLogin.create({
     username: userName,
     password: hash,
-  });
+  }).then(UID => UserDetails.create({
+    firstName: 'Anon',
+    lastName: 'Anonymous',
+    emailAddress: 'anonymous@hellobooks.com',
+  }).then(userdetails => userdetails.setUserLogin(UID)));
 });
 
-UserLoginDetails.findOne({
-  where: {
+bcrypt.hash(pswd, saltRounds, (err, hash) => {
+  UserLogin.create({
     username: userName,
-  },
-}).then(UID => UserDetails.create({
-  firstName: 'Anon',
-  lastName: 'Anonymous',
-  usernameID: UID.id,
-  emailAddress: 'anonymous@hellobooks.com',
-}));
-// .then(loginDetails => loginDetails.setUsrname(UID)));
-UserLoginDetails.findOne({
-  where: {
-    username: userName,
-  },
-}).then((UID) => {
-  th = UID.id;
+    password: hash,
+    userDetails: {
+      firstName: 'Anon',
+      lastName: 'Anonymous',
+      emailAddress: 'anonymous@hellobooks.com',
+    },
+  }, {
+    include: [{
+      model: UserDetails,
+      as: 'userDetails',
+    }],
+  });
 });

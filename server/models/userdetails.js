@@ -1,20 +1,25 @@
 module.exports = (sequelize, DataTypes) => {
   const UserDetails = sequelize.define('UserDetails', {
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    emailAddress: DataTypes.STRING,
-    phoneNumber: DataTypes.STRING,
-  }, {
-    freezeTableName: true,
-    classMethods: {
-      associate: (models) => {
-        // associations can be defined here
-        UserDetails.belongsTo(models.UserLoginDetails, {
-          foreignKey: 'usernameID',
-          as: 'usrname',
-        });
-      },
+    firstName: {
+      type: DataTypes.STRING,
+      allowNulls: false,
     },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNulls: false,
+    },
+    emailAddress: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNulls: false,
+    },
+    phoneNumber: DataTypes.STRING,
   });
+  UserDetails.associate = (models) => {
+    UserDetails.belongsTo(models.UserLogin, {
+      foreignKey: 'usernameId',
+      onDelete: 'CASCADE',
+    });
+  };
   return UserDetails;
 };
