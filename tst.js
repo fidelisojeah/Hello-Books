@@ -6,8 +6,38 @@ const {
 Authors.create({
   authorFirstName: 'Lurlene',
   authorLastName: 'McDaniel',
-  dateofBirth: '1944-09-05',
+  dateofBirth: '1944-04-05',
 });
+
+Books.create({
+  bookName: 'Angel of Hope',
+  bookISBN: '9780553571486',
+  description: `When Heather Barlow returns from Africa, 
+  the joy she felt during her missionary trip fades.  She's still
+  suffering from unresolved grief over the death of her friend Ian,
+  and now that she 's back home in the United States`,
+  bookImage: '/images/AngelofHope.jpg',
+}).then((bookID) => {
+  Authors.findOne({
+    where: {
+      id: '1',
+    },
+  }).then((AID) => {
+    bookID.addAuthor(AID);
+  });
+});
+
+Promise.all([
+    Authors.findOne({
+      where: {
+        id: '1',
+      },
+    }), ,
+  ])
+  .then((newAuth) => {
+
+  })
+
 Books.create({
   bookName: 'Angel of Hope',
   bookISBN: '9780553571486',

@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
     bookImage: {
       type: DataTypes.STRING,
     },
+    publishYear: {
+      allowNulls: false,
+      type: DataTypes.DATE,
+    },
   });
   Books.associate = (models) => {
     Books.belongsToMany(models.Authors, {

@@ -23,6 +23,10 @@ module.exports = {
       bookImage: {
         type: Sequelize.STRING,
       },
+      publishYear: {
+        allowNulls: false,
+        type: Sequelize.DATE,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
