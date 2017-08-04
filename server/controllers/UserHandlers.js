@@ -7,7 +7,7 @@ const saltRounds = 12;
 const bcrypt = require('bcrypt');
 
 
-exports.create = (req, res) => {
+exports.signup = (req, res) => {
   // check that values are in and valid
   if (req.body.username &&
     req.body.password &&

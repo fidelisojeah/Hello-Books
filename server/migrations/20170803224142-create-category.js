@@ -1,26 +1,14 @@
 module.exports = {
   up: (queryInterface, Sequelize) =>
-    queryInterface.createTable('Books', {
+    queryInterface.createTable('Category', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      bookName: {
+      categoryName: {
         allowNull: false,
-        type: Sequelize.STRING,
-      },
-      bookISBN: {
-        allowNull: false,
-        unique: true,
-        type: Sequelize.STRING,
-      },
-      description: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      bookImage: {
         type: Sequelize.STRING,
       },
       createdAt: {
@@ -33,5 +21,5 @@ module.exports = {
       },
     }),
   down: queryInterface =>
-    queryInterface.dropTable('Books'),
+    queryInterface.dropTable('Category'),
 };

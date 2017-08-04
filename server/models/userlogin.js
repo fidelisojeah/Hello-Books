@@ -15,6 +15,15 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'usernameId',
       as: 'userDetails',
     });
+    UserLogin.hasMany(models.BookLending, {
+      foreignKey: 'usernameId',
+      as: 'booksLent',
+    });
+    UserLogin.belongsToMany(models.Books, {
+      through: 'BookReviews',
+      foreignKey: 'usernameId',
+      otherKey: 'bookId',
+    });
   };
   return UserLogin;
 };

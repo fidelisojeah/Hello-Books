@@ -1,8 +1,23 @@
 const {
-  UserDetails,
-  UserLogin,
+  Authors,
+  Books,
 } = require('./server/models');
 
+Authors.create({
+  authorFirstName: 'Lurlene',
+  authorLastName: 'McDaniel',
+  dateofBirth: '1944-09-05',
+});
+Books.create({
+  bookName: 'Angel of Hope',
+  bookISBN: '9780553571486',
+  description: `When Heather Barlow returns from Africa, 
+  the joy she felt during her missionary trip fades.  She's still
+  suffering from unresolved grief over the death of her friend Ian,
+  and now that she 's back home in the United States`,
+  bookImage: '/images/AngelofHope.jpg',
+});
+/*
 const bcrypt = require('bcrypt');
 
 const saltRounds = 10;
@@ -38,3 +53,4 @@ bcrypt.hash(pswd, saltRounds, (err, hash) => {
     }],
   });
 });
+*/

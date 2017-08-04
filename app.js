@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({
   extended: false,
 }));
 
-app.post('/api/v1/users/signup', UserController.create); // signup route
+app.post('/api/v1/users/signup', UserController.signup); // signup route
 app.post('/api/v1/users/signin', UserController.signin); // signin route
 
 app.delete('/api/v1/users', UserController.deleteAll);
