@@ -44,6 +44,7 @@ exports.allBooks = (req, res) => {
 };
 exports.modBook = (req, res) => {
   const bkID = parseInt(req.params.bookId, 10);
+
   if (!isNaN(bkID)) { // has to be a number really
     // for just admin
     req.body.bookISBN = undefined;
