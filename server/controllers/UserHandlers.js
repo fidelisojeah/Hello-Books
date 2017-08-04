@@ -1,7 +1,7 @@
 const {
   UserDetails,
   UserLogin,
-  Membership,
+  tblMemberships,
 } = require('../models');
 
 const saltRounds = 12;
@@ -33,17 +33,22 @@ exports.signup2 = (req, res) => {
           as: 'userDetails',
         }],
       }).then((signup) => {
-        Membership.findOne({ // find author (just one here)
+        tblMemberships.findOne({ // find author (just one here)
           where: {
             id: 1,
           },
         }).then((Mem) => {
-          signup.userDetails.setMembershipDetail(Mem);
+          signup.userDetails.setMembership(Mem).then((smfn) => {
+            res.status(201).json({
+              status: 'success',
+              data: signup,
+              other: smfn,
+            });
+          });
         });
         res.status(201).json({
           status: 'success',
           data: signup,
-          membership: Mem,
         });
       }).catch(error => res.status(400).send(error));
     });

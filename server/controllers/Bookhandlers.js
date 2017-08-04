@@ -2,7 +2,7 @@ const {
   Authors,
   Books,
 } = require('../models');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 /**
  * Creates new Author and stores in table using Sequelize
  */
@@ -26,6 +26,21 @@ exports.newAuthor = (req, res) => {
       status: 'incomplete Details',
     });
   }
+};
+exports.allBooks = (req, res) => {
+  Books.findAll({}).then((allBooks) => {
+    if (allBooks === null || allBooks.length === 0) { // if no book is found
+      res.status(200).json({
+        status: 'unsuccessful',
+        message: 'No Books Fam',
+      });
+    } else {
+      res.status(202).json({
+        status: 'Book Details Below',
+        data: allBooks,
+      });
+    }
+  }).catch(error => res.status(400).send(error)); // catch error from findall
 };
 exports.modBook = (req, res) => {
   const bkID = parseInt(req.params.bookId, 10);
@@ -106,7 +121,7 @@ exports.newBook = (req, res) => { // create a new book v1 (with one author)
     }).catch(error => res.status(400).send(error)); // if fails, return error
   } else {
     res.status(400).json({
-      status: 'incomplete Book Details',
+      status: 'incomplete Book Details!!',
     });
   }
 };

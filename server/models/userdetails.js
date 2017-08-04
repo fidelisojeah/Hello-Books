@@ -20,9 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'usernameId',
       onDelete: 'CASCADE',
     });
-    UserDetails.belongsTo(models.Membership, {
-      foreignKey: 'membershipId',
-      onDelete: 'CASCADE',
+    UserDetails.belongsTo(models.tblMemberships, {
+      foreignKey: 'tblMembershipId',
+      as: 'Membership',
     });
   };
   return UserDetails;

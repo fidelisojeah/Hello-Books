@@ -7,6 +7,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      tblMembershipId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'tblMemberships',
+          key: 'id',
+        },
+      },
       firstName: {
         allowNull: false,
         type: Sequelize.STRING,
@@ -30,14 +38,6 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-      },
-      membershipId: {
-        type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
-        references: {
-          model: 'Membership',
-          key: 'id',
-        },
       },
       usernameId: {
         type: Sequelize.INTEGER,
