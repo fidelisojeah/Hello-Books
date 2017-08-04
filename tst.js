@@ -3,12 +3,24 @@ const {
   Books,
 } = require('./server/models');
 
+
+const {
+  Memberships,
+} = require('./server/models');
+
+Memberships.create({
+  membershipName: 'Blue',
+  maxBooks: 3,
+  maxExtends: 0,
+});
+
+
+
 Authors.create({
   authorFirstName: 'Lurlene',
   authorLastName: 'McDaniel',
   dateofBirth: '1944-04-05',
 });
-
 Books.create({
   bookName: 'Angel of Hope',
   bookISBN: '9780553571486',

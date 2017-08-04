@@ -31,6 +31,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
+      membershipId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Membership',
+          key: 'id',
+        },
+      },
       usernameId: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
@@ -40,7 +48,6 @@ module.exports = {
         },
       },
     }),
-
   down: queryInterface =>
     queryInterface.dropTable('UserDetails'),
 };

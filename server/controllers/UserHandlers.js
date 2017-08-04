@@ -1,11 +1,59 @@
 const {
   UserDetails,
   UserLogin,
+  Membership,
 } = require('../models');
 
 const saltRounds = 12;
 const bcrypt = require('bcrypt');
 
+exports.signup2 = (req, res) => {
+  if (req.body.username &&
+    req.body.password &&
+    req.body.firstname &&
+    req.body.lastname &&
+    req.body.email
+  ) {
+    // this includes with membership update
+    // hash password as before
+    bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
+      // create User Login with Hashed password
+      UserLogin.create({
+        username: req.body.username,
+        password: hash,
+        userDetails: { // create User details on seperate table with details
+          firstName: req.body.firstname,
+          lastName: req.body.lastname,
+          emailAddress: req.body.email.toLowerCase(),
+          phoneNumber: req.body.phone,
+        },
+      }, {
+        include: [{ // relationship
+          model: UserDetails,
+          as: 'userDetails',
+        }],
+      }).then((signup) => {
+        Membership.findOne({ // find author (just one here)
+          where: {
+            id: 1,
+          },
+        }).then((Mem) => {
+          signup.userDetails.setMembershipDetail(Mem);
+        });
+        res.status(201).json({
+          status: 'success',
+          data: signup,
+          membership: Mem,
+        });
+      }).catch(error => res.status(400).send(error));
+    });
+  } else {
+    res.status(400).json({
+      status: 'unsuccessful',
+      error: 'incomplete details',
+    });
+  }
+};
 
 exports.signup = (req, res) => {
   // check that values are in and valid
