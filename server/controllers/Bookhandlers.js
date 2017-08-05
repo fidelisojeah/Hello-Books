@@ -47,7 +47,9 @@ exports.modBook = (req, res) => {
 
   if (!isNaN(bkID)) { // has to be a number really
     // for just admin
+
     req.body.bookISBN = undefined;
+
     if (req.body.bookName ||
       req.body.publishYear ||
       req.body.bookISBN ||

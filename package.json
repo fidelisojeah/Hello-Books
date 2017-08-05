@@ -1,7 +1,7 @@
 {
   "name": "hellobooks",
   "version": "1.0.5",
-  "description": "A mostly reasonable approach to JavaScript.",
+  "description": "Hello Books",
   "scripts": {
     "preinstall": "npm run install:config && npm run install:config:base",
     "install:config": "cd packages/eslint-config-airbnb && npm prune && npm install",
@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/airbnb/javascript.git"
+    "url": "git+https://github.com/fidelisojeah/Hello-Books.git"
   },
   "keywords": [
     "style guide",
@@ -30,12 +30,12 @@
     "react",
     "jsx"
   ],
-  "author": "Harrison Shoff <hi@hshoff.com> (https://twitter.com/hshoff)",
+  "author": "Fidelis Ojeah",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/airbnb/javascript/issues"
+    "url": "https://github.com/fidelisojeah/Hello-Books/issues"
   },
-  "homepage": "https://github.com/airbnb/javascript",
+  "homepage": "https://github.com/fidelisojeah/Hello-Books",
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "eslint": "^3.19.0",
@@ -50,11 +50,6 @@
     "supertest": "^3.0.0"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "eslint-config-airbnb": "^15.1.0"
-  },
-  "main": "index.js"
-=======
     "bcrypt": "^1.0.2",
     "body-parser": "^1.17.2",
     "chai": "^4.1.0",
@@ -74,5 +69,4 @@
   "directories": {
     "test": "test"
   }
->>>>>>> develop
 }
