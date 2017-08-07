@@ -17,16 +17,22 @@ module.exports = {
       },
       usernameId: {
         type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
+        allowNull: false,
         references: {
-          model: 'UserLogins',
+          model: 'UserDetails',
           key: 'id',
         },
       },
       borrowDate: {
+        allowNull: false,
         type: Sequelize.DATE,
       },
       dueDate: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      actualReturnDate: {
+        default: null,
         type: Sequelize.DATE,
       },
       createdAt: {

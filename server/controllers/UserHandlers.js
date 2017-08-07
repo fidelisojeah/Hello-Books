@@ -1,13 +1,16 @@
 const {
   UserDetails,
   UserLogin,
-  tblMemberships,
+  Memberships,
 } = require('../models');
 
 const saltRounds = 12;
 const bcrypt = require('bcrypt');
-
-exports.signup2 = (req, res) => {
+/**
+ * New version of signup,
+ * New table is only one table containing username and details
+ */
+exports.signupNew = (req, res) => {
   if (req.body.username &&
     req.body.password &&
     req.body.firstname &&
@@ -18,27 +21,20 @@ exports.signup2 = (req, res) => {
     // hash password as before
     bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
       // create User Login with Hashed password
-      UserLogin.create({
+      UserDetails.create({
         username: req.body.username,
         password: hash,
-        userDetails: { // create User details on seperate table with details
-          firstName: req.body.firstname,
-          lastName: req.body.lastname,
-          emailAddress: req.body.email.toLowerCase(),
-          phoneNumber: req.body.phone,
-        },
-      }, {
-        include: [{ // relationship
-          model: UserDetails,
-          as: 'userDetails',
-        }],
+        firstName: req.body.firstname,
+        lastName: req.body.lastname,
+        emailAddress: req.body.email.toLowerCase(),
+        phoneNumber: req.body.phone,
       }).then((signup) => {
-        tblMemberships.findOne({ // find author (just one here)
+        Memberships.findOne({ // find author (just one here)
           where: {
             id: 1,
           },
         }).then((Mem) => {
-          signup.userDetails.setMembership(Mem).then((smfn) => {
+          UserDetails.setMembership(Mem).then((smfn) => {
             res.status(201).json({
               status: 'success',
               data: signup,
@@ -66,7 +62,7 @@ exports.signup = (req, res) => {
     req.body.password &&
     req.body.firstname &&
     req.body.lastname &&
-    req.body.email
+    req.body.emailAdd
   ) {
     // hash password
     bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
@@ -77,7 +73,7 @@ exports.signup = (req, res) => {
         userDetails: { // create User details on seperate table with details
           firstName: req.body.firstname,
           lastName: req.body.lastname,
-          emailAddress: req.body.email.toLowerCase(),
+          emailAddress: req.body.emailAdd.toLowerCase(),
           phoneNumber: req.body.phone,
         },
       }, {
@@ -107,7 +103,21 @@ exports.deleteAll = (req, res) => { // at end of tests
     }).then(() =>
       res.status(204).send({}));
   } else {
-    res.status(403).send({
+    res.status(403).json({
+      message: 'You can\'t just do that though',
+    });
+  }
+};
+
+exports.clearTable = (req, res) => { // at end of tests
+  if (process.env.NODE_ENV === 'test') { // if in test environment
+    UserDetails.truncate({
+      cascade: true,
+      restartIdentity: true,
+    }).then(() =>
+      res.status(204).send({}));
+  } else {
+    res.status(403).json({
       message: 'You can\'t just do that though',
     });
   }
@@ -116,6 +126,49 @@ exports.deleteAll = (req, res) => { // at end of tests
 exports.signin = (req, res) => {
   if (req.body.username && req.body.password) {
     UserLogin.findOne({ // check that user exists in database
+      where: {
+        username: req.body.username,
+      },
+    }).then((Username) => {
+      if (Username === null) { // no user of such exists
+        res.status(200).json({ // no user is a valid request
+          status: 'invalid user',
+          // error: 'invalid user',
+        });
+      } else {
+        // check if password is valid
+        bcrypt.compare(req.body.password, Username.dataValues.password).then((pwd) => {
+          if (pwd === true) {
+            res.status(202).json({ // accepted
+              status: 'success',
+              data: Username,
+            });
+          } else {
+            res.status(200).json({ // no user/password is a valid request
+              status: 'invalid user or password',
+              //  error: 'invalid user or password',
+            });
+          }
+        });
+      }
+    }).catch(error => res.status(400).send(error));
+  } else if (req.body.username) {
+    res.status(401).json({
+      status: 'no Password',
+    });
+  } else if (req.body.password) {
+    res.status(401).json({
+      status: 'no Username',
+    });
+  } else {
+    res.status(401).json({
+      status: 'no Username and password',
+    });
+  }
+};
+exports.login = (req, res) => {
+  if (req.body.username && req.body.password) {
+    UserDetails.findOne({ // check that user exists in database
       where: {
         username: req.body.username,
       },

@@ -9,6 +9,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNulls: false,
       unique: true,
     },
+    bookQuantity: {
+      type: DataTypes.INTEGER,
+      allowNulls: false,
+      default: 1,
+    },
     description: {
       type: DataTypes.STRING,
       allowNulls: false,
@@ -21,13 +26,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
     },
   });
+  // relationship to other tables
   Books.associate = (models) => {
     Books.belongsToMany(models.Authors, {
       through: 'BookAuthors',
       foreignKey: 'bookId',
       otherKey: 'authorId',
     });
-    Books.belongsToMany(models.UserLogin, {
+    Books.belongsToMany(models.UserDetails, {
       through: 'BookReviews',
       foreignKey: 'bookId',
       otherKey: 'usernameId',
