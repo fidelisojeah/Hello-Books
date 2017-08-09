@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       dateofBirth: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
       },
       createdAt: {
         allowNull: false,
@@ -26,7 +26,15 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-    }),
+    }).then(() =>
+      queryInterface.sequelize.query(
+        queryInterface.QueryGenerator.bulkInsertQuery('Authors', [{
+          authorFirstName: 'Nil',
+          authorLastName: 'Anonymous',
+          dateofBirth: '1900-01-01',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }]))),
   down: queryInterface =>
     queryInterface.dropTable('Authors'),
 };

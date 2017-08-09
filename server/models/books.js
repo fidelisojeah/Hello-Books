@@ -25,6 +25,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNulls: false,
       type: DataTypes.DATE,
     },
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+      allowNull: false,
+    },
   });
   // relationship to other tables
   Books.associate = (models) => {
@@ -34,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
       otherKey: 'authorId',
     });
     Books.belongsToMany(models.UserDetails, {
+      as: 'bookReview',
       through: 'BookReviews',
       foreignKey: 'bookId',
       otherKey: 'usernameId',

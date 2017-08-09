@@ -23,20 +23,22 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     phoneNumber: DataTypes.STRING,
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+      allowNull: false,
+    },
   });
   UserDetails.associate = (models) => {
-    UserDetails.hasMany(models.BookLending, {
-      foreignKey: 'usernameId',
-      as: 'booksLent',
-    });
     UserDetails.belongsToMany(models.Books, {
+      as: 'bookReview',
       through: 'BookReviews',
       foreignKey: 'usernameId',
       otherKey: 'bookId',
     });
     UserDetails.belongsTo(models.Memberships, {
       foreignKey: 'MembershipId',
-      as: 'Membership',
+      as: 'membership',
     });
   };
   return UserDetails;

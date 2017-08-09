@@ -12,7 +12,7 @@
     "test:config": "cd packages/eslint-config-airbnb; npm test",
     "test:config:base": "cd packages/eslint-config-airbnb-base; npm test",
     "pretravis": "npm run --silent lint",
-    "start:dev": "nodemon ./bin/www",
+    "start:dev": "nodemon ./bin/www --exec babel-node --presets es2015,stage-2",
     "travis": "npm run --silent travis:config && npm run --silent travis:config:base",
     "travis:config": "cd packages/eslint-config-airbnb; npm run travis",
     "travis:config:base": "cd packages/eslint-config-airbnb-base; npm run travis"
@@ -37,7 +37,11 @@
   },
   "homepage": "https://github.com/airbnb/javascript",
   "devDependencies": {
+    "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-config-airbnb-base": "^11.3.1",
