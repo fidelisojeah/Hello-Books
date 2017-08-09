@@ -226,57 +226,121 @@ exports.borrowBook = (req, res) => {
   const duedate = req.body.duedate;
 
   if (isNaN(UserId) || isNaN(bookid)) {
-    res.status(200).json({
+    res.status(400).json({
       status: 'invalid',
       message: 'no UserID or bookID specified',
     });
   } else {
     UserDetails.findById(UserId) // search for user
       .then((UsrDet) => {
-        Books.findOne({
-          where: {
-            id: bookid,
-            isActive: true,
-          },
-        }).then((foundBook) => {
-          if (foundBook) { // if book is found
-            if (foundBook.bookQuantity < 1) {
-              // if all copies of book have been borrowed
-              res.status(200).json({
-                status: 'invalid',
-                message: 'Book unavailable',
-              });
+        if (!UsrDet) {
+          res.status(200).json({
+            status: 'invalid UserId',
+            message: 'UserId does not exist',
+          });
+        } else {
+          Books.findOne({
+            where: {
+              id: bookid,
+              isActive: true,
+            },
+          }).then((foundBook) => {
+            if (foundBook) { // if book is found
+              if (foundBook.bookQuantity < 1) {
+                // if all copies of book have been borrowed
+                res.status(200).json({
+                  status: 'invalid',
+                  message: 'Book unavailable',
+                });
+              } else {
+                // add new field to booklending table (join table)
+                BookLendings.create({
+                  bookId: foundBook.id,
+                  userId: UsrDet.id,
+                  borrowDate: borrowdate,
+                  dueDate: duedate,
+                }).then((crtLending) => { // if successfully added
+                  if (crtLending) {
+                    foundBook.update({
+                      bookQuantity: foundBook.bookQuantity - 1,
+                    }).then( // book quantity successfully updated
+                      bookBorrowed => res.status(202).json({
+                        status: 'Success',
+                        message: 'Book Successfully Borrowed',
+                        Book: bookBorrowed.bookName,
+                        QuantityLeft: bookBorrowed.bookQuantity,
+                      })).catch(error => res.status(400).send(error));
+                  }
+                }).catch(error => res.status(400).send(error));
+                // couldn't add Book Lending
+              }
             } else {
-              // add new field to booklending table (join table)
-              BookLendings.create({
-                bookId: foundBook.id,
-                userId: UsrDet.id,
-                borrowDate: borrowdate,
-                dueDate: duedate,
-              }).then((crtLending) => { // if successfully added
-                if (crtLending) {
-                  foundBook.update({
-                    bookQuantity: foundBook.bookQuantity - 1,
-                  }).then( // book quantity successfully updated
-                    bookBorrowed => res.status(202).json({
-                      status: 'Success',
-                      message: 'Book Successfully Borrowed',
-                      Book: bookBorrowed.bookName,
-                      QuantityLeft: bookBorrowed.bookQuantity,
-                    })).catch(error => res.status(400).send(error));
-                }
-              }).catch(error => res.status(400).send(error));
-              // couldn't add Book Lending
+              // if foundBook instance is empty
+              res.status(200).json({
+                status: 'Invalid',
+                message: 'Book not found',
+              });
             }
-          } else {
-            // if foundBook instance is empty
-            res.status(200).json({
-              status: 'Invalid',
-              message: 'Book not found',
-            });
-          }
-        }).catch(error => res.status(400).send(error));
+          }).catch(error => res.status(400).send(error));
+        }
       })
       .catch(error => res.status(400).send(error));
   }
+};
+exports.viewBorrowed = (req, res) => {
+  const UserId = parseInt(req.params.userId, 10);
+  // const isReturnedRequired = req.params.returned || true;
+
+  // const viewBor =
+  if (!isNaN(UserId)) {
+    // Bring up UserDetails
+    UserDetails
+      .findById(UserId)
+      .then((UsrDet) => {
+        // if User not found
+        if (!UsrDet) {
+          res.status(200).json({
+            status: 'invalid UserId',
+            message: 'UserId does not exist',
+          });
+        } else { // if User found
+          // find all BookLendings with User Id
+          BookLendings
+            .findAll({
+              where: {
+                userId: UsrDet.id,
+              },
+              include: [{
+                model: Books,
+              }],
+            })
+            .then((Lends) => {
+              if (Lends) {
+                res.status(202).json({
+                  status: 'success',
+                  data: Lends,
+                });
+              } else {
+                res.status(200).json({
+                  status: 'Non found',
+                  message: 'User has no borrowed Books',
+                });
+              }
+            })
+            .catch(error => res.status(400).send(error));
+        }
+      })
+      .catch(error => res.status(400).send(error));
+  } else {
+    res.status(400).json({
+      status: 'invalid',
+      message: 'UserId is invalid',
+    });
+  }
+
+  /*
+  if (isReturnedRequired !== null) {
+
+  }
+  */
 };
