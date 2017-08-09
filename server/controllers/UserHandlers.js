@@ -289,7 +289,7 @@ exports.borrowBook = (req, res) => {
 };
 exports.viewBorrowed = (req, res) => {
   const UserId = parseInt(req.params.userId, 10);
-  // const isReturnedRequired = req.params.returned || true;
+  const isReturned = req.query.returned || null;
 
   // const viewBor =
   if (!isNaN(UserId)) {
@@ -305,20 +305,36 @@ exports.viewBorrowed = (req, res) => {
           });
         } else { // if User found
           // find all BookLendings with User Id
+          const returnedSearch = (isReturned === 'false') ? {
+            userId: UsrDet.id,
+            actualReturnDate: null,
+          } : {
+            userId: UsrDet.id,
+          };
           BookLendings
             .findAll({
-              where: {
-                userId: UsrDet.id,
-              },
+              where: // {
+                // userId: UsrDet.id,
+                returnedSearch,
+              // },
               include: [{
                 model: Books,
+                attributes: ['bookName', 'bookISBN', 'bookImage', 'publishYear'],
+                where: {
+                  isActive: true,
+                },
               }],
+              attributes: ['borrowDate',
+                'dueDate',
+                'actualReturnDate',
+              ],
             })
             .then((Lends) => {
               if (Lends) {
                 res.status(202).json({
-                  status: 'success',
+                  status: 'success!!!',
                   data: Lends,
+                  // retud: returnedSearch,
                 });
               } else {
                 res.status(200).json({
