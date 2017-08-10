@@ -1,29 +1,62 @@
+/*
 const {
   Authors,
   Books,
 } = require('../models');
+*/
+
+import {
+  Authors,
+  Books,
+} from '../models';
+
 // const jwt = require('jsonwebtoken');
 /**
  * Creates new Author and stores in table using Sequelize
  */
+
+exports.deleteAllBooks = (req, res) => { // at end of tests
+  if (process.env.NODE_ENV === 'test') { // if in test environment
+    Books.truncate({
+      cascade: true,
+      restartIdentity: true,
+    }).then(() =>
+      Authors.truncate({
+        cascade: true,
+        restartIdentity: true,
+      }).then(() =>
+        res.status(204).send({})));
+  } else {
+    res.status(200).json({
+      message: 'You can\'t just do that though',
+    });
+  }
+};
+
 exports.newAuthor = (req, res) => {
-  if (req.body.authorFName && req.body.authorLName) {
+  const authorfirstname = req.body.authorFName || null;
+  const authorlastname = req.body.authorLName || null;
+  const DOB = req.body.authorDOB || null;
+  if (authorfirstname !== null && authorlastname !== null) {
     // if parameters have been sent--
     Authors.create({
-      authorFirstName: req.body.authorFName,
-      authorLastName: req.body.authorLName,
-      dateofBirth: req.body.authorDOB,
+      authorFirstName: authorfirstname,
+      authorLastName: authorlastname,
+      dateofBirth: DOB,
     }).then(
       (authorCreate) => { // if author creation was successful
         res.status(201).json({
           status: 'success',
-          data: authorCreate,
+          data: {
+            AuthorName: `${authorCreate.authorFirstName} ${authorCreate.authorLastName}`,
+          },
         });
       }).catch( // if unsuccessful
       error => res.status(400).send(error));
   } else { // if complete details are not set
-    res.status(400).json({
-      status: 'incomplete Details',
+    res.status(200).json({
+      status: 'unsuccessful',
+      message: 'incomplete details',
     });
   }
 };
@@ -95,26 +128,27 @@ exports.modBook = (req, res) => {
         if (BookDet === null) { // if a book is not found
           res.status(200).json({
             status: 'unsuccessful',
-            message: 'This book don\'t exist fam',
+            message: 'Book Id invalid',
           });
         } else {
           BookDet.update(req.body).then(BkUpdate => res.status(200).json({
-            status: 'Book Details Updated',
+            status: 'success',
+            message: 'Book Details Updated',
             data: BkUpdate,
           })).catch(error => res.status(400).send(error));
         }
       }).catch(error => res.status(400).send(error)); // catch error from findone
     } else {
-      res.status(400).json({
-        status: 'none',
-        message: 'You did not supply any info fam',
+      res.status(200).json({
+        status: 'invalid',
+        message: 'no information supplied',
         data: req.body,
       });
     }
   } else {
     res.status(400).json({
       status: 'none',
-      message: 'That\'s not even a number fam!!!',
+      message: 'invalid number',
     });
   }
 };
@@ -122,11 +156,15 @@ exports.newBook = (req, res) => { // create a new book v1 (with one author)
   const bookQuant = req.body.bookQuantity || 1;
   const bookImg = req.body.bookImage || null;
   const pubYear = req.body.pubYear || null;
-  if (req.body.bookName && req.body.bookISBN && req.body.desc && req.body.authorId) {
+  const bookname = req.body.bookName || null;
+  const ISBN = req.body.bookISBN || null;
+  const desc = req.body.desc || null;
+  const authorId = req.body.authorId || 1; // author or anonymous
+  if (bookname !== null && ISBN !== null && desc !== null && authorId !== null) {
     Books.create({ // create book
-      bookName: req.body.bookName,
-      bookISBN: req.body.bookISBN,
-      description: req.body.desc,
+      bookName: bookname,
+      bookISBN: ISBN,
+      description: desc,
       bookQuantity: bookQuant,
       bookImage: bookImg,
       publishYear: pubYear,
@@ -138,7 +176,7 @@ exports.newBook = (req, res) => { // create a new book v1 (with one author)
       } else {
         Authors.findOne({ // find author (just one here)
           where: {
-            id: parseInt(req.body.authorId, 10),
+            id: parseInt(authorId, 10),
           },
         }).then((AID) => {
           if (AID === null) { // if author not found
@@ -158,8 +196,9 @@ exports.newBook = (req, res) => { // create a new book v1 (with one author)
       }
     }).catch(error => res.status(400).send(error)); // if fails, return error
   } else {
-    res.status(400).json({
-      status: 'incomplete Book Details!!',
+    res.status(200).json({
+      status: 'unsuccessful',
+      message: 'incomplete Book Details!!',
     });
   }
 };

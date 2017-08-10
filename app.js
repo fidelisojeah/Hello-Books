@@ -1,8 +1,13 @@
-const express = require('express');
-const logger = require('morgan');
-const bodyParser = require('body-parser');
-const UserController = require('./server/controllers/UserHandlers');
-const BookController = require('./server/controllers/Bookhandlers');
+import express from 'express';
+import logger from 'morgan';
+import bodyParser from 'body-parser';
+import UserController from './server/controllers/UserHandlers';
+import BookController from './server/controllers/Bookhandlers';
+// const express = require('express');
+// const logger = require('morgan');
+// const bodyParser = require('body-parser');
+// const UserController = require('./server/controllers/UserHandlers');
+// const BookController = require('./server/controllers/Bookhandlers');
 // const jwt = require('jsonwebtoken');
 
 const app = express();
@@ -24,8 +29,12 @@ app.post('/api/v2/users/signup', UserController.signupNew); // signup route with
 
 app.post('/api/v3/users/signup', UserController.signupv3); // New login with email or uswername
 app.post('/api/v3/users/signin', UserController.loginNew); // New login with email or uswername
+app.delete('/api/v2/users', UserController.clearTable);
+
 
 app.delete('/api/v1/users', UserController.deleteAll);
+
+app.delete('/api/v1/books', BookController.deleteAllBooks);
 
 app.post('/api/v1/users/:userId/books', UserController.borrowBook);
 app.get('/api/v1/Users/:userId/books', UserController.viewBorrowed)

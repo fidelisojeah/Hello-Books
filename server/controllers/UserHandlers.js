@@ -1,3 +1,4 @@
+/*
 const {
   UserDetails,
   UserLogin,
@@ -5,6 +6,16 @@ const {
   Books,
   BookLendings,
 } = require('../models');
+*/
+
+import {
+  UserDetails,
+  UserLogin,
+  Memberships,
+  Books,
+  BookLendings,
+} from '../models';
+
 
 const saltRounds = 12;
 const bcrypt = require('bcrypt');
@@ -47,12 +58,6 @@ exports.signupNew = (req, res) => {
               });
             });
           });
-        /*
-        res.status(201).json({
-             status: 'success',
-             data: signup,
-           });
-            */
       }).catch(error => res.status(400).send(error));
     });
   } else {
@@ -111,7 +116,10 @@ exports.signupv3 = (req, res) => {
                   .catch(error => res.status(400).send(error));
               })
               .catch(error => res.status(400).send(error));
-          }).catch(error => res.status(400).send(error.errors));
+          }).catch(error => res.status(400).json({
+            status: 'unsuccessful',
+            errors: error.errors,
+          }));
       });
   } else {
     res.status(200).json({
@@ -261,7 +269,7 @@ exports.login = (req, res) => {
       }
     }).catch(error => res.status(400).send(error));
   } else if (req.body.username) {
-    res.status(401).json({
+    res.status(200).json({
       status: 'no Password',
     });
   } else if (req.body.password) {
@@ -297,7 +305,11 @@ exports.loginNew = (req, res) => {
           if (pwd === true) {
             res.status(202).json({ // accepted
               status: 'success',
-              data: Username,
+              data: {
+                Username: Username.username,
+                FirstName: Username.firstName,
+                Lastname: Username.lastName,
+              },
             });
           } else {
             res.status(200).json({ // no user/password is a valid request
