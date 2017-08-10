@@ -33,7 +33,8 @@ app.delete('/api/v2/users', UserController.clearTable);
 
 
 app.delete('/api/v1/users', UserController.deleteAll);
-// app.delete('/api/v1/books', UserController.deleteAllBooks);
+
+app.delete('/api/v1/books', BookController.deleteAllBooks);
 
 app.post('/api/v1/users/:userId/books', UserController.borrowBook);
 app.get('/api/v1/Users/:userId/books', UserController.viewBorrowed)
