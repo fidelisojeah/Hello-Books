@@ -10,6 +10,11 @@ before_script:
   - npm install -g codeclimate-test-reporter
   - psql -c 'drop database if exists dbhellobooks_test;' -U postgres
   - psql -c 'create database dbhellobooks_test;' -U postgres
+  - npm run migrate:test
+
+env:
+  - NODE_ENV=test
+  - URL_TEST=postgres://postgres@localhost/dbhellobooks_test
 
 after_success:
   - CODECLIMATE_REPO_TOKEN=$CODECLIMATE_REPO_TOKEN codeclimate-test-reporter < coverage/lcov.info
