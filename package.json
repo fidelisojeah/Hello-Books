@@ -6,7 +6,7 @@
     "install:config": "npm prune && npm install",
     "lint": "markdownlint --config linters/.markdownlint.json",
     "pretest": "npm run --silent lint",
-    "test": "NODE_ENV=test mocha --compilers js:babel-register",
+    "test": "mocha --compilers js:babel-register",
     "test:config": "cd packages/eslint-config-airbnb; npm test",
     "test:config:base": "cd packages/eslint-config-airbnb-base; npm test",
     "start:dev": "nodemon ./bin/www --exec babel-node --presets es2015,stage-2",
