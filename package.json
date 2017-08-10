@@ -3,9 +3,7 @@
   "version": "1.0.5",
   "description": "Simple Online Book Library",
   "scripts": {
-    "preinstall": "npm run install:config && npm run install:config:base",
-    "install:config": "cd packages/eslint-config-airbnb && npm prune && npm install",
-    "install:config:base": "cd packages/eslint-config-airbnb-base && npm prune && npm install",
+    "install:config": "npm prune && npm install",
     "lint": "markdownlint --config linters/.markdownlint.json",
     "pretest": "npm run --silent lint",
     "test": "NODE_ENV=test mocha --compilers js:babel-register",
@@ -16,7 +14,7 @@
     "build": "babel lib -d dist --presets es2015,stage-2",
     "serve": "node dist/index.js",
     "travis": "npm run --silent travis:config && npm run --silent travis:config:base",
-    "travis:config": "cd packages/eslint-config-airbnb; npm run travis",
+    "travis:config": "npm run travis",
     "travis:config:base": "cd packages/eslint-config-airbnb-base; npm run travis"
   },
   "repository": {
