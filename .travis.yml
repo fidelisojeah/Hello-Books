@@ -10,7 +10,6 @@ before_script:
   - npm install -g codeclimate-test-reporter
   - psql -c 'drop database if exists dbhellobooks_test;' -U postgres
   - psql -c 'create database dbhellobooks_test;' -U postgres
-  - npm run migrate:test
 
 env:
   - NODE_ENV=test
