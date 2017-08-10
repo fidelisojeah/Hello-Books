@@ -6,8 +6,10 @@
     "install:config": "npm prune && npm install",
     "lint": "markdownlint --config linters/.markdownlint.json",
     "pretest": "npm run --silent lint",
-    "test": "NODE_ENV=test mocha --compilers js:babel-register -- ./test/*.js",
+    "migrate": "sequelize db:migrate",
+    "test": "NODE_ENV=test mocha --compilers js:babel-register -- test/*.js",
     "start:dev": "nodemon ./bin/www --exec babel-node --presets es2015,stage-2",
+    "migrate:test": "sequelize db:migrate --env test",
     "build": "babel lib -d dist --presets es2015,stage-2",
     "serve": "node dist/index.js"
   },
