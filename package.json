@@ -9,13 +9,9 @@
     "test": "NODE_ENV=test mocha --compilers js:babel-register",
     "test:config": "cd packages/eslint-config-airbnb; npm test",
     "test:config:base": "cd packages/eslint-config-airbnb-base; npm test",
-    "pretravis": "npm run --silent lint",
     "start:dev": "nodemon ./bin/www --exec babel-node --presets es2015,stage-2",
     "build": "babel lib -d dist --presets es2015,stage-2",
-    "serve": "node dist/index.js",
-    "travis": "npm run --silent travis:config && npm run --silent travis:config:base",
-    "travis:config": "npm run travis",
-    "travis:config:base": "cd packages/eslint-config-airbnb-base; npm run travis"
+    "serve": "node dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -44,7 +40,6 @@
     "babel-preset-stage-2": "^6.24.1",
     "babel-register": "^6.24.1",
     "eslint": "^3.19.0",
-    "eslint-config-airbnb": "^15.1.0",
     "eslint-config-airbnb-base": "^11.3.1",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
