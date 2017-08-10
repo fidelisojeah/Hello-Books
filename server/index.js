@@ -1,14 +1,10 @@
 import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
-import UserController from './server/controllers/UserHandlers';
-import BookController from './server/controllers/Bookhandlers';
-// const express = require('express');
-// const logger = require('morgan');
-// const bodyParser = require('body-parser');
-// const UserController = require('./server/controllers/UserHandlers');
-// const BookController = require('./server/controllers/Bookhandlers');
-// const jwt = require('jsonwebtoken');
+import http from 'http';
+import UserController from './controllers/UserHandlers';
+import BookController from './controllers/Bookhandlers';
+
 
 const app = express();
 
@@ -57,4 +53,11 @@ app.put('/api/v1/books/:bookId', BookController.modBook);
 
 app.post('/api/v1/authors', BookController.newAuthor);
 
-module.exports = app;
+
+const port = parseInt(process.env.PORT, 10) || 8000;
+app.set('port', port);
+
+const server = http.createServer(app);
+server.listen(port);
+
+export default app;

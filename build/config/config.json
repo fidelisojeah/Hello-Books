@@ -1,0 +1,21 @@
+{
+  "development": {
+    "username": "usrhello",
+    "password": "HelloBooksPassword$",
+    "database": "dbhellobooks",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "usrhello",
+    "password": "HelloBooksPassword$",
+    "database": "dbhellobooks_test",
+    "host": "127.0.0.1",
+    "port": 5432,
+    "dialect": "postgres"
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL"
+  }
+}

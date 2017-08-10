@@ -8,11 +8,10 @@
     "pretest": "npm run --silent lint",
     "migrate:test": "sequelize db:migrate --env test",
     "migrate": "sequelize db:migrate",
-    "test": "mocha --compilers js:babel-register --recursive",
-    "start:dev": "nodemon ./bin/www --exec babel-node --presets es2015,stage-2",
-    "start": "node ./bin/www --exec babel-node --presets es2015,stage-2",
-    "build": "babel lib -d dist --presets es2015,stage-2",
-    "serve": "node dist/index.js"
+    "build": "babel server -d build",
+    "test": "mocha --compilers js:babel-register",
+    "start:dev": "nodemon ./server/app.js --exec babel-node --presets es2015,stage-2",
+    "start": " node ./build/app.js"
   },
   "repository": {
     "type": "git",
