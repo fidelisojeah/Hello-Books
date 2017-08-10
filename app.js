@@ -25,7 +25,8 @@ app.post('/api/v2/users/signup', UserController.signupNew); // signup route with
 app.delete('/api/v1/users', UserController.deleteAll);
 
 app.post('/api/v1/users/:userId/books', UserController.borrowBook);
-app.get('/api/v1/Users/:userId/books', UserController.viewBorrowed);
+app.get('/api/v1/Users/:userId/books', UserController.viewBorrowed)
+  .put('/api/v1/Users/:userId/books', UserController.returnBook);
 
 app.get('*', (req, res) => res.status(404).send({
   message: 'Sorry Bro That\'s not a request',

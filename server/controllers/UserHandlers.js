@@ -356,11 +356,6 @@ exports.viewBorrowed = (req, res) => {
     });
   }
 
-  /*
-  if (isReturnedRequired !== null) {
-
-  }
-  */
 };
 exports.returnBook = (req, res) => {
   const UserId = parseInt(req.params.userId, 10);
@@ -374,14 +369,14 @@ exports.returnBook = (req, res) => {
     });
   } else {
     BookLendings
-      .findbyId(lendId)
+      .findById(lendId)
       .then((foundLentBook) => {
-        if (foundLentBook) { // if lent book is found
+        if (foundLentBook && foundLentBook.actualReturnDate === null) { // if lent book is found
           if (foundLentBook.bookId === bookid &&
             foundLentBook.userId === UserId) {
             // if records match
             Books
-              .findbyId(bookid)
+              .findById(bookid)
               .then((borrowedBook) => {
                 if (borrowedBook) {
                   foundLentBook // update records
@@ -425,6 +420,11 @@ exports.returnBook = (req, res) => {
               message: 'User/Book not matching records',
             });
           }
+        } else if (foundLentBook.actualReturnDate !== null) {
+          res.status(200).json({
+            status: 'invalid',
+            message: 'Book already returned',
+          });
         } else {
           res.status(200).json({
             status: 'invalid UserId',
