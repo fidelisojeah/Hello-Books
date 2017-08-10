@@ -1,11 +1,34 @@
+/*
 const {
   Authors,
   Books,
 } = require('../models');
+*/
+
+import {
+  Authors,
+  Books,
+} from '../models';
+
 // const jwt = require('jsonwebtoken');
 /**
  * Creates new Author and stores in table using Sequelize
  */
+
+exports.deleteAllBooks = (req, res) => { // at end of tests
+  if (process.env.NODE_ENV === 'test') { // if in test environment
+    Books.truncate({
+      cascade: true,
+      restartIdentity: true,
+    }).then(() =>
+      res.status(204).send({}));
+  } else {
+    res.status(200).json({
+      message: 'You can\'t just do that though',
+    });
+  }
+};
+
 exports.newAuthor = (req, res) => {
   if (req.body.authorFName && req.body.authorLName) {
     // if parameters have been sent--
@@ -17,13 +40,16 @@ exports.newAuthor = (req, res) => {
       (authorCreate) => { // if author creation was successful
         res.status(201).json({
           status: 'success',
-          data: authorCreate,
+          data: {
+            AuthorName: `${authorCreate.authorFirstName} ${authorCreate.authorLastName}`,
+          },
         });
       }).catch( // if unsuccessful
       error => res.status(400).send(error));
   } else { // if complete details are not set
-    res.status(400).json({
-      status: 'incomplete Details',
+    res.status(200).json({
+      status: 'unsuccessful',
+      message: 'incomplete Details',
     });
   }
 };
