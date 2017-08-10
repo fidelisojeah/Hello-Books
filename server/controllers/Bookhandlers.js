@@ -42,12 +42,45 @@ exports.allBooks = (req, res) => {
     }
   }).catch(error => res.status(400).send(error)); // catch error from findall
 };
+exports.bookQuant = (req, res) => {
+  const bkID = parseInt(req.body.bookId, 10);
+  const bklvl = parseInt(req.body.Quantlvl, 10);
+  if (!isNaN(bkID) || !isNaN(bklvl)) { // has to be a number really
+    Books.findOne({ // search for book with id
+      where: {
+        id: bkID,
+      },
+    }).then((BookDet) => {
+      if (BookDet === null) { // if a book is not found
+        res.status(200).json({
+          status: 'unsuccessful',
+          message: 'This book don\'t exist fam',
+        });
+      } else { // if addQuant is set then add
+        BookDet.update({
+          bookQuantity: (BookDet.bookQuantity + bklvl) < 1 ? 1 : (BookDet.bookQuantity + bklvl),
+          // Never less than 1
+        }).then(
+          addBk => res.status(200).json({
+            status: addBk,
+          })).catch(error => res.status(400).send(error));
+      }
+    });
+  } else {
+    res.status(400).json({
+      status: 'none',
+      message: 'That\'s not even a number fam!!!',
+    });
+  }
+};
+
 exports.modBook = (req, res) => {
   const bkID = parseInt(req.params.bookId, 10);
 
   if (!isNaN(bkID)) { // has to be a number really
-    // for just admin
+    // for just admins
     req.body.bookISBN = undefined;
+    // everyone
     if (req.body.bookName ||
       req.body.publishYear ||
       req.body.bookISBN ||
@@ -68,7 +101,7 @@ exports.modBook = (req, res) => {
           BookDet.update(req.body).then(BkUpdate => res.status(200).json({
             status: 'Book Details Updated',
             data: BkUpdate,
-          }));
+          })).catch(error => res.status(400).send(error));
         }
       }).catch(error => res.status(400).send(error)); // catch error from findone
     } else {
@@ -86,13 +119,17 @@ exports.modBook = (req, res) => {
   }
 };
 exports.newBook = (req, res) => { // create a new book v1 (with one author)
-  if (req.body.bookName && req.body.ISBN && req.body.desc) {
+  const bookQuant = req.body.bookQuantity || 1;
+  const bookImg = req.body.bookImage || null;
+  const pubYear = req.body.pubYear || null;
+  if (req.body.bookName && req.body.bookISBN && req.body.desc && req.body.authorId) {
     Books.create({ // create book
       bookName: req.body.bookName,
       bookISBN: req.body.bookISBN,
       description: req.body.desc,
-      bookImage: req.body.imagepath,
-      publishYear: req.body.pubYear,
+      bookQuantity: bookQuant,
+      bookImage: bookImg,
+      publishYear: pubYear,
     }).then((bookID) => {
       if (bookID === null) {
         res.status(400).json({

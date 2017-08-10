@@ -7,11 +7,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      tblMembershipId: {
+      MembershipId: {
         type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
         references: {
-          model: 'tblMemberships',
+          model: 'Memberships',
           key: 'id',
         },
       },
@@ -22,6 +21,11 @@ module.exports = {
       lastName: {
         allowNull: false,
         type: Sequelize.STRING,
+      },
+      isActive: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true,
+        allowNull: false,
       },
       emailAddress: {
         allowNull: false,
@@ -39,13 +43,14 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      usernameId: {
-        type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
-        references: {
-          model: 'UserLogins',
-          key: 'id',
-        },
+      username: {
+        type: Sequelize.STRING,
+        unique: true,
+        allowNull: false,
+      },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
     }),
   down: queryInterface =>

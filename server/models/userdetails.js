@@ -13,16 +13,32 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       allowNulls: false,
     },
+    username: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     phoneNumber: DataTypes.STRING,
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+      allowNull: false,
+    },
   });
   UserDetails.associate = (models) => {
-    UserDetails.belongsTo(models.UserLogin, {
+    UserDetails.belongsToMany(models.Books, {
+      as: 'bookReview',
+      through: 'BookReviews',
       foreignKey: 'usernameId',
-      onDelete: 'CASCADE',
+      otherKey: 'bookId',
     });
-    UserDetails.belongsTo(models.tblMemberships, {
-      foreignKey: 'tblMembershipId',
-      as: 'Membership',
+    UserDetails.belongsTo(models.Memberships, {
+      foreignKey: 'MembershipId',
+      as: 'membership',
     });
   };
   return UserDetails;

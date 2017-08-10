@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const tblMemberships = sequelize.define('tblMemberships', {
+  const Memberships = sequelize.define('Memberships', {
     membershipName: {
       type: DataTypes.STRING,
       allowNulls: false,
@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     maxExtends: DataTypes.INTEGER,
   });
-  tblMemberships.associate = (models) => {
-    tblMemberships.hasMany(models.UserDetails, {
-      foreignKey: 'tblMembershipId',
+  Memberships.associate = (models) => {
+    Memberships.hasMany(models.UserDetails, {
+      foreignKey: 'MembershipId',
       as: 'users',
     });
   };
-  return tblMemberships;
+  return Memberships;
 };

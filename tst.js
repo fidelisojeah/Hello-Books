@@ -1,35 +1,12 @@
+/*
 const {
   Authors,
   Books,
-} = require('./server/models');
-
-
-const {
   UserDetails,
   UserLogin,
   tblMemberships,
 } = require('./server/models');
 
-tblMemberships.create({
-  membershipName: 'Blue',
-  maxBooks: 3,
-  maxExtends: 1,
-});
-tblMemberships.create({
-  membershipName: 'Silver',
-  maxBooks: 5,
-  maxExtends: 1,
-});
-tblMemberships.create({
-  membershipName: 'Gold',
-  maxBooks: 30,
-  maxExtends: 2,
-});
-tblMemberships.create({
-  membershipName: 'Black',
-  maxBooks: 300,
-  maxExtends: 4,
-});
 
 Authors.create({
   authorFirstName: 'Lurlene',

@@ -9,6 +9,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNulls: false,
       unique: true,
     },
+    bookQuantity: {
+      type: DataTypes.INTEGER,
+      allowNulls: false,
+      default: 1,
+    },
     description: {
       type: DataTypes.STRING,
       allowNulls: false,
@@ -20,14 +25,21 @@ module.exports = (sequelize, DataTypes) => {
       allowNulls: false,
       type: DataTypes.DATE,
     },
+    isActive: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+      allowNull: false,
+    },
   });
+  // relationship to other tables
   Books.associate = (models) => {
     Books.belongsToMany(models.Authors, {
       through: 'BookAuthors',
       foreignKey: 'bookId',
       otherKey: 'authorId',
     });
-    Books.belongsToMany(models.UserLogin, {
+    Books.belongsToMany(models.UserDetails, {
+      as: 'bookReview',
       through: 'BookReviews',
       foreignKey: 'bookId',
       otherKey: 'usernameId',

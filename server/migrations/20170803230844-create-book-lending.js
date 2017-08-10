@@ -7,26 +7,34 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      booksId: {
+      bookId: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
+        allowNull: false,
         references: {
           model: 'Books',
           key: 'id',
         },
       },
-      usernameId: {
+      userId: {
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
+        allowNull: false,
         references: {
-          model: 'UserLogins',
+          model: 'UserDetails',
           key: 'id',
         },
       },
       borrowDate: {
+        allowNull: false,
         type: Sequelize.DATE,
       },
       dueDate: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      actualReturnDate: {
+        default: null,
         type: Sequelize.DATE,
       },
       createdAt: {
