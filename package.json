@@ -7,7 +7,7 @@
     "lint": "markdownlint --config linters/.markdownlint.json",
     "pretest": "npm run --silent lint",
     "migrate": "sequelize db:migrate",
-    "test": "NODE_ENV=test mocha --compilers js:babel-register --recursive",
+    "test": "mocha --compilers js:babel-register --recursive",
     "start:dev": "nodemon ./bin/www --exec babel-node --presets es2015,stage-2",
     "migrate:test": "sequelize db:migrate --env test",
     "build": "babel lib -d dist --presets es2015,stage-2",
