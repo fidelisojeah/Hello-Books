@@ -10,6 +10,7 @@
     "migrate": "sequelize db:migrate",
     "test": "mocha --compilers js:babel-register --recursive",
     "start:dev": "nodemon ./bin/www --exec babel-node --presets es2015,stage-2",
+    "start": "node build/index.js",
     "build": "babel lib -d dist --presets es2015,stage-2",
     "serve": "node dist/index.js"
   },
