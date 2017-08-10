@@ -12,8 +12,5 @@ before_script:
   - psql -c 'create database dbhellobooks_test;' -U usrhello
   - NODE_ENV=test npm run migrate:test 
 
-script:
-  - npm test 
-
-  after_success:
+after_success:
   - CODECLIMATE_REPO_TOKEN=$CODECLIMATE_REPO_TOKEN codeclimate-test-reporter < coverage/lcov.info
