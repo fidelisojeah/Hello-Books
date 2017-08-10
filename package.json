@@ -40,11 +40,6 @@
     "eslint-plugin-react": "^7.1.0"
   },
   "dependencies": {
-    "markdownlint-cli": "^0.3.1",
-    "mocha": "^3.4.2",
-    "nodemon": "^1.11.0",
-    "prettier-eslint": "^6.4.2",
-    "supertest": "^3.0.0",
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-preset-env": "^1.6.0",
@@ -59,12 +54,18 @@
     "express": "^4.15.3",
     "jsonwebtoken": "^7.4.1",
     "lodash": "^4.17.4",
+    "markdownlint-cli": "^0.3.1",
+    "mocha": "^3.4.2",
     "morgan": "^1.8.2",
+    "nodemon": "^1.11.0",
     "passport": "^0.3.2",
     "passport-jwt": "^2.2.1",
     "pg": "^7.0.2",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.4.2"
+    "prettier-eslint": "^6.4.2",
+    "sequelize": "^4.4.2",
+    "sequelize-cli": "^2.8.0",
+    "supertest": "^3.0.0"
   },
   "main": "index.js",
   "directories": {
