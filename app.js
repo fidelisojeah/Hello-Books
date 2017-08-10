@@ -22,6 +22,9 @@ app.use(bodyParser.json({
 app.post('/api/v2/users/signin', UserController.login);
 app.post('/api/v2/users/signup', UserController.signupNew); // signup route with membership, single table
 
+app.post('/api/v3/users/signup', UserController.signupv3); // New login with email or uswername
+app.post('/api/v3/users/signin', UserController.loginNew); // New login with email or uswername
+
 app.delete('/api/v1/users', UserController.deleteAll);
 
 app.post('/api/v1/users/:userId/books', UserController.borrowBook);

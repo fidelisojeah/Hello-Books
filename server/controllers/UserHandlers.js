@@ -62,7 +62,64 @@ exports.signupNew = (req, res) => {
     });
   }
 };
-
+exports.signupv3 = (req, res) => {
+  const username = req.body.username || null;
+  const password = req.body.password || null;
+  const firstname = req.body.firstname || null;
+  const lastname = req.body.lastname || null;
+  const phone = req.body.phone || null;
+  const email = req.body.email || null;
+  if (username !== null &&
+    password !== null &&
+    firstname !== null &&
+    lastname !== null &&
+    email !== null
+  ) {
+    // this includes with membership update
+    // hash password as before
+    bcrypt
+      .hash(password, saltRounds, (err, hash) => {
+        // create User Login with Hashed password
+        UserDetails
+          .create({
+            // username is no longer case sensitive
+            username: username.toLowerCase(),
+            password: hash,
+            firstName: firstname,
+            lastName: lastname,
+            emailAddress: email.toLowerCase(),
+            phoneNumber: phone,
+          }).then((signup) => {
+            Memberships.findById(1) // default membership
+              .then((Mem) => {
+                signup
+                  .setMembership(Mem)
+                  .then((signupData) => {
+                    // set default membership
+                    res
+                      .status(201).json({
+                        status: 'User Created',
+                        data: {
+                          username: signupData.username,
+                          firstname: signupData.firstName,
+                          lastname: signupData.lastName,
+                          email: signupData.emailAddress,
+                          Membership: Mem.membershipName,
+                        },
+                      });
+                  })
+                  .catch(error => res.status(400).send(error));
+              })
+              .catch(error => res.status(400).send(error));
+          }).catch(error => res.status(400).send(error.errors));
+      });
+  } else {
+    res.status(200).json({
+      status: 'unsuccessful',
+      error: 'incomplete details',
+    });
+  }
+};
 exports.signup = (req, res) => {
   // check that values are in and valid
   if (req.body.username &&
@@ -217,7 +274,57 @@ exports.login = (req, res) => {
     });
   }
 };
-
+exports.loginNew = (req, res) => {
+  if (req.body.username && req.body.password) {
+    UserDetails.findOne({ // check that user exists in database
+      where: {
+        isActive: true,
+        $or: [{
+          username: req.body.username.toLowerCase(),
+        }, {
+          emailAddress: req.body.username.toLowerCase(),
+        }],
+      },
+    }).then((Username) => {
+      if (Username === null) { // no user of such exists
+        res.status(200).json({ // no user is a valid request
+          status: 'invalid user',
+          //  error: 'invalid user',
+        });
+      } else {
+        // check if password is valid
+        bcrypt.compare(req.body.password, Username.dataValues.password).then((pwd) => {
+          if (pwd === true) {
+            res.status(202).json({ // accepted
+              status: 'success',
+              data: Username,
+            });
+          } else {
+            res.status(200).json({ // no user/password is a valid request
+              status: 'invalid',
+              message: 'invalid user or password',
+            });
+          }
+        });
+      }
+    }).catch(error => res.status(400).send(error));
+  } else if (req.body.username) {
+    res.status(200).json({
+      status: 'invalid',
+      message: 'no Password Specified',
+    });
+  } else if (req.body.password) {
+    res.status(200).json({
+      status: 'invalid',
+      message: 'no Username/email Specified',
+    });
+  } else {
+    res.status(200).json({
+      status: 'invalid',
+      message: 'no Username and password',
+    });
+  }
+};
 exports.borrowBook = (req, res) => {
   const UserId = parseInt(req.params.userId, 10);
   const bookid = parseInt(req.body.bookId, 10);
@@ -355,7 +462,6 @@ exports.viewBorrowed = (req, res) => {
       message: 'UserId is invalid',
     });
   }
-
 };
 exports.returnBook = (req, res) => {
   const UserId = parseInt(req.params.userId, 10);
