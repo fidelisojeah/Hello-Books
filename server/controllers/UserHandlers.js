@@ -293,7 +293,7 @@ exports.loginNew = (req, res) => {
           emailAddress: req.body.username.toLowerCase(),
         }],
       },
-    }).then((Username) => {
+    }).then((Username) => { // change this value to something different
       if (Username === null) { // no user of such exists
         res.status(200).json({ // no user is a valid request
           status: 'invalid user',
@@ -306,7 +306,7 @@ exports.loginNew = (req, res) => {
             res.status(202).json({ // accepted
               status: 'success',
               data: {
-                Username: Username.username,
+                Username: Username.username, // change case
                 FirstName: Username.firstName,
                 Lastname: Username.lastName,
               },
@@ -339,7 +339,7 @@ exports.loginNew = (req, res) => {
 };
 exports.borrowBook = (req, res) => {
   const UserId = parseInt(req.params.userId, 10);
-  const bookid = parseInt(req.body.bookId, 10);
+  const bookid = parseInt(req.body.bookId, 10); // change case
 
   const borrowdate = req.body.borrowdate;
   const duedate = req.body.duedate;
@@ -406,8 +406,8 @@ exports.borrowBook = (req, res) => {
       .catch(error => res.status(400).send(error));
   }
 };
-exports.viewBorrowed = (req, res) => {
-  const UserId = parseInt(req.params.userId, 10);
+exports.viewBorrowed = (req, res) => { // more descriptive name
+  const UserId = parseInt(req.params.userId, 10); // case
   const isReturned = req.query.returned || null;
 
   // const viewBor =
