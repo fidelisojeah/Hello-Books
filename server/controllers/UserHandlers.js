@@ -324,7 +324,9 @@ exports.viewBorrowed = (req, res) => {
                   isActive: true,
                 },
               }],
-              attributes: ['borrowDate',
+              attributes: [
+                'id',
+                'borrowDate',
                 'dueDate',
                 'actualReturnDate',
               ],
@@ -359,4 +361,76 @@ exports.viewBorrowed = (req, res) => {
 
   }
   */
+};
+exports.returnBook = (req, res) => {
+  const UserId = parseInt(req.params.userId, 10);
+  const bookid = parseInt(req.body.bookId, 10);
+  const lendId = parseInt(req.body.lendId, 10);
+
+  if (isNaN(UserId) || isNaN(lendId)) {
+    res.status(200).json({
+      status: 'invalid',
+      message: 'no borrowed book specified',
+    });
+  } else {
+    BookLendings
+      .findbyId(lendId)
+      .then((foundLentBook) => {
+        if (foundLentBook) { // if lent book is found
+          if (foundLentBook.bookId === bookid &&
+            foundLentBook.userId === UserId) {
+            // if records match
+            Books
+              .findbyId(bookid)
+              .then((borrowedBook) => {
+                if (borrowedBook) {
+                  foundLentBook // update records
+                    .update({
+                      actualReturnDate: new Date(),
+                    })
+                    .then((lentUpdate) => {
+                      borrowedBook
+                        .update({
+                          bookQuantity: borrowedBook.bookQuantity + 1,
+                        })
+                        .then((bookReturn) => {
+                          res.status(200).json({
+                            status: 'Success',
+                            message: {
+                              BookName: borrowedBook.bookName,
+                              BookQuantity: bookReturn.bookQuantity,
+                              BorrowedDate: lentUpdate.borrowDate,
+                              DueDate: lentUpdate.dueDate,
+                              returnDate: lentUpdate.actualReturnDate,
+                              outStanding:
+                                (lentUpdate.actualReturnDate - lentUpdate.dueDate) < 0 ?
+                                0 : lentUpdate.actualReturnDate - lentUpdate.dueDate,
+                            },
+                          });
+                        })
+                        .catch(error => res.status(400).send(error));
+                    })
+                    .catch(error => res.status(400).send(error));
+                } else {
+                  res.status(200).json({
+                    status: 'invalid',
+                    message: 'Book not found',
+                  });
+                }
+              })
+              .catch(error => res.status(400).send(error));
+          } else {
+            res.status(200).json({
+              status: 'invalid',
+              message: 'User/Book not matching records',
+            });
+          }
+        } else {
+          res.status(200).json({
+            status: 'invalid UserId',
+            message: 'No records found',
+          });
+        }
+      }).catch(error => res.status(400).send(error));
+  }
 };
