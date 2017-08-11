@@ -31,9 +31,34 @@
 - DELETE
 
 ### Sample Routes
-- Signup - /api/v3/users/signup
-- Signin - /api/v3/users/signin
+- Signup         - POST          - /api/v3/users/signup
+- Signin         - POST          - /api/v3/users/signin
+- Add Author     - POST          - /api/v1/authors
+- Add Books      - POST          - /api/v1/books
+- View Books     - GET           - /api/v1/books
+- Modify Books   - PUT           - /api/v1/books/<bookId>
+- Borrow Books   - POST          - /api/v1/users/<userId>/books
 
+#### To Create New User
+```
+Request{
+        "username"      :       "jonedoe",
+        "password"      :       "jonedoepassword",
+        "email"         :       "jonedoe@example.com",
+        "firstname"     :       "Jone",
+        "lastname"      :       "Doe",
+}
+Response{
+        "status"        :       "User Created",
+        "data"          : {
+                            "username"      :       "jonedoe",
+                            "firstname"     :       "Jone",
+                            "lastname"      :       "Doe",
+                            "email"         :       "jonedoe@example.com",
+                            "Membership"    :       "Blue" 
+    }
+}
+```
 
 
 ## To contribute
