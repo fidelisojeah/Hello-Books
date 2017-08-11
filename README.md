@@ -39,7 +39,7 @@
 - Modify Books   - PUT           - /api/v1/books/<bookId>
 - Borrow Books   - POST          - /api/v1/users/<userId>/books
 
-#### To Create New User
+#### To Sign up
 ```
 Request{
         "username"      :       "jonedoe",
