@@ -187,7 +187,9 @@ exports.newBook = (req, res) => { // create a new book v1 (with one author)
           }
         });
       }
-    }).catch(error => res.status(400).send(error)); // if fails, return error
+    }).catch(error => res.status(400).json({
+      error: error.errors,
+    })); // if fails, return error
   } else {
     res.status(200).json({
       status: 'unsuccessful',
