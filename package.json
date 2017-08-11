@@ -9,6 +9,7 @@
     "migrate:test": "sequelize db:migrate --env test",
     "migrate": "sequelize db:migrate",
     "build": "babel server -d build",
+    "heroku-postinstall": "sequelize db:migrate:undo:all && sequelize db:migrate",
     "test": "mocha --compilers js:babel-register",
     "start:dev": "nodemon ./server/index.js --exec babel-node --presets es2015,stage-2",
     "start": "babel-node ./server/index.js"
