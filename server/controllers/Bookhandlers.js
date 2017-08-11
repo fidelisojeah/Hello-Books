@@ -1,16 +1,8 @@
-/*
-const {
-  Authors,
-  Books,
-} = require('../models');
-*/
-
 import {
   Authors,
   Books,
 } from '../models';
 
-// const jwt = require('jsonwebtoken');
 /**
  * Creates new Author and stores in table using Sequelize
  */
@@ -34,21 +26,21 @@ exports.deleteAllBooks = (req, res) => { // at end of tests
 };
 
 exports.newAuthor = (req, res) => {
-  const authorfirstname = req.body.authorFName || null;
-  const authorlastname = req.body.authorLName || null;
-  const DOB = req.body.authorDOB || null;
-  if (authorfirstname !== null && authorlastname !== null) {
+  const authorFirstname = req.body.authorFName || null;
+  const authorLastname = req.body.authorLName || null;
+  const dateOB = req.body.authorDOB || null;
+  if (authorFirstname !== null && authorLastname !== null) {
     // if parameters have been sent--
     Authors.create({
-      authorFirstName: authorfirstname,
-      authorLastName: authorlastname,
-      dateofBirth: DOB,
+      authorFirstName: authorFirstname,
+      authorLastName: authorLastname,
+      dateofBirth: dateOB,
     }).then(
-      (authorCreate) => { // if author creation was successful
+      (authorCreated) => { // if author creation was successful
         res.status(201).json({
           status: 'success',
           data: {
-            AuthorName: `${authorCreate.authorFirstName} ${authorCreate.authorLastName}`,
+            AuthorName: `${authorCreated.authorFirstName} ${authorCreated.authorLastName}`,
           },
         });
       }).catch( // if unsuccessful
@@ -65,7 +57,7 @@ exports.allBooks = (req, res) => {
     if (allBooks === null || allBooks.length === 0) { // if no book is found
       res.status(200).json({
         status: 'unsuccessful',
-        message: 'No Books Fam',
+        message: 'No Books',
       });
     } else {
       res.status(202).json({
@@ -75,34 +67,34 @@ exports.allBooks = (req, res) => {
     }
   }).catch(error => res.status(400).send(error)); // catch error from findall
 };
-exports.bookQuant = (req, res) => { // modifybook quantity
-  const bkID = parseInt(req.body.bookId, 10);
-  const bklvl = parseInt(req.body.Quantlvl, 10);
-  if (!isNaN(bkID) || !isNaN(bklvl)) { // has to be a number really
+exports.updateBookQuantity = (req, res) => { // modifybook quantity
+  const bookId = parseInt(req.body.bookId, 10);
+  const bookQuantity = parseInt(req.body.Quantlvl, 10);
+  if (!isNaN(bookId) || !isNaN(bookQuantity)) { // has to be a number really
     Books.findOne({ // search for book with id
       where: {
-        id: bkID,
+        id: bookId,
       },
-    }).then((BookDet) => {
-      if (BookDet === null) { // if a book is not found
+    }).then((bookDetails) => {
+      if (bookDetails === null) { // if a book is not found
         res.status(200).json({
           status: 'unsuccessful',
-          message: 'This book don\'t exist fam',
+          message: 'Book extint',
         });
       } else { // if addQuant is set then add
-        BookDet.update({
-          bookQuantity: (BookDet.bookQuantity + bklvl) < 1 ? 1 : (BookDet.bookQuantity + bklvl),
+        bookDetails.update({
+          bookQuantity: (bookDetails.bookQuantity + bookQuantity) < 1 ? 1 : (bookDetails.bookQuantity + bookQuantity),
           // Never less than 1
         }).then(
-          addBk => res.status(200).json({
-            status: addBk,
+          addBook => res.status(200).json({
+            status: addBook,
           })).catch(error => res.status(400).send(error));
       }
     });
   } else {
     res.status(400).json({
       status: 'none',
-      message: 'That\'s not even a number fam!!!',
+      message: 'That\'s not a number',
     });
   }
 };
@@ -160,6 +152,7 @@ exports.newBook = (req, res) => { // create a new book v1 (with one author)
   const ISBN = req.body.bookISBN || null;
   const desc = req.body.desc || null;
   const authorId = req.body.authorId || 1; // author or anonymous
+
   if (bookname !== null && ISBN !== null && desc !== null && authorId !== null) {
     Books.create({ // create book
       bookName: bookname,

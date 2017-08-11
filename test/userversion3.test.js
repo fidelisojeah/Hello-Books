@@ -2,7 +2,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 // import supertest from 'supertest';
 
-import app from '../app';
+import app from '../server';
 
 
 // const app = require('../app');

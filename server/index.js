@@ -45,7 +45,7 @@ app.get('/', (req, res) => res.status(202).send({
 }));
 app.post('/api/v1/books', BookController.newBook);
 
-app.post('/api/v1/books/mod', BookController.bookQuant);
+app.post('/api/v1/books/mod', BookController.updateBookQuantity);
 
 app.get('/api/v1/books', BookController.allBooks);
 
