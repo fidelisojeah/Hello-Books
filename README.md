@@ -15,6 +15,7 @@
 - Clone this repository
 - Create database Schema (dbhellobooks)
 - Create config.json file
+- Run migrations on Sequelize
 
 ### For Tests
 - create schema (dbhellobooks_test)
