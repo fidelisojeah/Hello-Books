@@ -75,7 +75,7 @@ exports.allBooks = (req, res) => {
     }
   }).catch(error => res.status(400).send(error)); // catch error from findall
 };
-exports.bookQuant = (req, res) => {
+exports.bookQuant = (req, res) => { // modifybook quantity
   const bkID = parseInt(req.body.bookId, 10);
   const bklvl = parseInt(req.body.Quantlvl, 10);
   if (!isNaN(bkID) || !isNaN(bklvl)) { // has to be a number really
@@ -168,7 +168,7 @@ exports.newBook = (req, res) => { // create a new book v1 (with one author)
       bookQuantity: bookQuant,
       bookImage: bookImg,
       publishYear: pubYear,
-    }).then((bookID) => {
+    }).then((bookID) => { // change name
       if (bookID === null) {
         res.status(400).json({
           status: 'Unable to create',

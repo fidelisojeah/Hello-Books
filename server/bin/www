@@ -1,5 +1,5 @@
 const http = require('http');
-const app = require('../app');
+const app = require('../index');
 // const secret = require('../server/config/appsecret');
 
 const port = parseInt(process.env.PORT,10)|| 8000;
