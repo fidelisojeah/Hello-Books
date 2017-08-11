@@ -38,7 +38,10 @@
     "eslint-config-airbnb-base": "^11.3.1",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-react": "^7.1.0"
+    "eslint-plugin-react": "^7.1.0",
+    "nodemon": "^1.11.0",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.2.1"
   },
   "dependencies": {
     "babel-cli": "^6.24.1",
@@ -58,9 +61,6 @@
     "markdownlint-cli": "^0.3.1",
     "mocha": "^3.4.2",
     "morgan": "^1.8.2",
-    "nodemon": "^1.11.0",
-    "passport": "^0.3.2",
-    "passport-jwt": "^2.2.1",
     "pg": "^7.0.2",
     "pg-hstore": "^2.3.2",
     "prettier-eslint": "^6.4.2",
