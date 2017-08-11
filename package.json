@@ -9,7 +9,7 @@
     "migrate:test": "sequelize db:migrate --env test",
     "migrate": "sequelize db:migrate",
     "build": "babel server -d build",
-    "heroku-postinstall": "sequelize db:migrate:undo:all --env=production && sequelize db:migrate --env=production",
+    "heroku-postinstall": "node_modules/.bin/sequelize db:migrate:undo:all --env=production && node_modules/.bin/sequelize db:migrate --env=production",
     "test": "mocha --compilers js:babel-register",
     "start:dev": "nodemon ./server/index.js --exec babel-node --presets es2015,stage-2",
     "start": "babel-node ./server/index.js"
