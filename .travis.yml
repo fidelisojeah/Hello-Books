@@ -16,7 +16,6 @@ before_script:
 
 env:
   - NODE_ENV=test
-  - URL_TEST=postgres://postgres@localhost/dbhellobooks_test
 
 after_success:
   - CODECLIMATE_REPO_TOKEN=$CODECLIMATE_REPO_TOKEN codeclimate-test-reporter < coverage/lcov.info

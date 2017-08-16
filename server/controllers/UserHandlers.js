@@ -35,8 +35,8 @@ exports.signupNew = (req, res) => {
     bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
       // create User Login with Hashed password
       UserDetails.create({
-        username: req.body.username,
         password: hash,
+        username: req.body.username,
         firstName: req.body.firstname,
         lastName: req.body.lastname,
         emailAddress: req.body.email.toLowerCase(),
