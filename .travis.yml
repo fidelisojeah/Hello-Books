@@ -11,6 +11,8 @@ before_script:
   - psql -c 'drop database if exists dbhellobooks_test;' -U postgres
   - psql -c 'create database dbhellobooks_test;' -U postgres
   - psql -c "create user usrhello with login password 'HelloBooksPassword$';" -U postgres
+  - sequqlize db:migrate:undo:all
+  - sequqlize db:migrate
 
 env:
   - NODE_ENV=test
