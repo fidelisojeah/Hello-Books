@@ -4,10 +4,9 @@ import {
   UserDetails,
   Memberships,
 } from '../models';
-import app from '../index';
 
 // email validation here
-const emailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+const emailRegex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
 const validateEmail = emailAddress =>
   emailRegex.test(emailAddress); // returns true or false
 
@@ -108,6 +107,12 @@ class userLoginDetails {
           }
         });
     }
+  }
+  static activateUser(req, res) {
+
+  }
+  static signin(req, res) {
+
   }
 }
 export default userLoginDetails;

@@ -2,9 +2,11 @@ import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import http from 'http';
+/*
 import jwt from 'jsonwebtoken';
 import UserController from './controllers/UserHandlers';
 import BookController from './controllers/Bookhandlers';
+*/
 import userLoginDetails from './controllers/user-controller-v4';
 
 const app = express();
@@ -29,7 +31,7 @@ app.post('/api/v4/users/signup', userLoginDetails.signup);
 */
 /*
   app.post('/api/v2/users/signin', UserController.login);
-  app.post('/api/v2/users/signup', UserController.signupNew); 
+  app.post('/api/v2/users/signup', UserController.signupNew);
   // signup route with membership, single table
 
   app.post('/api/v3/users/signup', UserController.signupv3); // New login with email or uswername
