@@ -14,11 +14,11 @@ module.exports = {
           key: 'id',
         },
       },
-      firstName: {
+      firstname: {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      lastName: {
+      lastname: {
         allowNull: false,
         type: Sequelize.STRING,
       },
@@ -27,12 +27,17 @@ module.exports = {
         defaultValue: true,
         allowNull: false,
       },
-      emailAddress: {
+      isActivated: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
+      },
+      emailaddress: {
         allowNull: false,
         unique: true,
         type: Sequelize.STRING,
       },
-      phoneNumber: {
+      phonenumber: {
         type: Sequelize.STRING,
       },
       createdAt: {
