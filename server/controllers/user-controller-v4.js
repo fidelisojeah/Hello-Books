@@ -61,10 +61,13 @@ class userLoginDetails {
       });
     } else {
       bcrypt
-        .hash(password, 8, (err, hash) => {
+        .hash(password, 8)
+        .then((hash) => {
           // using hashed password (hash)
-          if (err) {
-            res.status(400).send(err);
+          if (!hash) {
+            res.status(400).json({
+              status: 'unsuccessful',
+            });
           } else {
             UserDetails
               .create({
@@ -102,10 +105,10 @@ class userLoginDetails {
               )
               .catch(error => res.status(400).json({
                 status: 'unsuccessful',
-                errors: error.errors,
+                message: error.errors[0].message,
               }));
           }
-        });
+        }).catch(error => res.status(400).send(error));
     }
   }
   static activateUser(req, res) {
