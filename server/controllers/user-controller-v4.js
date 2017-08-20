@@ -11,7 +11,7 @@ const validateEmail = emailAddress =>
   emailRegex.test(emailAddress); // returns true or false
 
 class userLoginDetails {
-
+  // validates signup info
   static validateSignup(username,
     password,
     lastname,
@@ -91,15 +91,17 @@ class userLoginDetails {
                     userId: signupData.dataValues.id,
                     email: signupData.dataValues.emailaddress,
                   };
-                  const signupToken = jwt.sign(tokenInfo,
+                  jwt.sign(tokenInfo,
                     req.app.get('JsonSecret'), {
-                      expiresIn: 1440 * 60, // 24 hours
-                    }); // for verification things
-                  res.status(202).json({
-                    status: 'success',
-                    message: 'User account created',
-                    token: signupToken, // would be part of mail
-                  });
+                      expiresIn: '24h', // 24 hours
+                    }, (signupToken) => {
+                      // for verification things
+                      res.status(202).json({
+                        status: 'success',
+                        message: 'User account created',
+                        token: signupToken, // would be part of mail
+                      });
+                    });
                 })
                 .catch(error => res.status(400).send(error)),
               )
@@ -112,7 +114,8 @@ class userLoginDetails {
     }
   }
   static activateUser(req, res) {
-
+    const activationToken = req.query.key || null;
+    const userName = req.query.id || null;
   }
   static signin(req, res) {
 
