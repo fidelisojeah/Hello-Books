@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     isActivated: {
       type: DataTypes.BOOLEAN,
-      defaultValue: true,
+      defaultValue: false,
       allowNull: false,
     },
     phonenumber: DataTypes.STRING,

@@ -23,6 +23,7 @@ app.use(bodyParser.json({
 }));
 
 app.post('/api/v4/users/signup', userLoginDetails.signup);
+app.get('/api/v4/users/verify', userLoginDetails.activateUser);
 
 
 app.delete('/api/v2/users', UserController.clearTable);

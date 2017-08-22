@@ -41,6 +41,15 @@ class userLoginDetails {
     }
     return 0;
   }
+  static validateActivationToken(verifiedToken, userName) {
+    return new Promise((resolve, reject) => {
+      if (verifiedToken.username !== userName) { // if username is invalid
+        reject('Invalid Token');
+      } else {
+        resolve(verifiedToken.userId); // return the user ID from the token
+      }
+    });
+  }
   // for sign up
   static signup(req, res) {
     // declare variables
@@ -94,13 +103,17 @@ class userLoginDetails {
                   jwt.sign(tokenInfo,
                     req.app.get('JsonSecret'), {
                       expiresIn: '24h', // 24 hours
-                    }, (signupToken) => {
-                      // for verification things
-                      res.status(202).json({
-                        status: 'success',
-                        message: 'User account created',
-                        token: signupToken, // would be part of mail
-                      });
+                    }, (error, signupToken) => {
+                      if (error) {
+                        res.status(400).send(error);
+                      } else if (signupToken) {
+                        // for verification things
+                        res.status(202).json({
+                          status: 'success',
+                          message: 'User account created',
+                          token: signupToken, // would be part of mail
+                        });
+                      }
                     });
                 })
                 .catch(error => res.status(400).send(error)),
@@ -116,6 +129,80 @@ class userLoginDetails {
   static activateUser(req, res) {
     const activationToken = req.query.key || null;
     const userName = req.query.id || null;
+
+    if (activationToken !== null &&
+      userName !== null
+    ) {
+      jwt
+        .verify(activationToken,
+          req.app.get('JsonSecret'),
+          (error, verifiedToken) => {
+            if (error) {
+              res.status(403).send(error);
+            } else if (verifiedToken) {
+              userLoginDetails.validateActivationToken(verifiedToken, userName)
+                .then(userID =>
+                  UserDetails.findOne({
+                    where: {
+                      id: userID,
+                      isActive: true,
+                    },
+                  }),
+                )
+                .then((actUserDetails) => {
+                  if (actUserDetails === null) {
+                    res.status(403).json({
+                      status: 'unsuccessful',
+                      message: 'User not found',
+                    });
+                  } else if (actUserDetails.dataValues.isActivated === true) {
+                    res.status(200).json({
+                      status: 'none',
+                      message: 'User already activated',
+                    });
+                  } else { // if user has not been activated
+                    actUserDetails
+                      .update({
+                        isActivated: true,
+                      })
+                      .then(() => {
+                        const tokenInfo = {
+                          username: actUserDetails.dataValues.username,
+                          userId: actUserDetails.dataValues.id,
+                          userRole: 'user',
+                        };
+                        jwt.sign(tokenInfo,
+                          req.app.get('JsonSecret'), {
+                            expiresIn: '24h', // 24 hours
+                          },
+                          (tokenError, signIntoken) => {
+                            if (tokenError) {
+                              res.status(400).send(tokenError);
+                            } else if (signIntoken) {
+                              // for signin after activation
+                              res.status(202).json({
+                                status: 'success',
+                                message: 'User Activated',
+                                token: signIntoken,
+                              });
+                            } else {
+                              res.status(405).json({
+                                message: 'some error',
+                              });
+                            }
+                          });
+                      }).catch(tokenError => res.status(400).send(tokenError));
+                  }
+                })
+                .catch(errr => res.status(403).send(errr));
+            }
+          });
+    } else {
+      res.status(400).json({
+        status: 'unsuccessful',
+        message: 'Link Inavlid',
+      });
+    }
   }
   static signin(req, res) {
 
