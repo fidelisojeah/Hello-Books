@@ -9,8 +9,11 @@ import http from 'http';
 import UserController from './controllers/UserHandlers';
 import BookController from './controllers/Bookhandlers';
 import userLoginDetails from './controllers/user-controller-v4';
+import checkSession from './middleware/session';
 
 const app = express();
+// load environmental variables
+require('dotenv').config();
 
 const jsonSecretKey = process.env.JSONWEB_SECRET;
 const cookieSecretKey = process.env.COOKIE_SECRET_KEY;
@@ -36,16 +39,18 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    expires: 600000,
+    expires: 300000,
   },
 }));
 
 app.post('/api/v4/users/signup', userLoginDetails.signup);
 app.get('/api/v4/users/verify', userLoginDetails.activateUser);
 
+app.get('/test', checkSession.test);
+app.get('/test/ver', checkSession.test2);
+app.get('/test/ma', checkSession.checkLogin);
 app.delete('/api/v2/users', UserController.clearTable);
 app.delete('/api/v1/books', BookController.deleteAllBooks);
-
 
 app.get('/', (req, res) => res.status(202).send({
   message: 'Welcome to Hello-Books',
