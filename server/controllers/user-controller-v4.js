@@ -155,11 +155,6 @@ class userLoginDetails {
                       status: 'unsuccessful',
                       message: 'User not found',
                     });
-                  } else if (actUserDetails.dataValues.isActivated === true) {
-                    res.status(200).json({
-                      status: 'none',
-                      message: 'User already activated',
-                    });
                   } else { // if user has not been activated
                     actUserDetails
                       .update({
@@ -169,11 +164,14 @@ class userLoginDetails {
                         const tokenInfo = {
                           username: actUserDetails.dataValues.username,
                           userId: actUserDetails.dataValues.id,
+                          firstName: actUserDetails.dataValues.firstname,
+                          lastName: actUserDetails.dataValues.lastname,
+                          email: actUserDetails.dataValues.emailaddress,
                           userRole: 'user',
                         };
                         jwt.sign(tokenInfo,
                           req.app.get('JsonSecret'), {
-                            expiresIn: '24h', // 24 hours
+                            expiresIn: '12h', // 24 hours
                           },
                           (tokenError, signIntoken) => {
                             if (tokenError) {
@@ -182,7 +180,8 @@ class userLoginDetails {
                               // for signin after activation
                               res.status(202).json({
                                 status: 'success',
-                                message: 'User Activated',
+                                message:
+                                  (actUserDetails.dataValues.isActivated === true) ? 'User already activated' : 'User Activated',
                                 token: signIntoken,
                               });
                             } else {

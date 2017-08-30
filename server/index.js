@@ -1,6 +1,8 @@
 import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
 import http from 'http';
 /*
 import jwt from 'jsonwebtoken';
@@ -21,6 +23,10 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json({
   type: 'application/json',
 }));
+// for cookies
+app.use(cookieParser());
+
+app.use(session({}));
 
 app.post('/api/v4/users/signup', userLoginDetails.signup);
 app.get('/api/v4/users/verify', userLoginDetails.activateUser);
