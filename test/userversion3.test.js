@@ -10,7 +10,6 @@ import app from '../server';
 // const chaiHttp = require('chai-http');
 const should = chai.should();
 
-
 chai.use(chaiHttp);
 
 describe('POST /api/v3/users/signup version 3', () => {
