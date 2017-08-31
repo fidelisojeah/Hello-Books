@@ -18,6 +18,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      authString: {
+        type: Sequelize.STRING,
+      },
       lastname: {
         allowNull: false,
         type: Sequelize.STRING,

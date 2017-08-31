@@ -22,6 +22,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    authString: {
+      type: DataTypes.STRING,
+    },
     isActivated: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
