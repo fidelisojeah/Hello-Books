@@ -27,6 +27,8 @@ class jwTokens {
               resolve(encodedToken);
             } else if (tokenError) {
               reject(tokenError);
+            } else {
+              reject('error');
             }
           });
     });
@@ -40,8 +42,10 @@ class jwTokens {
           (error, verifiedToken) => {
             if (error) {
               reject(error);
-            } else {
+            } else if (verifiedToken) {
               resolve(verifiedToken);
+            } else {
+              reject('error');
             }
           });
     });

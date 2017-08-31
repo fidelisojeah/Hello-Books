@@ -81,7 +81,11 @@ class userLoginDetails {
       if (verifiedToken.username !== userName) { // if username is invalid
         reject('Invalid Token');
       } else {
-        resolve(verifiedToken.userId); // return the user ID from the token
+        const resolvedToken = {
+          userId: verifiedToken.userId,
+          activationString: verifiedToken.authString,
+        };
+        resolve(resolvedToken); // return the user ID from the token
       }
     });
   }
@@ -184,6 +188,28 @@ class userLoginDetails {
     if (activationToken !== null &&
       userName !== null
     ) {
+      jwTokens // verify user token
+        .verifyToken(req, activationToken)
+        .then((verifiedToken) => { // if token was successfully verified
+          userLoginDetails
+            .validateActivationToken(verifiedToken, userName)
+            .then((userToken) => { // if token is valid
+              UserDetails
+                .findOne({
+                  where: {
+                    id: userToken.userId,
+                    isActive: true,
+                  },
+                })
+                .then(
+
+                ) // if user is not found
+                .catch(error => res.status(403).send(error));
+            })
+            .catch();
+        }) // if token cannot be verified
+        .catch(error => res.status(403).send(error));
+
       jwt
         .verify(activationToken,
           req.app.get('JsonSecret'),
@@ -192,10 +218,10 @@ class userLoginDetails {
               res.status(403).send(error);
             } else if (verifiedToken) {
               userLoginDetails.validateActivationToken(verifiedToken, userName)
-                .then(userID =>
+                .then(userToken =>
                   UserDetails.findOne({
                     where: {
-                      id: userID,
+                      id: userToken.userId,
                       isActive: true,
                     },
                   }),
