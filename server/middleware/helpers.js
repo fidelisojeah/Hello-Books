@@ -20,6 +20,10 @@ class jwTokens {
           });
     });
   }
-  static verifyToken
+  static verifyToken() {
+    return new Promise((resolve, reject) => {
+
+    });
+  }
 }
 export default jwTokens;
