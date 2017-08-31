@@ -46,17 +46,26 @@ class checkSession {
       // reject('Not Logged in');
     } else {
       // verify token in cookie is still valid
-      jwt.verify(userInfo,
-        req.app.get('JsonSecret'),
-        (error, verifiedToken) => {
-          if (error) {
-            res.status(403).send(error);
-          } else if (verifiedToken) {
-            res.status(200).json({
-              token: verifiedToken,
-            });
-          }
-        });
+      jwt
+        .verify(userInfo,
+          req.app.get('JsonSecret'),
+          (error, verifiedToken) => {
+            if (error) {
+              if (error.name === 'TokenExpiredError') {
+                // if token expired, generate new one
+                jwt
+                  .sign(
+
+                  );
+              } else {
+                res.status(403).send(error);
+              }
+            } else if (verifiedToken) {
+              res.status(200).json({
+                token: verifiedToken,
+              });
+            }
+          });
     }
     //   });
   }
