@@ -1,19 +1,8 @@
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 
-// random 24 character string
-const randomString = new Promise((resolve, reject) => {
-  crypto.randomBytes(24, (error, buf) => { // generate random bytes
-    if (error) {
-      reject(error);
-    } else if (buf) {
-      resolve(buf.toString('hex'));
-    }
-  });
-});
-
 class jwTokens {
-
+  // random 24 character string
   static randomString() {
     return new Promise((resolve, reject) => {
       crypto.randomBytes(24, (error, buf) => { // generate random bytes
@@ -42,9 +31,19 @@ class jwTokens {
           });
     });
   }
-  static verifyToken() {
+  // to verify token
+  static verifyToken(req, userToken) {
     return new Promise((resolve, reject) => {
-      jwt.verify();
+      jwt
+        .verify(userToken,
+          req.app.get('JsonSecret'),
+          (error, verifiedToken) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(verifiedToken);
+            }
+          });
     });
   }
 }

@@ -150,7 +150,8 @@ class userLoginDetails {
                                   message: 'User account created Token unsuccessful',
                                   errorMsg: error,
                                 }));
-                          }).catch(error => res.status(400).send(error)); // set membership unsuccessful
+                          }).catch(error => res.status(400).send(error));
+                        // set membership unsuccessful
                       }).catch(error => res.status(400).json({
                         status: 'unsuccessful',
                         message: error.errors[0].message,
