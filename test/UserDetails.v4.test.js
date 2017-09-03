@@ -249,6 +249,27 @@ describe('POST /api/v4/users/signup Version 4', () => {
               done();
             });
         });
+        it('Should respond with code 201 User Created', (done) => {
+          chai.request(app)
+            .post('/api/v4/users/signup')
+            .send({
+              password: 'unactivatedUser$',
+              firstname: 'Unactivated',
+              username: 'UnactivatedUser',
+              lastname: 'User',
+              email: 'unactivated@user.com.ng',
+            })
+            .end((err, res) => {
+              should.not.exist(err);
+              res.status.should.equal(201);
+              res.type.should.equal('application/json');
+              res.body.status.should.eql('Success');
+              res.body.message.should.eql('User account created');
+              res.body.membership.should.eql('Blue');
+              token2 = res.body.token;
+              done();
+            });
+        });
       });
       describe('When Information provided is not unique', () => {
         it('Should respond with a 400 email must be unique', (done) => {
@@ -526,7 +547,34 @@ describe('POST /api/v4/users/signin Version 4', () => {
       });
     });
     describe('When valid details are entered', () => {
-      it('Should return 202 Success with details', (done) => {});
+      describe('When user has not been activated yet', () => {
+        it('Should return 401 User not activated', (done) => {
+          chai.request(app)
+            .post('/api/v4/users/signin')
+            .send({
+              password: 'unactivatedUser$',
+              username: 'UnactivatedUser',
+            })
+            .end((err, res) => {
+              should.exist(err);
+              res.status.should.equal(401);
+              res.type.should.equal('application/json');
+              res.body.status.should.eql('Unsuccessful');
+              res.body.message.should.eql('Email Address not Verified');
+              done();
+            });
+        });
+      });
+      /*
+        describe('When user has been activated', () => {
+          describe('When an Email is used to signin', () => {
+            it('Should return 202 Success with details', (done) => {});
+          });
+          describe('When a username is used to signin', () => {
+            it('Should return 202 Success with details', (done) => {});
+          });
+        });
+        */
     });
   });
   describe('When attempting to signin but already signed in', () => {});
