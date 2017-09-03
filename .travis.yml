@@ -18,5 +18,6 @@ env:
   - NODE_ENV=test
 
 after_success:
+  - npm run build
   - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- --compilers js:babel-register -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
   - codeclimate-test-reporter < coverage/lcov.info
