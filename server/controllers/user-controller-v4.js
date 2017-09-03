@@ -202,13 +202,13 @@ class userLoginDetails {
                   },
                 })
                 .then((activationUser) => {
-                  if (activationUser === null) {
+                  if (activationUser !== null) {
                     if (activationUser.isActivated === true) {
                       res.status(200).json({
                         status: 'none',
                         message: 'User already activated',
                       });
-                    } else if (activationUser.authString === userToken.authString) {
+                    } else if (activationUser.authString === userToken.activationString) {
                       // if authstring is valid
                       jwTokens
                         .randomString()
@@ -236,89 +236,30 @@ class userLoginDetails {
                           message: 'Server error try again',
                         }));
                     } else if (
-                      activationUser.authString !== userToken.authString
+                      activationUser.authString !== userToken.activationString
                     ) {
                       res.status(403).json({
                         status: 'unsuccessful',
                         message: 'Used token',
+                        tokenstr: userToken.activationString,
+                        dbasestr: activationUser.authString,
                       });
                     }
                   } else { // if user is not found
                     res.status(404).json({
-                      status: 'unsuccessful',
+                      status: 'Unsuccessful',
                       message: 'Invalid User',
                     });
                   }
                 }) // if user is not found
                 .catch(error => res.status(403).send(error));
             })
-            .catch();
+            .catch(error => res.status(401).json({
+              status: 'Unsuccessful',
+              message: error,
+            }));
         }) // if token cannot be verified
         .catch(error => res.status(403).send(error));
-
-      jwt
-        .verify(activationToken,
-          req.app.get('JsonSecret'),
-          (error, verifiedToken) => {
-            if (error) {
-              res.status(403).send(error);
-            } else if (verifiedToken) {
-              userLoginDetails.validateActivationToken(verifiedToken, userName)
-                .then(userToken =>
-                  UserDetails.findOne({
-                    where: {
-                      id: userToken.userId,
-                      isActive: true,
-                    },
-                  }),
-                )
-                .then((actUserDetails) => {
-                  if (actUserDetails === null) {
-                    res.status(403).json({
-                      status: 'unsuccessful',
-                      message: 'User not found',
-                    });
-                  } else { // if user has not been activated
-                    actUserDetails
-                      .update({
-                        isActivated: true,
-                      })
-                      .then(() => {
-                        const tokenInfo = {
-                          username: actUserDetails.dataValues.username,
-                          userId: actUserDetails.dataValues.id,
-                          firstName: actUserDetails.dataValues.firstname,
-                          lastName: actUserDetails.dataValues.lastname,
-                          email: actUserDetails.dataValues.emailaddress,
-                          userRole: 'user',
-                        };
-                        jwt.sign(tokenInfo,
-                          req.app.get('JsonSecret'), {
-                            expiresIn: '12h', // 24 hours
-                          },
-                          (tokenError, signIntoken) => {
-                            if (tokenError) {
-                              res.status(400).send(tokenError);
-                            } else if (signIntoken) {
-                              // for signin after activation
-                              res.status(202).json({
-                                status: 'success',
-                                message:
-                                  (actUserDetails.dataValues.isActivated === true) ? 'User already activated' : 'User Activated',
-                                token: signIntoken,
-                              });
-                            } else {
-                              res.status(405).json({
-                                message: 'some error',
-                              });
-                            }
-                          });
-                      }).catch(tokenError => res.status(400).send(tokenError));
-                  }
-                })
-                .catch(errr => res.status(403).send(errr));
-            }
-          });
     } else {
       res.status(400).json({
         status: 'unsuccessful',

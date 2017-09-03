@@ -46,10 +46,10 @@ app.use(session({
 app.post('/api/v4/users/signup', userLoginDetails.signup);
 app.get('/api/v4/users/verify', userLoginDetails.activateUser);
 
-app.get('/test', userLoginDetails.tst);
+// app.get('/test', userLoginDetails.tst);
 
-app.get('/test/ver', checkSession.test2);
-app.get('/test/ma', checkSession.checkLogin);
+// app.get('/test/ver', checkSession.test2);
+// app.get('/test/ma', checkSession.checkLogin);
 app.delete('/api/v2/users', UserController.clearTable);
 app.delete('/api/v1/books', BookController.deleteAllBooks);
 
