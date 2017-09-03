@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import {
   UserDetails,
   Memberships,
@@ -205,7 +204,7 @@ class userLoginDetails {
                   if (activationUser !== null) {
                     if (activationUser.isActivated === true) {
                       res.status(200).json({
-                        status: 'none',
+                        status: 'None',
                         message: 'User already activated',
                       });
                     } else if (activationUser.authString === userToken.activationString) {
@@ -221,25 +220,25 @@ class userLoginDetails {
                             })
                             .then(() =>
                               res.status(202).json({
-                                status: 'success',
+                                status: 'Success',
                                 message: 'User Activated',
                               }))
                             .catch(error =>
                               res.status(501).json({
-                                status: 'unsuccessful',
+                                status: 'Unsuccessful',
                                 message: error,
                               }));
                         })
                         .catch(() => res.status(501).json({
                           // error creating a random string
-                          status: 'unsuccessful',
+                          status: 'Unsuccessful',
                           message: 'Server error try again',
                         }));
                     } else if (
                       activationUser.authString !== userToken.activationString
                     ) {
                       res.status(403).json({
-                        status: 'unsuccessful',
+                        status: 'Unsuccessful',
                         message: 'Used token',
                         tokenstr: userToken.activationString,
                         dbasestr: activationUser.authString,
@@ -262,7 +261,7 @@ class userLoginDetails {
         .catch(error => res.status(403).send(error));
     } else {
       res.status(400).json({
-        status: 'unsuccessful',
+        status: 'Unsuccessful',
         message: 'Link Inavlid',
       });
     }
