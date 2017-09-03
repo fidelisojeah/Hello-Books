@@ -457,3 +457,77 @@ describe('GET /api/v4/users/verify', () => {
     });
   });
 });
+describe('POST /api/v4/users/signin Version 4', () => {
+  describe('When attempting to signin and not signedin', () => {
+    describe('When incomplete details are entered', () => {
+      it('Should respond with a 401 no username supplied', (done) => {
+        chai.request(app)
+          .post('api/v4/users/signin')
+          .send({
+            password: 'TestUser123$',
+          })
+          .end((err, res) => {
+            should.exist(err);
+            res.status.should.equal(401);
+            res.type.should.equal('application/json');
+            res.body.status.should.eql('Unsuccessful');
+            res.body.message.should.eql('No username supplied');
+            done();
+          });
+      });
+      it('Should return a 401 no password supplied', (done) => {
+        chai.request(app)
+          .post('api/v4/users/signin')
+          .send({
+            username: 'Testuser',
+          })
+          .end((err, res) => {
+            should.exist(err);
+            res.status.should.equal(401);
+            res.type.should.equal('application/json');
+            res.body.status.should.eql('Unsuccessful');
+            res.body.message.should.eql('No Password supplied');
+            done();
+          });
+      });
+    });
+    describe('When wrong details are entered', () => {
+      it('Should respond with a 401 username invalid', (done) => {
+        chai.request(app)
+          .post('api/v4/users/signin')
+          .send({
+            password: 'TestUser123$',
+            username: 'wrongusername',
+          })
+          .end((err, res) => {
+            should.exist(err);
+            res.status.should.equal(401);
+            res.type.should.equal('application/json');
+            res.body.status.should.eql('Unsuccessful');
+            res.body.message.should.eql('Invalid Username');
+            done();
+          });
+      });
+      it('Should respond with a 401 invalid username/password', (done) => {
+        chai.request(app)
+          .post('api/v4/users/signin')
+          .send({
+            password: 'Wrongpassword$',
+            username: 'Testuser',
+          })
+          .end((err, res) => {
+            should.exist(err);
+            res.status.should.equal(401);
+            res.type.should.equal('application/json');
+            res.body.status.should.eql('Unsuccessful');
+            res.body.message.should.eql('Invalid Username or password');
+            done();
+          });
+      });
+    });
+    describe('When valid details are entered', () => {
+      it('Should return 202 Success with details', (done) => {});
+    });
+  });
+  describe('When attempting to signin but already signed in', () => {});
+});
