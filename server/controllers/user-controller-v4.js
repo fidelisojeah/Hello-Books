@@ -77,7 +77,8 @@ class userLoginDetails {
   }
   static validateActivationToken(verifiedToken, userName) {
     return new Promise((resolve, reject) => {
-      if (verifiedToken.username.toLowerCase() !== userName.toLowerCase()) { // if username is invalid
+      if (verifiedToken.username.toLowerCase() !== userName.toLowerCase()) {
+        // if username is invalid
         reject('Invalid Token');
       } else {
         const resolvedToken = {
