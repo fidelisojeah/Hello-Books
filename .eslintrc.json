@@ -9,9 +9,5 @@
         "react",
         "jsx-a11y",
         "import"
-    ],
-    "predef": [
-        "describe",
-        "it"
     ]
 }
