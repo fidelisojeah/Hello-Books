@@ -201,9 +201,55 @@ class userLoginDetails {
                     isActive: true,
                   },
                 })
-                .then(
-
-                ) // if user is not found
+                .then((activationUser) => {
+                  if (activationUser === null) {
+                    if (activationUser.isActivated === true) {
+                      res.status(200).json({
+                        status: 'none',
+                        message: 'User already activated',
+                      });
+                    } else if (activationUser.authString === userToken.authString) {
+                      // if authstring is valid
+                      jwTokens
+                        .randomString()
+                        .then((randString) => {
+                          activationUser
+                            .update({
+                              // put new random string in database
+                              isActivated: true,
+                              authString: randString,
+                            })
+                            .then(() =>
+                              res.status(202).json({
+                                status: 'success',
+                                message: 'User Activated',
+                              }))
+                            .catch(error =>
+                              res.status(501).json({
+                                status: 'unsuccessful',
+                                message: error,
+                              }));
+                        })
+                        .catch(() => res.status(501).json({
+                          // error creating a random string
+                          status: 'unsuccessful',
+                          message: 'Server error try again',
+                        }));
+                    } else if (
+                      activationUser.authString !== userToken.authString
+                    ) {
+                      res.status(403).json({
+                        status: 'unsuccessful',
+                        message: 'Used token',
+                      });
+                    }
+                  } else { // if user is not found
+                    res.status(404).json({
+                      status: 'unsuccessful',
+                      message: 'Invalid User',
+                    });
+                  }
+                }) // if user is not found
                 .catch(error => res.status(403).send(error));
             })
             .catch();
