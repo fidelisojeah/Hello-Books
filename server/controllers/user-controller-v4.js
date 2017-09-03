@@ -51,13 +51,13 @@ class userLoginDetails {
       } else if (password === null) {
         reject('Password Invalid');
       } else if (email === null) {
-        reject('Email Address Invalid');
+        reject('No email Provided');
       } else if (firstname === null) {
         reject('First Name Invalid');
       } else if (lastname === null) {
         reject('Last Name Invalid');
       } else if (!validateEmail(email)) {
-        reject('Email Address is invalid');
+        reject('Email Address invalid');
       } else if (username.length < 2) {
         reject('Username too short');
       } else if (password.length < 6) {
@@ -77,7 +77,7 @@ class userLoginDetails {
   }
   static validateActivationToken(verifiedToken, userName) {
     return new Promise((resolve, reject) => {
-      if (verifiedToken.username !== userName) { // if username is invalid
+      if (verifiedToken.username.toLowerCase() !== userName.toLowerCase()) { // if username is invalid
         reject('Invalid Token');
       } else {
         const resolvedToken = {
@@ -108,7 +108,7 @@ class userLoginDetails {
             .hash(password, 8) // hash password
             .then((hashPassword) => {
               if (!hashPassword) {
-                res.status(400).json({
+                res.status(500).json({
                   status: 'unsuccessful',
                 });
               } else { // if successfully hashed
@@ -140,9 +140,10 @@ class userLoginDetails {
                               .generateToken(req, tokenInfo, '24h') // expires in 24hours
                               .then((signupToken) => {
                                 if (signupToken) { // for verification things
-                                  res.status(202).json({
-                                    status: 'success',
+                                  res.status(201).json({
+                                    status: 'Success',
                                     message: 'User account created',
+                                    membership: setMembershipDetails.membershipName,
                                     token: signupToken, // would be part of mail
                                   });
                                 }
@@ -151,31 +152,32 @@ class userLoginDetails {
                                 res.status(202).json({
                                   status: 'none',
                                   message: 'User account created Token unsuccessful',
+                                  membership: setMembershipDetails.membershipName,
                                   errorMsg: error,
                                 }));
                           }).catch(error => res.status(400).send(error));
                         // set membership unsuccessful
                       }).catch(error => res.status(400).json({
-                        status: 'unsuccessful',
+                        status: 'Unsuccessful',
                         message: error.errors[0].message,
                       }));
                   })
                   .catch(error => res.status(400).json({
-                    status: 'unsuccessful',
+                    status: 'Unsuccessful',
                     message: error.errors[0].message,
                   }));
               }
             }) // unsuccessful hash
-            .catch(error => res.status(400).send(error));
+            .catch(error => res.status(500).send(error));
         } else {
           res.status(400).json({
-            status: 'unsuccessful',
+            status: 'Unsuccessful',
           });
         }
       })
       .catch(error => // if information is incomplete
         res.status(400).json({
-          status: 'unsuccessful',
+          status: 'Unsuccessful',
           message: error,
         }),
       );
@@ -245,7 +247,7 @@ class userLoginDetails {
                       });
                     }
                   } else { // if user is not found
-                    res.status(404).json({
+                    res.status(403).json({
                       status: 'Unsuccessful',
                       message: 'Invalid User',
                     });
@@ -253,7 +255,7 @@ class userLoginDetails {
                 }) // if user is not found
                 .catch(error => res.status(403).send(error));
             })
-            .catch(error => res.status(401).json({
+            .catch(error => res.status(403).json({
               status: 'Unsuccessful',
               message: error,
             }));
@@ -262,7 +264,7 @@ class userLoginDetails {
     } else {
       res.status(400).json({
         status: 'Unsuccessful',
-        message: 'Link Inavlid',
+        message: 'Link Invalid',
       });
     }
   }

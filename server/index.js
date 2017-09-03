@@ -50,7 +50,7 @@ app.get('/api/v4/users/verify', userLoginDetails.activateUser);
 
 // app.get('/test/ver', checkSession.test2);
 // app.get('/test/ma', checkSession.checkLogin);
-app.delete('/api/v2/users', UserController.clearTable);
+app.delete('/api/users', UserController.clearTable);
 app.delete('/api/v1/books', BookController.deleteAllBooks);
 
 app.get('/', (req, res) => res.status(202).send({
