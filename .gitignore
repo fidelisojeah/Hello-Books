@@ -7,3 +7,4 @@ package-lock.json
 build/
 .nyc_output/
 coverage/
+lib/
