@@ -30,7 +30,6 @@ class checkSession {
       });
   }
   static test2(req, res) {
-    console.log(req.signedCookies);
     res.status(206).json({
       token: req.signedCookies[userCookieInfo],
     });
