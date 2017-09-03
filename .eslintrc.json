@@ -1,5 +1,5 @@
 {
-    "parser": "babel-eslint",    
+    "parser": "babel-eslint",
     "extends": "airbnb",
     "env": {
         "node": true,
@@ -9,5 +9,9 @@
         "react",
         "jsx-a11y",
         "import"
+    ],
+    "predef": [
+        "describe",
+        "it"
     ]
 }
