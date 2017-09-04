@@ -513,6 +513,38 @@ describe('POST /api/v4/users/signin Version 4', () => {
       });
     });
     describe('When wrong details are entered', () => {
+      it('Should respond with code 400 Invalid username for Short username', (done) => {
+        chai.request(app)
+          .post('/api/v4/users/signin')
+          .send({
+            password: 'TestUser123$',
+            username: 't',
+          })
+          .end((err, res) => {
+            should.exist(err);
+            res.status.should.equal(400);
+            res.type.should.equal('application/json');
+            res.body.status.should.eql('Unsuccessful');
+            res.body.message.should.eql('Invalid Username');
+            done();
+          });
+      });
+      it('Should respond with code 400 Invalid Password for Short Password', (done) => {
+        chai.request(app)
+          .post('/api/v4/users/signin')
+          .send({
+            password: 'Tes',
+            username: 'Testuser',
+          })
+          .end((err, res) => {
+            should.exist(err);
+            res.status.should.equal(400);
+            res.type.should.equal('application/json');
+            res.body.status.should.eql('Unsuccessful');
+            res.body.message.should.eql('Invalid Password');
+            done();
+          });
+      });
       it('Should respond with a 401 username invalid', (done) => {
         chai.request(app)
           .post('api/v4/users/signin')

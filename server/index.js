@@ -45,6 +45,7 @@ app.use(session({
 
 app.post('/api/v4/users/signup', userLoginDetails.signup);
 app.get('/api/v4/users/verify', userLoginDetails.activateUser);
+app.post('/api/v4/users/signin', userLoginDetails.signin);
 
 // app.get('/test', userLoginDetails.tst);
 

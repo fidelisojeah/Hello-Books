@@ -4,6 +4,7 @@ import {
   Memberships,
 } from '../models';
 import jwTokens from '../middleware/helpers';
+import checkSession from '../middleware/session';
 
 // email validation here
 const emailRegex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
@@ -72,6 +73,21 @@ class userLoginDetails {
           .then(randBuf =>
             resolve(randBuf))
           .catch(error => reject(error));
+      }
+    });
+  }
+  static validateSignin(username, password) {
+    return new Promise((resolve, reject) => {
+      if (username === null) {
+        reject('No username supplied');
+      } else if (username.length < 2) {
+        reject('Invalid Username');
+      } else if (password === null) {
+        reject('No Password supplied');
+      } else if (password.length < 6) {
+        reject('Invalid Password');
+      } else {
+        resolve('Valid Details');
       }
     });
   }
@@ -270,7 +286,100 @@ class userLoginDetails {
     }
   }
   static signin(req, res) {
-
+    const password = req.body.password || null;
+    const userName = req.body.username || null;
+    userLoginDetails
+      .validateSignin(userName, password)
+      .then((validated) => {
+        if (validated === 'Valid Details') {
+          UserDetails
+            .findOne({
+              where: {
+                isActive: true,
+                $or: [{
+                  username: userName.toLowerCase(),
+                }, {
+                  emailaddress: userName.toLowerCase(),
+                }],
+              },
+            })
+            .then((foundUser) => {
+              if (foundUser && foundUser !== null) {
+                bcrypt
+                  .compare(password, foundUser.dataValues.password)
+                  .then((passwordValidation) => {
+                    if (passwordValidation === true) {
+                      // if password is valid
+                      if (foundUser.isActivated === true) {
+                        // if user has been activated
+                        const userToken = {
+                          userId: foundUser.id,
+                          username: foundUser.username,
+                          firstName: foundUser.firstname,
+                          lastName: foundUser.lastname,
+                          role: 'User',
+                        };
+                        jwTokens
+                          .generateToken(req, userToken, '96h')
+                          .then((generatedToken) => {
+                            if (generatedToken && generatedToken !== null) {
+                              checkSession.setLogin(req, res, generatedToken);
+                              res.status(202).json({
+                                status: 'Successful',
+                                message: 'Signin Successful',
+                                token: generatedToken,
+                              });
+                            } else {
+                              res.status(501).json({
+                                status: 'Unsuccessful',
+                                message: 'Server Error, Try again',
+                              });
+                            }
+                          })
+                          .catch(error =>
+                            res.status(501).json({
+                              status: 'Unsuccessful',
+                              message: error,
+                            }));
+                      } else {
+                        res.status(401).json({
+                          status: 'Unsuccessful',
+                          message: 'Email Address not Verified',
+                        });
+                      }
+                    } else {
+                      // if password is invalid
+                      res.status(401).json({
+                        status: 'Unsuccessful',
+                        message: 'Invalid Username or password',
+                      });
+                    }
+                  })
+                  .catch(error => res.status(500).json({
+                    status: 'Unsuccessful',
+                    message: error,
+                  }));
+              } else {
+                res.status(401).json({
+                  status: 'Unsuccessful',
+                  message: 'Invalid Username',
+                });
+              }
+            })
+            .catch();
+        } else { // if no error, assume server error(timeout)
+          res.status(501).json({
+            status: 'Unsuccessful',
+            message: 'Signin Unsuccessful',
+          });
+        }
+      })
+      .catch((error) => {
+        res.status(400).json({
+          status: 'Unsuccessful',
+          message: error,
+        });
+      });
   }
 }
 export default userLoginDetails;
