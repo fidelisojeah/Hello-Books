@@ -14,12 +14,12 @@ class jwTokens {
       });
     });
   }
-  static generateToken(req, tokenInfo, tokenTime) {
+  static generateToken(tokenSecret, tokenInfo, tokenTime) {
     return new Promise((resolve, reject) => {
       jwt
         .sign(
           tokenInfo,
-          req.app.get('JsonSecret'), {
+          tokenSecret, {
             expiresIn: tokenTime,
           },
           (tokenError, encodedToken) => {

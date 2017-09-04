@@ -17,7 +17,10 @@ class userLoginDetails {
       info: 'info1',
     };
     jwTokens
-      .generateToken(req, tok, '24h') // expires in 24hours
+      .generateToken(
+        req.app.get('JsonSecret'),
+        tok,
+        '24h') // expires in 24hours
       .then((signupToken) => {
         if (signupToken) {
           // for verification things
@@ -154,7 +157,10 @@ class userLoginDetails {
                               authString: activationBuf,
                             };
                             jwTokens
-                              .generateToken(req, tokenInfo, '24h') // expires in 24hours
+                              .generateToken(
+                                req.app.get('JsonSecret'),
+                                tokenInfo,
+                                '24h') // expires in 24hours
                               .then((signupToken) => {
                                 if (signupToken) { // for verification things
                                   res.status(201).json({
@@ -320,10 +326,15 @@ class userLoginDetails {
                           role: 'User',
                         };
                         jwTokens
-                          .generateToken(req, userToken, '96h')
+                          .generateToken(
+                            req.app.get('JsonSecret'),
+                            userToken,
+                            '96h')
                           .then((generatedToken) => {
                             if (generatedToken && generatedToken !== null) {
+
                               checkSession.setLogin(req, res, generatedToken);
+
                               res.status(202).json({
                                 status: 'Successful',
                                 message: 'Signin Successful',

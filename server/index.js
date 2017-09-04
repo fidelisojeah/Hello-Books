@@ -49,7 +49,7 @@ app.post('/api/v4/users/signin', userLoginDetails.signin);
 
 // app.get('/test', userLoginDetails.tst);
 
-// app.get('/test/ver', checkSession.test2);
+// app.get('/test/info', userLoginDetails.test2);
 // app.get('/test/ma', checkSession.checkLogin);
 app.delete('/api/users', UserController.clearTable);
 app.delete('/api/v1/books', BookController.deleteAllBooks);
@@ -60,7 +60,7 @@ app.get('/', (req, res) => res.status(202).send({
 
 
 // set port variable to value of env.Port or default to 8000
-const port = parseInt(process.env.PORT, 10) || 8000;
+const port = parseInt(process.env.PORT, 10) || 3000;
 app.set('port', port);
 
 // create server and listen

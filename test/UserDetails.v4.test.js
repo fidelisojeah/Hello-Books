@@ -1,5 +1,6 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
+import jwt from 'jsonwebtoken';
 
 import app from '../server';
 
@@ -9,10 +10,40 @@ chai.use(chaiHttp);
 let token1;
 let token2;
 
-const expiredToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZpZGVsaXNvamVhaCIsInVzZXJJZCI6MSwiZW1haWwiOiJmaWRlbGlzQG9qZWFoLmNvbS5uZyIsImF1dGhTdHJpbmciOiJiOTIxZjZmZjYxZWY5ZTYzZTRlMzhkZmNlZGNkNzllYmRjMTZhNjZhZmVmMTY5ZTkiLCJpYXQiOjE1MDQzNjI2ODMsImV4cCI6MTUwNDQ0OTA4M30.W2UUu6MKs8h8Wwr-EdXlkpcxszdSDhqWsPgYujKy_Mo';
-const invalidUserToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvbWVib2R5ZWxzZSIsInVzZXJJZCI6MzAwLCJlbWFpbCI6ImZpZGVsaXNAb2plYWguY29tLm5nIiwiYXV0aFN0cmluZyI6ImI5MjFmNmZmNjFlZjllNjNlNGUzOGRmY2VkY2Q3OWViZGMxNmE2NmFmZWYxNjllOSIsImlhdCI6MTUwNDM2MjY4MywiZXhwIjoyNTA0NDU5MDgzfQ.t03oANHnxQLjCtfL5EFBPi4ToZKQWCvDkRXLLqHhkZM';
-const invalidToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZpZGVsaXNvamFoIiwidXNlcklkIjoxLCJlbWFpbCI6ImZpZGVsaXNAb2plYWguY29tLm5nIiwiYXV0aFN0cmluZyI6ImI5MjFmNmZmNjFlZjllNjNlNGUzOGRmY2VkY2Q3OWViZGMxNmE2NmFmZWYxNjllOSIsImlhdCI6MTUwNDM2MjY4MywiZXhwIjoyNTA0NDU5MDgzfQ.CmO_3wq2w5oyCboU9U6qSPm4cNF8ktn5Y1eMwZqrT2I';
-const badSignatureToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZpZGVsaXNvamVhaCIsInVzZXJJZCI6MSwiZW1haWwiOiJmaWRlbGlzQG9qZWFoLmNvbS5uZyIsImF1dGhTdHJpbmciOiJiOTIxZjZmZjYxZWY5ZTYzZTRlMzhkZmNlZGNkNzllYmRjMTZhNjZhZmVmMTY5ZTIiLCJpYXQiOjE1MDQzNjI2ODMsImV4cCI6MTUwNDQ1OTA4M30.L8npyhKjsegFwNFrWlSsDqQNg1radirfjXyGiwNY2cw';
+// generate tokens
+const expiredToken = jwt.sign({
+  username: 'SomebodyElse',
+  userId: 1,
+  email: 'somebodyelse@user.com.ng',
+  authString: 'b921f6ff61ef9e63e4e38dfcedcd79ebdc16a66afef169e9',
+  iat: Math.floor(Date.now() / 1000) - 172800, // generated 2 days ago
+  exp: Math.floor(Date.now() / 1000) - 86400, // expired 1 day ago
+}, app.settings.JsonSecret);
+const invalidUserToken = jwt.sign({
+  username: 'SomebodyElse',
+  userId: 99999, // invalid user ID here
+  email: 'somebodyelse@user.com.ng',
+  authString: 'b921f6ff61ef9e63e4e38dfcedcd79ebdc16a66afef169e9',
+}, app.settings.JsonSecret, {
+  expiresIn: '24h',
+});
+const invalidToken = jwt.sign({
+  username: 'fakeuser', // token not generated for user
+  userId: 1,
+  email: 'fake@user.com.ng',
+  authString: 'b921f6ff61ef9e63e4e38dfcedcd79ebdc16a66afef169e9',
+}, app.settings.JsonSecret, {
+  expiresIn: '24h',
+});
+const badSignatureToken = jwt.sign({
+  username: 'SomebodyElse',
+  userId: 1, // invalid user ID here
+  email: 'somebodyelse@user.com.ng',
+  authString: 'b921f6ff61ef9e63e4e38dfcedcd79ebdc16a66afef169e9',
+}, 'fakeToken_secret_here', {
+  expiresIn: '24h',
+});
+
 
 describe('POST /api/v4/users/signup Version 4', () => {
   before((done) => {
@@ -481,30 +512,30 @@ describe('GET /api/v4/users/verify', () => {
 describe('POST /api/v4/users/signin Version 4', () => {
   describe('When attempting to signin and not signedin', () => {
     describe('When incomplete details are entered', () => {
-      it('Should respond with a 401 no username supplied', (done) => {
+      it('Should respond with a 400 no username supplied', (done) => {
         chai.request(app)
-          .post('api/v4/users/signin')
+          .post('/api/v4/users/signin')
           .send({
             password: 'TestUser123$',
           })
           .end((err, res) => {
             should.exist(err);
-            res.status.should.equal(401);
+            res.status.should.equal(400);
             res.type.should.equal('application/json');
             res.body.status.should.eql('Unsuccessful');
             res.body.message.should.eql('No username supplied');
             done();
           });
       });
-      it('Should return a 401 no password supplied', (done) => {
+      it('Should return a 400 no password supplied', (done) => {
         chai.request(app)
-          .post('api/v4/users/signin')
+          .post('/api/v4/users/signin')
           .send({
             username: 'Testuser',
           })
           .end((err, res) => {
             should.exist(err);
-            res.status.should.equal(401);
+            res.status.should.equal(400);
             res.type.should.equal('application/json');
             res.body.status.should.eql('Unsuccessful');
             res.body.message.should.eql('No Password supplied');
@@ -547,7 +578,7 @@ describe('POST /api/v4/users/signin Version 4', () => {
       });
       it('Should respond with a 401 username invalid', (done) => {
         chai.request(app)
-          .post('api/v4/users/signin')
+          .post('/api/v4/users/signin')
           .send({
             password: 'TestUser123$',
             username: 'wrongusername',
@@ -563,7 +594,7 @@ describe('POST /api/v4/users/signin Version 4', () => {
       });
       it('Should respond with a 401 invalid username/password', (done) => {
         chai.request(app)
-          .post('api/v4/users/signin')
+          .post('/api/v4/users/signin')
           .send({
             password: 'Wrongpassword$',
             username: 'Testuser',
