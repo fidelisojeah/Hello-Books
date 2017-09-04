@@ -8,6 +8,7 @@ const should = chai.should();
 chai.use(chaiHttp);
 let token1;
 let token2;
+
 const expiredToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZpZGVsaXNvamVhaCIsInVzZXJJZCI6MSwiZW1haWwiOiJmaWRlbGlzQG9qZWFoLmNvbS5uZyIsImF1dGhTdHJpbmciOiJiOTIxZjZmZjYxZWY5ZTYzZTRlMzhkZmNlZGNkNzllYmRjMTZhNjZhZmVmMTY5ZTkiLCJpYXQiOjE1MDQzNjI2ODMsImV4cCI6MTUwNDQ0OTA4M30.W2UUu6MKs8h8Wwr-EdXlkpcxszdSDhqWsPgYujKy_Mo';
 const invalidUserToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNvbWVib2R5ZWxzZSIsInVzZXJJZCI6MzAwLCJlbWFpbCI6ImZpZGVsaXNAb2plYWguY29tLm5nIiwiYXV0aFN0cmluZyI6ImI5MjFmNmZmNjFlZjllNjNlNGUzOGRmY2VkY2Q3OWViZGMxNmE2NmFmZWYxNjllOSIsImlhdCI6MTUwNDM2MjY4MywiZXhwIjoyNTA0NDU5MDgzfQ.t03oANHnxQLjCtfL5EFBPi4ToZKQWCvDkRXLLqHhkZM';
 const invalidToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZpZGVsaXNvamFoIiwidXNlcklkIjoxLCJlbWFpbCI6ImZpZGVsaXNAb2plYWguY29tLm5nIiwiYXV0aFN0cmluZyI6ImI5MjFmNmZmNjFlZjllNjNlNGUzOGRmY2VkY2Q3OWViZGMxNmE2NmFmZWYxNjllOSIsImlhdCI6MTUwNDM2MjY4MywiZXhwIjoyNTA0NDU5MDgzfQ.CmO_3wq2w5oyCboU9U6qSPm4cNF8ktn5Y1eMwZqrT2I';
@@ -266,7 +267,6 @@ describe('POST /api/v4/users/signup Version 4', () => {
               res.body.status.should.eql('Success');
               res.body.message.should.eql('User account created');
               res.body.membership.should.eql('Blue');
-              token2 = res.body.token;
               done();
             });
         });
@@ -432,7 +432,7 @@ describe('GET /api/v4/users/verify', () => {
       chai.request(app)
         .get('/api/v4/users/verify')
         .query({
-          id: 'SomebodyElse',
+          id: 'somebodyelse',
           key: token2,
         })
         .end((err, res) => {
