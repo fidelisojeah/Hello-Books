@@ -9,7 +9,6 @@ import http from 'http';
 import UserController from './controllers/UserHandlers';
 import BookController from './controllers/Bookhandlers';
 import userLoginDetails from './controllers/user-controller-v4';
-import checkSession from './middleware/session';
 
 const app = express();
 // load environmental variables
