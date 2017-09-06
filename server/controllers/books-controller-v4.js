@@ -8,15 +8,10 @@ import checkSession from '../middleware/session';
 // const userCookieInfo = 'userCookieInfo';
 
 class bookProps {
-  // static checkCookies(req, res) {
-  //   const info = req.signedCookies[userCookieInfo];
-  //  }
-
   static newAuthor(req, res) {
-    console.log(req.decoded);
     checkSession
       .checkAdmin(req.decoded)
-      .then((decodedInfo) => {
+      .then(() => {
         // console.log('here');
         const firstName = req.body.firstname || null;
         const lastName = req.body.lastname || null;
