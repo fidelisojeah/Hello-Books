@@ -18,6 +18,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      isAdmin: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
       authString: {
         type: Sequelize.STRING,
       },

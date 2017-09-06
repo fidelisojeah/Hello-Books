@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 const cookieParams = {
   httpOnly: true,
   signed: true,
-  maxAge: 300000,
+  maxAge: 3000000,
 };
 const userCookieInfo = 'userCookieInfo';
 
@@ -34,39 +34,54 @@ class checkSession {
       token: req.signedCookies[userCookieInfo],
     });
   }
-  static checkLogin(req, res) { // confirm user login
-    //   return new Promise((resolve, reject) => {
-    // get cookie from browser (signed with keys)
-    const userInfo = req.signedCookies[userCookieInfo] || null;
+  static checkAdmin(decodedToken) {
+    return new Promise((resolve, reject) => {
+      if (decodedToken) {
+        if (decodedToken.role === 'Admin') {
+          resolve('Valid Token');
+        } else {
+          reject('Not allowed');
+        }
+      } else {
+        reject('Token Invalid');
+      }
+    });
+  }
+  static checkLogin(req, res, next) {
+    const userInfo = req.signedCookies[userCookieInfo] ||
+      req.headers['x-access-token'] || null; // allow token to be in header for now
     if (userInfo === null) {
-      res.status(400).json({
-        error: 'not found',
+      res.status(401).json({
+        status: 'Unsuccessful',
+        message: 'Unauthenticated',
+        error: 'Token not found',
       });
-      // reject('Not Logged in');
     } else {
       // verify token in cookie is still valid
       jwt
         .verify(userInfo,
-          req.app.get('JsonSecret'),
-          (error, verifiedToken) => {
-            if (error) {
-              if (error.name === 'TokenExpiredError') {
-                // if token expired, generate new one
-                jwt
-                  .sign(
-
-                  );
-              } else {
-                res.status(403).send(error);
-              }
-            } else if (verifiedToken) {
-              res.status(200).json({
-                token: verifiedToken,
+        req.app.get('JsonSecret'),
+        (error, verifiedToken) => {
+          if (error) {
+            res.status(401).json({
+              status: 'Unsuccessful',
+              message: 'Unathenticated',
+              error: error.name,
+            });
+          } else if (verifiedToken) {
+            if (verifiedToken.role) {
+              req.decoded = verifiedToken;
+              next();
+            } else {
+              res.status(401).json({
+                status: 'Unsuccessful',
+                message: 'Unathenticated',
+                error: 'InvalidToken',
               });
             }
-          });
+          }
+        });
     }
-    //   });
   }
   static setLogin(req, res, jwToken) {
     return res.cookie(userCookieInfo, jwToken, cookieParams);

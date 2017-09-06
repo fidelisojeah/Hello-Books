@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       allowNulls: false,
     },
+    isAdmin: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
     username: {
       type: DataTypes.STRING,
       unique: true,

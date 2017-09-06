@@ -8,7 +8,9 @@ import http from 'http';
 
 import UserController from './controllers/UserHandlers';
 import BookController from './controllers/Bookhandlers';
+import bookProps from './controllers/books-controller-v4';
 import userLoginDetails from './controllers/user-controller-v4';
+import checkSession from './middleware/session';
 
 const app = express();
 // load environmental variables
@@ -46,6 +48,8 @@ app.post('/api/v4/users/signup', userLoginDetails.signup);
 app.get('/api/v4/users/verify', userLoginDetails.activateUser);
 app.post('/api/v4/users/signin', userLoginDetails.signin);
 
+
+// app.route('');
 // app.get('/test', userLoginDetails.tst);
 
 // app.get('/test/info', userLoginDetails.test2);
@@ -57,6 +61,9 @@ app.get('/', (req, res) => res.status(202).send({
   message: 'Welcome to Hello-Books',
 }));
 
+app.post('/api/v4/authors', checkSession.checkLogin, bookProps.newAuthor);
+
+app.get('/api/v4/test', checkSession.test2);
 
 // set port variable to value of env.Port or default to 8000
 const port = parseInt(process.env.PORT, 10) || 3000;

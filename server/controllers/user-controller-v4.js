@@ -317,7 +317,7 @@ class userLoginDetails {
                           username: foundUser.username,
                           firstName: foundUser.firstname,
                           lastName: foundUser.lastname,
-                          role: 'User',
+                          role: (foundUser.isAdmin) ? 'Admin' : 'User',
                         };
                         jwTokens
                           .generateToken(
