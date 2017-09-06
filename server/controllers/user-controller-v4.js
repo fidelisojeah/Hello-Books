@@ -18,9 +18,9 @@ class userLoginDetails {
     };
     jwTokens
       .generateToken(
-        req.app.get('JsonSecret'),
-        tok,
-        '24h') // expires in 24hours
+      req.app.get('JsonSecret'),
+      tok,
+      '24h') // expires in 24hours
       .then((signupToken) => {
         if (signupToken) {
           // for verification things
@@ -35,12 +35,6 @@ class userLoginDetails {
           status: 'none',
           message: error,
         }));
-    /*
-    validateSignup('fidelis', 'ojeahhda', 'Ojeah', 'fidelisojeah', 'fidelis_oj@yahoo.co.uk')
-      .then()
-      .catch();
-    res.status(200).json({});
-     */
   }
   // validates signup info
   static validateSignup(username,
@@ -120,8 +114,8 @@ class userLoginDetails {
 
     userLoginDetails
       .validateSignup(userName,
-        password, lastName, firstName, email,
-      )
+      password, lastName, firstName, email,
+    )
       .then((activationBuf) => {
         if (activationBuf) { // if Vaild
           bcrypt
@@ -158,9 +152,9 @@ class userLoginDetails {
                             };
                             jwTokens
                               .generateToken(
-                                req.app.get('JsonSecret'),
-                                tokenInfo,
-                                '24h') // expires in 24hours
+                              req.app.get('JsonSecret'),
+                              tokenInfo,
+                              '24h') // expires in 24hours
                               .then((signupToken) => {
                                 if (signupToken) { // for verification things
                                   res.status(201).json({
@@ -203,7 +197,7 @@ class userLoginDetails {
           status: 'Unsuccessful',
           message: error,
         }),
-      );
+    );
   }
   static activateUser(req, res) {
     const activationToken = req.query.key || null;
@@ -327,9 +321,9 @@ class userLoginDetails {
                         };
                         jwTokens
                           .generateToken(
-                            req.app.get('JsonSecret'),
-                            userToken,
-                            '96h')
+                          req.app.get('JsonSecret'),
+                          userToken,
+                          '96h')
                           .then((generatedToken) => {
                             if (generatedToken && generatedToken !== null) {
                               checkSession.setLogin(req, res, generatedToken);
