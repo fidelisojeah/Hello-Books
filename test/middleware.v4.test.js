@@ -18,7 +18,7 @@ const invalidSignedToken = jwt.sign(
     role: 'admin',
   }, 'fakeSecretcodefam');
 // simulate authors route to authorisation middleware
-describe('POST /api/v4/authors version 4', () => {
+describe('Middleware Test', () => {
   describe('When no token is provided', () => {
     it('should return 401 Unsuccessful when no token is provided', (done) => {
       chai.request(app)
