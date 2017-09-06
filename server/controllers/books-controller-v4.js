@@ -82,14 +82,16 @@ class bookProps {
     checkSession
       .checkAdmin(req.decoded)
       .then(() => {
-        const bookQuant = req.body.quantity || 1;
-        const bookImg = req.body.image || null;
-        const pubYear = req.body.publishyear || null;
-        const bookname = req.body.bookname || null;
+        const bookQuantity = req.body.quantity || 1;
+        const bookImage = req.body.image || null;
+        const publishYear = req.body.publishyear || null;
+        const name = req.body.bookname || null;
         const ISBN = req.body.ISBN || null;
-        const desc = req.body.description || null;
-        const authorId = req.body.authorIds || 1; // author or anonymous
-
+        const description = req.body.description || null;
+        let authors = req.body.authorIds || 1; // author or anonymous
+        if (authors !== 1) {
+          authors = authors.split(',');
+        }
       })
       .catch((error) => {
         res.status(401).json({
