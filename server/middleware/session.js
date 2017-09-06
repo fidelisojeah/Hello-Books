@@ -65,8 +65,9 @@ class checkSession {
           if (error) {
             res.status(401).json({
               status: 'Unsuccessful',
-              message: 'Unathenticated',
+              message: 'Unauthenticated',
               error: error.name,
+              errortype: error.message,
             });
           } else if (verifiedToken) {
             if (verifiedToken.role) {
@@ -85,6 +86,13 @@ class checkSession {
   }
   static setLogin(req, res, jwToken) {
     return res.cookie(userCookieInfo, jwToken, cookieParams);
+  }
+  static clearLogin(req, res) {
+    res.clearCookie(userCookieInfo);
+    res.status(200).json({
+      status: 'Success',
+      message: 'Logout Successful',
+    });
   }
 }
 export default checkSession;

@@ -16,6 +16,7 @@ class bookProps {
         const firstName = req.body.firstname || null;
         const lastName = req.body.lastname || null;
         const dateOB = req.body.authorDOB || null;
+        const knownAs = req.body.authorAKA || `${firstName} ${lastName}`;
         if (firstName !== null
           && lastName !== null) {
           Authors// create new author
@@ -23,13 +24,12 @@ class bookProps {
               authorFirstName: firstName,
               authorLastName: lastName,
               dateofBirth: dateOB,
+              authorAKA: knownAs,
             })
-            .then((authorCreated) => { // if author creation was successful
+            .then(() => { // if author creation was successful
               res.status(201).json({
                 status: 'Success',
-                data: {
-                  AuthorName: `${authorCreated.authorFirstName} ${authorCreated.authorLastName}`,
-                },
+                message: 'Author Created Successfully',
               });
             })
             .catch(error => res.status(500).send(error));
@@ -47,6 +47,7 @@ class bookProps {
         });
       });
   }
+  static
 }
 
 export default bookProps;

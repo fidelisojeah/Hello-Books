@@ -15,6 +15,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      authorAKA: {
+        type: Sequelize.STRING,
+      },
       dateofBirth: {
         type: Sequelize.DATEONLY,
       },
