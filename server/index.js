@@ -10,6 +10,7 @@ import UserController from './controllers/UserHandlers';
 import BookController from './controllers/Bookhandlers';
 import bookProps from './controllers/books-controller-v4';
 import userLoginDetails from './controllers/user-controller-v4';
+import userBookInteraction from './controllers/user-books-controller';
 import checkSession from './middleware/session';
 
 const app = express();
@@ -49,7 +50,7 @@ app.get('/api/v4/users/verify', userLoginDetails.activateUser);
 app.post('/api/v4/users/signin', userLoginDetails.signin);
 
 // for user - book handling
-app.post('/api/v4/users/:userId/books', checkSession.checkLogin);
+app.post('/api/v4/users/:userId/books', checkSession.checkLogin, userBookInteraction.borrowBook);
 app.get('/api/v4/users/:userId/books', checkSession.checkLogin);
 app.put('/api/v4/users/:userId/books', checkSession.checkLogin);
 
