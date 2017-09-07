@@ -139,21 +139,23 @@ exports.signup = (req, res) => {
     // hash password
     bcrypt.hash(req.body.password, saltRounds, (err, hash) => {
       // create User Login with Hashed password
-      UserLogin.create({
-        username: req.body.username,
-        password: hash,
-        userDetails: { // create User details on seperate table with details
-          firstName: req.body.firstname,
-          lastName: req.body.lastname,
-          emailAddress: req.body.emailAdd.toLowerCase(),
-          phoneNumber: req.body.phone,
-        },
-      }, {
+      UserLogin
+        .create({
+          username: req.body.username,
+          password: hash,
+          userDetails: { // create User details on seperate table with details
+            firstName: req.body.firstname,
+            lastName: req.body.lastname,
+            emailAddress: req.body.emailAdd.toLowerCase(),
+            phoneNumber: req.body.phone,
+          },
+        }, {
           include: [{ // relationship
             model: UserDetails,
             as: 'userDetails',
           }],
-        }).then((signup) => {
+        })
+        .then((signup) => {
           res.status(201).json({
             status: 'success',
             data: signup,
@@ -427,9 +429,7 @@ exports.viewBorrowed = (req, res) => { // more descriptive name
           const returnedSearch = (isReturned === 'false') ? {
             userId: UsrDet.id,
             actualReturnDate: null,
-          } : {
-              userId: UsrDet.id,
-            };
+          } : { userId: UsrDet.id };
           BookLendings
             .findAll({
               where: // {
