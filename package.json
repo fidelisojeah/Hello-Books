@@ -6,7 +6,7 @@
     "install:config": "npm prune && npm install",
     "lint": "markdownlint --config linters/.markdownlint.json",
     "release": "babel src --out-dir lib",
-    "pretest": "npm run --silent lint",
+    "pretest": "npm run --silent lint && sequelize db:migrate:undo:all --env test && sequelize db:migrate --env test",
     "migrate:test": "sequelize db:migrate --env test",
     "migrate": "sequelize db:migrate",
     "build": "babel server -d build",
