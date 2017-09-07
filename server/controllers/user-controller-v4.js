@@ -12,30 +12,6 @@ const validateEmail = emailAddress =>
   emailRegex.test(emailAddress); // returns true or false
 
 class userLoginDetails {
-  static tst(req, res) {
-    const tok = {
-      info: 'info1',
-    };
-    jwTokens
-      .generateToken(
-      req.app.get('JsonSecret'),
-      tok,
-      '24h') // expires in 24hours
-      .then((signupToken) => {
-        if (signupToken) {
-          // for verification things
-          res.status(202).json({
-            token: signupToken, // would be part of mail
-          });
-        }
-      })
-      .catch(error =>
-        // if unsuccessful
-        res.status(202).json({
-          status: 'none',
-          message: error,
-        }));
-  }
   // validates signup info
   static validateSignup(username,
     password,
@@ -370,7 +346,7 @@ class userLoginDetails {
                 });
               }
             })
-            .catch();
+            .catch(error => res.status(500).send(error));
         } else { // if no error, assume server error(timeout)
           res.status(501).json({
             status: 'Unsuccessful',

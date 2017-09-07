@@ -514,6 +514,9 @@ describe('GET /api/v4/books version 4', () => {
       chai.request(app)
         .get('/api/v4/books')
         .set('x-access-token', goodToken)
+        .query({
+          id: 1,
+        })
         .end((err, res) => {
           should.not.exist(err);
           res.status.should.equal(202);
@@ -610,6 +613,9 @@ describe('GET /api/v4/authors version 4', () => {
     it('should return 202 and info about the author', (done) => {
       chai.request(app)
         .get('/api/v4/authors')
+        .query({
+          id: 1,
+        })
         .set('x-access-token', goodToken)
         .end((err, res) => {
           should.not.exist(err);
