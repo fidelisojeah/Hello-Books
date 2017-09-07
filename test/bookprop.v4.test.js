@@ -499,6 +499,7 @@ describe('GET /api/v4/books version 4', () => {
     it('should return 202 and list all books', (done) => {
       chai.request(app)
         .get('/api/v4/books')
+        .set('x-access-token', goodToken)
         .end((err, res) => {
           should.not.exist(err);
           res.status.should.equal(202);
@@ -512,6 +513,7 @@ describe('GET /api/v4/books version 4', () => {
     it('should return 202 and info about the Book', (done) => {
       chai.request(app)
         .get('/api/v4/books')
+        .set('x-access-token', goodToken)
         .end((err, res) => {
           should.not.exist(err);
           res.status.should.equal(202);
@@ -522,3 +524,71 @@ describe('GET /api/v4/books version 4', () => {
     });
   });
 });
+describe('POST /api/v4/books/:bookId/quantity version 4', () => {
+  describe('When invalid Details are presented', () => {
+    it('should return 404 Invalid for invalid bookId character', (done) => {
+      chai.request(app)
+        .post('/api/v4/books/a/quantity')// a is wrong here
+        .set('x-access-token', goodToken)
+        .send({
+          quantity: 3,
+        })
+        .end((err, res) => {
+          should.exist(err);// or not
+          res.status.should.equal(404);
+          res.type.should.equal('application/json');
+          res.body.status.should.eql('Unsuccessful');
+          res.body.message.should.eql('Invalid Book');
+          done();
+        });
+    });
+    it('should return 404 Invalid for invalid bookId', (done) => {
+      chai.request(app)
+        .post('/api/v4/books/209/quantity')// a is wrong here
+        .set('x-access-token', goodToken)
+        .send({
+          quantity: 3,
+        })
+        .end((err, res) => {
+          should.exist(err);// or not
+          res.status.should.equal(404);
+          res.type.should.equal('application/json');
+          res.body.status.should.eql('Unsuccessful');
+          res.body.message.should.eql('Invalid Book');
+          done();
+        });
+    });
+  });
+  describe('When Valid Details are presented', () => {
+    it('should return 400 Missing Info for no quantity provided', (done) => {
+      chai.request(app)
+        .post(`/api/v4/books/${bookId}/quantity`)// a is wrong here
+        .set('x-access-token', goodToken)
+        .end((err, res) => {
+          should.exist(err);// or not
+          res.status.should.equal(400);
+          res.type.should.equal('application/json');
+          res.body.status.should.eql('Unsuccessful');
+          res.body.message.should.eql('Missing Information');
+          done();
+        });
+    });
+    it('should return 200 Successful', (done) => {
+      chai.request(app)
+        .post(`/api/v4/books/${bookId}/quantity`)// a is wrong here
+        .set('x-access-token', goodToken)
+        .send({
+          quantity: 3,
+        })
+        .end((err, res) => {
+          should.not.exist(err);
+          res.status.should.equal(200);
+          res.type.should.equal('application/json');
+          res.body.status.should.eql('Success');
+          res.body.message.should.eql('Book Updated Successfully');
+          done();
+        });
+    });
+  });
+});
+// .set('x-access-token', goodToken)

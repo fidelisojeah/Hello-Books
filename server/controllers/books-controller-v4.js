@@ -48,7 +48,7 @@ class bookProps {
       });
   }
   static viewBooks(req, res) {
-    const bookID = parseInt(req.query.id);
+    const bookID = parseInt(req.query.id, 10);
 
     if (isNaN(bookID)) { // for all books
       Books
@@ -62,7 +62,7 @@ class bookProps {
               'authorAKA'],
           }],
           attributes:
-          ['bookName', 'bookISBN',
+          ['id', 'bookName', 'bookISBN',
             'description', 'bookImage',
             'publishYear', 'bookImage'],
         })
@@ -233,9 +233,9 @@ class bookProps {
     checkSession
       .checkAdmin(req.decoded)
       .then(() => {
-        const bookId = parseInt(req.body.Id, 10);
+        const bookId = parseInt(req.params.bookId, 10);
         const bookQuantity = parseInt(req.body.quantity, 10);
-        if (!isNaN(bookId) || !isNaN(bookQuantity)) { // has to be a number really
+        if (!isNaN(bookId) && !isNaN(bookQuantity)) { // has to be a number really
           Books
             .findOne({ // search for book with id
               where: {
@@ -244,17 +244,18 @@ class bookProps {
             })
             .then((bookDetails) => {
               if (bookDetails === null) { // if a book is not found
-                res.status(400).json({
+                res.status(404).json({
                   status: 'Unsuccessful',
-                  message: 'No book found',
+                  message: 'Invalid Book',
                 });
               } else { // if bookDetails is set then add
-                bookDetails.update({
-                  bookQuantity:
-                  (bookDetails.bookQuantity + bookQuantity) < 1 ? 1 :
-                    (bookDetails.bookQuantity + bookQuantity),
-                  // Never less than 1
-                })
+                bookDetails
+                  .update({
+                    bookQuantity:
+                    (bookDetails.bookQuantity + bookQuantity) < 1 ? 1 :
+                      (bookDetails.bookQuantity + bookQuantity),
+                    // Never less than 1
+                  })
                   .then(
                   addBook => res.status(200).json({
                     status: 'Success',
@@ -263,11 +264,17 @@ class bookProps {
                   }))
                   .catch(error => res.status(500).send(error));
               }
-            });
+            })
+            .catch(error => res.status(501).send(error));
+        } else if (isNaN(bookId) && !isNaN(bookQuantity)) {
+          res.status(404).json({
+            status: 'Unsuccessful',
+            message: 'Invalid Book',
+          });
         } else {
           res.status(400).json({
             status: 'Unsuccessful',
-            message: 'Invalid Book ID',
+            message: 'Missing Information',
           });
         }
       })

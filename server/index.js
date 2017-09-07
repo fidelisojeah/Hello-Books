@@ -65,7 +65,8 @@ app.post('/api/v4/authors', checkSession.checkLogin, bookProps.newAuthor);
 app.post('/api/v4/books', checkSession.checkLogin, bookProps.newBook);
 app.get('/api/v4/books', checkSession.checkLogin, bookProps.viewBooks);
 app.put('/api/v4/books/:bookId', checkSession.checkLogin, bookProps.modifyBook);
-// app.get('/api/v4/test', checkSession.test2);
+app.post('/api/v4/books/:bookId/quantity', checkSession.checkLogin, bookProps.updateBookQuantity);
+
 app.get('/api/v4/users/logout', checkSession.clearLogin);
 
 // set port variable to value of env.Port or default to 8000
