@@ -274,7 +274,7 @@ class bookProps {
               },
             }).then((bookDetails) => {
               if (bookDetails === null) { // if a book is not found
-                res.status(400).json({
+                res.status(404).json({
                   status: 'Unsuccessful',
                   message: 'Invalid Book',
                 });
@@ -290,16 +290,15 @@ class bookProps {
               }
             }).catch(error => res.status(500).send(error)); // catch error from findone
           } else {
-            res.status(200).json({
-              status: 'invalid',
-              message: 'no information supplied',
-              data: req.body,
+            res.status(400).json({
+              status: 'Unsuccessful',
+              message: 'No Information Supplied',
             });
           }
         } else {
           res.status(404).json({
             status: 'Unsuccessful',
-            message: 'Invalid',
+            message: 'Invalid Book',
           });
         }
       })

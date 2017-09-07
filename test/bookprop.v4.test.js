@@ -14,6 +14,7 @@ const goodToken = jwt.sign({
   lastName: 'User',
   role: 'Admin',
 }, app.settings.JsonSecret);
+let bookId;
 
 describe('POST /api/v4/authors version 4', () => {
   before((done) => {
@@ -287,6 +288,7 @@ describe('POST /api/v4/books version 4', () => {
               res.type.should.equal('application/json');
               res.body.status.should.eql('Success');
               res.body.message.should.eql('Book Created Successfully');
+              bookId = res.body.bookID;
               done();
             });
         });
@@ -345,6 +347,148 @@ describe('POST /api/v4/books version 4', () => {
                 done();
               });
           });
+        });
+      });
+    });
+  });
+});
+describe('PUT /api/v4/books/:bookId version 4', () => {
+  describe('When Invalid Book Id is entered', () => {
+    it('should return 404 Unsuccessful for wrong Book Id type', (done) => {
+      chai.request(app)
+        .put('/api/v4/books/a')
+        .set('x-access-token', goodToken)
+        .send({
+          bookname: 'Harry Potter and the Order of the Phoenix',
+          ISBN: '0-7475-5100-6',
+          description: `During another summer with his Aunt 
+          Petunia and Uncle Vernon, Harry Potter and Dudley 
+          are attacked by Dementors. After using magic to 
+          save Dudley and himself, Harry is expelled from 
+          Hogwarts, but the decision is later rescinded.`,
+          publishYear: '2000',
+          image: 'hpop.jpg',
+        })
+        .end((err, res) => {
+          should.exist(err);// or not
+          res.status.should.equal(404);
+          res.type.should.equal('application/json');
+          res.body.status.should.eql('Unsuccessful');
+          res.body.message.should.eql('Invalid Book');
+          done();
+        });
+    });
+    it('should return 404 Unsuccessful for wrong Book Id', (done) => {
+      chai.request(app)
+        .put('/api/v4/books/102')
+        .set('x-access-token', goodToken)
+        .send({
+          bookname: 'Harry Potter and the Order of the Phoenix',
+          ISBN: '0-7475-5100-6',
+          description: `During another summer with his Aunt 
+          Petunia and Uncle Vernon, Harry Potter and Dudley 
+          are attacked by Dementors. After using magic to 
+          save Dudley and himself, Harry is expelled from 
+          Hogwarts, but the decision is later rescinded.`,
+          publishYear: '2000',
+          image: 'hpop.jpg',
+        })
+        .end((err, res) => {
+          should.exist(err);
+          res.status.should.equal(404);
+          res.type.should.equal('application/json');
+          res.body.status.should.eql('Unsuccessful');
+          res.body.message.should.eql('Invalid Book');
+          done();
+        });
+    });
+  });
+  describe('When Valid Book Id is entered', () => {
+    describe('When no information is provided', () => {
+      it('should return 400 Unsuccessful when no info supplied', (done) => {
+        chai.request(app)
+          .put(`/api/v4/books/${bookId}`)
+          .set('x-access-token', goodToken)
+          .end((err, res) => {
+            should.exist(err);// or not
+            res.status.should.equal(400);
+            res.type.should.equal('application/json');
+            res.body.status.should.eql('Unsuccessful');
+            res.body.message.should.eql('No Information Supplied');
+            done();
+          });
+      });
+    });
+    describe('When Information is provided', () => {
+      it('should return 200 Success when ISBN changed', (done) => {
+        chai.request(app)
+          .put(`/api/v4/books/${bookId}`)
+          .set('x-access-token', goodToken)
+          .send({
+            ISBN: '0-7475-5100-6',
+          })
+          .end((err, res) => {
+            should.not.exist(err);// or not
+            res.status.should.equal(200);
+            res.type.should.equal('application/json');
+            res.body.status.should.eql('Success');
+            res.body.message.should.eql('Book Details Updated');
+            done();
+          });
+      });
+      it('should return 200 Success when published year is changed', (done) => {
+        chai.request(app)
+          .put(`/api/v4/books/${bookId}`)
+          .set('x-access-token', goodToken)
+          .send({
+            publishYear: '2000',
+          })
+          .end((err, res) => {
+            should.not.exist(err);// or not
+            res.status.should.equal(200);
+            res.type.should.equal('application/json');
+            res.body.status.should.eql('Success');
+            res.body.message.should.eql('Book Details Updated');
+            done();
+          });
+      });
+      it('should return 200 Success when book Description is changed', (done) => {
+        chai.request(app)
+          .put(`/api/v4/books/${bookId}`)
+          .set('x-access-token', goodToken)
+          .send({
+            description: `During another summer with his Aunt 
+           Petunia and Uncle Vernon, Harry Potter and Dudley 
+           are attacked by Dementors. After using magic to 
+           save Dudley and himself, Harry is expelled from 
+           Hogwarts, but the decision is later rescinded.`,
+          })
+          .end((err, res) => {
+            should.not.exist(err);// or not
+            res.status.should.equal(200);
+            res.type.should.equal('application/json');
+            res.body.status.should.eql('Success');
+            res.body.message.should.eql('Book Details Updated');
+            done();
+          });
+      });
+      describe('When multiple information is provided', () => {
+        it('should return 200 Success when book name is changed', (done) => {
+          chai.request(app)
+            .put(`/api/v4/books/${bookId}`)
+            .set('x-access-token', goodToken)
+            .send({
+              bookname: 'Harry Potter and the Order of the Phoenix',
+              image: 'hpop.jpg',
+            })
+            .end((err, res) => {
+              should.not.exist(err);// or not
+              res.status.should.equal(200);
+              res.type.should.equal('application/json');
+              res.body.status.should.eql('Success');
+              res.body.message.should.eql('Book Details Updated');
+              done();
+            });
         });
       });
     });
