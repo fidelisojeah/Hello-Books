@@ -133,13 +133,6 @@ class bookProps {
             .then((completeBookDetails) => {
               // if book details are verified complete
               if (completeBookDetails) {
-                /*
-                Books
-                  .create(completeBookDetails)
-                  .then(createdBook => {
-
-                  })
-                  */
                 Authors
                   .findAll({
                     where: {
@@ -147,7 +140,10 @@ class bookProps {
                     },
                   })
                   .then((bookAuthors) => {
-                    if (bookAuthors && bookAuthors !== null) {
+                    if (bookAuthors &&
+                      bookAuthors !== null &&
+                      bookAuthors.length >= 1
+                    ) {
                       Books
                         .create(completeBookDetails)
                         .then((createdBook) => {
@@ -161,7 +157,16 @@ class bookProps {
                               }))
                             .catch(error => res.status(501).send(error));
                         })
-                        .catch();
+                        .catch((error) => {
+                          if (error.name === 'SequelizeUniqueConstraintError') {
+                            res.status(400).json({
+                              status: 'Unsuccessful',
+                              message: 'Book Already Exists',
+                            });
+                          } else {
+                            res.status(500).send(error);
+                          }
+                        });
                     } else {
                       res.status(400).json({
                         status: 'Unsuccessful',
@@ -238,6 +243,63 @@ class bookProps {
           res.status(400).json({
             status: 'Unsuccessful',
             message: 'Invalid Book ID',
+          });
+        }
+      })
+      .catch((error) => {
+        res.status(401).json({
+          status: 'Unsuccessful',
+          message: error,
+        });
+      });
+  }
+  static modifyBook(req, res) {
+    checkSession
+      .checkAdmin(req.decoded)
+      .then(() => {
+        const bookID = parseInt(req.params.bookId, 10);
+
+        if (!isNaN(bookID)) { // has to be a number really
+          // everyone
+          if (req.body.bookname ||
+            req.body.publishYear ||
+            req.body.ISBN ||
+            req.body.description ||
+            req.body.image) {
+            req.body.id = undefined;
+            // if a non-empty request has been made
+            Books.findOne({ // search for book with id
+              where: {
+                id: bookID,
+              },
+            }).then((bookDetails) => {
+              if (bookDetails === null) { // if a book is not found
+                res.status(400).json({
+                  status: 'Unsuccessful',
+                  message: 'Invalid Book',
+                });
+              } else {
+                bookDetails
+                  .update(req.body)
+                  .then(bookUpdate => res.status(200).json({
+                    status: 'Success',
+                    message: 'Book Details Updated',
+                    data: bookUpdate,
+                  }))
+                  .catch(error => res.status(501).send(error));
+              }
+            }).catch(error => res.status(500).send(error)); // catch error from findone
+          } else {
+            res.status(200).json({
+              status: 'invalid',
+              message: 'no information supplied',
+              data: req.body,
+            });
+          }
+        } else {
+          res.status(404).json({
+            status: 'Unsuccessful',
+            message: 'Invalid',
           });
         }
       })
