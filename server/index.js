@@ -48,12 +48,6 @@ app.post('/api/v4/users/signup', userLoginDetails.signup);
 app.get('/api/v4/users/verify', userLoginDetails.activateUser);
 app.post('/api/v4/users/signin', userLoginDetails.signin);
 
-
-// app.route('');
-// app.get('/test', userLoginDetails.tst);
-
-// app.get('/test/info', userLoginDetails.test2);
-// app.get('/test/ma', checkSession.checkLogin);
 app.delete('/api/users', UserController.clearTable);
 app.delete('/api/v1/books', BookController.deleteAllBooks);
 
@@ -62,6 +56,7 @@ app.get('/', (req, res) => res.status(202).send({
 }));
 
 app.post('/api/v4/authors', checkSession.checkLogin, bookProps.newAuthor);
+app.get('/api/v4/authors', checkSession.checkLogin, bookProps.getAuthors);
 app.post('/api/v4/books', checkSession.checkLogin, bookProps.newBook);
 app.get('/api/v4/books', checkSession.checkLogin, bookProps.viewBooks);
 app.put('/api/v4/books/:bookId', checkSession.checkLogin, bookProps.modifyBook);

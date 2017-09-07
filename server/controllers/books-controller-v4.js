@@ -2,7 +2,7 @@ import {
   Authors,
   Books,
 } from '../models';
-import jwTokens from '../middleware/helpers';
+// import jwTokens from '../middleware/helpers';
 import checkSession from '../middleware/session';
 
 // const userCookieInfo = 'userCookieInfo';
@@ -49,7 +49,6 @@ class bookProps {
   }
   static viewBooks(req, res) {
     const bookID = parseInt(req.query.id, 10);
-
     if (isNaN(bookID)) { // for all books
       Books
         .findAll({
@@ -64,7 +63,7 @@ class bookProps {
           attributes:
           ['id', 'bookName', 'bookISBN',
             'description', 'bookImage',
-            'publishYear', 'bookImage'],
+            'publishYear'],
         })
         .then((allBooks) => {
           if (allBooks === null || allBooks.length === 0) { // if no book is found
@@ -227,7 +226,55 @@ class bookProps {
       });
   }
   static getAuthors(req, res) {
+    const authorID = parseInt(req.query.id, 10);
 
+    if (isNaN(authorID)) { // for all books
+      Authors
+        .findAll({
+          attributes:
+          ['id', 'authorFirstName',
+            'authorLastName',
+            'authorAKA', 'dateofBirth'],
+        })
+        .then((allAuthors) => {
+          if (allAuthors === null || allAuthors.length === 0) { // if no book is found
+            res.status(200).json({
+              status: 'Unsuccessful',
+              message: 'No Authors',
+            });
+          } else {
+            res.status(202).json({
+              status: 'Success',
+              data: allAuthors,
+            });
+          }
+        })
+        .catch(error => res.status(500).json(error)); // catch error from findall
+    } else {
+      Authors
+        .findOne({
+          where: {
+            id: authorID,
+          },
+          include: [{
+            model: Books,
+            where: {
+              isActive: true,
+            },
+            attributes: ['bookName', 'publishYear', 'id'],
+          }],
+          attributes: ['id', 'authorFirstName',
+            'authorLastName',
+            'authorAKA', 'dateofBirth'],
+        })
+        .then((authorInfo) => {
+          res.status(202).json({
+            status: 'Success',
+            data: authorInfo,
+          });
+        })
+        .catch(error => res.status(500).send(error));
+    }
   }
   static updateBookQuantity(req, res) {
     checkSession
