@@ -48,13 +48,18 @@ app.post('/api/v4/users/signup', userLoginDetails.signup);
 app.get('/api/v4/users/verify', userLoginDetails.activateUser);
 app.post('/api/v4/users/signin', userLoginDetails.signin);
 
+// for user - book handling
+app.post('/api/v4/users/:userId/books', checkSession.checkLogin);
+app.get('/api/v4/users/:userId/books', checkSession.checkLogin);
+app.put('/api/v4/users/:userId/books', checkSession.checkLogin);
+
 app.delete('/api/users', UserController.clearTable);
 app.delete('/api/v1/books', BookController.deleteAllBooks);
 
 app.get('/', (req, res) => res.status(202).send({
   message: 'Welcome to Hello-Books',
 }));
-
+// for book stuff
 app.post('/api/v4/authors', checkSession.checkLogin, bookProps.newAuthor);
 app.get('/api/v4/authors', checkSession.checkLogin, bookProps.getAuthors);
 app.post('/api/v4/books', checkSession.checkLogin, bookProps.newBook);
