@@ -494,3 +494,31 @@ describe('PUT /api/v4/books/:bookId version 4', () => {
     });
   });
 });
+describe('GET /api/v4/books version 4', () => {
+  describe('When no book ID is provided (get all books)', () => {
+    it('should return 202 and list all books', (done) => {
+      chai.request(app)
+        .get('/api/v4/books')
+        .end((err, res) => {
+          should.not.exist(err);
+          res.status.should.equal(202);
+          res.type.should.equal('application/json');
+          res.body.status.should.eql('Success');
+          done();
+        });
+    });
+  });
+  describe('When book ID is provided (get all books)', () => {
+    it('should return 202 and info about the Book', (done) => {
+      chai.request(app)
+        .get('/api/v4/books')
+        .end((err, res) => {
+          should.not.exist(err);
+          res.status.should.equal(202);
+          res.type.should.equal('application/json');
+          res.body.status.should.eql('Success');
+          done();
+        });
+    });
+  });
+});

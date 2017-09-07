@@ -34,6 +34,7 @@ module.exports = {
         queryInterface.QueryGenerator.bulkInsertQuery('Authors', [{
           authorFirstName: 'Nil',
           authorLastName: 'Anonymous',
+          authorAKA: 'Anonymous',
           dateofBirth: '1900-01-01',
           createdAt: new Date(),
           updatedAt: new Date(),

@@ -48,11 +48,24 @@ class bookProps {
       });
   }
   static viewBooks(req, res) {
-    const bookID = req.query.id || null;
+    const bookID = parseInt(req.query.id);
 
-    if (bookID === null) { // for all books
+    if (isNaN(bookID)) { // for all books
       Books
-        .findAll({})
+        .findAll({
+          where: {
+            isActive: true,
+          },
+          include: [{
+            model: Authors,
+            attributes: [
+              'authorAKA'],
+          }],
+          attributes:
+          ['bookName', 'bookISBN',
+            'description', 'bookImage',
+            'publishYear', 'bookImage'],
+        })
         .then((allBooks) => {
           if (allBooks === null || allBooks.length === 0) { // if no book is found
             res.status(200).json({
@@ -61,21 +74,33 @@ class bookProps {
             });
           } else {
             res.status(202).json({
-              status: 'Successful',
+              status: 'Success',
               data: allBooks,
             });
           }
         })
         .catch(error => res.status(500).json(error)); // catch error from findall
     } else {
-      /*
       Books
         .findOne({
-
+          where: {
+            isActive: true,
+            id: bookID,
+          },
+          include: [{
+            model: Authors,
+            attributes: ['authorFirstName',
+              'authorLastName',
+              'authorAKA', 'dateofBirth'],
+          }],
         })
-        .then((bookInfo) => { })
-        .catch();
-        */
+        .then((bookInfo) => {
+          res.status(202).json({
+            status: 'Success',
+            data: bookInfo,
+          });
+        })
+        .catch(error => res.status(500).send(error));
     }
   }
   static checkNewBookVariables(bookname,
@@ -271,6 +296,7 @@ class bookProps {
             Books.findOne({ // search for book with id
               where: {
                 id: bookID,
+                isActive: true,
               },
             }).then((bookDetails) => {
               if (bookDetails === null) { // if a book is not found
