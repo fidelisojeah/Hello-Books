@@ -79,3 +79,11 @@ describe('POST /api/v4/authors version 4', () => {
     });
   });
 });
+describe('POST /api/v4/books version 4', () => {
+  before((done) => {
+    chai.request(app).get('/api/v4/users/logout').end(done);
+  });
+  describe('When a valid admin token is proviced', () => {
+
+  });
+});

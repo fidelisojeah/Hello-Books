@@ -62,8 +62,9 @@ app.get('/', (req, res) => res.status(202).send({
 }));
 
 app.post('/api/v4/authors', checkSession.checkLogin, bookProps.newAuthor);
+app.post('/api/v4/books', checkSession.checkLogin, bookProps.newBook);
 
-app.get('/api/v4/test', checkSession.test2);
+// app.get('/api/v4/test', checkSession.test2);
 app.get('/api/v4/users/logout', checkSession.clearLogin);
 
 // set port variable to value of env.Port or default to 8000

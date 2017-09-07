@@ -78,6 +78,36 @@ class bookProps {
         */
     }
   }
+  static checkNewBookVariables(bookname,
+    ISBN,
+    pubYear,
+    desc,
+    bookimage,
+    quantity,
+  ) {
+    return new Promise((resolve, reject) => {
+      if (bookname === null) {
+        reject('No Book Name Supplied');
+      } else if (ISBN === null) {
+        reject('No ISBN Supplied');
+      } else if (desc === null) {
+        reject('No Description Supplied');
+      } else {
+        const newBookDetails = {
+          bookName: bookname,
+          bookISBN: ISBN,
+          description: desc,
+          bookQuantity: quantity,
+          bookImage:
+          (bookimage !== null) ? bookimage :
+            'default.jpg',
+          publishYear: (pubYear !== null) ? pubYear :
+            '1900',
+        };
+        resolve(newBookDetails);// send book details
+      }
+    });
+  }
   static newBook(req, res) {
     checkSession
       .checkAdmin(req.decoded)
@@ -85,12 +115,78 @@ class bookProps {
         const bookQuantity = req.body.quantity || 1;
         const bookImage = req.body.image || null;
         const publishYear = req.body.publishyear || null;
-        const name = req.body.bookname || null;
+        const bookName = req.body.bookname || null;
         const ISBN = req.body.ISBN || null;
         const description = req.body.description || null;
-        let authors = req.body.authorIds || 1; // author or anonymous
-        if (authors !== 1) {
-          authors = authors.split(',');
+        let authors = req.body.authorIds || '1'; // author or anonymous
+        authors = authors.split(',').map(Number); // convert to object array
+
+        if (authors.every(x => !isNaN(x) && x > 0)) {
+          // true if every element is int
+          bookProps.checkNewBookVariables(bookName,
+            ISBN,
+            publishYear,
+            description,
+            bookImage,
+            bookQuantity,
+          )
+            .then((completeBookDetails) => {
+              // if book details are verified complete
+              if (completeBookDetails) {
+                /*
+                Books
+                  .create(completeBookDetails)
+                  .then(createdBook => {
+
+                  })
+                  */
+                Authors
+                  .findAll({
+                    where: {
+                      id: authors,
+                    },
+                  })
+                  .then((bookAuthors) => {
+                    if (bookAuthors && bookAuthors !== null) {
+                      Books
+                        .create(completeBookDetails)
+                        .then((createdBook) => {
+                          createdBook
+                            .addAuthor(bookAuthors)
+                            .then(() =>
+                              res.status(201).json({
+                                status: 'Success',
+                                message: 'Book Created Successfully',
+                                bookID: createdBook.dataValues.id,
+                              }))
+                            .catch(error => res.status(501).send(error));
+                        })
+                        .catch();
+                    } else {
+                      res.status(400).json({
+                        status: 'Unsuccessful',
+                        message: 'No Author found',
+                      });
+                    }
+                  })
+                  .catch(error => res.status(501).send(error));
+              } else {
+                res.status(501).json({
+                  status: 'Unsuccessful',
+                  message: 'Server error try again',
+                });
+              }
+            })
+            .catch(error =>// display error
+              res.status(400).json({
+                status: 'Unsuccessful',
+                message: error,
+              }));
+        } else {
+          res.status(400).json({
+            status: 'Unsuccessful',
+            message: 'Invalid Authors',
+          });
         }
       })
       .catch((error) => {
@@ -152,7 +248,6 @@ class bookProps {
         });
       });
   }
-  static
 }
 
 export default bookProps;
