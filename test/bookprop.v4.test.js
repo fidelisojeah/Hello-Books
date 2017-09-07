@@ -509,7 +509,7 @@ describe('GET /api/v4/books version 4', () => {
         });
     });
   });
-  describe('When book ID is provided (get all books)', () => {
+  describe('When book ID is provided (get book and author info)', () => {
     it('should return 202 and info about the Book', (done) => {
       chai.request(app)
         .get('/api/v4/books')
@@ -586,6 +586,36 @@ describe('POST /api/v4/books/:bookId/quantity version 4', () => {
           res.type.should.equal('application/json');
           res.body.status.should.eql('Success');
           res.body.message.should.eql('Book Updated Successfully');
+          done();
+        });
+    });
+  });
+});
+describe('GET /api/v4/authors version 4', () => {
+  describe('When no author ID is provided (get all authors)', () => {
+    it('should return 202 and list all books', (done) => {
+      chai.request(app)
+        .get('/api/v4/authors')
+        .set('x-access-token', goodToken)
+        .end((err, res) => {
+          should.not.exist(err);
+          res.status.should.equal(202);
+          res.type.should.equal('application/json');
+          res.body.status.should.eql('Success');
+          done();
+        });
+    });
+  });
+  describe('When author ID is provided get author and books', () => {
+    it('should return 202 and info about the author', (done) => {
+      chai.request(app)
+        .get('/api/v4/authors')
+        .set('x-access-token', goodToken)
+        .end((err, res) => {
+          should.not.exist(err);
+          res.status.should.equal(202);
+          res.type.should.equal('application/json');
+          res.body.status.should.eql('Success');
           done();
         });
     });
