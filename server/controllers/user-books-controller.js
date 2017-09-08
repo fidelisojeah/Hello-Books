@@ -242,9 +242,19 @@ class userBookInteraction {
                   });
                 } else {
                   BookLendings
-                    .findById(lendId)
+                    .findOne({
+                      where: {
+                        id: lendId,
+                      },
+                    })
                     .then((foundLentBook) => {
-                      if (foundLentBook &&
+                      if (!foundLentBook) {
+                        res.status(404).json({
+                          status: 'Unsuccessful',
+                          message: 'No records found',
+                        });
+                      } else if (foundLentBook &&
+                        foundLentBook.length > 0 &&
                         foundLentBook.actualReturnDate === null) {
                         // if lent book is found
                         if (foundLentBook.bookId === bookId &&
