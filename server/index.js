@@ -50,9 +50,15 @@ app.get('/api/v4/users/verify', userLoginDetails.activateUser);
 app.post('/api/v4/users/signin', userLoginDetails.signin);
 
 // for user - book handling
-app.post('/api/v4/users/:userId/books', checkSession.checkLogin, userBookInteraction.borrowBook);
-app.get('/api/v4/users/:userId/books', checkSession.checkLogin, userBookInteraction.viewBorrowedBook);
-app.put('/api/v4/users/:userId/books', checkSession.checkLogin);
+app.post('/api/v4/users/:userId/books',
+  checkSession.checkLogin,
+  userBookInteraction.borrowBook);
+app.get('/api/v4/users/:userId/books',
+  checkSession.checkLogin,
+  userBookInteraction.viewBorrowedBook);
+app.put('/api/v4/users/:userId/books',
+  checkSession.checkLogin,
+  userBookInteraction.returnBook);
 
 app.delete('/api/users', UserController.clearTable);
 app.delete('/api/v1/books', BookController.deleteAllBooks);
