@@ -71,7 +71,7 @@ class userBookInteraction {
                       ],
                     })
                     .then((bookLends) => {
-                      if (bookLends) {
+                      if (bookLends && bookLends.length > 0) {
                         res.status(202).json({
                           status: 'Success',
                           data: bookLends,

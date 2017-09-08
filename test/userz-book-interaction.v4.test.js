@@ -14,6 +14,13 @@ const goodToken = jwt.sign({
   lastName: 'User',
   role: 'Admin',
 }, app.settings.JsonSecret);
+const goodToken2 = jwt.sign({
+  userId: 2,
+  username: 'SomebodyElse',
+  firstName: 'Somebody',
+  lastName: 'Else',
+  role: 'User',
+}, app.settings.JsonSecret);
 const goodTokenInvalidUser = jwt.sign({
   userId: 40,
   username: 'adminUser',
@@ -129,6 +136,23 @@ describe('POST /api/v4/users/:userId/books version 4', () => {
           done();
         });
     });
+    it('should return 202 Successfully Borrowed', (done) => {
+      chai.request(app)
+        .post('/api/v4/users/1/books')
+        .set('x-access-token', goodToken)
+        .send({
+          bookId: 1,
+          duedate: due,
+        })
+        .end((err, res) => {
+          should.not.exist(err);// or not
+          res.status.should.equal(202);
+          res.type.should.equal('application/json');
+          res.body.status.should.eql('Success');
+          res.body.message.should.eql('Book Successfully Borrowed');
+          done();
+        });
+    });
     describe('When Book is not available', () => {
       it('should return 200 Book Unavailable', (done) => {
         chai.request(app)
@@ -148,6 +172,97 @@ describe('POST /api/v4/users/:userId/books version 4', () => {
           });
       });
     });
+  });
+});
+describe('GET /api/v4/users/:userId/books version 4', () => {
+  describe('When incomplete Information is provided', () => {
+    it('should return 404 invalid User Id', (done) => {
+      chai.request(app)
+        .get('/api/v4/users/q/books')
+        .set('x-access-token', goodToken)
+        .end((err, res) => {
+          should.exist(err);// or not
+          res.status.should.equal(404);
+          res.type.should.equal('application/json');
+          res.body.status.should.eql('Unsuccessful');
+          res.body.message.should.eql('Invalid User id');
+          done();
+        });
+    });
+  });
+  describe('When Complete Information is provided', () => {
+    it('should return 401 when wrong user tries to access borrowed books', (done) => {
+      chai.request(app)
+        .get('/api/v4/users/3/books')// doesn't match token
+        .set('x-access-token', goodToken)
+        .end((err, res) => {
+          should.exist(err);// or not
+          res.status.should.equal(401);
+          res.type.should.equal('application/json');
+          res.body.status.should.eql('Unsuccessful');
+          res.body.message.should.eql('Not Allowed');
+          done();
+        });
+    });
+    it('should return 401 when invalid user tries to view borrowed books', (done) => {
+      chai.request(app)
+        .get('/api/v4/users/40/books')// doesn't match token
+        .set('x-access-token', goodTokenInvalidUser)
+        .end((err, res) => {
+          should.exist(err);// or not
+          res.status.should.equal(401);
+          res.type.should.equal('application/json');
+          res.body.status.should.eql('Unsuccessful');
+          res.body.message.should.eql('Not Allowed');
+          done();
+        });
+    });
+    it('should return 200 Unsuccessful when User hasn\'t borrowed any books', (done) => {
+      chai.request(app)
+        .get('/api/v4/users/2/books')// doesn't match token
+        .set('x-access-token', goodToken2)
+        .end((err, res) => {
+          should.not.exist(err);// or not
+          res.status.should.equal(200);
+          res.type.should.equal('application/json');
+          res.body.status.should.eql('Unsuccessful');
+          res.body.message.should.eql('No borrowed Books');
+          done();
+        });
+    });
+    it('should return 202 and book list', (done) => {
+      chai.request(app)
+        .get('/api/v4/users/1/books')
+        .set('x-access-token', goodToken)
+        .end((err, res) => {
+          should.not.exist(err);// or not
+          res.status.should.equal(202);
+          res.type.should.equal('application/json');
+          res.body.status.should.eql('Success');
+          done();
+        });
+    });
+    /*
+    describe('When Returned is specified', () => {
+      it('should return 200 Book Unavailable', (done) => {
+        chai.request(app)
+          .post('/api/v4/users/1/books')
+          .set('x-access-token', goodToken)
+          .send({
+            bookId: 2,
+            duedate: due,
+          })
+          .end((err, res) => {
+            should.not.exist(err);// or not
+            res.status.should.equal(200);
+            res.type.should.equal('application/json');
+            res.body.status.should.eql('Unsuccessful');
+            res.body.message.should.eql('Book Unavailable');
+            done();
+          });
+      });   
+    });
+    */
   });
 });
 // .set('x-access-token', goodToken)
