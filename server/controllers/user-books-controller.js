@@ -132,6 +132,7 @@ class userBookInteraction {
                     id: userId,
                     isActive: true,
                   },
+                  attributes: ['id'],
                 }) // search for user
                 .then((userLoginDetails) => {
                   if (!userLoginDetails) {
@@ -233,6 +234,7 @@ class userBookInteraction {
                   id: userId,
                   isActive: true,
                 },
+                attributes: ['id'],
               }) // search for user
               .then((userLoginDetails) => {
                 if (!userLoginDetails) {
@@ -254,7 +256,7 @@ class userBookInteraction {
                           message: 'No records found',
                         });
                       } else if (foundLentBook &&
-                        foundLentBook.length > 0 &&
+                        // foundLentBook.length > 0 &&
                         foundLentBook.actualReturnDate === null) {
                         // if lent book is found
                         if (foundLentBook.bookId === bookId &&
@@ -281,7 +283,7 @@ class userBookInteraction {
                                       })])
                                   .then(([lendUpdate, borrowUpdate]) => {
                                     if (lendUpdate && borrowUpdate) {
-                                      res.status(200).json({// return info
+                                      res.status(202).json({// return info
                                         status: 'Success',
                                         message: {
                                           Bookname: borrowedBook.bookName,
