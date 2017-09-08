@@ -3,8 +3,6 @@ import {
   Books,
   BookLendings,
 } from '../models';
-import jwTokens from '../middleware/helpers';
-import checkSession from '../middleware/session';
 
 class userBookInteraction {
   static validateEntry(

@@ -242,31 +242,9 @@ describe('GET /api/v4/users/:userId/books version 4', () => {
           res.status.should.equal(202);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Success');
-          console.log(res.body.data);
           done();
         });
     });
-    /*
-    describe('When Returned is specified', () => {
-      it('should return 200 Book Unavailable', (done) => {
-        chai.request(app)
-          .post('/api/v4/users/1/books')
-          .set('x-access-token', goodToken)
-          .send({
-            bookId: 2,
-            duedate: due,
-          })
-          .end((err, res) => {
-            should.not.exist(err);// or not
-            res.status.should.equal(200);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Book Unavailable');
-            done();
-          });
-      });
-    });
-    */
   });
 });
 describe('PUT /api/v4/users/:userId/books version 4', () => {
