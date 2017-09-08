@@ -15,6 +15,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      authorAKA: {
+        type: Sequelize.STRING,
+      },
       dateofBirth: {
         type: Sequelize.DATEONLY,
       },
@@ -31,6 +34,7 @@ module.exports = {
         queryInterface.QueryGenerator.bulkInsertQuery('Authors', [{
           authorFirstName: 'Nil',
           authorLastName: 'Anonymous',
+          authorAKA: 'Anonymous',
           dateofBirth: '1900-01-01',
           createdAt: new Date(),
           updatedAt: new Date(),

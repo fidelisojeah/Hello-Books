@@ -11,11 +11,10 @@ before_script:
   - psql -c 'drop database if exists dbhellobooks_test;' -U postgres
   - psql -c 'create database dbhellobooks_test;' -U postgres
   - psql -c "create user usrhello with login password 'HelloBooksPassword$';" -U postgres
-  - sequelize db:migrate:undo:all
-  - sequelize db:migrate
 
 env:
   - NODE_ENV=test
 
-script:
-  - NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+after_success:
+  - npm run coverage
+  - codeclimate-test-reporter < coverage/lcov.info

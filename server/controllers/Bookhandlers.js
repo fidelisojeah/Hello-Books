@@ -83,7 +83,9 @@ exports.updateBookQuantity = (req, res) => { // modifybook quantity
         });
       } else { // if addQuant is set then add
         bookDetails.update({
-          bookQuantity: (bookDetails.bookQuantity + bookQuantity) < 1 ? 1 : (bookDetails.bookQuantity + bookQuantity),
+          bookQuantity:
+            (bookDetails.bookQuantity + bookQuantity) < 1 ? 1 :
+            (bookDetails.bookQuantity + bookQuantity),
           // Never less than 1
         }).then(
           addBook => res.status(200).json({

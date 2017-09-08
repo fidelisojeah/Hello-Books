@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       default: 1,
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNulls: false,
     },
     bookImage: {

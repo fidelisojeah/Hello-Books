@@ -2,3 +2,9 @@ node_modules/
 .vscode/
 .DS_Store
 dist
+package-lock.json
+.env
+build/
+.nyc_output/
+coverage/
+lib/
