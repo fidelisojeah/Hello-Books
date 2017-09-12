@@ -12,10 +12,11 @@
     "build": "babel server -d build",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "test": "NODE_ENV=test mocha --compilers js:babel-register",
-    "start:dev": "nodemon ./server/index.js --exec babel-node --presets es2015,stage-2",
+    "test:front": "mocha --reporter progress tools/testSetup.js \"client/src/**/*.test.js\"",
+    "start:dev": "nodemon ./server/index.js --watch server/ --exec babel-node --presets es2015,stage-2",
     "start": "babel-node ./server/index.js",
     "server": "nodemon --exec babel-node -- ./bin/index.js",
-    "start:front": "webpack-dev-server --open --config ./webpack.config.js"
+    "start:front": "webpack-dev-server --open --config ./webpack.config.dev.js"
   },
   "repository": {
     "type": "git",
@@ -92,6 +93,7 @@
     "eslint-config-airbnb": "^15.1.0",
     "express": "^4.15.3",
     "express-session": "^1.15.5",
+    "jsdom": "^11.2.0",
     "jsonwebtoken": "^7.4.1",
     "lodash": "^4.17.4",
     "markdownlint-cli": "^0.3.1",
@@ -115,6 +117,5 @@
   "main": "index.js",
   "directories": {
     "test": "test"
-  },
-  "proxy": "http://localhost:3000"
+  }
 }
