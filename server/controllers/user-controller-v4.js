@@ -21,25 +21,55 @@ class userLoginDetails {
   ) {
     return new Promise((resolve, reject) => { // async
       if (username === null) {
-        reject('Username Invalid');
+        reject({
+            message: 'Username Invalid',
+            field: 'username',
+          });
       } else if (password === null) {
-        reject('Password Invalid');
+        reject({
+          message: 'Password Invalid',
+          field: 'password',
+        });
       } else if (email === null) {
-        reject('No email Provided');
+        reject({
+          message: 'No email Provided',
+          field: 'email',
+        });
       } else if (firstname === null) {
-        reject('First Name Invalid');
+        reject({
+          message: 'First Name Invalid',
+          field: 'firstname',
+        });
       } else if (lastname === null) {
-        reject('Last Name Invalid');
+        reject({
+          message: 'Last Name Invalid',
+          field: 'lastname',
+        });
       } else if (!validateEmail(email)) {
-        reject('Email Address invalid');
+        reject({
+          message: 'Email Address invalid',
+          field: 'email'
+        });
       } else if (username.length < 2) {
-        reject('Username too short');
+        reject({
+          message: 'Username too short',
+          field: 'username',
+      });
       } else if (password.length < 6) {
-        reject('Password too short');
+        reject({
+          message: 'Password too short',
+          field: 'password',
+        });
       } else if (lastname.length < 2) {
-        reject('Last Name too short');
+        reject({
+          message: 'Last Name too short',
+          field: 'lastname',
+        });
       } else if (firstname.length < 2) {
-        reject('First Name too short');
+        reject({
+          message: 'First Name too short',
+          field: 'firstname',
+        });
       } else {
         // generate random string
         jwTokens.randomString()
@@ -52,13 +82,25 @@ class userLoginDetails {
   static validateSignin(username, password) {
     return new Promise((resolve, reject) => {
       if (username === null) {
-        reject('No username supplied');
+        reject({
+          message: 'No username supplied',
+          field: 'username',
+        });
       } else if (username.length < 2) {
-        reject('Invalid Username');
+        reject({
+          message: 'Invalid Username',
+          field: 'username'
+        });
       } else if (password === null) {
-        reject('No Password supplied');
+        reject({
+          message: 'No Password supplied',
+          field: 'password',
+        });
       } else if (password.length < 6) {
-        reject('Invalid Password');
+        reject({
+          message: 'Invalid Password',
+          field: 'password'
+        });
       } else {
         resolve('Valid Details');
       }
@@ -171,7 +213,8 @@ class userLoginDetails {
       .catch(error => // if information is incomplete
         res.status(400).json({
           status: 'Unsuccessful',
-          message: error,
+          message: error.message,
+          errorField: error.field,
         }),
     );
   }
@@ -357,7 +400,8 @@ class userLoginDetails {
       .catch((error) => {
         res.status(400).json({
           status: 'Unsuccessful',
-          message: error,
+          message: error.message,
+          errorField: error.field,
         });
       });
   }
