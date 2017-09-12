@@ -15,7 +15,7 @@
     "start:dev": "nodemon ./server/index.js --exec babel-node --presets es2015,stage-2",
     "start": "babel-node ./server/index.js",
     "server": "nodemon --exec babel-node -- ./bin/index.js",
-    "start:front": "webpack-dev-server --open"
+    "start:front": "webpack-dev-server --open --config ./webpack.config.js"
   },
   "repository": {
     "type": "git",

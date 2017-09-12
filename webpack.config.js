@@ -12,7 +12,7 @@ module.exports = {
   ],
   output: {
     filename: '[name]bundle.js',
-    path: path.resolve(__dirname, 'client/dist'),
+    path: path.resolve(__dirname, './client/dist'),
     publicPath: '/',
   },
   resolve: {
@@ -37,7 +37,7 @@ module.exports = {
     new CleanWebpackPlugin(['client/dist']),
     new HtmlWebpackPlugin({
       title: 'Hello-Books',
-      template: 'client/my-index.ejs',
+      template: './client/my-index.ejs',
       inject: 'body',
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
@@ -92,6 +92,10 @@ module.exports = {
       },
       {
         test: /\.jsx?$/,
+        include: [
+          path.join(__dirname, 'client'),
+          path.join(__dirname, 'server/helpers'),
+        ],
         loader: 'babel-loader',
         exclude: /node_modules/,
         query: {
@@ -101,8 +105,14 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        include: path.join(__dirname, 'client'),
-        loaders: ['react-hot-loader', 'babel-loader'],
+        include: [
+          path.join(__dirname, 'client'),
+          path.join(__dirname, 'server/helpers'),
+        ],
+        loaders: [
+          'react-hot-loader',
+          'babel-loader',
+        ],
       },
     ],
   },

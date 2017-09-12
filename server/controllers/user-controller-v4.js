@@ -5,107 +5,11 @@ import {
 } from '../models';
 import jwTokens from '../middleware/helpers';
 import checkSession from '../middleware/session';
+import userHelper from '../helpers/user-signup';
 
-// email validation here
-const emailRegex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
-const validateEmail = emailAddress =>
-  emailRegex.test(emailAddress); // returns true or false
 
 class userLoginDetails {
   // validates signup info
-  static validateSignup(username,
-    password,
-    lastname,
-    firstname,
-    email,
-  ) {
-    return new Promise((resolve, reject) => { // async
-       if (firstname === null) {
-        reject({
-          message: 'First Name Invalid',
-          field: 'firstname',
-        });
-      }else if (firstname.length < 2) {
-        reject({
-          message: 'First Name too short',
-          field: 'firstname',
-        });
-      } else if (lastname === null) {
-        reject({
-          message: 'Last Name Invalid',
-          field: 'lastname',
-        });
-      } else if (lastname.length < 2) {
-        reject({
-          message: 'Last Name too short',
-          field: 'lastname',
-        });
-      } else if (username === null) {
-        reject({
-            message: 'Username Invalid',
-            field: 'username',
-          });
-      } else if (username.length < 2) {
-        reject({
-          message: 'Username too short',
-          field: 'username',
-      });
-      } else if (email === null) {
-        reject({
-          message: 'No email Provided',
-          field: 'email',
-        });
-      }  else if (!validateEmail(email)) {
-        reject({
-          message: 'Email Address invalid',
-          field: 'email'
-        });
-      } else if (password === null) {
-        reject({
-          message: 'Password Invalid',
-          field: 'password',
-        });
-      } else if (password.length < 6) {
-        reject({
-          message: 'Password too short',
-          field: 'password',
-        });
-      } else {
-        // generate random string
-        jwTokens.randomString()
-          .then(randBuf =>
-            resolve(randBuf))
-          .catch(error => reject(error));
-      }
-    });
-  }
-  static validateSignin(username, password) {
-    return new Promise((resolve, reject) => {
-      if (username === null) {
-        reject({
-          message: 'No username supplied',
-          field: 'username',
-        });
-      } else if (username.length < 2) {
-        reject({
-          message: 'Invalid Username',
-          field: 'username'
-        });
-      } else if (password === null) {
-        reject({
-          message: 'No Password supplied',
-          field: 'password',
-        });
-      } else if (password.length < 6) {
-        reject({
-          message: 'Invalid Password',
-          field: 'password'
-        });
-      } else {
-        resolve('Valid Details');
-      }
-    });
-  }
   static validateActivationToken(verifiedToken, userName) {
     return new Promise((resolve, reject) => {
       if (verifiedToken.username.toLowerCase() !== userName.toLowerCase()) {
@@ -130,80 +34,86 @@ class userLoginDetails {
     const phone = req.body.phone || null;
     const userName = req.body.username || null;
 
-    userLoginDetails
+    userHelper
       .validateSignup(userName,
       password, lastName, firstName, email,
     )
-      .then((activationBuf) => {
-        if (activationBuf) { // if Vaild
-          bcrypt
-            .hash(password, 8) // hash password
-            .then((hashPassword) => {
-              if (!hashPassword) {
-                res.status(500).json({
-                  status: 'unsuccessful',
-                });
-              } else { // if successfully hashed
-                UserDetails
-                  .create({
-                    firstname: firstName,
-                    lastname: lastName,
-                    emailaddress: email.toLowerCase(),
-                    phonenumber: phone,
-                    username: userName.toLowerCase(),
-                    password: hashPassword,
-                    authString: activationBuf,
-                  })
-                  .then((userSignup) => {
-                    Memberships
-                      .findById(1)
-                      .then((setMembershipDetails) => {
-                        userSignup
-                          .setMembership(setMembershipDetails)
-                          .then((signupData) => {
-                            // Add user info to token
-                            const tokenInfo = {
-                              username: signupData.dataValues.username,
-                              userId: signupData.dataValues.id,
-                              email: signupData.dataValues.emailaddress,
-                              authString: activationBuf,
-                            };
-                            jwTokens
-                              .generateToken(
-                              req.app.get('JsonSecret'),
-                              tokenInfo,
-                              '24h') // expires in 24hours
-                              .then((signupToken) => {
-                                if (signupToken) { // for verification things
-                                  res.status(201).json({
-                                    status: 'Success',
-                                    message: 'User account created',
-                                    membership: setMembershipDetails.membershipName,
-                                    token: signupToken, // would be part of mail
-                                  });
-                                }
-                              })
-                              .catch(error => // if unsuccessful token
-                                res.status(202).json({
-                                  status: 'none',
-                                  message: 'User account created Token unsuccessful',
-                                  membership: setMembershipDetails.membershipName,
-                                  errorMsg: error,
-                                }));
-                          }).catch(error => res.status(400).send(error));
-                        // set membership unsuccessful
-                      }).catch(error => res.status(400).json({
+      .then((activation) => {
+        if (activation === 'All Good') { // if Vaild
+          jwTokens
+            .randomString()
+            .then((activationBuf) => {
+              bcrypt
+                .hash(password, 8) // hash password
+                .then((hashPassword) => {
+                  if (!hashPassword) {
+                    res.status(500).json({
+                      status: 'unsuccessful',
+                    });
+                  } else { // if successfully hashed
+                    UserDetails
+                      .create({
+                        firstname: firstName,
+                        lastname: lastName,
+                        emailaddress: email.toLowerCase(),
+                        phonenumber: phone,
+                        username: userName.toLowerCase(),
+                        password: hashPassword,
+                        authString: activationBuf,
+                      })
+                      .then((userSignup) => {
+                        Memberships
+                          .findById(1)
+                          .then((setMembershipDetails) => {
+                            userSignup
+                              .setMembership(setMembershipDetails)
+                              .then((signupData) => {
+                                // Add user info to token
+                                const tokenInfo = {
+                                  username: signupData.dataValues.username,
+                                  userId: signupData.dataValues.id,
+                                  email: signupData.dataValues.emailaddress,
+                                  authString: activationBuf,
+                                };
+                                jwTokens
+                                  .generateToken(
+                                  req.app.get('JsonSecret'),
+                                  tokenInfo,
+                                  '24h') // expires in 24hours
+                                  .then((signupToken) => {
+                                    if (signupToken) { // for verification things
+                                      res.status(201).json({
+                                        status: 'Success',
+                                        message: 'User account created',
+                                        membership: setMembershipDetails.membershipName,
+                                        token: signupToken, // would be part of mail
+                                      });
+                                    }
+                                  })
+                                  .catch(error => // if unsuccessful token
+                                    res.status(202).json({
+                                      status: 'none',
+                                      message: 'User account created Token unsuccessful',
+                                      membership: setMembershipDetails.membershipName,
+                                      errorMsg: error,
+                                    }));
+                              }).catch(error => res.status(400).send(error));
+                            // set membership unsuccessful
+                          }).catch(error => res.status(400).json({
+                            status: 'Unsuccessful',
+                            message: error.errors[0].message,
+                          }));
+                      })
+                      .catch(error => res.status(400).json({
                         status: 'Unsuccessful',
                         message: error.errors[0].message,
                       }));
-                  })
-                  .catch(error => res.status(400).json({
-                    status: 'Unsuccessful',
-                    message: error.errors[0].message,
-                  }));
-              }
-            }) // unsuccessful hash
-            .catch(error => res.status(500).send(error));
+                  }
+                }) // unsuccessful hash
+                .catch(error => res.status(500).send(error));
+            })
+            .catch(error =>
+              res.status(501).send(error));
         } else {
           res.status(400).json({
             status: 'Unsuccessful',
@@ -307,7 +217,7 @@ class userLoginDetails {
   static signin(req, res) {
     const password = req.body.password || null;
     const userName = req.body.username || null;
-    userLoginDetails
+    userHelper
       .validateSignin(userName, password)
       .then((validated) => {
         if (validated === 'Valid Details') {

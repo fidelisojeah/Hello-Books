@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-// import axios from 'axios';
+
+import userHelper from '../../../server/helpers/user-signup';
 
 class SignupForm extends React.Component {
   constructor(props) {
@@ -25,24 +26,36 @@ class SignupForm extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   }
   onSubmit(e) {
-    this.setState({ errors: {}, isLoading: true });
     e.preventDefault();
-    this.props.userSignupRequest(this.state)
-      .then((response) => {
-        console.log(response);
+    userHelper.validateSignup(this.state.username,
+      this.state.password,
+      this.state.lastname,
+      this.state.firstname,
+      this.state.email)
+      .then(() => {
+        this.setState({ errors: {}, isLoading: true });
+        this.props.userSignupRequest(this.state)
+          .then((response) => {
+            this.setState({ response: response.data, isLoading: false });
+          })
+          .catch((error) => {
+            if (error.response) {
+              this.setState({ errors: error.response.data, isLoading: false });
+            } else if (error.request) {
+              this.setState({ errors: error.request, isLoading: false });
+            } else {
+              this.setState({ errors: error.message, isLoading: false });
+            }
+          });
       })
       .catch((error) => {
-        if (error.response) {
-          // error.response.data. status, message
-          // console.log(error.response);
-          this.setState({ errors: error.response.data, isLoading: false });
-        } else if (error.request) {
-          console.log(error.request);
-        } else {
-          console.log(error.message);
-        }
+        this.setState({
+          errors: {
+            errorField: error.field,
+            message: error.message,
+          },
+        });
       });
-    // axios.post('/api/v4/users/signup', this.state);
   }
   render() {
     const { errors } = this.state;
