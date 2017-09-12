@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 
 import userHelper from '../../../server/helpers/user-signup';
+import TextField from './common/TextField';
 
 class SignupForm extends React.Component {
   constructor(props) {
@@ -62,99 +62,93 @@ class SignupForm extends React.Component {
     return (
       <form onSubmit={this.onSubmit}>
         <div className="row">
-          <div className={classnames('form-group col-xs-6', { 'has-error': errors.errorField === 'firstname' })}>
-            <input
-              type="text"
-              value={this.state.firstname}
-              required="required"
-              name="firstname"
-              onChange={this.onChange}
-            />
-            <label className="control-label" htmlFor="input">First Name</label>
-            <i className="bar" />
-            {errors.errorField === 'firstname' && <div className="error-field">{errors.message}</div>}
-          </div>
-          <div className={classnames('form-group col-xs-6', { 'has-error': errors.errorField === 'lastname' })}>
-            <input
-              type="text"
-              value={this.state.lastname}
-              required="required"
-              name="lastname"
-              onChange={this.onChange}
-            />
-            <label className="control-label" htmlFor="input">Last Name</label>
-            <i className="bar" />
-            {errors.errorField === 'lastname' && <div className="error-field">{errors.message}</div>}
-          </div>
+          <TextField
+            errorField={errors.errorField}
+            errorMessage={errors.message}
+            label="First Name"
+            field="firstname"
+            onChange={this.onChange}
+            value={this.state.firstname}
+            formField="form-group col-xs-6"
+            isReq
+            type="text"
+          />
+          <TextField
+            errorField={errors.errorField}
+            errorMessage={errors.message}
+            label="Last Name"
+            field="lastname"
+            onChange={this.onChange}
+            value={this.state.lastname}
+            formField="form-group col-xs-6"
+            isReq
+            type="text"
+          />
         </div>
         <div className="row">
-          <div className={classnames('form-group', { 'has-error': errors.errorField === 'username' })}>
-            <input
-              value={this.state.username}
-              type="text"
-              required="required"
-              name="username"
-              onChange={this.onChange}
-            />
-            <label className="control-label" htmlFor="input">Username</label>
-            <i className="bar" />
-            {errors.errorField === 'username' && <div className="error-field">{errors.message}</div>}
-          </div>
+          <TextField
+            errorField={errors.errorField}
+            errorMessage={errors.message}
+            label="Username"
+            field="username"
+            onChange={this.onChange}
+            value={this.state.username}
+            formField="form-group"
+            isReq
+            type="text"
+          />
         </div>
         <div className="row">
-          <div className={classnames('form-group', { 'has-error': errors.errorField === 'email' })}>
-            <input
-              type="email"
-              value={this.state.email}
-              required="required"
-              name="email"
-              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
-              onChange={this.onChange}
-            />
-            <label className="control-label" htmlFor="input">Email Address</label>
-            <i className="bar" />
-            {errors.errorField === 'email' && <div className="error-field">{errors.message}</div>}
-          </div>
+          <TextField
+            errorField={errors.errorField}
+            errorMessage={errors.message}
+            label="Email Address"
+            field="email"
+            onChange={this.onChange}
+            value={this.state.email}
+            formField="form-group"
+            isReq
+            type="email"
+          />
         </div>
         <div className="row">
-          <div className="form-group">
-            <input
-              type="phone"
-              value={this.state.phone}
-              name="phone"
-              onChange={this.onChange}
-            />
-            <label className="control-label" htmlFor="input">Phone Number</label>
-            <i className="bar" />
-          </div>
+          <TextField
+            errorField={errors.errorField}
+            errorMessage={errors.message}
+            label="Phone Number"
+            field="phone"
+            onChange={this.onChange}
+            value={this.state.phone}
+            formField="form-group"
+            isReq={false}
+            type="phone"
+          />
         </div>
         <div className="row">
-          <div className={classnames('form-group', { 'has-error': errors.errorField === 'password' })}>
-            <input
-              type="password"
-              value={this.state.password}
-              required="required"
-              name="password"
-              onChange={this.onChange}
-            />
-            <label className="control-label" htmlFor="input">Password</label>
-            <i className="bar" />
-            {errors.errorField === 'password' && <div className="error-field">{errors.message}</div>}
-          </div>
+          <TextField
+            errorField={errors.errorField}
+            errorMessage={errors.message}
+            label="Password"
+            field="password"
+            onChange={this.onChange}
+            value={this.state.password}
+            formField="form-group"
+            isReq
+            type="password"
+          />
         </div>
         <div className="row">
-          <div className={classnames('form-group', { 'has-error': errors.errorField === 'username' })}>
-            <input
-              type="password"
-              value={this.state.passwordConfirmation}
-              required="required"
-              name="passwordConfirmation"
-              onChange={this.onChange}
-            />
-            <label className="control-label" htmlFor="input">Confirm Password</label>
-            <i className="bar" />
-            <div className="error-field" />
-          </div>
+          <TextField
+            errorField={errors.errorField}
+            errorMessage={errors.message}
+            label="Confirm Password"
+            field="passwordConfirmation"
+            onChange={this.onChange}
+            value={this.state.passwordConfirmation}
+            formField="form-group"
+            isReq
+            type="password"
+          />
         </div>
         <div className="button-container">
           <button disabled={this.state.isLoading} className="button btn">
