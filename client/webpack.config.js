@@ -8,11 +8,11 @@ const webpack = require('webpack');
 module.exports = {
   entry: [
     // 'webpack-hot-middleware/client',
-    './client/src/index.jsx',
+    './src/index.jsx',
   ],
   output: {
     filename: '[name]bundle.js',
-    path: path.resolve(__dirname, 'client/dist'),
+    path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
   },
   resolve: {
@@ -34,10 +34,10 @@ module.exports = {
     },
   },
   plugins: [
-    new CleanWebpackPlugin(['client/dist']),
+    new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       title: 'Hello-Books',
-      template: 'client/my-index.ejs',
+      template: 'my-index.ejs',
       inject: 'body',
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
