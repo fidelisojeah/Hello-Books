@@ -10,7 +10,7 @@ export default userSignupRequest;
 */
 
 export function userSignupRequest(userData) {
-  return (dispatch) => {
+  return dispatch => {
     return axios.post('/api/v4/users/signup', userData);
   };
 }

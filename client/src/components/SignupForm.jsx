@@ -1,6 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/*import {
+  browserHistory,
+} from 'react-router-dom';
+*/
 import userHelper from '../../../server/helpers/user-signup';
 import TextField from './common/TextField';
 
@@ -27,16 +31,20 @@ class SignupForm extends React.Component {
   }
   onSubmit(e) {
     e.preventDefault();
-    userHelper.validateSignup(this.state.username,
+    userHelper
+      .validateSignup(this.state.username,
       this.state.password,
       this.state.lastname,
       this.state.firstname,
       this.state.email)
       .then(() => {
         this.setState({ errors: {}, isLoading: true });
-        this.props.userSignupRequest(this.state)
+        this.props
+          .userSignupRequest(this.state)
           .then((response) => {
-            this.setState({ response: response.data, isLoading: false });
+            this.context.router.push('/');
+            //    browserHistory.push('/');// should redirect to signup successful
+            //    this.setState({ response: response.data, isLoading: false });
           })
           .catch((error) => {
             if (error.response) {
@@ -161,5 +169,8 @@ class SignupForm extends React.Component {
 }
 SignupForm.propTypes = {
   userSignupRequest: PropTypes.func.isRequired,
+};
+SignupForm.contextTypes = {
+  router: PropTypes.object.isRequired,
 };
 export default SignupForm;

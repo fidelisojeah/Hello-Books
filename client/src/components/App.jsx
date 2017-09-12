@@ -1,10 +1,9 @@
 import _ from 'lodash';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+
 import Header from './Header';
 import Footer from './Footer';
-
-// import '../style.scss';
 
 class App extends React.Component {
   constructor(props) {
@@ -26,4 +25,9 @@ class App extends React.Component {
     );
   }
 }
+/*
+App.PropTypes = {
+  children: PropTypes.object.isRequired,
+};
+*/
 export default App;
