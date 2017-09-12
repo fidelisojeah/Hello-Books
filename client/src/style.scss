@@ -386,6 +386,8 @@ input[type='search'] {
 #page-content {
     position: relative;
     top: 104px;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
     @media(max-width:$screen-sm - 1){
       top: 74px;
     }

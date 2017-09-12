@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-/*import {
+/*
+import {
   browserHistory,
 } from 'react-router-dom';
 */
