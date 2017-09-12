@@ -20,24 +20,14 @@ class userLoginDetails {
     email,
   ) {
     return new Promise((resolve, reject) => { // async
-      if (username === null) {
-        reject({
-            message: 'Username Invalid',
-            field: 'username',
-          });
-      } else if (password === null) {
-        reject({
-          message: 'Password Invalid',
-          field: 'password',
-        });
-      } else if (email === null) {
-        reject({
-          message: 'No email Provided',
-          field: 'email',
-        });
-      } else if (firstname === null) {
+       if (firstname === null) {
         reject({
           message: 'First Name Invalid',
+          field: 'firstname',
+        });
+      }else if (firstname.length < 2) {
+        reject({
+          message: 'First Name too short',
           field: 'firstname',
         });
       } else if (lastname === null) {
@@ -45,30 +35,40 @@ class userLoginDetails {
           message: 'Last Name Invalid',
           field: 'lastname',
         });
-      } else if (!validateEmail(email)) {
-        reject({
-          message: 'Email Address invalid',
-          field: 'email'
-        });
-      } else if (username.length < 2) {
-        reject({
-          message: 'Username too short',
-          field: 'username',
-      });
-      } else if (password.length < 6) {
-        reject({
-          message: 'Password too short',
-          field: 'password',
-        });
       } else if (lastname.length < 2) {
         reject({
           message: 'Last Name too short',
           field: 'lastname',
         });
-      } else if (firstname.length < 2) {
+      } else if (username === null) {
         reject({
-          message: 'First Name too short',
-          field: 'firstname',
+            message: 'Username Invalid',
+            field: 'username',
+          });
+      } else if (username.length < 2) {
+        reject({
+          message: 'Username too short',
+          field: 'username',
+      });
+      } else if (email === null) {
+        reject({
+          message: 'No email Provided',
+          field: 'email',
+        });
+      }  else if (!validateEmail(email)) {
+        reject({
+          message: 'Email Address invalid',
+          field: 'email'
+        });
+      } else if (password === null) {
+        reject({
+          message: 'Password Invalid',
+          field: 'password',
+        });
+      } else if (password.length < 6) {
+        reject({
+          message: 'Password too short',
+          field: 'password',
         });
       } else {
         // generate random string
