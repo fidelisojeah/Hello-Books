@@ -7,12 +7,11 @@ const webpack = require('webpack');
 // export default {
 module.exports = {
   entry: [
-    // 'webpack-hot-middleware/client',
-    './src/index.jsx',
+    './client/src/index.jsx',
   ],
   output: {
     filename: '[name]bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, './client/dist'),
     publicPath: '/',
   },
   resolve: {
@@ -34,10 +33,10 @@ module.exports = {
     },
   },
   plugins: [
-    new CleanWebpackPlugin(['dist']),
+    new CleanWebpackPlugin(['client/dist']),
     new HtmlWebpackPlugin({
       title: 'Hello-Books',
-      template: 'my-index.ejs',
+      template: './client/my-index.ejs',
       inject: 'body',
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
@@ -92,6 +91,10 @@ module.exports = {
       },
       {
         test: /\.jsx?$/,
+        include: [
+          path.join(__dirname, 'client'),
+          path.join(__dirname, 'server/helpers'),
+        ],
         loader: 'babel-loader',
         exclude: /node_modules/,
         query: {
@@ -101,8 +104,14 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        include: path.join(__dirname, 'client'),
-        loaders: ['react-hot-loader', 'babel-loader'],
+        include: [
+          path.join(__dirname, 'client'),
+          path.join(__dirname, 'server/helpers'),
+        ],
+        loaders: [
+          'react-hot-loader',
+          'babel-loader',
+        ],
       },
     ],
   },
