@@ -13,7 +13,7 @@ const Navbar = () => {
               <a href="">View Library</a>
             </li>
             <li className="menu-item menu-item-Usr">
-              <a className="usrBtn">Profile</a>
+              <a className="usrBtn"><i className="acc-button" /></a>
               <div id="profile-stuff" className="profile-dropdown">
                 <ul className="sub-menu">
                   <li><a href="user_profile.html">Profile</a></li>

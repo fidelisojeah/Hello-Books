@@ -40,10 +40,28 @@ class SignupForm extends React.Component {
       this.state.email)
       .then(() => {
         this.setState({ errors: {}, isLoading: true });
-        this.props
+        this
+          .props
+          .addFlashMessage({
+            type: 'Success',
+            text: 'Sign up Successful',
+          });
+
+        this.context.router.history.push('/success');
+        /*
+        
+        this
+          .props
           .userSignupRequest(this.state)
           .then((response) => {
-            this.context.router.push('/');
+            this
+              .props
+              .addFlashMessage({
+                type: response.data.status,
+                text: response.data.message,
+              });
+
+            this.context.router.history.push('/success');
             //    browserHistory.push('/');// should redirect to signup successful
             //    this.setState({ response: response.data, isLoading: false });
           })
@@ -56,6 +74,7 @@ class SignupForm extends React.Component {
               this.setState({ errors: error.message, isLoading: false });
             }
           });
+          */
       })
       .catch((error) => {
         this.setState({
@@ -170,6 +189,7 @@ class SignupForm extends React.Component {
 }
 SignupForm.propTypes = {
   userSignupRequest: PropTypes.func.isRequired,
+  addFlashMessage: PropTypes.func.isRequired,
 };
 SignupForm.contextTypes = {
   router: PropTypes.object.isRequired,
