@@ -6,7 +6,6 @@ import FlashMessage from '../flash/FlashMessage';
 // const SuccessPage = () => {
 class SuccessPage extends React.Component {
   render() {
-    console.log(this.props);
     const messages = this.props.messages.map(message =>
       <FlashMessage key={message.id} message={message} />,
     );

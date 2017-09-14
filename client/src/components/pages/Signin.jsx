@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { userSignupRequest } from '../actions/signupActions';
+import { userSignupRequest, isUserExists } from '../actions/signupActions';
 import { addFlashMessage } from '../actions/flashMessages';
 import SigninForm from '../SigninForm';
 import SignupForm from '../SignupForm';
@@ -15,7 +15,7 @@ class Signin extends React.Component {
     };
   }
   render() {
-    const { userSignupRequest, addFlashMessage } = this.props;
+    const { userSignupRequest, addFlashMessage, isUserExists } = this.props;
     return (
       <div id="login-page-layout" className="layout--container">
         <div className="container">
@@ -48,6 +48,7 @@ class Signin extends React.Component {
                 </div>
                 <div className="form-bottom">
                   <SignupForm
+                    isUserExists={isUserExists}
                     userSignupRequest={userSignupRequest}
                     addFlashMessage={addFlashMessage}
                   />
@@ -71,6 +72,9 @@ class Signin extends React.Component {
 Signin.propTypes = {
   userSignupRequest: PropTypes.func.isRequired,
   addFlashMessage: PropTypes.func.isRequired,
+  isUserExists: PropTypes.func.isRequired,
 };
 
-export default connect(null, { userSignupRequest, addFlashMessage })(Signin);
+export default connect(
+  null,
+  { userSignupRequest, addFlashMessage, isUserExists })(Signin);

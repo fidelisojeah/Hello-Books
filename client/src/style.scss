@@ -878,6 +878,13 @@ input[type='search'] {
     &:focus {
         outline: none;
     }
+    &:disabled,
+    [disabled] {
+        cursor: not-allowed;
+        filter: alpha(opacity=65);
+        @include box-shadow-none;
+        opacity: .65;
+    }
 }
 
 .checkbox {

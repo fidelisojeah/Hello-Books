@@ -9,6 +9,24 @@ import userHelper from '../helpers/user-signup';
 
 
 class userLoginDetails {
+  static checkUserExists(req, res) {
+    const userName = req.params.identifier;
+    UserDetails
+      .findOne({
+        where: {
+          $or: [{
+            username: userName.toLowerCase(),
+          }, {
+            emailaddress: userName.toLowerCase(),
+          }],
+        },
+        attributes: ['username', 'emailaddress'],
+      })
+      .then((userHere) => {
+        res.json({ userHere });
+      })
+      .catch(error => res.status(500).send(error));
+  }
   // validates signup info
   static validateActivationToken(verifiedToken, userName) {
     return new Promise((resolve, reject) => {
@@ -107,6 +125,9 @@ class userLoginDetails {
                       .catch(error => res.status(400).json({
                         status: 'Unsuccessful',
                         message: error.errors[0].message,
+                        errorField:
+                        (error.errors[0].path === 'emailaddress') ? 'email' :
+                          error.errors[0].path,
                       }));
                   }
                 }) // unsuccessful hash
