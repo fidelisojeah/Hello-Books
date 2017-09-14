@@ -17,7 +17,7 @@ export function userSignupRequest(userData) {
 
 export function isUserExists(identifier) {
   return dispatch => {
-    return axios.get(`/api/v4/users/${identifier}`);
+    return axios.get(`/api/v4/users/signupCheck/${identifier}`);
   };
 }
 

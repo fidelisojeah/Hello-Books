@@ -276,9 +276,8 @@ class userLoginDetails {
                           '96h')
                           .then((generatedToken) => {
                             if (generatedToken && generatedToken !== null) {
-                              //    checkSession
-                              //    .setLogin(req, res, generatedToken);
-
+                              checkSession
+                                .setLogin(req, res, generatedToken);
                               res.status(202).json({
                                 status: 'Successful',
                                 message: 'Signin Successful',
