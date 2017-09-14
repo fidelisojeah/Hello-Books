@@ -96,6 +96,7 @@
     "express-session": "^1.15.5",
     "jsdom": "^11.2.0",
     "jsonwebtoken": "^7.4.1",
+    "jwt-decode": "^2.2.0",
     "lodash": "^4.17.4",
     "markdownlint-cli": "^0.3.1",
     "morgan": "^1.8.2",

@@ -54,8 +54,6 @@ class SignupForm extends React.Component {
               });
 
             this.context.router.history.push('/success');
-            //    browserHistory.push('/');// should redirect to signup successful
-            //    this.setState({ response: response.data, isLoading: false });
           })
           .catch((error) => {
             if (error.response) {
@@ -90,13 +88,10 @@ class SignupForm extends React.Component {
         .isUserExists(val)
         .then((result) => {
           const errors = this.state.errors;
-          //       let invalid;
           if (result.data.userHere) {
             errors[errorField] = `${errorField} already taken`;
-            //   invalid = true;
           } else {
             delete errors[errorField];
-            //   invalid = false;
           }
           this.setState({ errors, invalid: !isEmpty(errors) });
         });

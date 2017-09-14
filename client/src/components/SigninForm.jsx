@@ -1,10 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import userHelper from '../../../server/helpers/user-signup';
 import TextField from './common/TextField';
-import { login } from './actions/login';
+
 
 class SigninForm extends React.Component {
   constructor(props) {
@@ -29,12 +28,29 @@ class SigninForm extends React.Component {
       .then(() => {
         this.setState({ errors: {}, isLoading: true });
         this.props
-          .login(this.state)
-          .then(
-
-          )
-          .catch((error) => {
-
+          .userLogin(this.state)
+          .then(() => {
+            this.context.router.history.push('/success');
+            // console.log(response);
+          })
+          .catch((errorStuff) => {
+            if (errorStuff.response.data.message === 'Email Address not Verified') {
+              this
+                .props
+                .addFlashMessage({
+                  type: errorStuff.response.data.status,
+                  text: errorStuff.response.data.message,
+                });
+              this.context.router.history.push('/success');
+            } else {
+              this.setState({
+                errors: {
+                  errorStat: errorStuff.response.data.status,
+                  message: errorStuff.response.data.message,
+                },
+                isLoading: false,
+              });
+            }
           });
       })
       .catch((error) => {
@@ -43,16 +59,21 @@ class SigninForm extends React.Component {
             errorField: error.field,
             message: error.message,
           },
+          isLoading: false,
         });
       });
   }
   render() {
-    const { errors,
-      username,
-      password,
-      isLoading } = this.state;
+    const { errors } = this.state;
     return (
+
       <form onSubmit={this.onSubmit}>
+
+        {errors.errorStat === 'Unsuccessful' &&
+          <div className="login-error">{errors.message}</div>
+        }
+
+
         <TextField
           errorField={errors.errorField}
           errorMessage={errors.message}
@@ -79,18 +100,6 @@ class SigninForm extends React.Component {
           isReq
           type="password"
         />
-        {/*
-        <div className="form-group">
-          <input type="text" required="required" name="login-username" />
-          <label className="control-label" htmlFor="input">Username</label>
-          <i className="bar" />
-        </div>
-        <div className="form-group">
-          <input type="password" required="required" name="login-password" />
-          <label className="control-label" htmlFor="input">Password</label>
-          <i className="bar" />
-        </div>
-*/}
         <div
           className="button-container"
         >
@@ -105,7 +114,12 @@ class SigninForm extends React.Component {
     );
   }
 }
-SigninForm.PropTypes = {
-  login: PropTypes.func.isRequired,
+SigninForm.propTypes = {
+  userLogin: PropTypes.func.isRequired,
+  addFlashMessage: PropTypes.func.isRequired,
 };
-export default connect(null, { login })(SigninForm);
+
+SigninForm.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
+export default SigninForm;
