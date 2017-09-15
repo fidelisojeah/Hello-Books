@@ -9,6 +9,7 @@ import {
 
 import App from './components/App';
 import Signin from './components/pages/Signin';
+// import Logout from './components/pages/Logout';
 import SuccessPage from './components/pages/SuccessPage';
 
 const Main = () => (

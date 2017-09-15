@@ -27,6 +27,8 @@ const store = createStore(
 if (localStorage.jwtToken) {
   setAuthorizationToken(localStorage.jwtToken);
   store.dispatch(setCurrentUser(jwtDecode(localStorage.jwtToken)));
+} else {
+  store.dispatch(setCurrentUser({}));
 }
 // import routes from './routes';
 

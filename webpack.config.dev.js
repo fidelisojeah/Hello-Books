@@ -108,10 +108,13 @@ module.exports = {
           path.join(__dirname, 'client'),
           path.join(__dirname, 'server/helpers'),
         ],
-        loaders: [
-          'react-hot-loader',
-          'babel-loader',
-        ],
+        loader:
+        'babel-loader',
+        exclude: /node_modules/,
+        query: {
+          cacheDirectory: true,
+          presets: ['react', 'es2015'],
+        },
       },
     ],
   },

@@ -338,7 +338,7 @@ $hamburger-scale:scale(0.4) translate(-50%, -50%);
                     border-bottom: none;
                     text-decoration: none;
                     display: block;
-                    padding: 1px 1px 1px 15px;
+                    padding: 1px 1px 1px 25px;
                 }
                 &:hover {
                     display: block;
@@ -361,10 +361,7 @@ $hamburger-scale:scale(0.4) translate(-50%, -50%);
 
 .acc-button {
     font-size: 26px;
-    margin-left: 20px;
-    @media (min-width: $screen-md) {
-        margin-left: 40px;
-    }
+    margin-left: 2px;
     &:before {
         display: inline-block;
         font-family: 'icons';
@@ -379,6 +376,16 @@ $hamburger-scale:scale(0.4) translate(-50%, -50%);
         -moz-osx-font-smoothing: grayscale;
         -webkit-font-smoothing: antialiased;
         font-smoothing: antialiased
+    }
+}
+
+.usrBtn {
+    & i,
+    & span {
+        vertical-align: middle;
+    }
+    @media (max-width: $screen-md - 1) {
+        padding-left: 15px;
     }
 }
 
