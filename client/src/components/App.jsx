@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import Header from './Header';
 import Footer from './Footer';
+import SiteCache from './SiteCache';
 
 class App extends React.Component {
   constructor(props) {
@@ -21,7 +22,8 @@ class App extends React.Component {
 
           <Footer />
         </div>
-      </div>
+        <SiteCache />
+      </div >
     );
   }
 }

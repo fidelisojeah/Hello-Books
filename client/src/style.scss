@@ -518,8 +518,16 @@ input[type='search'] {
     top: 104px;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
+    @media(max-width: $screen-md) {
+        position: absolute;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        top: 95px;
+        padding-top: 0;
+    }
     @media(max-width: $screen-sm - 1) {
-        top: 74px;
+        top: 65px;
     }
 }
 
@@ -1218,5 +1226,36 @@ input[type='search'] {
     @media(max-width:$screen-xs) {
         font-size: 9px;
         font-weight: 50;
+    }
+}
+
+.layout {
+    @media only screen and (max-width: $screen-md) {
+        height:100%;
+        overflow: hidden;
+    }
+}
+
+.with--sidebar {
+    .header--right {
+        @media (max-width: $screen-md - 1) {
+            -o-transform: translateX(0);
+            -moz-transform: translateX(0);
+            -ms-transform: translateX(0);
+            -webkit-transform: translateX(0);
+            transform: translateX(0);
+            @include transition-duration(0.4s);
+        }
+    }
+    .site-cache {
+        @media(max-width: $screen-md) {
+            position: absolute;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
     }
 }
