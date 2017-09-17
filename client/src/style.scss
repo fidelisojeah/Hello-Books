@@ -1259,3 +1259,247 @@ input[type='search'] {
         }
     }
 }
+
+.slide-container {
+    max-height: 500px;
+    @media (max-width: $screen-md) {
+        max-height: 300px;
+    }
+}
+
+.slides.fade img {
+    width: 100%
+}
+
+.fade {
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 1.5s;
+    animation-name: fade;
+    animation-duration: 1.5s;
+}
+
+@-webkit-keyframes fade {
+    from {
+        opacity: .4
+    }
+    to {
+        opacity: 1
+    }
+}
+
+@keyframes fade {
+    from {
+        opacity: .4
+    }
+    to {
+        opacity: 1
+    }
+}
+
+.caption-text {
+    color: #f2f2f2;
+    font-size: 15px;
+    padding: 8px 12px;
+    position: absolute;
+    bottom: 8px;
+    width: 100%;
+    text-align: center;
+}
+
+.top-inner--picks {
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    margin-top: 10px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    & .carousel-image {
+        margin-bottom: 6px!important;
+        & img {
+            height: 150px;
+            width: 97px;
+        }
+    }
+}
+
+.row-carousel {
+    width: 100%;
+}
+
+.row-carousel-inner {
+    position: relative;
+    height: 100%;
+}
+
+.carousel-nav {
+    height: 280px;
+    visibility: visible;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    width: 4rem;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+}
+
+.carousel-left {
+    & .a-button {
+        & .button-inner {
+            & i {
+                background: url('images/stars.png') no-repeat -55px -3px;
+                background-size: 100px;
+            }
+        }
+    }
+}
+
+.carousel-right {
+    text-align: right;
+    right: 0;
+    padding-right: 3px;
+    & .a-button {
+        & .button-inner {
+            & i {
+                background: url('images/stars.png') no-repeat -28px -3px;
+                background-size: 100px;
+            }
+        }
+    }
+}
+
+.a-button {
+    background: #e7e9ec;
+    border-radius: 5px;
+    border-color: #ADB1B8 #A2A6AC #8D9096;
+    border-style: solid;
+    border-width: 1px;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0;
+    text-align: center;
+    text-decoration: none!important;
+    vertical-align: middle;
+    -webkit-tap-highlight-color: transparent;
+    & .button-inner {
+        padding: 6px;
+        line-height: 0;
+        height: auto;
+        display: block;
+    }
+}
+
+.a-carousel-button {
+    position: relative;
+    top: 40%;
+}
+
+.h-icon {
+    width: 15px;
+    height: 19px;
+    margin: 3px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.carousel-items {
+    margin: 0 40px;
+    overflow: hidden;
+    min-height: 10px;
+    position: relative;
+    & .carousel-viewport {
+        width: 100%;
+        overflow: hidden;
+        height: 100%;
+    }
+    & ol {
+        margin: 0;
+        list-style-type: none;
+        height: 100%;
+        white-space: nowrap;
+        overflow-x: visible;
+        color: #111;
+        letter-spacing: -4px;
+    }
+}
+
+.carousel-card {
+    vertical-align: top;
+    text-align: left;
+    overflow: hidden;
+    margin-left: 16px;
+    width: 160px;
+    min-height: 100%;
+    list-style-type: none;
+    display: inline-block;
+    white-space: normal;
+    letter-spacing: normal;
+    & a {
+        width: 100%;
+        & span {
+            text-align: justify;
+        }
+    }
+}
+
+.ratings-panel {
+    color: #707070;
+    display: block;
+    font-size: 12px;
+}
+
+.review-stars {
+    background: url('images/stars.png') no-repeat -3px -20px;
+    background-size: 80px;
+    display: inline-block;
+    position: relative;
+    top: 1px;
+    height: 14px;
+    width: 74px;
+    & span {
+        background: url('images/stars.png') no-repeat -3px -37px;
+        background-size: 80px;
+        display: block;
+        height: 14px;
+        width: 74px;
+        &.s4-5 {
+            width: 67px;
+        }
+        &.s4-0 {
+            width: 60px;
+        }
+        &.s3-5 {
+            width: 52px;
+        }
+        &.s3-0 {
+            width: 45px;
+        }
+        &.s2-5 {
+            width: 37px;
+        }
+        &.s2-0 {
+            width: 30px;
+        }
+        &.s1-5 {
+            width: 22px;
+        }
+        &.s1-0 {
+            width: 15px;
+        }
+        &.s0-5 {
+            width: 7px;
+        }
+    }
+}
+
+.c-row {
+    width: 100%;
+}
+
+.c-small-text {
+    font-size: 13px!important;
+    line-height: 19.5px!important;
+}
