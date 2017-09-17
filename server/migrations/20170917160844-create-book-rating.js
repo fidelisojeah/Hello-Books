@@ -1,35 +1,43 @@
 module.exports = {
   up: (queryInterface, Sequelize) =>
-    queryInterface.createTable('BookStars', {
+    queryInterface.createTable('BookRatings', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+      },
       bookId: {
         type: Sequelize.INTEGER,
-        primaryKey: true,
+        onDelete: 'CASCADE',
         allowNull: false,
         references: {
           model: 'Books',
           key: 'id',
         },
       },
-      categoryId: {
+      userId: {
         type: Sequelize.INTEGER,
-        primaryKey: true,
+        onDelete: 'CASCADE',
         allowNull: false,
         references: {
-          model: 'Category',
+          model: 'UserDetails',
           key: 'id',
         },
       },
-      stars: {
+      rating: {
+        allowNull: false,
         type: Sequelize.INTEGER,
       },
       createdAt: {
-        type: Sequelize.DATE,
         allowNull: false,
+        type: Sequelize.DATE,
       },
       updatedAt: {
-        type: Sequelize.DATE,
         allowNull: false,
+        type: Sequelize.DATE,
       },
     }),
-  down: queryInterface => queryInterface.dropTable('BookStars'),
+  down: queryInterface =>
+    queryInterface.dropTable('BookRatings'),
 };
