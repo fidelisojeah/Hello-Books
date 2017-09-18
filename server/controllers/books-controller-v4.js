@@ -60,7 +60,7 @@ class bookProps {
           include: [
             {
               model: Authors,
-              attributes: ['authorAKA'],
+              attributes: ['id', 'authorAKA'],
             },
             {
               model: BookRatings,

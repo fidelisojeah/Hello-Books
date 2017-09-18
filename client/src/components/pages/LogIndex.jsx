@@ -1,11 +1,34 @@
 import React from 'react';
-import Ratings from '../common/Ratings';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import BookCard from '../common/BookCard';
+import { loadAllBooks } from '../actions/loadBooks';
 
 class Logindex extends React.Component {
+  componentDidMount() {
+    loadAllBooks()
+      .then((allBooks) => {
+        if (allBooks) {
+          console.log(allBooks);
+        } else {
+          console.log('error');
+        }
+      })
+      .catch(error => console.log(error));
+  }
   render() {
     const rateSum1 = 428;
     const rateCount1 = 10;
-    const rateSum2 = 398;
+    const bkAuth = [
+      {
+        id: 1,
+        authorAKA: 'Rachel Cohn',
+      },
+      {
+        id: 2,
+        authorAKA: 'Someone Else',
+      }];
     return (
       <div className="layout--container">
         <div className="layout-header" style={{ padding: 0 }}>
@@ -39,25 +62,14 @@ class Logindex extends React.Component {
                     <div className="carousel-items">
                       <div className="carousel-viewport">
                         <ol>
-                          <li className="carousel-card">
-                            <div>
-                              <a href="">
-                                <div className="carousel-image">
-                                  <img src="./assets/images/AngelofHope.jpg" alt="" />
-                                </div>
-                                <span>
-                                  Book Name
-                                </span>
-                              </a>
-                              <Ratings
-                                ratingSum={rateSum1}
-                                ratingCount={rateCount1}
-                              />
-                              <div className="c-row c-small-text">
-                                <span className="c-small-text">Book Author (s)</span>
-                              </div>
-                            </div>
-                          </li>
+                          <BookCard
+                            bookName={'Harry Porter and the Chambers of Secrets'}
+                            bookDesc={'Some descriptions here'}
+                            ratingSum={rateSum1}
+                            ratingCount={rateCount1}
+                            imgHref={'../assets/images/hattie-big-sky.jpg'}
+                            bookAuthors={bkAuth}
+                          />
                         </ol>
                       </div>
                     </div>
@@ -78,4 +90,8 @@ class Logindex extends React.Component {
     );
   }
 }
-export default Logindex;
+Logindex.propTypes = {
+  loadAllBooks: PropTypes.func.isRequired,
+};
+export default connect(null, { loadAllBooks })(Logindex);
+
