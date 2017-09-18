@@ -4,7 +4,7 @@ import {
   Books,
   BookRatings,
 } from '../models';
-// import jwTokens from '../middleware/helpers';
+
 import checkSession from '../middleware/session';
 
 // const userCookieInfo = 'userCookieInfo';
@@ -65,9 +65,6 @@ class bookProps {
             {
               model: BookRatings,
               attributes: [],
-              //   //   [sequelize.fn('COUNT', sequelize.col('rating')), 'ratingNumber'],
-              //   [sequelize.fn('SUM', sequelize.col('rating')), 'ratingSum'],
-              // ],
             }],
           group: ['Books.id',
             'Authors.id',
@@ -89,21 +86,10 @@ class bookProps {
               message: 'No Books',
             });
           } else {
-            // BookRatings
-            //   .findAll({
-            //     attributes: [
-            //       [sequelize.fn('COUNT', sequelize.col('ratings')), 'ratingNumber'],
-            //       [sequelize.fn('SUM', sequelize.col('ratings')), 'ratingSum'],
-            //     ],
-            //   })
-            //   .then((bookRates) => {
             res.status(202).json({
               status: 'Success',
               data: allBooks,
-              // ish: 'bookRates',
             });
-            // })
-            // .catch(error => res.status(500).send(error));
           }
         })
         .catch(error => res.status(500).json(error)); // catch error from findall
@@ -131,18 +117,10 @@ class bookProps {
             attributes: ['authorFirstName',
               'authorLastName',
               'authorAKA', 'dateofBirth'],
-            // 'authorFirstName',
-            //   'authorLastName',
-            //   'authorAKA', 'dateofBirth',
-            // ],
           },
           {
             model: BookRatings,
             attributes: [],
-            // attributes: [
-            //   [BookRatings.sequelize.fn('COUNT', sequelize.col('rating')), 'ratingNumber'],
-            //   [sequelize.fn('SUM', sequelize.col('rating')), 'ratingSum'],
-            // ],
           }],
         })
         .then((bookInfo) => {

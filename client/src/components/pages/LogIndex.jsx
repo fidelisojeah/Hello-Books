@@ -1,7 +1,11 @@
 import React from 'react';
+import Ratings from '../common/Ratings';
 
 class Logindex extends React.Component {
   render() {
+    const rateSum1 = 428;
+    const rateCount1 = 10;
+    const rateSum2 = 398;
     return (
       <div className="layout--container">
         <div className="layout-header" style={{ padding: 0 }}>
@@ -39,17 +43,18 @@ class Logindex extends React.Component {
                             <div>
                               <a href="">
                                 <div className="carousel-image">
-                                  <img src="../assets/images/AngelofHope.jpg" alt="" />
+                                  <img src="./assets/images/AngelofHope.jpg" alt="" />
                                 </div>
                                 <span>
                                   Book Name
                                 </span>
                               </a>
-                              <div className="ratings-panel">
-                                <span className="review-stars">
-                                  <span className="5-0" />
-                                </span>
-                                Ratings: 5.0
+                              <Ratings
+                                ratingSum={rateSum1}
+                                ratingCount={rateCount1}
+                              />
+                              <div className="c-row c-small-text">
+                                <span className="c-small-text">Book Author (s)</span>
                               </div>
                             </div>
                           </li>
