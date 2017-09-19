@@ -6,11 +6,30 @@ import BookCard from '../common/BookCard';
 import { loadAllBooks } from '../actions/loadBooks';
 
 class Logindex extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      allBooks: [],
+    };
+  }
   componentDidMount() {
-    loadAllBooks()
+    this.props.loadAllBooks()
       .then((allBooks) => {
-        if (allBooks) {
-          console.log(allBooks);
+        if (allBooks.data.status === 'Success') {
+          this.setState({
+            allBooks: allBooks.data.data,
+          });
+          // this.listBooks = allBooks.data.data.map(bookInfos =>
+          //   (<BookCard
+          //     bookName={bookInfos.bookName}
+          //     bookDesc={bookInfos.description}
+          //     ratingSum={(bookInfos.RatingSum === null) ? 'empty' : bookInfos.RatingSum}
+          //     ratingCount={bookInfos.RatingCount}
+          //     imgHref={`../assets/images/${bookInfos.bookImage}`}
+          //     bookAuthors={bookInfos.Authors}
+          //   />),
+          // );
+          console.log(this.listBooks, '......');
         } else {
           console.log('error');
         }
@@ -18,17 +37,6 @@ class Logindex extends React.Component {
       .catch(error => console.log(error));
   }
   render() {
-    const rateSum1 = 428;
-    const rateCount1 = 10;
-    const bkAuth = [
-      {
-        id: 1,
-        authorAKA: 'Rachel Cohn',
-      },
-      {
-        id: 2,
-        authorAKA: 'Someone Else',
-      }];
     return (
       <div className="layout--container">
         <div className="layout-header" style={{ padding: 0 }}>
@@ -62,14 +70,17 @@ class Logindex extends React.Component {
                     <div className="carousel-items">
                       <div className="carousel-viewport">
                         <ol>
-                          <BookCard
-                            bookName={'Harry Porter and the Chambers of Secrets'}
-                            bookDesc={'Some descriptions here'}
-                            ratingSum={rateSum1}
-                            ratingCount={rateCount1}
-                            imgHref={'../assets/images/hattie-big-sky.jpg'}
-                            bookAuthors={bkAuth}
-                          />
+                          {this.state.allBooks.map(bookInfos =>
+                            (<BookCard
+                              key={bookInfos.id}
+                              bookName={bookInfos.bookName}
+                              bookDesc={bookInfos.description}
+                              ratingSum={(bookInfos.RatingSum === null) ? 'empty' : bookInfos.RatingSum}
+                              ratingCount={bookInfos.RatingCount}
+                              imgHref={`../assets/images/${bookInfos.bookImage}`}
+                              bookAuthors={bookInfos.Authors}
+                            />),
+                          )}
                         </ol>
                       </div>
                     </div>

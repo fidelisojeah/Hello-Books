@@ -2,17 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-const Ratings = ({ ratingSum, ratingCount }) => {
+const Ratings = ({ rateSum, ratingCount }) => {
   // calculate average ratings
-  const avgRate = (ratingSum / (ratingCount * 10)).toFixed(2);
-  const halfAvg = (Math.round(avgRate * 2) / 2).toFixed(1);
-  const halfAvgtostr = `s${halfAvg.split('.').join('-')}`;
+  const ratingSum = parseInt(rateSum, 10);
+  let avgRate;
+  let halfAvg;
+  let halfAvgtostr = 'nothing';
+  if (!isNaN(ratingSum)) {
+    avgRate = (ratingSum / (ratingCount * 10)).toFixed(2);
+    halfAvg = (Math.round(avgRate * 2) / 2).toFixed(1);
+    halfAvgtostr = `s${halfAvg.split('.').join('-')}`;
+  }
   return (
     <div className="ratings-panel">
       <span className="review-stars">
-        <span
-          className={classnames(halfAvgtostr)}
-        />
+        {ratingCount > 0 &&
+          <span
+            className={halfAvgtostr}
+          />
+        }
       </span>
       {ratingCount <= 0 && 'Not Rated'}
       {ratingCount > 0 && `Ratings: ${avgRate}`}
@@ -20,10 +28,10 @@ const Ratings = ({ ratingSum, ratingCount }) => {
   );
 };
 Ratings.defaultProps = {
-  ratingSum: null,
+  rateSum: null,
 };
 Ratings.propTypes = {
   ratingCount: PropTypes.number.isRequired,
-  ratingSum: PropTypes.number,
+  rateSum: PropTypes.string,
 };
 export default Ratings;

@@ -9,12 +9,14 @@ const BookCard = ({ bookName,
   ratingCount,
   imgHref,
   bookAuthors }) => {
+  const rateCount = parseInt(ratingCount, 10);
+  // convert to integer
   const lent = bookAuthors.length;
   const authors = bookAuthors.map((authorsSplit, index) =>
-    <span key={authorsSplit.id}>
+    (<span key={authorsSplit.id}>
       <a href={authorsSplit.id}>{authorsSplit.authorAKA}</a>
       {index < (lent - 1) && ', '}
-    </span>
+    </span>),
   );
   return (
     <li className="carousel-card">
@@ -32,8 +34,8 @@ const BookCard = ({ bookName,
           </span>
         </a>
         <Ratings
-          ratingSum={ratingSum}
-          ratingCount={ratingCount}
+          rateSum={ratingSum}
+          ratingCount={rateCount}
         />
         <div className="c-row c-small-text">
           <span className="c-small-text">
@@ -52,8 +54,8 @@ BookCard.propTypes = {
   bookName: PropTypes.string.isRequired,
   bookDesc: PropTypes.string.isRequired,
   imgHref: PropTypes.string.isRequired,
-  ratingCount: PropTypes.number.isRequired,
-  ratingSum: PropTypes.number,
+  ratingCount: PropTypes.string.isRequired,
+  ratingSum: PropTypes.string,
   bookAuthors: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
