@@ -19,8 +19,8 @@ FlashMessagesList.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    messages: state.flashMessages
-  }
+    messages: state.flashMessages,
+  };
 }
 
 export default connect(mapStateToProps)(FlashMessagesList);

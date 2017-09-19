@@ -10,7 +10,7 @@ import hbLogo from '../images/h-b-logo.svg';
 import Hamburger from './Hamburger';
 import Navbar from './Navbar';
 
-// const Header = () => {
+
 class Header extends React.Component {
   render() {
     const { isAuthenticated, user } = this.props.auth;

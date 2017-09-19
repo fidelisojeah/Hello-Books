@@ -15,14 +15,12 @@ const BookCard = ({ bookName,
       <a href={authorsSplit.id}>{authorsSplit.authorAKA}</a>
       {index < (lent - 1) && ', '}
     </span>
-    // `<a href=${authorsSplit.id}>${authorsSplit.authorAKA}</a>,`,
   );
   return (
     <li className="carousel-card">
       <div>
         <a href="">
           <div className="carousel-image">
-            {/* <img src="{imgHref}" alt="" /> */}
             <img
               src={imgHref}
               style={{ width: 97, height: 150 }}

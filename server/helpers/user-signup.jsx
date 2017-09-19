@@ -3,7 +3,7 @@ const emailRegex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^
 const validateEmail = emailAddress =>
   emailRegex.test(emailAddress); // returns true or false
 
-class userHelper {
+class UserHelper {
   static validateSignup(username,
     password,
     lastname,
@@ -95,4 +95,4 @@ class userHelper {
     });
   }
 }
-export default userHelper;
+export default UserHelper;

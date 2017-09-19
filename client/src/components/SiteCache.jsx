@@ -1,6 +1,5 @@
 import React from 'react';
 
-// const SiteCache = () => {
 class SiteCache extends React.Component {
   constructor(props) {
     super(props);

@@ -2,12 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 
-/*
-import {
-  browserHistory,
-} from 'react-router-dom';
-*/
-import userHelper from '../../../server/helpers/user-signup';
+import UserHelper from '../../../server/helpers/user-signup';
 import TextField from './common/TextField';
 
 class SignupForm extends React.Component {
@@ -29,12 +24,12 @@ class SignupForm extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.checkUserExists = this.checkUserExists.bind(this);
   }
-  onChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
+  onChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
   }
-  onSubmit(e) {
-    e.preventDefault();
-    userHelper
+  onSubmit(event) {
+    event.preventDefault();
+    UserHelper
       .validateSignup(this.state.username,
       this.state.password,
       this.state.lastname,
@@ -80,9 +75,9 @@ class SignupForm extends React.Component {
         });
       });
   }
-  checkUserExists(e) {
-    const errorField = e.target.name;
-    const val = e.target.value;
+  checkUserExists(event) {
+    const errorField = event.target.name;
+    const val = event.target.value;
     if (val !== '') {
       this.props
         .isUserExists(val)

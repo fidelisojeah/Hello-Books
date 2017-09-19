@@ -8,8 +8,8 @@ const app = express();
 const port = parseInt(process.env.PORT, 10) || 8300;
 app.set('port', port);
 
-app.get('/*', (req, res) =>
-  res.sendFile(path.join(__dirname, '../client/index.html')),
+app.get('/*', (request, response) =>
+  response.sendFile(path.join(__dirname, '../client/index.html')),
 );
 const server = http.createServer(app);
 server.listen(port);

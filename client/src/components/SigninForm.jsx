@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import userHelper from '../../../server/helpers/user-signup';
+import UserHelper from '../../../server/helpers/user-signup';
 import TextField from './common/TextField';
 
 
@@ -17,12 +17,12 @@ class SigninForm extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
   }
-  onChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
+  onChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
   }
-  onSubmit(e) {
-    e.preventDefault();
-    userHelper
+  onSubmit(event) {
+    event.preventDefault();
+    UserHelper
       .validateSignin(this.state.username,
       this.state.password)
       .then(() => {
@@ -31,7 +31,6 @@ class SigninForm extends React.Component {
           .userLogin(this.state)
           .then(() => {
             this.context.router.history.push('/success');
-            // console.log(response);
           })
           .catch((errorStuff) => {
             if (errorStuff.response.data.message === 'Email Address not Verified') {
@@ -77,7 +76,6 @@ class SigninForm extends React.Component {
         <TextField
           errorField={errors.errorField}
           errorMessage={errors.message}
-          //  errField={errors.username}
           label="Username / Email Address"
           onChange={this.onChange}
           field="username"
@@ -91,7 +89,6 @@ class SigninForm extends React.Component {
         <TextField
           errorField={errors.errorField}
           errorMessage={errors.message}
-          //  errField={errors.username}
           label="Password"
           field="password"
           onChange={this.onChange}

@@ -7,7 +7,7 @@ const cookieParams = {
 };
 const userCookieInfo = 'userCookieInfo';
 
-class checkSession {
+class CheckSession {
 
   static test(req, res) {
     const tokenInfo = {
@@ -95,4 +95,4 @@ class checkSession {
     });
   }
 }
-export default checkSession;
+export default CheckSession;

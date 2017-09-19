@@ -3,12 +3,12 @@ import {
   UserDetails,
   Memberships,
 } from '../models';
-import jwTokens from '../middleware/helpers';
-import checkSession from '../middleware/session';
-import userHelper from '../helpers/user-signup';
+import JwTokens from '../middleware/helpers';
+import CheckSession from '../middleware/session';
+import UserHelper from '../helpers/user-signup';
 
 
-class userLoginDetails {
+class UserLoginDetails {
   static checkUserExists(req, res) {
     const userName = req.params.identifier;
     UserDetails
@@ -25,7 +25,11 @@ class userLoginDetails {
       .then((userHere) => {
         res.json({ userHere });
       })
-      .catch(error => res.status(500).send(error));
+      .catch(errorMessage =>
+        res.status(500).json({
+          status: 'Unsuccessful',
+          error: errorMessage,
+        }));
   }
   // validates signup info
   static validateActivationToken(verifiedToken, userName) {
@@ -52,13 +56,13 @@ class userLoginDetails {
     const phone = req.body.phone || null;
     const userName = req.body.username || null;
 
-    userHelper
+    UserHelper
       .validateSignup(userName,
       password, lastName, firstName, email,
     )
       .then((activation) => {
         if (activation === 'All Good') { // if Vaild
-          jwTokens
+          JwTokens
             .randomString()
             .then((activationBuf) => {
               bcrypt
@@ -93,7 +97,7 @@ class userLoginDetails {
                                   email: signupData.dataValues.emailaddress,
                                   authString: activationBuf,
                                 };
-                                jwTokens
+                                JwTokens
                                   .generateToken(
                                   req.app.get('JsonSecret'),
                                   tokenInfo,
@@ -111,11 +115,16 @@ class userLoginDetails {
                                   .catch(error => // if unsuccessful token
                                     res.status(202).json({
                                       status: 'none',
-                                      message: 'User account created Token unsuccessful',
+                                      message: 'User account created, Token unsuccessful',
                                       membership: setMembershipDetails.membershipName,
                                       errorMsg: error,
                                     }));
-                              }).catch(error => res.status(400).send(error));
+                              })
+                              .catch(errorMessage =>
+                                res.status(500).json({
+                                  status: 'Unsuccessful',
+                                  error: errorMessage,
+                                }));
                             // set membership unsuccessful
                           }).catch(error => res.status(400).json({
                             status: 'Unsuccessful',
@@ -133,8 +142,11 @@ class userLoginDetails {
                 }) // unsuccessful hash
                 .catch(error => res.status(500).send(error));
             })
-            .catch(error =>
-              res.status(501).send(error));
+            .catch(errorMessage =>
+              res.status(501).json({
+                status: 'Unsuccessful',
+                error: errorMessage,
+              }));
         } else {
           res.status(400).json({
             status: 'Unsuccessful',
@@ -156,10 +168,10 @@ class userLoginDetails {
     if (activationToken !== null &&
       userName !== null
     ) {
-      jwTokens // verify user token
+      JwTokens // verify user token
         .verifyToken(req, activationToken)
         .then((verifiedToken) => { // if token was successfully verified
-          userLoginDetails
+          UserLoginDetails
             .validateActivationToken(verifiedToken, userName)
             .then((userToken) => { // if token is valid
               UserDetails
@@ -178,7 +190,7 @@ class userLoginDetails {
                       });
                     } else if (activationUser.authString === userToken.activationString) {
                       // if authstring is valid
-                      jwTokens
+                      JwTokens
                         .randomString()
                         .then((randString) => {
                           activationUser
@@ -220,7 +232,11 @@ class userLoginDetails {
                     });
                   }
                 }) // if user is not found
-                .catch(error => res.status(403).send(error));
+                .catch(errorMessage =>
+                  res.status(500).json({
+                    status: 'Unsuccessful',
+                    error: errorMessage,
+                  }));
             })
             .catch(error => res.status(403).json({
               status: 'Unsuccessful',
@@ -238,7 +254,7 @@ class userLoginDetails {
   static signin(req, res) {
     const password = req.body.password || null;
     const userName = req.body.username || null;
-    userHelper
+    UserHelper
       .validateSignin(userName, password)
       .then((validated) => {
         if (validated === 'Valid Details') {
@@ -269,14 +285,14 @@ class userLoginDetails {
                           lastName: foundUser.lastname,
                           role: (foundUser.isAdmin) ? 'Admin' : 'User',
                         };
-                        jwTokens
+                        JwTokens
                           .generateToken(
                           req.app.get('JsonSecret'),
                           userToken,
                           '96h')
                           .then((generatedToken) => {
                             if (generatedToken && generatedToken !== null) {
-                              checkSession
+                              CheckSession
                                 .setLogin(req, res, generatedToken);
                               res.status(202).json({
                                 status: 'Successful',
@@ -320,7 +336,11 @@ class userLoginDetails {
                 });
               }
             })
-            .catch(error => res.status(500).send(error));
+            .catch(errorMessage =>
+              res.status(500).json({
+                status: 'Unsuccessful',
+                error: errorMessage,
+              }));
         } else { // if no error, assume server error(timeout)
           res.status(501).json({
             status: 'Unsuccessful',
@@ -337,4 +357,4 @@ class userLoginDetails {
       });
   }
 }
-export default userLoginDetails;
+export default UserLoginDetails;

@@ -30,7 +30,6 @@ if (localStorage.jwtToken) {
 } else {
   store.dispatch(setCurrentUser({}));
 }
-// import routes from './routes';
 
 ReactDOM.render(
   <Provider store={store}>
@@ -40,23 +39,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('main'),
 );
-
-/*
-<App>
-      <Switch>
-        <Route path="/signin" component={Signin} />
-      </Switch>
-    </App>
-
-    <Route path="/login" component={LoginPage} />
-    <Route exact path="/" component={Navbar} />
-    function component() {
-  const element = document.createElement('div');
-
-  element.innerHTML = _.join(['Hello', 'webpack'], ' ');
-  element.classList.add('hello');
-  return element;
-}
-
-document.body.appendChild(component());
-*/

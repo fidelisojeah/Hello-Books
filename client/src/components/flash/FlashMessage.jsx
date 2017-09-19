@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-// const FlashMessage = () => {
 class FlashMessage extends React.Component {
   render() {
     const { id, type, text } = this.props.message;
@@ -17,7 +16,7 @@ class FlashMessage extends React.Component {
   }
 }
 FlashMessage.propTypes = {
-  message: PropTypes.object.isRequired,
+  message: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
 export default FlashMessage;

@@ -41,7 +41,7 @@ describe('Middleware Test', () => {
       chai.request(app)
         .post('/api/v4/authors')
         .end((err, res) => {
-          should.exist(err);// or not
+          should.exist(err);
           res.status.should.equal(401);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Unsuccessful');
@@ -57,7 +57,7 @@ describe('Middleware Test', () => {
         .post('/api/v4/authors')
         .set('x-access-token', invalidSignedToken)
         .end((err, res) => {
-          should.exist(err);// or not
+          should.exist(err);
           res.status.should.equal(401);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Unsuccessful');
@@ -71,7 +71,7 @@ describe('Middleware Test', () => {
         .post('/api/v4/authors')
         .set('x-access-token', fakeToken) // set header 'x-access-token'
         .end((err, res) => {
-          should.exist(err);// or not
+          should.exist(err);
           res.status.should.equal(401);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Unsuccessful');
@@ -85,7 +85,7 @@ describe('Middleware Test', () => {
         .post('/api/v4/authors')
         .set('x-access-token', expiredToken)
         .end((err, res) => {
-          should.exist(err);// or not
+          should.exist(err);
           res.status.should.equal(401);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Unsuccessful');
@@ -103,7 +103,7 @@ describe('Middleware Test', () => {
           .post('/api/v4/authors')
           .set('x-access-token', nonAdminToken)
           .end((err, res) => {
-            should.exist(err);// or not
+            should.exist(err);
             res.status.should.equal(401);
             res.type.should.equal('application/json');
             res.body.status.should.eql('Unsuccessful');

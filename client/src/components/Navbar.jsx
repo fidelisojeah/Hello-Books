@@ -2,11 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { Link } from 'react-router';
-
 import { logout } from './actions/login';
 
-// const Navbar = ({ username }) => {
 class Navbar extends React.Component {
   constructor(props) {
     super(props);
@@ -55,4 +52,3 @@ Navbar.propTypes = {
 
 export default connect(null, { logout })(Navbar);
 
-//  onClick="shwUsrProfile()"

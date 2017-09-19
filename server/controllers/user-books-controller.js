@@ -4,7 +4,7 @@ import {
   BookLendings,
 } from '../models';
 
-class userBookInteraction {
+class UserBookInteraction {
   static validateEntry(
     userId, bookId, lendId,
   ) {
@@ -24,7 +24,7 @@ class userBookInteraction {
     const userId = parseInt(req.params.userId, 10);
     const isReturned = req.query.returned || null;
 
-    userBookInteraction.validateEntry(userId, 100, 100)
+    UserBookInteraction.validateEntry(userId, 100, 100)
       .then((validated) => {
         if (validated === 'Valid') {
           if (userId !== req.decoded.userId) { // false user?
@@ -85,10 +85,18 @@ class userBookInteraction {
                         });
                       }
                     })
-                    .catch(error => res.status(501).send(error));
+                    .catch(errorMessage =>
+                      res.status(501).json({
+                        status: 'Unsuccessful',
+                        error: errorMessage,
+                      }));
                 }
               })
-              .catch(error => res.status(501).send(error));
+              .catch(errorMessage =>
+                res.status(501).json({
+                  status: 'Unsuccessful',
+                  error: errorMessage,
+                }));
           }
         } else {
           res.status(501).json({
@@ -115,7 +123,7 @@ class userBookInteraction {
     if (duedate
       && !isNaN(duedate.getTime())
       && duedate > borrowdate) {
-      userBookInteraction.validateEntry(userId, bookId, 100)
+      UserBookInteraction.validateEntry(userId, bookId, 100)
         .then((validated) => {
           if (validated === 'Valid') {
             if (userId !== req.decoded.userId) { // false user?
@@ -188,10 +196,18 @@ class userBookInteraction {
                           });
                         }
                       })
-                      .catch(error => res.status(501).send(error));
+                      .catch(errorMessage =>
+                        res.status(501).json({
+                          status: 'Unsuccessful',
+                          error: errorMessage,
+                        }));
                   }
                 })
-                .catch(error => res.status(501).send(error));
+                .catch(errorMessage =>
+                  res.status(501).json({
+                    status: 'Unsuccessful',
+                    error: errorMessage,
+                  }));
             }
           } else {
             res.status(501).json({
@@ -217,7 +233,7 @@ class userBookInteraction {
     const bookId = parseInt(req.body.bookId, 10); // change case
     const lendId = parseInt(req.body.lendId, 10);
 
-    userBookInteraction.validateEntry(userId, bookId, lendId)
+    UserBookInteraction.validateEntry(userId, bookId, lendId)
       .then((validated) => {
         if (validated === 'Valid') {
           if (userId !== req.decoded.userId) { // false user?
@@ -254,9 +270,7 @@ class userBookInteraction {
                           message: 'No records found',
                         });
                       } else if (foundLentBook &&
-                        // foundLentBook.length > 0 &&
                         foundLentBook.actualReturnDate === null) {
-                        // if lent book is found
                         if (foundLentBook.bookId === bookId &&
                           foundLentBook.userId === userId) {
                           // check if records match
@@ -311,7 +325,11 @@ class userBookInteraction {
                                 });
                               }
                             })
-                            .catch(error => res.status(500).send(error));
+                            .catch(errorMessage =>
+                              res.status(500).json({
+                                status: 'Unsuccessful',
+                                error: errorMessage,
+                              }));
                         } else {
                           res.status(401).json({
                             status: 'Unsuccessful',
@@ -329,10 +347,19 @@ class userBookInteraction {
                           message: 'No records found',
                         });
                       }
-                    }).catch(error => res.status(500).send(error));
+                    })
+                    .catch(errorMessage =>
+                      res.status(500).json({
+                        status: 'Unsuccessful',
+                        error: errorMessage,
+                      }));
                 }
               })
-              .catch(error => res.status(500).send(error));
+              .catch(errorMessage =>
+                res.status(500).json({
+                  status: 'Unsuccessful',
+                  error: errorMessage,
+                }));
           }
         } else {
           res.status(501).json({
@@ -348,4 +375,4 @@ class userBookInteraction {
         }));
   }
 }
-export default userBookInteraction;
+export default UserBookInteraction;

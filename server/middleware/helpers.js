@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 
-class jwTokens {
+class JwTokens {
   // random 24 character string
   static randomString() {
     return new Promise((resolve, reject) => {
@@ -18,19 +18,19 @@ class jwTokens {
     return new Promise((resolve, reject) => {
       jwt
         .sign(
-          tokenInfo,
-          tokenSecret, {
-            expiresIn: tokenTime,
-          },
-          (tokenError, encodedToken) => {
-            if (encodedToken) {
-              resolve(encodedToken);
-            } else if (tokenError) {
-              reject(tokenError);
-            } else {
-              reject('error');
-            }
-          });
+        tokenInfo,
+        tokenSecret, {
+          expiresIn: tokenTime,
+        },
+        (tokenError, encodedToken) => {
+          if (encodedToken) {
+            resolve(encodedToken);
+          } else if (tokenError) {
+            reject(tokenError);
+          } else {
+            reject('error');
+          }
+        });
     });
   }
   // to verify token
@@ -38,17 +38,17 @@ class jwTokens {
     return new Promise((resolve, reject) => {
       jwt
         .verify(userToken,
-          req.app.get('JsonSecret'),
-          (error, verifiedToken) => {
-            if (error) {
-              reject(error);
-            } else if (verifiedToken) {
-              resolve(verifiedToken);
-            } else {
-              reject('error');
-            }
-          });
+        req.app.get('JsonSecret'),
+        (error, verifiedToken) => {
+          if (error) {
+            reject(error);
+          } else if (verifiedToken) {
+            resolve(verifiedToken);
+          } else {
+            reject('error');
+          }
+        });
     });
   }
 }
-export default jwTokens;
+export default JwTokens;

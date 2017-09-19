@@ -627,4 +627,3 @@ describe('GET /api/v4/authors version 4', () => {
     });
   });
 });
-// .set('x-access-token', goodToken)

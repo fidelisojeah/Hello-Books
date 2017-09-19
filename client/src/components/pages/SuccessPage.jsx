@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import FlashMessage from '../flash/FlashMessage';
 
-// const SuccessPage = () => {
 class SuccessPage extends React.Component {
   render() {
     const messages = this.props.messages.map(message =>

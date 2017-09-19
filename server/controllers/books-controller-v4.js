@@ -5,13 +5,13 @@ import {
   BookRatings,
 } from '../models';
 
-import checkSession from '../middleware/session';
+import CheckSession from '../middleware/session';
 
 // const userCookieInfo = 'userCookieInfo';
 
-class bookProps {
+class BookProps {
   static newAuthor(req, res) {
-    checkSession
+    CheckSession
       .checkAdmin(req.decoded)
       .then(() => {
         // console.log('here');
@@ -34,7 +34,11 @@ class bookProps {
                 message: 'Author Created Successfully',
               });
             })
-            .catch(error => res.status(500).send(error));
+            .catch(errorMessage =>
+              res.status(500).json({
+                status: 'Unsuccessful',
+                error: errorMessage,
+              }));
         } else { // incomplete details
           res.status(400).json({
             status: 'Unsuccessful',
@@ -92,7 +96,11 @@ class bookProps {
             });
           }
         })
-        .catch(error => res.status(500).json(error)); // catch error from findall
+        .catch(errorMessage =>
+          res.status(500).json({
+            status: 'Unsuccessful',
+            error: errorMessage,
+          })); // catch error from findall
     } else {
       Books
         .findOne({
@@ -129,7 +137,11 @@ class bookProps {
             data: bookInfo,
           });
         })
-        .catch(error => res.status(500).send(error));
+        .catch(errorMessage =>
+          res.status(500).json({
+            status: 'Unsuccessful',
+            error: errorMessage,
+          }));
     }
   }
   static checkNewBookVariables(bookname,
@@ -163,7 +175,7 @@ class bookProps {
     });
   }
   static newBook(req, res) {
-    checkSession
+    CheckSession
       .checkAdmin(req.decoded)
       .then(() => {
         const bookQuantity = req.body.quantity || 1;
@@ -177,7 +189,7 @@ class bookProps {
 
         if (authors.every(x => !isNaN(x) && x > 0)) {
           // true if every element is int
-          bookProps.checkNewBookVariables(bookName,
+          BookProps.checkNewBookVariables(bookName,
             ISBN,
             publishYear,
             description,
@@ -209,7 +221,11 @@ class bookProps {
                                 message: 'Book Created Successfully',
                                 bookID: createdBook.dataValues.id,
                               }))
-                            .catch(error => res.status(501).send(error));
+                            .catch(errorMessage =>
+                              res.status(500).json({
+                                status: 'Unsuccessful',
+                                error: errorMessage,
+                              }));
                         })
                         .catch((error) => {
                           if (error.name === 'SequelizeUniqueConstraintError') {
@@ -218,7 +234,10 @@ class bookProps {
                               message: 'Book Already Exists',
                             });
                           } else {
-                            res.status(500).send(error);
+                            res.status(500).json({
+                              status: 'Unsuccessful',
+                              error,
+                            });
                           }
                         });
                     } else {
@@ -228,7 +247,11 @@ class bookProps {
                       });
                     }
                   })
-                  .catch(error => res.status(501).send(error));
+                  .catch(errorMessage =>
+                    res.status(500).json({
+                      status: 'Unsuccessful',
+                      error: errorMessage,
+                    }));
               } else {
                 res.status(501).json({
                   status: 'Unsuccessful',
@@ -279,7 +302,11 @@ class bookProps {
             });
           }
         })
-        .catch(error => res.status(500).json(error)); // catch error from findall
+        .catch(errorMessage =>
+          res.status(500).json({
+            status: 'Unsuccessful',
+            error: errorMessage,
+          })); // catch error from findall
     } else {
       Authors
         .findOne({
@@ -303,11 +330,15 @@ class bookProps {
             data: authorInfo,
           });
         })
-        .catch(error => res.status(500).send(error));
+        .catch(errorMessage =>
+          res.status(500).json({
+            status: 'Unsuccessful',
+            error: errorMessage,
+          }));
     }
   }
   static updateBookQuantity(req, res) {
-    checkSession
+    CheckSession
       .checkAdmin(req.decoded)
       .then(() => {
         const bookId = parseInt(req.params.bookId, 10);
@@ -339,10 +370,18 @@ class bookProps {
                     message: 'Book Updated Successfully',
                     data: addBook,
                   }))
-                  .catch(error => res.status(500).send(error));
+                  .catch(errorMessage =>
+                    res.status(500).json({
+                      status: 'Unsuccessful',
+                      error: errorMessage,
+                    }));
               }
             })
-            .catch(error => res.status(501).send(error));
+            .catch(errorMessage =>
+              res.status(501).json({
+                status: 'Unsuccessful',
+                error: errorMessage,
+              }));
         } else if (isNaN(bookId) && !isNaN(bookQuantity)) {
           res.status(404).json({
             status: 'Unsuccessful',
@@ -363,7 +402,7 @@ class bookProps {
       });
   }
   static modifyBook(req, res) {
-    checkSession
+    CheckSession
       .checkAdmin(req.decoded)
       .then(() => {
         const bookID = parseInt(req.params.bookId, 10);
@@ -396,9 +435,17 @@ class bookProps {
                     message: 'Book Details Updated',
                     data: bookUpdate,
                   }))
-                  .catch(error => res.status(501).send(error));
+                  .catch(errorMessage =>
+                    res.status(501).json({
+                      status: 'Unsuccessful',
+                      error: errorMessage,
+                    }));
               }
-            }).catch(error => res.status(500).send(error)); // catch error from findone
+            }).catch(errorMessage =>
+              res.status(500).json({
+                status: 'Unsuccessful',
+                error: errorMessage,
+              })); // catch error from findone
           } else {
             res.status(400).json({
               status: 'Unsuccessful',
@@ -421,4 +468,4 @@ class bookProps {
   }
 }
 
-export default bookProps;
+export default BookProps;
