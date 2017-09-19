@@ -2,6 +2,34 @@
   "name": "hellobooks",
   "version": "1.0.8",
   "description": "Simple Online Book Library",
+  "nyc": {
+    "require": [
+      "babel-register"
+    ],
+    "extension": [
+      ".jsx",
+      ".js",
+      ".es6"
+    ],
+    "check-coverage": true,
+    "per-file": true,
+    "lines": 99,
+    "statements": 99,
+    "functions": 99,
+    "branches": 99,
+    "exclude": [
+      "node_modules",
+      "bin",
+      "coverage",
+      "test/fixtures/coverage.js",
+      "test/build/*",
+      "test/src/*",
+      "test/nyc.js",
+      "test/process-args.js",
+      "index.covered.js",
+      "test/fixtures/_generateCoverage.js"
+    ]
+  },
   "scripts": {
     "install:config": "npm prune && npm install",
     "lint": "markdownlint --config linters/.markdownlint.json",
@@ -11,7 +39,7 @@
     "migrate": "sequelize db:migrate",
     "build": "babel server -d build",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "test": "NODE_ENV=test mocha --compilers js:babel-register",
+    "test": "NODE_ENV=test nyc --reporter=text  --reporter=html mocha --compilers js:babel-register",
     "test:front": "mocha --reporter progress tools/testSetup.js \"client/src/**/*.test.js\"",
     "start:dev": "nodemon ./server/index.js --watch server/ --exec babel-node --presets es2015,stage-2",
     "start": "babel-node ./server/index.js",
@@ -59,7 +87,7 @@
     "mocha-lcov-reporter": "^1.3.0",
     "node-sass": "^4.5.3",
     "nodemon": "^1.11.0",
-    "nyc": "^11.1.0",
+    "nyc": "^11.2.1",
     "passport": "^0.3.2",
     "passport-jwt": "^2.2.1",
     "prettier-eslint": "^6.4.2",
