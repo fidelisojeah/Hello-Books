@@ -19,17 +19,6 @@ class Logindex extends React.Component {
           this.setState({
             allBooks: allBooks.data.data,
           });
-          // this.listBooks = allBooks.data.data.map(bookInfos =>
-          //   (<BookCard
-          //     bookName={bookInfos.bookName}
-          //     bookDesc={bookInfos.description}
-          //     ratingSum={(bookInfos.RatingSum === null) ? 'empty' : bookInfos.RatingSum}
-          //     ratingCount={bookInfos.RatingCount}
-          //     imgHref={`../assets/images/${bookInfos.bookImage}`}
-          //     bookAuthors={bookInfos.Authors}
-          //   />),
-          // );
-          console.log(this.listBooks, '......');
         } else {
           console.log('error');
         }
