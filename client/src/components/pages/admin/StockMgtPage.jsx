@@ -19,16 +19,15 @@ class StockMgtPage extends React.Component {
   }
   handleClick(event) {
     event.preventDefault();
-    console.log(event, '...');
-    // const tabContent = document.getElementsByClassName('tabs-item');
-    // for (let i = 0; i < tabContent.length; i += 1) {
-    //   tabContent[i].style.display = 'none';
-    // }
-    // const tabbednav = document.getElementsByClassName('tabbednav');
-    // for (let i = 0; i < tabbednav.length; i += 1) {
-    //   tabbednav[i].className = tabbednav[i].className.replace('active', '');
-    // }
-    // document.getElementById(tabChanged).style.display = 'block';
+    const tabContent = document.getElementsByClassName('tabs-item');
+    for (let i = 0; i < tabContent.length; i += 1) {
+      tabContent[i].style.display = 'none';
+    }
+    const tabbednav = document.getElementsByClassName('tabbednav');
+    for (let i = 0; i < tabbednav.length; i += 1) {
+      tabbednav[i].className = tabbednav[i].className.replace('active', '');
+    }
+    document.getElementById(event.target.name).style.display = 'block';
   }
   render() {
     const {
@@ -80,6 +79,7 @@ class StockMgtPage extends React.Component {
                   <li className="tabbednav">
                     <a
                       href=""
+                      name="NewAuth"
                       onClick={this.handleClick}
                     >
                       Add New Author
@@ -88,6 +88,7 @@ class StockMgtPage extends React.Component {
                   <li className="tabbednav">
                     <a
                       href=""
+                      name="ManageBook"
                       onClick={this.handleClick}
                     >
                       Manage Books
@@ -96,6 +97,7 @@ class StockMgtPage extends React.Component {
                   <li className="tabbednav">
                     <a
                       href=""
+                      name="DeleteBook"
                       onClick={this.handleClick}
                     >
                       Delete Books
