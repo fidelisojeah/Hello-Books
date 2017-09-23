@@ -14,6 +14,21 @@ class StockMgtPage extends React.Component {
     this.state = {
       initial: 0,
     };
+    // let something;
+    // this.onClick = this.handleClick.bind(this);
+  }
+  handleClick(event) {
+    event.preventDefault();
+    console.log(event, '...');
+    // const tabContent = document.getElementsByClassName('tabs-item');
+    // for (let i = 0; i < tabContent.length; i += 1) {
+    //   tabContent[i].style.display = 'none';
+    // }
+    // const tabbednav = document.getElementsByClassName('tabbednav');
+    // for (let i = 0; i < tabbednav.length; i += 1) {
+    //   tabbednav[i].className = tabbednav[i].className.replace('active', '');
+    // }
+    // document.getElementById(tabChanged).style.display = 'block';
   }
   render() {
     const {
@@ -38,7 +53,10 @@ class StockMgtPage extends React.Component {
                 </a>
               </li>
               <li className="breadcrumbs--item">
-                <a href="/" className="breadcrumbs--link -active">
+                <a
+                  href=""
+                  className="breadcrumbs--link -active"
+                >
                   Stock Management
                 </a>
               </li>
@@ -51,22 +69,35 @@ class StockMgtPage extends React.Component {
               <div className="tabbed-header">
                 <ul className="tb">
                   <li className="tabbednav active">
-                    <a href="">
+                    <a
+                      href=""
+                      name="NewBook"
+                      onClick={this.handleClick}
+                    >
                       Add New Book
                     </a>
                   </li>
                   <li className="tabbednav">
-                    <a href="">
+                    <a
+                      href=""
+                      onClick={this.handleClick}
+                    >
                       Add New Author
                     </a>
                   </li>
                   <li className="tabbednav">
-                    <a href="">
+                    <a
+                      href=""
+                      onClick={this.handleClick}
+                    >
                       Manage Books
                     </a>
                   </li>
                   <li className="tabbednav">
-                    <a href="">
+                    <a
+                      href=""
+                      onClick={this.handleClick}
+                    >
                       Delete Books
                     </a>
                   </li>
