@@ -6,4 +6,3 @@ export const addFlashMessage = (message) => {
     message,
   };
 };
-

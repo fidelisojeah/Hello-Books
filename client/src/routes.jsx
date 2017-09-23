@@ -6,6 +6,7 @@ import {
 
 import App from './components/App';
 import Signin from './components/pages/Signin';
+import StockMgtPage from './components/pages/admin/StockMgtPage';
 import SuccessPage from './components/pages/SuccessPage';
 import LogIndex from './components/pages/LogIndex';
 
@@ -15,6 +16,7 @@ const Main = () => (
       <Route path="/signin" component={Signin} />
       <Route path="/success" component={SuccessPage} />
       <Route path="/Books" component={LogIndex} />
+      <Route path="/bookmgt" component={StockMgtPage} />
     </Switch>
   </App>
 );

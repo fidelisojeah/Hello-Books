@@ -5,7 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 import UserHelper from '../../../server/helpers/user-signup';
 import TextField from './common/TextField';
 
-class SignupForm extends React.Component {
+class SignUpForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -54,7 +54,7 @@ class SignupForm extends React.Component {
             if (error.response) {
               this.setState({
                 errors: {
-                  errorField: error.response.data.errorField,
+                  inputError: error.response.data.inputError,
                   message: error.response.data.message,
                   isLoading: false,
                 },
@@ -69,14 +69,14 @@ class SignupForm extends React.Component {
       .catch((error) => {
         this.setState({
           errors: {
-            errorField: error.field,
+            inputError: error.field,
             message: error.message,
           },
         });
       });
   }
   checkUserExists(event) {
-    const errorField = event.target.name;
+    const inputError = event.target.name;
     const val = event.target.value;
     if (val !== '') {
       this.props
@@ -84,9 +84,9 @@ class SignupForm extends React.Component {
         .then((result) => {
           const errors = this.state.errors;
           if (result.data.userHere) {
-            errors[errorField] = `${errorField} already taken`;
+            errors[inputError] = `${inputError} already taken`;
           } else {
-            delete errors[errorField];
+            delete errors[inputError];
           }
           this.setState({ errors, invalid: !isEmpty(errors) });
         });
@@ -98,31 +98,31 @@ class SignupForm extends React.Component {
       <form onSubmit={this.onSubmit}>
         <div className="row">
           <TextField
-            errorField={errors.errorField}
+            inputError={errors.inputError}
             errorMessage={errors.message}
             label="First Name"
             field="firstname"
             onChange={this.onChange}
             value={this.state.firstname}
             formField="form-group col-xs-6"
-            isReq
+            isRequired
             type="text"
           />
           <TextField
-            errorField={errors.errorField}
+            inputError={errors.inputError}
             errorMessage={errors.message}
             label="Last Name"
             field="lastname"
             onChange={this.onChange}
             value={this.state.lastname}
             formField="form-group col-xs-6"
-            isReq
+            isRequired
             type="text"
           />
         </div>
         <div className="row">
           <TextField
-            errorField={errors.errorField}
+            inputError={errors.inputError}
             errorMessage={errors.message}
             errField={errors.username}
             label="Username"
@@ -131,13 +131,13 @@ class SignupForm extends React.Component {
             value={this.state.username}
             checkUserExists={this.checkUserExists}
             formField="form-group"
-            isReq
+            isRequired
             type="text"
           />
         </div>
         <div className="row">
           <TextField
-            errorField={errors.errorField}
+            inputError={errors.inputError}
             errorMessage={errors.message}
             errField={errors.email}
             label="Email Address"
@@ -146,51 +146,54 @@ class SignupForm extends React.Component {
             value={this.state.email}
             checkUserExists={this.checkUserExists}
             formField="form-group"
-            isReq
+            isRequired
             type="email"
           />
         </div>
         <div className="row">
           <TextField
-            errorField={errors.errorField}
+            inputError={errors.inputError}
             errorMessage={errors.message}
             label="Phone Number"
             field="phone"
             onChange={this.onChange}
             value={this.state.phone}
             formField="form-group"
-            isReq={false}
+            isRequired={false}
             type="phone"
           />
         </div>
         <div className="row">
           <TextField
-            errorField={errors.errorField}
+            inputError={errors.inputError}
             errorMessage={errors.message}
             label="Password"
             field="password"
             onChange={this.onChange}
             value={this.state.password}
             formField="form-group"
-            isReq
+            isRequired
             type="password"
           />
         </div>
         <div className="row">
           <TextField
-            errorField={errors.errorField}
+            inputError={errors.inputError}
             errorMessage={errors.message}
             label="Confirm Password"
             field="passwordConfirmation"
             onChange={this.onChange}
             value={this.state.passwordConfirmation}
             formField="form-group"
-            isReq
+            isRequired
             type="password"
           />
         </div>
         <div className="button-container">
-          <button disabled={this.state.isLoading || this.state.invalid} className="button btn">
+          <button
+            disabled={this.state.isLoading ||
+              this.state.invalid}
+            className="button btn">
             <span>Register</span>
           </button>
         </div>
@@ -198,12 +201,12 @@ class SignupForm extends React.Component {
     );
   }
 }
-SignupForm.propTypes = {
+SignUpForm.propTypes = {
   userSignupRequest: PropTypes.func.isRequired,
   addFlashMessage: PropTypes.func.isRequired,
   isUserExists: PropTypes.func.isRequired,
 };
-SignupForm.contextTypes = {
+SignUpForm.contextTypes = {
   router: PropTypes.object.isRequired,
 };
-export default SignupForm;
+export default SignUpForm;

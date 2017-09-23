@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import { userSignupRequest, isUserExists } from '../actions/signupActions';
 import { userLogin } from '../actions/login';
 import { addFlashMessage } from '../actions/flashMessages';
-import SigninForm from '../SigninForm';
-import SignupForm from '../SignupForm';
+import SignInForm from '../SignInForm';
+import SignUpForm from '../SignUpForm';
 
 class Signin extends React.Component {
   constructor(props) {
@@ -16,7 +16,9 @@ class Signin extends React.Component {
     };
   }
   render() {
-    const { userLogin, userSignupRequest, addFlashMessage, isUserExists } = this.props;
+    const { userLogin,
+      userSignupRequest,
+      addFlashMessage, isUserExists } = this.props;
     return (
       <div id="login-page-layout" className="layout--container">
         <div className="container">
@@ -35,7 +37,7 @@ class Signin extends React.Component {
                   </div>
                 </div>
                 <div className="form-bottom">
-                  <SigninForm
+                  <SignInForm
                     addFlashMessage={addFlashMessage}
                     userLogin={userLogin}
                   />
@@ -51,7 +53,7 @@ class Signin extends React.Component {
                   </div>
                 </div>
                 <div className="form-bottom">
-                  <SignupForm
+                  <SignUpForm
                     isUserExists={isUserExists}
                     userSignupRequest={userSignupRequest}
                     addFlashMessage={addFlashMessage}

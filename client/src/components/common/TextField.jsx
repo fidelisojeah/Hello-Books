@@ -6,28 +6,28 @@ const TextField = ({ formField,
   field,
   value,
   label,
-  errorField,
+  inputError,
   errField,
   type,
   onChange,
-  isReq,
+  isRequired,
   errorMessage,
   checkUserExists }) => {
   return (
     <div className={classnames(formField,
-      { 'has-error': (errorField === field || errField) })}
+      { 'has-error': (inputError === field || errField) })}
     >
       <input
         type={type}
         value={value}
-        required={isReq}
+        required={isRequired}
         name={field}
         onBlur={checkUserExists}
         onChange={onChange}
       />
       <label className="control-label" htmlFor="input">{label}</label>
       <i className="bar" />
-      {errorField === field &&
+      {inputError === field &&
         <div className="error-field">{errorMessage}</div>}
       {errField &&
         <div className="error-field">{errField}</div>}
@@ -37,11 +37,11 @@ const TextField = ({ formField,
 
 TextField.propTypes = {
   formField: PropTypes.string.isRequired,
-  isReq: PropTypes.bool.isRequired,
+  isRequired: PropTypes.bool.isRequired,
   field: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  errorField: PropTypes.string,
+  inputError: PropTypes.string,
   errField: PropTypes.string,
   errorMessage: PropTypes.string,
   type: PropTypes.string.isRequired,
@@ -51,7 +51,7 @@ TextField.propTypes = {
 
 TextField.defaultProps = {
   type: 'text',
-  errorField: 'crap',
+  inputError: 'crap',
   errField: null,
   errorMessage: 'nothing',
   checkUserExists: null,

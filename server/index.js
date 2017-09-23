@@ -43,10 +43,11 @@ app.use(session({
   },
 }));
 
-app.post('/api/v4/users/signup', UserLoginDetails.signup);
-app.get('/api/v4/users/signupCheck/:identifier', UserLoginDetails.checkUserExists);
+app.post('/api/v4/users/signup', UserLoginDetails.signUp);
+app.get('/api/v4/users/signupCheck/:identifier',
+  UserLoginDetails.checkUserExists);
 app.get('/api/v4/users/verify', UserLoginDetails.activateUser);
-app.post('/api/v4/users/signin', UserLoginDetails.signin);
+app.post('/api/v4/users/signin', UserLoginDetails.signIn);
 
 // for user - book handling
 app.post('/api/v4/users/:userId/books',

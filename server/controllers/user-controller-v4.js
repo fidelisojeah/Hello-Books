@@ -47,7 +47,7 @@ class UserLoginDetails {
     });
   }
   // for sign up
-  static signup(req, res) {
+  static signUp(req, res) {
     // declare variables
     const password = req.body.password || null;
     const lastName = req.body.lastname || null;
@@ -103,20 +103,25 @@ class UserLoginDetails {
                                   tokenInfo,
                                   '24h') // expires in 24hours
                                   .then((signupToken) => {
-                                    if (signupToken) { // for verification things
+                                    if (signupToken) { // for verification
                                       res.status(201).json({
                                         status: 'Success',
                                         message: 'User account created',
-                                        membership: setMembershipDetails.membershipName,
-                                        token: signupToken, // would be part of mail
+                                        membership:
+                                        setMembershipDetails.membershipName,
+                                        token: signupToken,
+                                        // could be part of mail
                                       });
                                     }
                                   })
                                   .catch(error => // if unsuccessful token
                                     res.status(202).json({
                                       status: 'none',
-                                      message: 'User account created, Token unsuccessful',
-                                      membership: setMembershipDetails.membershipName,
+                                      message:
+                                      `User account created, 
+                                      Token unsuccessful`,
+                                      membership:
+                                      setMembershipDetails.membershipName,
                                       errorMsg: error,
                                     }));
                               })
@@ -134,7 +139,7 @@ class UserLoginDetails {
                       .catch(error => res.status(400).json({
                         status: 'Unsuccessful',
                         message: error.errors[0].message,
-                        errorField:
+                        inputError:
                         (error.errors[0].path === 'emailaddress') ? 'email' :
                           error.errors[0].path,
                       }));
@@ -157,7 +162,7 @@ class UserLoginDetails {
         res.status(400).json({
           status: 'Unsuccessful',
           message: error.message,
-          errorField: error.field,
+          inputError: error.field,
         }),
     );
   }
@@ -188,7 +193,8 @@ class UserLoginDetails {
                         status: 'None',
                         message: 'User already activated',
                       });
-                    } else if (activationUser.authString === userToken.activationString) {
+                    } else if (activationUser.authString ===
+                      userToken.activationString) {
                       // if authstring is valid
                       JwTokens
                         .randomString()
@@ -251,7 +257,7 @@ class UserLoginDetails {
       });
     }
   }
-  static signin(req, res) {
+  static signIn(req, res) {
     const password = req.body.password || null;
     const userName = req.body.username || null;
     UserHelper
@@ -352,7 +358,7 @@ class UserLoginDetails {
         res.status(400).json({
           status: 'Unsuccessful',
           message: error.message,
-          errorField: error.field,
+          inputError: error.field,
         });
       });
   }

@@ -63,8 +63,10 @@ class Logindex extends React.Component {
                             (<BookCard
                               key={bookInfos.id}
                               bookName={bookInfos.bookName}
-                              bookDesc={bookInfos.description}
-                              ratingSum={(bookInfos.RatingSum === null) ? 'empty' : bookInfos.RatingSum}
+                              synopsis={bookInfos.description}
+                              ratingSum={(bookInfos.RatingSum === null) ?
+                                'empty' :
+                                bookInfos.RatingSum}
                               ratingCount={bookInfos.RatingCount}
                               imgHref={`../assets/images/${bookInfos.bookImage}`}
                               bookAuthors={bookInfos.Authors}

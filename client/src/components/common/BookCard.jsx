@@ -4,18 +4,18 @@ import PropTypes from 'prop-types';
 import Ratings from './Ratings';
 
 const BookCard = ({ bookName,
-  bookDesc,
+  synopsis,
   ratingSum,
   ratingCount,
   imgHref,
   bookAuthors }) => {
   const rateCount = parseInt(ratingCount, 10);
   // convert to integer
-  const lent = bookAuthors.length;
+  const numAuthors = bookAuthors.length;
   const authors = bookAuthors.map((authorsSplit, index) =>
     (<span key={authorsSplit.id}>
       <a href={authorsSplit.id}>{authorsSplit.authorAKA}</a>
-      {index < (lent - 1) && ', '}
+      {index < (numAuthors - 1) && ', '}
     </span>),
   );
   return (
@@ -52,7 +52,7 @@ BookCard.defaultProps = {
 
 BookCard.propTypes = {
   bookName: PropTypes.string.isRequired,
-  bookDesc: PropTypes.string.isRequired,
+  synopsis: PropTypes.string.isRequired,
   imgHref: PropTypes.string.isRequired,
   ratingCount: PropTypes.string.isRequired,
   ratingSum: PropTypes.string,
