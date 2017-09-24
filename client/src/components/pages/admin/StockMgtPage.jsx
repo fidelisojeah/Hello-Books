@@ -3,7 +3,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { newAuthorRequest } from '../../actions/newAuthorActions';
-import { bookImageUpload } from '../../actions/newBookAction';
+import {
+  bookImageUpload,
+  newBookRequest
+} from '../../actions/newBookAction';
 import NewBookForm from '../../NewBookForm';
 import NewAuthorForm from '../../NewAuthorForm';
 
@@ -30,7 +33,8 @@ class StockMgtPage extends React.Component {
   render() {
     const {
       newAuthorRequest,
-      bookImageUpload
+      bookImageUpload,
+      newBookRequest
     } = this.props;
     return (
       <div className="layout--container">
@@ -106,6 +110,7 @@ class StockMgtPage extends React.Component {
               <div className="tabbed-content">
                 <NewBookForm
                   bookImageUpload={bookImageUpload}
+                  newBookRequest={newBookRequest}
                 />
                 <NewAuthorForm
                   newAuthorRequest={newAuthorRequest}
@@ -120,8 +125,12 @@ class StockMgtPage extends React.Component {
 }
 StockMgtPage.propTypes = {
   newAuthorRequest: PropTypes.func.isRequired,
-  bookImageUpload: PropTypes.func.isRequired
-
+  bookImageUpload: PropTypes.func.isRequired,
+  newBookRequest: PropTypes.func.isRequired
 };
 export default connect(null,
-  { newAuthorRequest, bookImageUpload })(StockMgtPage);
+  {
+    newAuthorRequest,
+    bookImageUpload,
+    newBookRequest
+  })(StockMgtPage);

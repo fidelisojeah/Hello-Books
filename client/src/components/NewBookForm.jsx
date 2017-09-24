@@ -98,7 +98,6 @@ class NewBookForm extends React.Component {
             uploadedImage: null
           });
         } else {
-          console.log(response);
           this.setState({
             isLoading: false
           });
