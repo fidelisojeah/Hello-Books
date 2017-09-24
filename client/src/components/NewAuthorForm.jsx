@@ -143,7 +143,7 @@ class NewAuthorForm extends React.Component {
     );
   }
 }
-NewAuthorForm.PropTypes = {
+NewAuthorForm.propTypes = {
   newAuthorRequest: PropTypes.func.isRequired
 };
 NewAuthorForm.contextTypes = {

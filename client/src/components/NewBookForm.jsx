@@ -105,7 +105,6 @@ class NewBookForm extends React.Component {
         }
       }
       );
-
   }
   render() {
     const { errors } = this.state;
