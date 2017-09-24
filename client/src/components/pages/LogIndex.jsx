@@ -20,10 +20,14 @@ class Logindex extends React.Component {
             allBooks: allBooks.data.data,
           });
         } else {
-          console.log('error');
+          console.log(allBooks.data.status);
         }
       })
-      .catch(error => console.log(error));
+      .catch((error) => {
+        if (error.response.data.message === 'Unauthenticated') {
+          this.context.router.history.push('/signin');
+        }
+      });
   }
   render() {
     return (
@@ -94,6 +98,9 @@ class Logindex extends React.Component {
 }
 Logindex.propTypes = {
   loadAllBooks: PropTypes.func.isRequired,
+};
+Logindex.contextTypes = {
+  router: PropTypes.object.isRequired,
 };
 export default connect(null, { loadAllBooks })(Logindex);
 

@@ -35,12 +35,29 @@ class NewAuthorForm extends React.Component {
           response.data.message,
           'success'
         );
+      })
+      .catch((error) => {
+        if (error.response.data.message === 'Not allowed') {
+          swal(
+            'Too Bad',
+            'You don\'t have access',
+            'error'
+          );
+          this.context.router.history.push('/Books');
+        } else if (error.response.data.message === 'Unauthenticated') {
+          swal(
+            'Too Bad',
+            'Try signing in Please',
+            'error'
+          );
+          this.context.router.history.push('/signin');
+        }
       });
   }
   render() {
     const { errors } = this.state;
     return (
-      <div id="NewAuth" className="tabs-item active">
+      <div id="NewAuth" className="tabs-item">
         <div className="tabs-item-content">
           <h2 className="tabs-title">
             New <span>
@@ -100,7 +117,7 @@ class NewAuthorForm extends React.Component {
                   errorMessage={errors.message}
                   label="Date of Birth"
                   onChange={this.onChange}
-                  field="authorAKA"
+                  field="authorDOB"
                   value={this.state.authorDOB}
                   formField="form-group"
                   isRequired={false}
@@ -128,5 +145,8 @@ class NewAuthorForm extends React.Component {
 }
 NewAuthorForm.PropTypes = {
   newAuthorRequest: PropTypes.func.isRequired
+};
+NewAuthorForm.contextTypes = {
+  router: PropTypes.object.isRequired,
 };
 export default NewAuthorForm;

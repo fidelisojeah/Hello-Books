@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { newAuthorRequest } from '../../actions/newAuthorActions';
-import { addFlashMessage } from '../../actions/flashMessages';
+import { bookImageUpload } from '../../actions/newBookAction';
 import NewBookForm from '../../NewBookForm';
 import NewAuthorForm from '../../NewAuthorForm';
 
@@ -14,8 +14,6 @@ class StockMgtPage extends React.Component {
     this.state = {
       initial: 0,
     };
-    // let something;
-    // this.onClick = this.handleClick.bind(this);
   }
   handleClick(event) {
     event.preventDefault();
@@ -32,7 +30,7 @@ class StockMgtPage extends React.Component {
   render() {
     const {
       newAuthorRequest,
-      addFlashMessage
+      bookImageUpload
     } = this.props;
     return (
       <div className="layout--container">
@@ -106,10 +104,11 @@ class StockMgtPage extends React.Component {
                 </ul>
               </div>
               <div className="tabbed-content">
-                <NewBookForm />
+                <NewBookForm
+                  bookImageUpload={bookImageUpload}
+                />
                 <NewAuthorForm
                   newAuthorRequest={newAuthorRequest}
-                  addFlashMessage={addFlashMessage}
                 />
               </div>
             </div>
@@ -121,7 +120,8 @@ class StockMgtPage extends React.Component {
 }
 StockMgtPage.propTypes = {
   newAuthorRequest: PropTypes.func.isRequired,
-  addFlashMessage: PropTypes.func.isRequired
+  bookImageUpload: PropTypes.func.isRequired
+
 };
 export default connect(null,
-  { newAuthorRequest, addFlashMessage })(StockMgtPage);
+  { newAuthorRequest, bookImageUpload })(StockMgtPage);

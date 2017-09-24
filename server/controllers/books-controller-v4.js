@@ -10,6 +10,54 @@ import CheckSession from '../middleware/session';
 // const userCookieInfo = 'userCookieInfo';
 
 class BookProps {
+  static searchAuthors(request, response) {
+    const authorDetails = request.params.identifier || null;
+    if (authorDetails.length >= 1) {
+      Authors
+        .findAll({
+          where: {
+            $or: [{
+              authorFirstName:
+              { $iLike: `%${authorDetails}%` }
+            }, {
+              authorLastName:
+              { $iLike: `%${authorDetails}%` }
+            }, {
+              authorAKA:
+              { $iLike: `%${authorDetails}%` }
+            }
+            ]
+          },
+          attributes:
+          ['id', 'authorFirstName',
+            'authorLastName',
+            'authorAKA', 'dateofBirth'],
+        })
+        .then((foundAuthors) => {
+          if (foundAuthors === null || foundAuthors.length === 0) {
+            response.status(200).json({
+              status: 'None',
+              message: 'No Authors',
+            });
+          } else {
+            response.status(202).json({
+              status: 'Success',
+              data: allAuthors,
+            });
+          }
+        })
+        .catch(errorMessage =>
+          response.status(500).json({
+            status: 'Unsuccessful',
+            error: errorMessage,
+          }));
+    } else {
+      response.status(200).json({
+        status: 'None',
+        message: 'Type Author details'
+      });
+    }
+  }
   static newAuthor(req, res) {
     CheckSession
       .checkAdmin(req.decoded)

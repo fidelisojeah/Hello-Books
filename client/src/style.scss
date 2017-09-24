@@ -1710,3 +1710,39 @@ input[type='search'] {
         }
     }
 }
+
+.dropzone {
+    width: 100px;
+    height: 50px;
+    min-height: 0px !important;
+}
+
+.img-container {
+    float: left;
+    @media(max-width: $screen-xs) {
+        & img {
+            max-width: 150px;
+        }
+    }
+}
+
+.x-button {
+    font-size: 26px;
+    margin-left: 2px;
+    float: right;
+    &:before {
+        display: inline-block;
+        font-family: 'icons';
+        content: '\f129';
+        font-style: normal;
+        font-weight: 400;
+        font-variant: normal;
+        line-height: 1;
+        text-decoration: inherit;
+        text-rendering: optimizeLegibility;
+        text-transform: none;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+        font-smoothing: antialiased
+    }
+}
