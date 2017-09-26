@@ -3,6 +3,7 @@ import Dropzone from 'react-dropzone';
 import PropTypes from 'prop-types';
 
 import TextField from './common/TextField';
+import AuthorSearch from './common/AuthorSearch';
 import loader from '../images/802.gif';
 
 // TODO:
@@ -86,7 +87,6 @@ class NewBookForm extends React.Component {
       .bookImageUpload(image)
       .end((error, response) => {
         if (error) {
-          console.log(error);
           this.setState({
             isLoading: false
           });
@@ -144,6 +144,11 @@ class NewBookForm extends React.Component {
                   isRequired
                   type="text"
                 />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-6">
+                <AuthorSearch />
               </div>
             </div>
             <div className="row">

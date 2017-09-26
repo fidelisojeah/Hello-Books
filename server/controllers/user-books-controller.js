@@ -291,7 +291,8 @@ class UserBookInteraction {
                                       }),
                                     borrowedBook
                                       .update({
-                                        bookQuantity: borrowedBook.bookQuantity + 1,
+                                        bookQuantity:
+                                        borrowedBook.bookQuantity + 1,
                                       })])
                                   .then(([lendUpdate, borrowUpdate]) => {
                                     if (lendUpdate && borrowUpdate) {
@@ -299,13 +300,17 @@ class UserBookInteraction {
                                         status: 'Success',
                                         message: {
                                           Bookname: borrowedBook.bookName,
-                                          BookQuantity: borrowUpdate.bookQuantity,
+                                          BookQuantity:
+                                          borrowUpdate.bookQuantity,
                                           BorrowedDate: lendUpdate.borrowDate,
                                           DueDate: lendUpdate.dueDate,
-                                          returnDate: lendUpdate.actualReturnDate,
+                                          returnDate:
+                                          lendUpdate.actualReturnDate,
                                           outStanding:
-                                          (lendUpdate.actualReturnDate - lendUpdate.dueDate) < 0 ?
-                                            0 : lendUpdate.actualReturnDate - lendUpdate.dueDate,
+                                          (lendUpdate.actualReturnDate -
+                                            lendUpdate.dueDate) < 0 ?
+                                            0 : lendUpdate.actualReturnDate -
+                                            lendUpdate.dueDate,
                                         },
                                       });
                                     } else {
