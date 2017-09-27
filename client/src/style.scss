@@ -1802,3 +1802,13 @@ input[type='search'] {
         }
     }
 }
+
+.selected-Authors {
+    margin-top: -35px;
+    margin-bottom: 38px;
+    display: inline-block;
+    & li {
+        background: $primaryColor;
+        padding: 5px;
+    }
+}

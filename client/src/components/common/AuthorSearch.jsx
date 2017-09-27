@@ -109,6 +109,9 @@ class AuthorSearch extends React.Component {
           isRequired
           type="text"
         />
+        <ul className="selected-Authors">
+          <li>AAABBBCCC</li>
+        </ul>
         <ul className="author-list" id="listAuthors">
           {authorLists}
         </ul>
