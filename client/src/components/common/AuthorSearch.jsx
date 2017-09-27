@@ -33,14 +33,12 @@ class AuthorSearch extends React.Component {
               authorList: response.data.data,
             });
           } else {
-            console.log(response.data.status);
             this.setState({
               authorList: response.data.message,
             });
           }
         })
         .catch((error) => {
-          console.log(error);
           this.setState({
             authorList: [],
           });
