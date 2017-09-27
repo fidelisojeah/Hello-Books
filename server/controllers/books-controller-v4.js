@@ -7,12 +7,10 @@ import {
 
 import CheckSession from '../middleware/session';
 
-// const userCookieInfo = 'userCookieInfo';
-
 class BookProps {
   static searchAuthors(request, response) {
     const authorDetails = request.params.identifier || null;
-    if (authorDetails.length >= 1) {
+    if (authorDetails !== null && authorDetails.length >= 1) {
       Authors
         .findAll({
           where: {
@@ -127,12 +125,19 @@ class BookProps {
           ['id', 'bookName', 'bookISBN',
             'description', 'bookImage',
             'publishYear',
-            [sequelize.fn('count', sequelize.col('BookRatings.id')), 'RatingCount'],
-            [sequelize.fn('sum', sequelize.col('BookRatings.rating')), 'RatingSum'],
+            [sequelize
+              .fn('count', sequelize.col('BookRatings.id')),
+              'RatingCount'
+            ],
+            [sequelize
+              .fn('sum', sequelize.col('BookRatings.rating')),
+              'RatingSum'
+            ],
           ],
         })
         .then((allBooks) => {
-          if (allBooks === null || allBooks.length === 0) { // if no book is found
+          if (allBooks === null ||
+            allBooks.length === 0) { // if no book is found
             res.status(200).json({
               status: 'Unsuccessful',
               message: 'No Books',
@@ -165,8 +170,14 @@ class BookProps {
             'id', 'bookName', 'bookISBN',
             'description', 'bookImage',
             'publishYear',
-            [sequelize.fn('count', sequelize.col('BookRatings.id')), 'RatingCount'],
-            [sequelize.fn('sum', sequelize.col('BookRatings.rating')), 'RatingSum'],
+            [sequelize
+              .fn('count', sequelize.col('BookRatings.id')),
+              'RatingCount'
+            ],
+            [sequelize
+              .fn('sum', sequelize.col('BookRatings.rating')),
+              'RatingSum'
+            ],
           ],
           include: [{
             model: Authors,
@@ -338,7 +349,8 @@ class BookProps {
             'authorAKA', 'dateofBirth'],
         })
         .then((allAuthors) => {
-          if (allAuthors === null || allAuthors.length === 0) { // if no book is found
+          if (allAuthors === null ||
+            allAuthors.length === 0) { // if no book is found
             res.status(200).json({
               status: 'Unsuccessful',
               message: 'No Authors',
@@ -391,7 +403,8 @@ class BookProps {
       .then(() => {
         const bookId = parseInt(req.params.bookId, 10);
         const bookQuantity = parseInt(req.body.quantity, 10);
-        if (!isNaN(bookId) && !isNaN(bookQuantity)) { // has to be a number really
+        if (!isNaN(bookId) &&
+          !isNaN(bookQuantity)) { // has to be a number really
           Books
             .findOne({ // search for book with id
               where: {

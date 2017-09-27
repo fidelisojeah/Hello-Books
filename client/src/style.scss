@@ -1533,7 +1533,7 @@ input[type='search'] {
     position: relative;
     &:before {
         display: block;
-        content: '\f14c';
+        content: '\f134';
         display: inline-block;
         font-family: "icons";
         font-style: normal;
@@ -1548,7 +1548,7 @@ input[type='search'] {
         font-smoothing: antialiased;
         position: absolute;
         left: -27px;
-        top: -1px;
+        top: 0;
         color: #bdbdbd;
     }
     &:first-child {
@@ -1682,7 +1682,7 @@ input[type='search'] {
         } // & textarea,
         // input[type=text],
         // input[type=file] {
-        select,
+        & select,
         input:focus,
         input:valid,
         input.form-file,
@@ -1691,7 +1691,7 @@ input[type='search'] {
         textarea:valid,
         textarea.form-file,
         textarea.has-value {
-            color: #9292f2;
+            color: black;
             ;
             height: 50px;
             padding: 8px 12px;
@@ -1744,5 +1744,60 @@ input[type='search'] {
         -moz-osx-font-smoothing: grayscale;
         -webkit-font-smoothing: antialiased;
         font-smoothing: antialiased
+    }
+}
+
+.author-list {
+    z-index: 100; // display: none;
+    max-height: 100px;
+    overflow: scroll;
+    width: 95%;
+    position: absolute;
+    top: 60px;
+    padding: 0;
+    margin: 0;
+    border-radius: 1px;
+    border: 0 solid $primaryColorext;
+    background-color: #fdfdfd;
+    @include cust-box-shadow((0px 0px 2px 2px rgba(250,
+    99,
+    48,
+    0.1)));
+    & a {
+        display: block;
+        position: relative;
+        padding: 15px 40px 15px 10px;
+        color: black;
+        font-weight: bold;
+        text-shadow: 0 1px #fff;
+        border: 1px solid transparent;
+        border-radius: 1px;
+        & span {
+            font-weight: 200
+        }
+        &:before {
+            content: '';
+            width: 18px;
+            height: 18px;
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            margin-top: -9px;
+        }
+        &:hover {
+            text-decoration: none;
+            color: #fff;
+            text-shadow: 0 -1px rgba(0, 0, 0, 0.3);
+            border-color: #23809d #2179d5 #1a60ca;
+            background-color: $primaryColor;
+            @include cust-box-shadow((inset 0 1px rgba(255,
+            255,
+            255,
+            0.2),
+            0 1px rgba(0,
+            0,
+            0,
+            0.08)));
+        }
     }
 }

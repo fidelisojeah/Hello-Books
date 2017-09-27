@@ -5,7 +5,7 @@ class AuthorSearch extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      authors: '',
+      authorField: '',
       errors: {},
       isLoading: false
     };
@@ -17,17 +17,31 @@ class AuthorSearch extends React.Component {
   render() {
     const { errors } = this.state;
     return (
-      <TextField
-        inputError={errors.inputError}
-        errorMessage={errors.message}
-        label="Find Authors"
-        onChange={this.onChange}
-        field="authorField"
-        value={this.state.authors}
-        formField="form-group"
-        isRequired
-        type="text"
-      />
+      <div>
+        <TextField
+          inputError={errors.inputError}
+          errorMessage={errors.message}
+          label="Find Authors"
+          onChange={this.onChange}
+          field="authorField"
+          value={this.state.authorField}
+          formField="form-group"
+          isRequired
+          type="text"
+        />
+        <ul className="author-list">
+          <li>
+            <a href="">Lurene McDaniel
+            <span>1944</span>
+            </a>
+          </li>
+          <li>
+            <a href="">Kirby Larson
+            <span>1954</span>
+            </a>
+          </li>
+        </ul>
+      </div>
     );
   }
 }
