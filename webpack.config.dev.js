@@ -100,6 +100,12 @@ module.exports = {
         query: {
           cacheDirectory: true,
           presets: ['react', 'es2015'],
+          plugins: [[
+            'transform-class-properties',
+            {
+              spec: true
+            }
+          ]]
         },
       },
       {
@@ -114,6 +120,12 @@ module.exports = {
         query: {
           cacheDirectory: true,
           presets: ['react', 'es2015'],
+          plugins: [[
+            'transform-class-properties',
+            {
+              spec: true
+            }
+          ]]
         },
       },
     ],

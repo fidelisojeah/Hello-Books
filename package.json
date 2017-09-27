@@ -69,6 +69,7 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-istanbul": "^4.1.4",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "chai": "^4.1.0",
     "chai-http": "^3.0.0",

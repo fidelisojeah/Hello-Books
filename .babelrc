@@ -4,7 +4,14 @@
     "stage-2",
     "react"
   ],
-  "plugins": [],
+  "plugins": [
+    [
+      "transform-class-properties",
+      {
+        "spec": true
+      }
+    ]
+  ],
   "env": {
     "test": {
       "plugins": [

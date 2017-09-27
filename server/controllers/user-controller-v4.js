@@ -9,6 +9,11 @@ import UserHelper from '../helpers/user-signup';
 
 
 class UserLoginDetails {
+  /**
+   * 
+   * @param {object} req 
+   * @param {*} res 
+   */
   static checkUserExists(req, res) {
     const userName = req.params.identifier;
     UserDetails

@@ -8,15 +8,14 @@ class AuthorSearch extends React.Component {
       authorField: '',
       errors: {},
       authorList: [],
+      bookAuthors: [],
+      bookAuthorDetails: [],
       isLoading: false
     };
-    this.handleClick = this.handleClick.bind(this);
+    this.onMouseDown = this.onMouseDown.bind(this);
     this.onChange = this.onChange.bind(this);
   }
-  handleClick(event) {
-    event.preventDefault();
 
-  }
   onBlurEvent() {
     document.getElementById('listAuthors').style.display = 'none';
   }
@@ -50,28 +49,48 @@ class AuthorSearch extends React.Component {
       });
     }
   }
+  onMouseDown = (event, author) => {
+    event.preventDefault();
+    const bookAuthors = this.state.bookAuthors;// .slice(0);
+    const bookAuthorDetails = this.state.bookAuthorDetails;// .slice(0);
+    bookAuthors.push(author.id);
+
+    bookAuthorDetails.push({
+      id: author.id,
+      name: author.authorAKA
+    });
+    this.setState({
+      bookAuthors,
+      bookAuthorDetails
+    });
+    console.log(this.state.bookAuthorDetails);
+  }
   render() {
     const authorLists =
       Array.isArray(this.state.authorList) ?
         this
           .state
-          .authorList.map(authors =>
-            (
-              <li
-                key={authors.id}
-              >
-                <a
-                  href=""
-                  onClick={this.handleClick}
+          .authorList.map((authors) => {
+            if (this.state.bookAuthors.indexOf(authors.id) === -1) {
+              console.log(this.state.bookAuthors.indexOf(authors.id), '---');
+              return (
+                <li
+                  key={authors.id}
                 >
-                  {authors.authorAKA}
-                  {authors.dateofBirth &&
-                    <span>{authors.dateofBirth}</span>
-                  }
-                </a>
-              </li>
-            )
-          )
+                  <a
+                    role="presentation"
+                    key={authors.id}
+                    onMouseDown={event => this.onMouseDown(event, authors)}
+                  >
+                    {authors.authorAKA}
+                    {authors.dateofBirth &&
+                      <span>{authors.dateofBirth}</span>
+                    }
+                  </a>
+                </li >
+              );
+            }
+          })
         : (
           <li>No Authors Found</li>
         );

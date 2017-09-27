@@ -632,11 +632,12 @@ describe('GET /api/v4/authors version 4', () => {
     });
   });
 });
-describe('GET /api/v4/search/authors/:identifier', () => {
+describe('GET /api/v4/search/authors?q=', () => {
   describe('When no details are provided', () => {
     it('should return 200 type Author details', (done) => {
       chai.request(app)
         .get('/api/v4/search/authors')
+        .set('x-access-token', goodToken)
         .end((err, res) => {
           should.not.exist(err);
           res.status.should.equal(200);
@@ -652,6 +653,7 @@ describe('GET /api/v4/search/authors/:identifier', () => {
       (done) => {
         chai.request(app)
           .get('/api/v4/search/authors?q=gegegegegegegeg')
+          .set('x-access-token', goodToken)
           .end((err, res) => {
             should.not.exist(err);
             res.status.should.equal(200);
@@ -665,6 +667,7 @@ describe('GET /api/v4/search/authors/:identifier', () => {
       (done) => {
         chai.request(app)
           .get('/api/v4/search/authors?q=jo')
+          .set('x-access-token', goodToken)
           .end((err, res) => {
             should.not.exist(err);
             res.status.should.equal(202);

@@ -8,6 +8,12 @@ import {
 import CheckSession from '../middleware/session';
 
 class BookProps {
+  /**
+   * @description method perfofms active search on database
+   * @param {object} request HTTP Request object
+   * @param {object} response HTTP response Object
+   * @returns {*} void
+   */
   static searchAuthors(request, response) {
     const authorDetails = request.query.q || null;
     if (authorDetails !== null && authorDetails.length >= 1) {
@@ -55,6 +61,12 @@ class BookProps {
       });
     }
   }
+  /**
+   * @description method creates a new author in database
+   * @param {object} req HTTP Request object
+   * @param {object} res HTTP Response object
+   * @return {*} void
+   */
   static newAuthor(req, res) {
     CheckSession
       .checkAdmin(req.decoded)
@@ -98,6 +110,12 @@ class BookProps {
         });
       });
   }
+  /**
+   *
+   * @param {*} req HTTP Request object
+   * @param {*} res HTTP Response object
+   * @return {*} void
+   */
   static viewBooks(req, res) {
     const bookID = parseInt(req.query.id, 10);
     if (isNaN(bookID)) { // for all books
@@ -202,6 +220,16 @@ class BookProps {
           }));
     }
   }
+  /**
+   *
+   * @param {string} bookname
+   * @param {string} ISBN
+   * @param {date} pubYear
+   * @param {text} desc
+   * @param {url} bookimage
+   * @param {number} quantity
+   * @return {*} void
+   */
   static checkNewBookVariables(bookname,
     ISBN,
     pubYear,
