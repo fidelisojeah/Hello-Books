@@ -38,7 +38,7 @@ class AuthorSearch extends React.Component {
             });
           }
         })
-        .catch((error) => {
+        .catch(() => {
           this.setState({
             authorList: [],
           });
