@@ -148,7 +148,9 @@ class NewBookForm extends React.Component {
             </div>
             <div className="row">
               <div className="col-md-6">
-                <AuthorSearch />
+                <AuthorSearch
+                  checkAuthorsRequest={this.props.checkAuthorsRequest}
+                />
               </div>
             </div>
             <div className="row">
@@ -259,7 +261,8 @@ class NewBookForm extends React.Component {
 }
 NewBookForm.propTypes = {
   bookImageUpload: PropTypes.func.isRequired,
-  newBookRequest: PropTypes.func.isRequired
+  newBookRequest: PropTypes.func.isRequired,
+  checkAuthorsRequest: PropTypes.func.isRequired
 };
 
 NewBookForm.contextTypes = {

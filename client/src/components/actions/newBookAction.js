@@ -30,3 +30,13 @@ export function newBookRequest(bookData) {
     return axios.post('/api/v4/books', bookData);
   };
 }
+/**
+ *
+ * @param {object} authorInfo
+ * @return {promise} return dispatch
+ */
+export function checkAuthorsRequest(authorInfo) {
+  return dispatch => {
+    return axios.get(`/api/v4/search/authors?q=${authorInfo}`);
+  };
+}

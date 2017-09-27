@@ -633,10 +633,10 @@ describe('GET /api/v4/authors version 4', () => {
   });
 });
 describe('GET /api/v4/search/authors/:identifier', () => {
-  describe('When no details are provided ', () => {
+  describe('When no details are provided', () => {
     it('should return 200 type Author details', (done) => {
       chai.request(app)
-        .get('/api/v4/search/authors/ ')
+        .get('/api/v4/search/authors')
         .end((err, res) => {
           should.not.exist(err);
           res.status.should.equal(200);
@@ -651,7 +651,7 @@ describe('GET /api/v4/search/authors/:identifier', () => {
     it('should return 200 NO Author found when no author exists',
       (done) => {
         chai.request(app)
-          .get('/api/v4/search/authors/gegegegegegegeg')
+          .get('/api/v4/search/authors?q=gegegegegegegeg')
           .end((err, res) => {
             should.not.exist(err);
             res.status.should.equal(200);
@@ -664,7 +664,7 @@ describe('GET /api/v4/search/authors/:identifier', () => {
     it('should return 202 and author details',
       (done) => {
         chai.request(app)
-          .get('/api/v4/search/authors/g')
+          .get('/api/v4/search/authors?q=jo')
           .end((err, res) => {
             should.not.exist(err);
             res.status.should.equal(202);

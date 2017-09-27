@@ -1748,7 +1748,8 @@ input[type='search'] {
 }
 
 .author-list {
-    z-index: 100; // display: none;
+    z-index: 100;
+    display: none;
     max-height: 100px;
     overflow: scroll;
     width: 95%;

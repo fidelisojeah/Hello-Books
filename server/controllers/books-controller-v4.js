@@ -9,7 +9,7 @@ import CheckSession from '../middleware/session';
 
 class BookProps {
   static searchAuthors(request, response) {
-    const authorDetails = request.params.identifier || null;
+    const authorDetails = request.query.q || null;
     if (authorDetails !== null && authorDetails.length >= 1) {
       Authors
         .findAll({
@@ -23,8 +23,7 @@ class BookProps {
             }, {
               authorAKA:
               { $iLike: `%${authorDetails}%` }
-            }
-            ]
+            }]
           },
           attributes:
           ['id', 'authorFirstName',
@@ -40,7 +39,7 @@ class BookProps {
           } else {
             response.status(202).json({
               status: 'Success',
-              data: allAuthors,
+              data: foundAuthors,
             });
           }
         })

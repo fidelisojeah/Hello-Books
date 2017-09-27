@@ -66,7 +66,7 @@ app.get('/', (req, res) => res.status(202).send({
 // for book stuff
 app.post('/api/v4/authors', CheckSession.checkLogin, BookProps.newAuthor);
 app.get('/api/v4/authors', CheckSession.checkLogin, BookProps.getAuthors);
-app.get('/api/v4/search/authors/:identifier',
+app.get('/api/v4/search/authors',
   CheckSession.checkLogin, BookProps.searchAuthors);
 
 app.post('/api/v4/books', CheckSession.checkLogin, BookProps.newBook);

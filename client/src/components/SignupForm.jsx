@@ -129,7 +129,7 @@ class SignUpForm extends React.Component {
             field="username"
             onChange={this.onChange}
             value={this.state.username}
-            checkUserExists={this.checkUserExists}
+            checkExists={this.checkUserExists}
             formField="form-group"
             isRequired
             type="text"
@@ -144,7 +144,7 @@ class SignUpForm extends React.Component {
             field="email"
             onChange={this.onChange}
             value={this.state.email}
-            checkUserExists={this.checkUserExists}
+            checkExists={this.checkUserExists}
             formField="form-group"
             isRequired
             type="email"

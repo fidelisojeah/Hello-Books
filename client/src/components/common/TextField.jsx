@@ -12,7 +12,7 @@ const TextField = ({ formField,
   onChange,
   isRequired,
   errorMessage,
-  checkUserExists }) => {
+  checkExists }) => {
   return (
     <div className={classnames(formField,
       { 'has-error': (inputError === field || errField) })}
@@ -22,7 +22,7 @@ const TextField = ({ formField,
         value={value}
         required={isRequired}
         name={field}
-        onBlur={checkUserExists}
+        onBlur={checkExists}
         onChange={onChange}
       />
       <label className="control-label" htmlFor="input">{label}</label>
@@ -46,7 +46,7 @@ TextField.propTypes = {
   errorMessage: PropTypes.string,
   type: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  checkUserExists: PropTypes.func,
+  checkExists: PropTypes.func,
 };
 
 TextField.defaultProps = {
@@ -54,7 +54,7 @@ TextField.defaultProps = {
   inputError: 'crap',
   errField: null,
   errorMessage: 'nothing',
-  checkUserExists: null,
+  checkExists: null,
 };
 
 export default TextField;

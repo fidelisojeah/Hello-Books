@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 import { newAuthorRequest } from '../../actions/newAuthorActions';
 import {
   bookImageUpload,
-  newBookRequest
+  newBookRequest,
+  checkAuthorsRequest,
 } from '../../actions/newBookAction';
 import NewBookForm from '../../NewBookForm';
 import NewAuthorForm from '../../NewAuthorForm';
@@ -34,7 +35,8 @@ class StockMgtPage extends React.Component {
     const {
       newAuthorRequest,
       bookImageUpload,
-      newBookRequest
+      newBookRequest,
+      checkAuthorsRequest
     } = this.props;
     return (
       <div className="layout--container">
@@ -111,6 +113,7 @@ class StockMgtPage extends React.Component {
                 <NewBookForm
                   bookImageUpload={bookImageUpload}
                   newBookRequest={newBookRequest}
+                  checkAuthorsRequest={checkAuthorsRequest}
                 />
                 <NewAuthorForm
                   newAuthorRequest={newAuthorRequest}
@@ -126,11 +129,13 @@ class StockMgtPage extends React.Component {
 StockMgtPage.propTypes = {
   newAuthorRequest: PropTypes.func.isRequired,
   bookImageUpload: PropTypes.func.isRequired,
-  newBookRequest: PropTypes.func.isRequired
+  newBookRequest: PropTypes.func.isRequired,
+  checkAuthorsRequest: PropTypes.func.isRequired
 };
 export default connect(null,
   {
     newAuthorRequest,
     bookImageUpload,
-    newBookRequest
+    newBookRequest,
+    checkAuthorsRequest
   })(StockMgtPage);
