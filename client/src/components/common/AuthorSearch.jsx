@@ -110,12 +110,17 @@ class AuthorSearch extends React.Component {
           type="text"
         />
         <ul className="selected-Authors">
-          <li>AAABBBCCC</li>
+          <li>AAABBBCCC
+
+            <button>
+              &times;
+            </button>
+          </li>
         </ul>
         <ul className="author-list" id="listAuthors">
           {authorLists}
         </ul>
-      </div>
+      </div >
     );
   }
 }
