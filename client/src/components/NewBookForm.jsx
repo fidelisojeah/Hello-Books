@@ -23,8 +23,10 @@ class NewBookForm extends React.Component {
       errors: {},
       uploadedImageURL: '',
       uploadedImage: null,
+      authors: '',
       isLoading: false
     };
+    this.handleAuthorChange = this.handleAuthorChange.bind(this);
     this.onImageDrop = this.onImageDrop.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -73,6 +75,11 @@ class NewBookForm extends React.Component {
           this.context.router.history.push('/signin');
         }
       });
+  }
+  handleAuthorChange(value) {
+    this.setState({
+      authors: value
+    });
   }
   handleClick(event) {
     event.preventDefault();
@@ -149,6 +156,7 @@ class NewBookForm extends React.Component {
             <div className="row">
               <div className="col-md-6">
                 <AuthorSearch
+                  handleAuthorChange={this.handleAuthorChange}
                   checkAuthorsRequest={this.props.checkAuthorsRequest}
                 />
               </div>

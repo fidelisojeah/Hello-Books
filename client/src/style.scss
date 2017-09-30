@@ -1804,11 +1804,20 @@ input[type='search'] {
 }
 
 .selected-Authors {
-    margin-top: -35px;
+    margin-top: -25px;
     margin-bottom: 38px;
-    display: inline-block;
+    color: #fff;
+    overflow: scroll;
     & li {
+        display: inline-block;
         background: $primaryColor;
         padding: 5px;
+        margin-right: 5px;
+        &>button {
+            font-size: 19px;
+            font-weight: bold;
+            color: #fff;
+            margin-left: 2px;
+        }
     }
 }

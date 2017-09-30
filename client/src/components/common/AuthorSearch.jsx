@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import TextField from './TextField';
 
 class AuthorSearch extends React.Component {
@@ -51,28 +53,56 @@ class AuthorSearch extends React.Component {
   }
   onMouseDown = (event, author) => {
     event.preventDefault();
-    const bookAuthors = this.state.bookAuthors;// .slice(0);
-    const bookAuthorDetails = this.state.bookAuthorDetails;// .slice(0);
+    const bookAuthors = this.state.bookAuthors;
+    const bookAuthorDetails = this.state.bookAuthorDetails;
     bookAuthors.push(author.id);
-
     bookAuthorDetails.push({
       id: author.id,
       name: author.authorAKA
     });
     this.setState({
       bookAuthors,
+      bookAuthorDetails,
+      authorField: '',
+      authorList: []
+    });
+    this.props.handleAuthorChange(this.state.bookAuthors.join());
+  }
+  handleClick = (event, position) => {
+    event.preventDefault();
+    const bookAuthorDetails = this.state.bookAuthorDetails;
+    const bookAuthors = this.state.bookAuthors;
+
+    bookAuthorDetails.splice(position, 1);
+    bookAuthors.splice(position, 1);
+    this.setState({
+      bookAuthors,
       bookAuthorDetails
     });
-    console.log(this.state.bookAuthorDetails);
+    this.props.handleAuthorChange(this.state.bookAuthors.join());
   }
   render() {
+    const authorsDiv =
+      Array.isArray(this.state.bookAuthorDetails) ?
+        this
+          .state
+          .bookAuthorDetails.map((authorLists, index) =>
+            (
+              <li key={authorLists.id}>{authorLists.name}
+                <button
+                  onClick={event => this.handleClick(event, index)}
+                >
+                  &times;
+            </button>
+              </li>
+            )
+          ) : '';
     const authorLists =
       Array.isArray(this.state.authorList) ?
         this
           .state
           .authorList.map((authors) => {
             if (this.state.bookAuthors.indexOf(authors.id) === -1) {
-              console.log(this.state.bookAuthors.indexOf(authors.id), '---');
               return (
                 <li
                   key={authors.id}
@@ -106,17 +136,19 @@ class AuthorSearch extends React.Component {
           value={this.state.authorField}
           checkExists={this.onBlurEvent}
           formField="form-group"
-          isRequired
           type="text"
         />
-        <ul className="selected-Authors">
-          <li>AAABBBCCC
-
-            <button>
-              &times;
-            </button>
-          </li>
-        </ul>
+        <input
+          type="hidden"
+          name="authors"
+          value={this.state.bookAuthors.join()}
+          required="required"
+        />
+        <div className="row">
+          <ul className="selected-Authors">
+            {authorsDiv}
+          </ul>
+        </div>
         <ul className="author-list" id="listAuthors">
           {authorLists}
         </ul>
@@ -124,4 +156,8 @@ class AuthorSearch extends React.Component {
     );
   }
 }
+AuthorSearch.propTypes = {
+  handleAuthorChange: PropTypes.func.isRequired
+};
+
 export default AuthorSearch;
