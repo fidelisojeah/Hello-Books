@@ -42,7 +42,7 @@
     "test": "NODE_ENV=test nyc --reporter=text  --reporter=html mocha --compilers js:babel-register",
     "test:front": "mocha --reporter progress tools/testSetup.js \"client/src/**/*.test.js\"",
     "start:dev": "nodemon ./server/index.js --watch server/ --exec babel-node --presets es2015,stage-2",
-    "start": "babel-node ./server/index.js",
+    "start": "babel-node ./server/index.js --presets es2015,stage-2",
     "server": "nodemon --exec babel-node -- ./bin/index.js",
     "start:front": "webpack-dev-server --open --config ./webpack.config.dev.js"
   },
