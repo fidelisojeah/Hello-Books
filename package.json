@@ -98,10 +98,10 @@
     "supertest": "^3.0.0",
     "svg-inline-loader": "^0.8.0",
     "uglifyjs-webpack-plugin": "^0.4.6",
-    "url-loader": "^0.5.9",
-    "webpack-dev-server": "^2.7.1"
+    "url-loader": "^0.5.9"
   },
   "dependencies": {
+    "webpack-dev-server": "^2.7.1",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-istanbul": "^4.1.4",
