@@ -120,16 +120,17 @@ class AuthorSearch extends React.Component {
                 </li >
               );
             }
+            return null;
           })
         : (
           <li>No Authors Found</li>
         );
-    const { errors } = this.state;
     return (
       <div>
         <TextField
-          inputError={errors.inputError}
-          errorMessage={errors.message}
+          inputError={this.props.compoundError.inputError}
+          errorMessage={this.props.compoundError.message}
+          isRequired={false}
           label="Find Authors"
           onChange={this.onChange}
           field="authorField"
@@ -157,7 +158,11 @@ class AuthorSearch extends React.Component {
   }
 }
 AuthorSearch.propTypes = {
-  handleAuthorChange: PropTypes.func.isRequired
+  handleAuthorChange: PropTypes.func.isRequired,
+  checkAuthorsRequest: PropTypes.func.isRequired,
+  compoundError: PropTypes.arrayOf(PropTypes.object)
 };
-
+AuthorSearch.defaultProps = {
+  compoundError: []
+};
 export default AuthorSearch;

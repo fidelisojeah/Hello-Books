@@ -8,9 +8,6 @@ class SiteCache extends React.Component {
   handleClick(event) {
     event.preventDefault();
     document.body.classList.remove('with--sidebar');
-    this.setState({
-      clearBckgrnd: true,
-    });
   }
   render() {
     return (

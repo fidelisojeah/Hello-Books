@@ -12,10 +12,50 @@ const TextField = ({ formField,
   onChange,
   isRequired,
   errorMessage,
-  checkExists }) => {
+  checkExists,
+  compoundError }) => {
+  const hasError = compoundError.map((errorFields) => {
+    if (errorFields.field === field) {
+      return errorFields.error;
+    }
+    return null;
+  }).toString();
+  if (type === 'textarea') {
+    return (
+      <div className={
+        classnames(formField,
+          { 'has-error': (inputError === field || errField || hasError) })
+      }
+      >
+        <textarea
+          name={field}
+          value={value}
+          onChange={onChange}
+          required={isRequired}
+        />
+        <label htmlFor="textarea" className="control-label">
+          {label}
+        </label>
+        <i className="bar" />
+        {inputError === field &&
+          <div className="error-field">{errorMessage}</div>
+        }
+        {
+          errField &&
+          <div className="error-field">{errField}</div>
+        }
+        {
+          hasError &&
+          <div className="error-field">{hasError}</div>
+        }
+      </div>
+    );
+  }
   return (
-    <div className={classnames(formField,
-      { 'has-error': (inputError === field || errField) })}
+    <div className={
+      classnames(formField,
+        { 'has-error': (inputError === field || errField || hasError) })
+    }
     >
       <input
         type={type}
@@ -28,10 +68,17 @@ const TextField = ({ formField,
       <label className="control-label" htmlFor="input">{label}</label>
       <i className="bar" />
       {inputError === field &&
-        <div className="error-field">{errorMessage}</div>}
-      {errField &&
-        <div className="error-field">{errField}</div>}
-    </div>
+        <div className="error-field">{errorMessage}</div>
+      }
+      {
+        errField &&
+        <div className="error-field">{errField}</div>
+      }
+      {
+        hasError &&
+        <div className="error-field">{hasError}</div>
+      }
+    </div >
   );
 };
 
@@ -42,6 +89,7 @@ TextField.propTypes = {
   value: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   inputError: PropTypes.string,
+  compoundError: PropTypes.arrayOf(PropTypes.object),
   errField: PropTypes.string,
   errorMessage: PropTypes.string,
   type: PropTypes.string.isRequired,
@@ -53,6 +101,7 @@ TextField.defaultProps = {
   type: 'text',
   inputError: 'crap',
   errField: null,
+  compoundError: [],
   errorMessage: 'nothing',
   checkExists: null,
 };

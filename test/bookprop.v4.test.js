@@ -7,6 +7,8 @@ import app from '../server';
 const should = chai.should();
 
 chai.use(chaiHttp);
+chai.use(require('chai-things'));
+
 const goodToken = jwt.sign({
   userId: 1,
   username: 'adminUser',
@@ -163,7 +165,8 @@ describe('POST /api/v4/books version 4', () => {
             res.status.should.equal(400);
             res.type.should.equal('application/json');
             res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('No Book Name Supplied');
+            res.body.message[0].error.should.eql('No Book Name Supplied');
+            res.body.message[0].field.should.eql('bookname');
             done();
           });
       });
@@ -190,11 +193,12 @@ describe('POST /api/v4/books version 4', () => {
             res.status.should.equal(400);
             res.type.should.equal('application/json');
             res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('No ISBN Supplied');
+            res.body.message[0].error.should.eql('No ISBN Supplied');
+            res.body.message[0].field.should.eql('ISBN');
             done();
           });
       });
-      it('should return 400 no ISBN', (done) => {
+      it('should return 400 no Description', (done) => {
         chai.request(app)
           .post('/api/v4/books')
           .set('x-access-token', goodToken)
@@ -211,10 +215,44 @@ describe('POST /api/v4/books version 4', () => {
             res.status.should.equal(400);
             res.type.should.equal('application/json');
             res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('No Description Supplied');
+            res.body.message[0].field.should.eql('description');
+            res.body.message[0].error.should.eql('No Description Supplied');
             done();
           });
       });
+      it('should return 400 and error when multiple info is missing',
+        (done) => {
+          chai.request(app)
+            .post('/api/v4/books')
+            .set('x-access-token', goodToken)
+            .send({
+              quantity: 1,
+              image: 'book-image.jpg',
+              publishyear: '1999',
+              authorIds: '2',
+            })
+            .end((err, res) => {
+              should.exist(err);// or not
+              res.status.should.equal(400);
+              res.type.should.equal('application/json');
+              res.body.status.should.eql('Unsuccessful');
+              res.body.message.should.all.have.property('error');
+              res.body.message.should.all.have.property('field');
+              res.body.message.should
+                .contain.an.item.with.property('field', 'bookname');
+              res.body.message.should
+                .contain.an.item.with.property('field', 'ISBN');
+              res.body.message.should
+                .contain.an.item.with.property('field', 'description');
+              res.body.message.should.contain.an
+                .item.with.property('error', 'No Book Name Supplied');
+              res.body.message.should
+                .contain.an.item.with.property('error', 'No ISBN Supplied');
+              res.body.message.should.contain.an
+                .item.with.property('error', 'No Description Supplied');
+              done();
+            });
+        });
     });
     describe('When Complete information is provided', () => {
       describe('When Author Information is invalid', () => {
@@ -262,6 +300,41 @@ describe('POST /api/v4/books version 4', () => {
               done();
             });
         });
+      });
+      describe('When Publish Year is Invalid', () => {
+        it('should return 400 and error when Publish year is invalid',
+          (done) => {
+            chai.request(app)
+              .post('/api/v4/books')
+              .set('x-access-token', goodToken)
+              .send({
+                quantity: 1,
+                image: 'book-image.jpg',
+                publishyear: 'a869',
+                bookname: 'Dash & Lily\'s Book of Dares',
+                ISBN: '1742374662',
+                description: `So begins the latest whirlwind 
+              romance from the bestselling authors of Nick & 
+              Norah’s Infinite Playlist. Lily has left a red 
+              notebook full of challenges on a favorite 
+              bookstore shelf, waiting for just the right 
+              guy to come along and accept its dares.`,
+                authorIds: '5,4',
+              })
+              .end((err, res) => {
+                should.exist(err);// or not
+                res.status.should.equal(400);
+                res.type.should.equal('application/json');
+                res.body.status.should.eql('Unsuccessful');
+                res.body.message.should.all.have.property('error');
+                res.body.message.should.all.have.property('field');
+                res.body.message.should
+                  .contain.an.item.with.property('field', 'publishyear');
+                res.body.message.should
+                  .contain.an.item.with.property('error', 'Wrong Publish Year Supplied');
+                done();
+              });
+          });
       });
       describe('When valid information is provided', () => {
         it('should return 201 Book Created', (done) => {

@@ -6,7 +6,7 @@ import { newAuthorRequest } from '../../actions/newAuthorActions';
 import {
   bookImageUpload,
   newBookRequest,
-  checkAuthorsRequest,
+  checkAuthorsRequest
 } from '../../actions/newBookAction';
 import NewBookForm from '../../NewBookForm';
 import NewAuthorForm from '../../NewAuthorForm';

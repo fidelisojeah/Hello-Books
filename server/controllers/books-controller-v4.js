@@ -6,13 +6,13 @@ import {
 } from '../models';
 
 import CheckSession from '../middleware/session';
+import BookVerify from '../helpers/new-book';
 
 class BookProps {
   /**
    * @description method perfofms active search on database
    * @param {object} request HTTP Request object
    * @param {object} response HTTP response Object
-   * @returns {*} void
    */
   static searchAuthors(request, response) {
     const authorDetails = request.query.q || null;
@@ -65,7 +65,6 @@ class BookProps {
    * @description method creates a new author in database
    * @param {object} req HTTP Request object
    * @param {object} res HTTP Response object
-   * @return {*} void
    */
   static newAuthor(req, res) {
     CheckSession
@@ -114,7 +113,6 @@ class BookProps {
    *
    * @param {*} req HTTP Request object
    * @param {*} res HTTP Response object
-   * @return {*} void
    */
   static viewBooks(req, res) {
     const bookID = parseInt(req.query.id, 10);
@@ -220,46 +218,6 @@ class BookProps {
           }));
     }
   }
-  /**
-   *
-   * @param {string} bookname
-   * @param {string} ISBN
-   * @param {date} pubYear
-   * @param {text} desc
-   * @param {url} bookimage
-   * @param {number} quantity
-   * @return {*} void
-   */
-  static checkNewBookVariables(bookname,
-    ISBN,
-    pubYear,
-    desc,
-    bookimage,
-    quantity,
-  ) {
-    return new Promise((resolve, reject) => {
-      if (bookname === null) {
-        reject('No Book Name Supplied');
-      } else if (ISBN === null) {
-        reject('No ISBN Supplied');
-      } else if (desc === null) {
-        reject('No Description Supplied');
-      } else {
-        const newBookDetails = {
-          bookName: bookname,
-          bookISBN: ISBN,
-          description: desc,
-          bookQuantity: quantity,
-          bookImage:
-          (bookimage !== null) ? bookimage :
-            'default.jpg',
-          publishYear: (pubYear !== null) ? pubYear :
-            '1900',
-        };
-        resolve(newBookDetails);// send book details
-      }
-    });
-  }
   static newBook(req, res) {
     CheckSession
       .checkAdmin(req.decoded)
@@ -270,12 +228,15 @@ class BookProps {
         const bookName = req.body.bookname || null;
         const ISBN = req.body.ISBN || null;
         const description = req.body.description || null;
-        let authors = req.body.authorIds || '1'; // author or anonymous
-        authors = authors.split(',').map(Number); // convert to object array
-
-        if (authors.every(x => !isNaN(x) && x > 0)) {
+        let authors = req.body.authorIds || null; // author or anonymous
+        if (authors && authors !== null) {
+          authors = authors.split(',')
+            .map(Number); // convert to object array
+        }
+        if ((authors && authors !== null)
+          && authors.every(x => !isNaN(x) && x > 0)) {
           // true if every element is int
-          BookProps.checkNewBookVariables(bookName,
+          BookVerify.checkNewBookVariables(bookName,
             ISBN,
             publishYear,
             description,
@@ -354,6 +315,7 @@ class BookProps {
           res.status(400).json({
             status: 'Unsuccessful',
             message: 'Invalid Authors',
+            inputError: 'authorField'
           });
         }
       })
