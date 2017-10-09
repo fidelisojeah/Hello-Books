@@ -228,96 +228,86 @@ class BookProps {
         const bookName = req.body.bookname || null;
         const ISBN = req.body.ISBN || null;
         const description = req.body.description || null;
-        let authors = req.body.authorIds || null; // author or anonymous
-        if (authors && authors !== null) {
-          authors = authors.split(',')
-            .map(Number); // convert to object array
-        }
-        if ((authors && authors !== null)
-          && authors.every(x => !isNaN(x) && x > 0)) {
-          // true if every element is int
-          BookVerify.checkNewBookVariables(bookName,
-            ISBN,
-            publishYear,
-            description,
-            bookImage,
-            bookQuantity,
+        const authors = req.body.authorIds || null; // author or anonymous
+
+        // true if every element is int
+        BookVerify
+          .checkNewBookVariables(bookName,
+          ISBN,
+          publishYear,
+          description,
+          bookImage,
+          bookQuantity,
+          authors
           )
-            .then((completeBookDetails) => {
-              // if book details are verified complete
-              if (completeBookDetails) {
-                Authors
-                  .findAll({
-                    where: {
-                      id: authors,
-                    },
-                  })
-                  .then((bookAuthors) => {
-                    if (bookAuthors &&
-                      bookAuthors !== null &&
-                      bookAuthors.length >= 1
-                    ) {
-                      Books
-                        .create(completeBookDetails)
-                        .then((createdBook) => {
-                          createdBook
-                            .addAuthor(bookAuthors)
-                            .then(() =>
-                              res.status(201).json({
-                                status: 'Success',
-                                message: 'Book Created Successfully',
-                                bookID: createdBook.dataValues.id,
-                              }))
-                            .catch(errorMessage =>
-                              res.status(500).json({
-                                status: 'Unsuccessful',
-                                error: errorMessage,
-                              }));
-                        })
-                        .catch((error) => {
-                          if (error.name === 'SequelizeUniqueConstraintError') {
-                            res.status(400).json({
-                              status: 'Unsuccessful',
-                              message: 'Book Already Exists',
-                            });
-                          } else {
+          .then((completeBookDetails) => {
+            // if book details are verified complete
+            if (completeBookDetails) {
+              Authors
+                .findAll({
+                  where: {
+                    id: authors,
+                  },
+                })
+                .then((bookAuthors) => {
+                  if (bookAuthors &&
+                    bookAuthors !== null &&
+                    bookAuthors.length >= 1
+                  ) {
+                    Books
+                      .create(completeBookDetails)
+                      .then((createdBook) => {
+                        createdBook
+                          .addAuthor(bookAuthors)
+                          .then(() =>
+                            res.status(201).json({
+                              status: 'Success',
+                              message: 'Book Created Successfully',
+                              bookID: createdBook.dataValues.id,
+                            }))
+                          .catch(errorMessage =>
                             res.status(500).json({
                               status: 'Unsuccessful',
-                              error,
-                            });
-                          }
-                        });
-                    } else {
-                      res.status(400).json({
-                        status: 'Unsuccessful',
-                        message: 'No Author found',
+                              error: errorMessage,
+                            }));
+                      })
+                      .catch((error) => {
+                        if (error.name === 'SequelizeUniqueConstraintError') {
+                          res.status(400).json({
+                            status: 'Unsuccessful',
+                            message: 'Book Already Exists',
+                          });
+                        } else {
+                          res.status(500).json({
+                            status: 'Unsuccessful',
+                            error,
+                          });
+                        }
                       });
-                    }
-                  })
-                  .catch(errorMessage =>
-                    res.status(500).json({
+                  } else {
+                    res.status(400).json({
                       status: 'Unsuccessful',
-                      error: errorMessage,
-                    }));
-              } else {
-                res.status(501).json({
-                  status: 'Unsuccessful',
-                  message: 'Server error try again',
-                });
-              }
-            })
-            .catch(error =>// display error
-              res.status(400).json({
+                      message: 'No Author found',
+                    });
+                  }
+                })
+                .catch(errorMessage =>
+                  res.status(500).json({
+                    status: 'Unsuccessful',
+                    error: errorMessage,
+                  }));
+            } else {
+              res.status(501).json({
                 status: 'Unsuccessful',
-                message: error,
-              }));
-        } else {
-          res.status(400).json({
-            status: 'Unsuccessful',
-            message: 'Invalid Authors',
-            inputError: 'authorField'
-          });
-        }
+                message: 'Server error try again',
+              });
+            }
+          })
+          .catch(error =>// display error
+            res.status(400).json({
+              status: 'Unsuccessful',
+              message: error,
+            }));
       })
       .catch((error) => {
         res.status(401).json({

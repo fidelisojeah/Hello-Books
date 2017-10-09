@@ -266,7 +266,7 @@ describe('POST /api/v4/books version 4', () => {
               publishyear: '1900',
               bookname: 'Some book name here',
               ISBN: '10293716810',
-              desccription: 'A wrong book but who cares',
+              description: 'A wrong book but who cares',
               authorIds: 'fake', // not a number
             })
             .end((err, res) => {
@@ -274,7 +274,34 @@ describe('POST /api/v4/books version 4', () => {
               res.status.should.equal(400);
               res.type.should.equal('application/json');
               res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Invalid Authors');
+              res.body.message.should
+                .contain.an.item.with.property('field', 'authorField');
+              res.body.message.should.contain.an
+                .item.with.property('error', 'Invalid Authors');
+              done();
+            });
+        });
+        it('should return 400 Unsuccessful when no author supplied', (done) => {
+          chai.request(app)
+            .post('/api/v4/books')
+            .set('x-access-token', goodToken)
+            .send({
+              quantity: 1,
+              image: 'default.jpg',
+              publishyear: '1900',
+              bookname: 'Some book name here',
+              ISBN: '10293716810',
+              description: 'A wrong book but who cares'
+            })
+            .end((err, res) => {
+              should.exist(err);// or not
+              res.status.should.equal(400);
+              res.type.should.equal('application/json');
+              res.body.status.should.eql('Unsuccessful');
+              res.body.message.should
+                .contain.an.item.with.property('field', 'authorField');
+              res.body.message.should.contain.an
+                .item.with.property('error', 'No Authors Selected');
               done();
             });
         });

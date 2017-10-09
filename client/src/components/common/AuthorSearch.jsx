@@ -128,8 +128,7 @@ class AuthorSearch extends React.Component {
     return (
       <div>
         <TextField
-          inputError={this.props.compoundError.inputError}
-          errorMessage={this.props.compoundError.message}
+          compoundError={this.props.compoundError}
           isRequired={false}
           label="Find Authors"
           onChange={this.onChange}
@@ -145,11 +144,14 @@ class AuthorSearch extends React.Component {
           value={this.state.bookAuthors.join()}
           required="required"
         />
-        <div className="row">
-          <ul className="selected-Authors">
-            {authorsDiv}
-          </ul>
-        </div>
+        {authorsDiv &&
+          <div className="row">
+
+            <ul className="selected-Authors">
+              {authorsDiv}
+            </ul>
+          </div>
+        }
         <ul className="author-list" id="listAuthors">
           {authorLists}
         </ul>

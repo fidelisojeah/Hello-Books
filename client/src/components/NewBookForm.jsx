@@ -54,7 +54,8 @@ class NewBookForm extends React.Component {
       this.state.publishyear,
       this.state.description,
       this.state.image,
-      1
+      1,
+      this.state.authorIds
       )
       .then(() => {
         this
@@ -66,7 +67,17 @@ class NewBookForm extends React.Component {
               response.data.message,
               'success'
             );
-            this.setState({ errors: {}, isLoading: true });
+            this.setState({
+              bookname: '',
+              ISBN: '',
+              publishyear: '',
+              description: '',
+              errors: [],
+              image: '',
+              uploadedImage: null,
+              authorIds: '',
+              isLoading: false
+            });
           })
           .catch((error) => {
             if (error.response.data.message === 'Not allowed') {

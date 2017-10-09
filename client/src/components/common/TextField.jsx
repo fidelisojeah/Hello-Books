@@ -14,12 +14,14 @@ const TextField = ({ formField,
   errorMessage,
   checkExists,
   compoundError }) => {
-  const hasError = compoundError.map((errorFields) => {
-    if (errorFields.field === field) {
-      return errorFields.error;
-    }
-    return null;
-  }).toString();
+  let hasError = null;
+  if (Array.isArray(compoundError)) {
+    compoundError.forEach((errorFields) => {
+      if (errorFields.field === field) {
+        hasError = errorFields.error;
+      }
+    });
+  }
   if (type === 'textarea') {
     return (
       <div className={

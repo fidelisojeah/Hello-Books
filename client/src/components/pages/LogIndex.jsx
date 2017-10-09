@@ -72,7 +72,7 @@ class Logindex extends React.Component {
                                 'empty' :
                                 bookInfos.RatingSum}
                               ratingCount={bookInfos.RatingCount}
-                              imgHref={`../assets/images/${bookInfos.bookImage}`}
+                              imgHref={bookInfos.bookImage}
                               bookAuthors={bookInfos.Authors}
                             />),
                           )}

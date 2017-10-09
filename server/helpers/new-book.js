@@ -15,9 +15,14 @@ export default class BookVerify {
     desc,
     bookimage,
     quantity,
+    authors
   ) {
     const errors = [];
     return new Promise((resolve, reject) => {
+      if (authors && authors !== null) {
+        authors = authors.split(',')
+          .map(Number); // convert to object array
+      }
       if (bookname !== null
         && bookname
         && ISBN !== null
@@ -27,6 +32,10 @@ export default class BookVerify {
         && (
           !isNaN(pubYear)
           || pubYear === null
+        )
+        && (
+          (authors && authors !== null)
+          && authors.every(x => !isNaN(x) && x > 0)
         )
       ) {
         const newBookDetails = {
@@ -39,6 +48,7 @@ export default class BookVerify {
             'default.jpg',
           publishYear: (pubYear !== null) ? pubYear :
             '1900',
+          authors
         };
         resolve(newBookDetails);// send book details
       } else {
@@ -64,6 +74,19 @@ export default class BookVerify {
           errors.push({
             field: 'publishyear',
             error: 'Wrong Publish Year Supplied'
+          });
+        }
+        if (!authors || authors === null) {
+          errors.push({
+            field: 'authorField',
+            error: 'No Authors Selected'
+          });
+        }
+        if (Array.isArray(authors) &&
+          authors.every(x => isNaN(x))) {
+          errors.push({
+            field: 'authorField',
+            error: 'Invalid Authors'
           });
         }
         reject(errors);
