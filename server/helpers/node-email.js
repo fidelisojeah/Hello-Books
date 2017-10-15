@@ -113,8 +113,8 @@ class HelloBooksSendMail {
       <a href="${this.appURL}" target="_blank">
       <img alt="auth0" title="" height="auto" 
       src="https://res.cloudinary.com/dmdl6p9mx/image/upload/v1508063907/home_books_logo_thcnyv.png" 
-      style="border:none;border-radius:;display:block;outline:none;text-decoration:none;width:100%;height:auto;" 
-      width="120"></a></td></tr></tbody></table></td></tr></tbody></table></div>`;
+      style="border:none;border-radius:;display:block;outline:none;text-decoration:none;height:auto;" 
+      width="140"></a></td></tr></tbody></table></td></tr></tbody></table></div>`;
     htmlEmail += `<!--[if mso | IE]>
       </td></tr></table>
       <![endif]--></td></tr></tbody></table></div><!--[if mso | IE]>
@@ -148,7 +148,10 @@ class HelloBooksSendMail {
       <tbody><tr><td style="word-break:break-word;font-size:0px;padding:10px 25px;padding-top:30px;" align="center">
       <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;border-spacing:0px;" align="center" border="0">
       <tbody><tr><td style="width:80px;">`;
-    htmlEmail += `</td></tr></tbody></table></td></tr><tr>
+    htmlEmail += `<img alt="Zero To Launch" title="" 
+    height="auto" src="https://cdn.auth0.com/website/emails/product/top-verify.png" 
+    style="border:none;border-radius:;display:block;outline:none;text-decoration:none;width:100%;height:auto;" width="80">
+    </td></tr></tbody></table></td></tr><tr>
       <td style="word-break:break-word;font-size:0px;padding:0px 20px 0px 20px;" align="center">
       <div style="cursor:auto;color:white;font-size:32px;line-height:60ps;">
       Verify Your Account
@@ -233,7 +236,7 @@ class HelloBooksSendMail {
       <td style="border-radius:3px;color:white;cursor:auto;" align="center" valign="middle" bgcolor="#EB5424">
       <a href="${this.verificationEmailLink}"
       style="display:inline-block;text-decoration:none;background:#fb8962;border-radius:3px;color:white;font-size:14px;font-weight:500;line-height:35px;padding:10px 25px;margin:0px;" target="_blank">
-            Verify NOW!!!
+            Confirm Email Address!!!
       </a></td></tr></tbody></table></td></tr></tbody></table></div>`;
     htmlEmail += `<!--[if mso | IE]>
     </td></tr></table>
