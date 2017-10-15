@@ -30,7 +30,13 @@ class SignInForm extends React.Component {
         this.props
           .userLogin(this.state)
           .then(() => {
-            this.context.router.history.push('/success');
+            this
+              .props
+              .addFlashMessage({
+                type: 'Successful',
+                text: 'Signin Successful',
+              });
+            this.context.router.history.push('/Books');
           })
           .catch((errors) => {
             if (errors.response.data.message ===

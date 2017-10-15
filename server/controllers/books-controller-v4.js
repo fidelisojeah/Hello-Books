@@ -246,7 +246,7 @@ class BookProps {
               Authors
                 .findAll({
                   where: {
-                    id: authors,
+                    id: completeBookDetails.authors,
                   },
                 })
                 .then((bookAuthors) => {

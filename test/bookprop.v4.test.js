@@ -16,6 +16,13 @@ const goodToken = jwt.sign({
   lastName: 'User',
   role: 'Admin',
 }, app.settings.JsonSecret);
+const nonAdminToken = jwt.sign({
+  userId: 1,
+  username: 'normalUser',
+  firstName: 'norms',
+  lastName: 'User',
+  role: 'User',
+}, app.settings.JsonSecret);
 let bookId;
 
 describe('POST /api/v4/authors version 4', () => {
@@ -140,6 +147,35 @@ describe('POST /api/v4/authors version 4', () => {
   });
 });
 describe('POST /api/v4/books version 4', () => {
+  describe('When non admin token is provided', () => {
+    it('Should return a 401 error', (done) => {
+      chai.request(app)
+        .post('/api/v4/books')
+        .set('x-access-token', nonAdminToken)
+        .send({
+          quantity: 1,
+          image: 'hppa.jpg',
+          publishyear: '1999',
+          bookname: 'Harry Potter and the Prisoner of Azkaban',
+          ISBN: '0-7475-4215-5',
+          description: `Harry is back at the Dursleys, 
+              where he sees on Muggle television that a 
+              prisoner named Sirius Black has escaped. 
+              Harry involuntarily inflates Aunt Marge 
+              when she comes to visit after she insults 
+              Harry and his parents.`,
+          authorIds: '2',
+        })
+        .end((err, res) => {
+          should.exist(err);
+          res.status.should.equal(401);
+          res.type.should.equal('application/json');
+          res.body.status.should.eql('Unsuccessful');
+          res.body.message.should.eql('Not allowed');
+          done();
+        });
+    });
+  });
   describe('When a valid admin token is provided', () => {
     describe('When other information is incomplete', () => {
       it('should return 400 no book name', (done) => {

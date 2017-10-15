@@ -386,9 +386,23 @@ $hamburger-scale:scale(0.4) translate(-50%, -50%);
     }
     @media (max-width: $screen-md - 1) {
         padding-left: 15px;
+        &.mobile-view{
+            display: block
+        }
+        &.large-view{
+            display:none !important
+        }
+    } 
+    @media (min-width: $screen-md){
+        &.mobile-view{
+            display: none
+        }
     }
 }
 
+.show {
+    display: block;
+}
 
 /*
 .header:after {

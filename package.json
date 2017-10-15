@@ -6,29 +6,12 @@
     "require": [
       "babel-register"
     ],
-    "extension": [
-      ".jsx",
-      ".js",
-      ".es6"
+    "reporter": [
+      "lcov",
+      "text"
     ],
-    "check-coverage": true,
-    "per-file": true,
-    "lines": 99,
-    "statements": 99,
-    "functions": 99,
-    "branches": 99,
-    "exclude": [
-      "node_modules",
-      "bin",
-      "coverage",
-      "test/fixtures/coverage.js",
-      "test/build/*",
-      "test/src/*",
-      "test/nyc.js",
-      "test/process-args.js",
-      "index.covered.js",
-      "test/fixtures/_generateCoverage.js"
-    ]
+    "sourceMap": false,
+    "instrument": false
   },
   "scripts": {
     "install:config": "npm prune && npm install",
@@ -37,9 +20,10 @@
     "pretest": "npm run --silent lint && sequelize db:migrate:undo:all --env test && sequelize db:migrate --env test",
     "migrate:test": "sequelize db:migrate --env test",
     "migrate": "sequelize db:migrate",
-    "build": "babel server -d build",
+    "build": "babel server/ -d build",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "test": "NODE_ENV=test nyc --reporter=text  --reporter=html mocha --compilers js:babel-register",
+    "test": "NODE_ENV=test nyc mocha",
+    "coveralls": "npm run coverage -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
     "test:front": "mocha --reporter progress tools/testSetup.js \"client/src/**/*.test.js\"",
     "start:dev": "nodemon ./server/index.js --watch server/ --exec babel-node --presets es2015,stage-2",
     "start": "babel-node ./server/index.js --presets es2015,stage-2",
