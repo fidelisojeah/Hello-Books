@@ -67,6 +67,7 @@ class Logindex extends React.Component {
                             (<BookCard
                               key={bookInfos.id}
                               bookName={bookInfos.bookName}
+                              bookID={bookInfos.id}
                               synopsis={bookInfos.description}
                               ratingSum={(bookInfos.RatingSum === null) ?
                                 'empty' :

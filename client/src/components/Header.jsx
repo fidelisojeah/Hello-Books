@@ -12,6 +12,12 @@ import Navbar from './Navbar';
 
 
 class Header extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      auth: {}
+    };
+  }
   render() {
     const { isAuthenticated, user } = this.props.auth;
     const username = user.username;
@@ -42,9 +48,20 @@ class Header extends React.Component {
     );
   }
 }
-Header.PropTypes = {
+Header.propTypes = {
   auth: PropTypes.object.isRequired,
+  // isAuthenticated: PropTypes.object,
+  // user: PropTypes.object
 };
+Header.defaultProps = {
+  isAuthenticated: null,
+  user: null
+};
+/**
+ *
+ * @param {*} state
+ * @return {*} prop assigned to value of state
+ */
 function mapStateToProps(state) {
   return {
     auth: state.auth,

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Ratings from './Ratings';
 
 const BookCard = ({ bookName,
+  bookID,
   synopsis,
   ratingSum,
   ratingCount,
@@ -21,7 +22,7 @@ const BookCard = ({ bookName,
   return (
     <li className="carousel-card">
       <div>
-        <a href="">
+        <a href={`books/${bookID}`}>
           <div className="carousel-image">
             <img
               src={imgHref}
