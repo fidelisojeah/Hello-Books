@@ -10,7 +10,7 @@ class ViewBook extends React.Component {
     this.state = {
       bookImageURL: '',
       bookAuthors: [],
-
+      bookTitle: ''
     };
   }
   componentDidMount() {
@@ -18,9 +18,15 @@ class ViewBook extends React.Component {
       .viewOneBook(this.props.match.params.bookId)
       .then((book) => {
         console.log(book, '---');
+        this.setState({
+          bookTitle: book.data.data.bookName,
+          bookImageURL: book.data.data.bookImage
+        });
       })
       .catch((error) => {
-        console.log(error, 'error');
+        if (error.response.data.message === 'Unauthenticated') {
+          this.context.router.history.push('/signin');
+        }
       }
       );
     // this.props.match.params.bookId
@@ -30,7 +36,7 @@ class ViewBook extends React.Component {
       <div className="layout--container">
         <div className="layout-header">
           <div className="container"><h1 className="page_header--title">
-            Book Title
+            {this.state.bookTitle}
           </h1>
           </div>
         </div>
@@ -56,7 +62,31 @@ class ViewBook extends React.Component {
             <div className="innerSection">
               <div className="row">
                 <div className="col-sm-4">
-                  <img src="" alt="" className="bkimg" />
+                  <img
+                    src={this.state.bookImageURL}
+                    alt={this.state.bookTitle}
+                    className="bkimg"
+                  />
+                </div>
+                <div className="col-sm-6 col-md-offset-2">
+                  <div className="row">
+                    <div className="col-xs-3 bkAuthor fieldField">
+                      Authors:
+                    </div>
+                    <div className="col-xs-8 bookAuthors">
+                      Author Names here!!!
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-xs-3 fieldField">
+                      Description:
+                    </div>
+                  </div>
+                  <div className="row description">
+                    <div className="col-xs-12">
+                      Some book description here and shit
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

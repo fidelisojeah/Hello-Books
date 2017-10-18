@@ -1171,6 +1171,9 @@ input[type='search'] {
 }
 
 .page_header--title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     cursor: default;
     font-family: "wf_segoe-ui_semilight";
     font-size: 60px;
@@ -1825,4 +1828,18 @@ input[type='search'] {
     @media (max-width: $screen-md - 1) {
         max-width: 170px;
     }
+}
+.bookAuthors{
+    float: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-bottom: 20px;
+}
+.description{
+    padding-top:15px;
+    padding-left:10px;
+}
+.fieldField{
+    font-weight: bold;
 }
