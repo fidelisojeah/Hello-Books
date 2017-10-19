@@ -184,7 +184,7 @@ class BookProps {
           attributes: [
             'id', 'bookName', 'bookISBN',
             'description', 'bookImage',
-            'publishYear',
+            'publishYear', 'bookQuantity',
             [sequelize
               .fn('count', sequelize.col('BookRatings.id')),
               'RatingCount'
@@ -196,9 +196,10 @@ class BookProps {
           ],
           include: [{
             model: Authors,
-            attributes: ['authorFirstName',
+            attributes: ['id', 'authorFirstName',
               'authorLastName',
               'authorAKA', 'dateofBirth'],
+            through: { attributes: [] },
           },
           {
             model: BookRatings,
