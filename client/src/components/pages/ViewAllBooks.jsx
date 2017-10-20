@@ -6,13 +6,36 @@ import BookCard from '../common/BookCard';
 import { loadAllBooks } from '../actions/loadBooks';
 
 class ViewAllBooks extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      allBooks: [],
+    };
+  }
+  componentDidMount() {
+    this.props.loadAllBooks()
+      .then((allBooks) => {
+        if (allBooks.data.status === 'Success') {
+          this.setState({
+            allBooks: allBooks.data.data,
+          });
+        } else {
+          console.log(allBooks.data.status);
+        }
+      })
+      .catch((error) => {
+        if (error.response.data.message === 'Unauthenticated') {
+          this.context.router.history.push('/signin');
+        }
+      });
+  }
   render() {
     return (
       <div className="layout--container">
         <div className="layout-header">
           <div className="container">
             <h1 className="page_header--title">
-
+              Some stuff
             </h1>
           </div>
         </div>
@@ -37,7 +60,20 @@ class ViewAllBooks extends React.Component {
 
               </div>
               <ul className="book-grid">
-
+                {this.state.allBooks.map(bookInfos =>
+                  (<BookCard
+                    key={bookInfos.id}
+                    bookName={bookInfos.bookName}
+                    bookID={bookInfos.id}
+                    synopsis={bookInfos.description}
+                    ratingSum={(bookInfos.RatingSum === null) ?
+                      'empty' :
+                      bookInfos.RatingSum}
+                    ratingCount={bookInfos.RatingCount}
+                    imgHref={bookInfos.bookImage}
+                    bookAuthors={bookInfos.Authors}
+                  />),
+                )}
               </ul>
             </div>
           </div>
@@ -45,6 +81,12 @@ class ViewAllBooks extends React.Component {
       </div>
     );
   }
+}
+ViewAllBooks.propTypes = {
+  loadAllBooks: PropTypes.func.isRequired,
+};
+ViewAllBooks.contextTypes = {
+  router: PropTypes.object.isRequired,
 };
 
-export default ViewAllBooks;
+export default connect(null, { loadAllBooks })(ViewAllBooks);

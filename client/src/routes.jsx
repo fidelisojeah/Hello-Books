@@ -10,6 +10,7 @@ import StockMgtPage from './components/pages/admin/StockMgtPage';
 import ViewBook from './components/pages/ViewBook';
 import SuccessPage from './components/pages/SuccessPage';
 import LogIndex from './components/pages/LogIndex';
+import ViewAllBooks from './components/pages/ViewAllBooks';
 
 const Main = () => (
   <App>
@@ -17,6 +18,7 @@ const Main = () => (
       <Route path="/signin" component={Signin} />
       <Route path="/success" component={SuccessPage} />
       <Route exact path="/books" component={LogIndex} />
+      <Route exact path="/allbooks" component={ViewAllBooks} />
       <Route exact path="/books/:bookId" component={ViewBook} />
       <Route path="/bookmgt" component={StockMgtPage} />
     </Switch>
