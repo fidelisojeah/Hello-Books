@@ -111,11 +111,12 @@ class BookProps {
   }
   /**
    *
-   * @param {*} req HTTP Request object
-   * @param {*} res HTTP Response object
+   * @param {object} req HTTP Request object
+   * @param {object} res HTTP Response object
    */
   static viewBooks(req, res) {
     const bookID = parseInt(req.query.id, 10);
+
     if (isNaN(bookID)) { // for all books
       Books
         .findAll({
@@ -126,6 +127,7 @@ class BookProps {
             {
               model: Authors,
               attributes: ['id', 'authorAKA'],
+              through: { attributes: [] }
             },
             {
               model: BookRatings,
@@ -148,6 +150,10 @@ class BookProps {
               .fn('sum', sequelize.col('BookRatings.rating')),
               'RatingSum'
             ],
+            [sequelize
+              .fn('AVG', sequelize.col('BookRatings.rating')),
+              'Ratingavg'
+            ]
           ],
         })
         .then((allBooks) => {
@@ -219,6 +225,10 @@ class BookProps {
           }));
     }
   }
+  /**
+   * @param {object} req HTTP Request object
+   * @param {object} res HTTP Response object
+   */
   static newBook(req, res) {
     CheckSession
       .checkAdmin(req.decoded)
@@ -317,6 +327,10 @@ class BookProps {
         });
       });
   }
+  /**
+   * @param {object} req HTTP Request object
+   * @param {object} res HTTP Response object
+   */
   static getAuthors(req, res) {
     const authorID = parseInt(req.query.id, 10);
 
@@ -377,6 +391,10 @@ class BookProps {
           }));
     }
   }
+  /**
+   * @param {object} req HTTP Request object
+   * @param {object} res HTTP Response object
+   */
   static updateBookQuantity(req, res) {
     CheckSession
       .checkAdmin(req.decoded)
@@ -442,6 +460,10 @@ class BookProps {
         });
       });
   }
+  /**
+   * @param {object} req HTTP Request object
+   * @param {object} res HTTP Response object
+   */
   static modifyBook(req, res) {
     CheckSession
       .checkAdmin(req.decoded)
@@ -504,6 +526,104 @@ class BookProps {
         res.status(401).json({
           status: 'Unsuccessful',
           message: error,
+        });
+      });
+  }
+  /**
+  * @param {object} request HTTP Request object
+   * @param {object} response HTTP Response object
+   */
+  static viewAllBooks(request, response) {
+    const limit = request.query.limit || null;
+    const page = request.params.page || null;
+    BookVerify
+      .verifyViewBookVariables(
+      limit, page)
+      .then((viewDetails) => {
+        if (viewDetails) {
+          Books
+            .count({
+              where: {
+                isActive: true
+              }
+            })
+            .then((totalBooksCount) => {
+              const totalPages = Math.ceil(totalBooksCount / limit);
+              Books
+                .findAll({
+                  where: {
+                    isActive: true
+                  },
+                  subQuery: false,
+                  offset: viewDetails.offset,
+                  limit: viewDetails.limit,
+                  include: [
+                    {
+                      model: Authors,
+                      attributes: ['id', 'authorAKA'],
+                      through: { attributes: [] }
+                    },
+                    {
+                      model: BookRatings,
+                      attributes: [],
+                    }],
+                  group: ['Books.id',
+                    'Authors.id',
+                    'Authors->BookAuthors.authorId',
+                    'Authors->BookAuthors.bookId',
+                  ],
+                  attributes:
+                  ['id', 'bookName', 'bookISBN',
+                    'description', 'bookImage',
+                    'publishYear',
+                    [sequelize
+                      .fn('count', sequelize.col('BookRatings.id')),
+                      'RatingCount'
+                    ],
+                    [sequelize
+                      .fn('sum', sequelize.col('BookRatings.rating')),
+                      'RatingSum'
+                    ],
+                    [sequelize
+                      .fn('AVG', sequelize.col('BookRatings.rating')),
+                      'ratingAvg'
+                    ]
+                  ]
+                })
+                .then((listBooks) => {
+                  response.status(200).json({
+                    status: 'Success',
+                    message: totalBooksCount,
+                    listBooks,
+                    totalPages
+                  });
+                })
+                .catch((error) => {
+                  response.status(500).json({
+                    status: 'Unsuccessful',
+                    message: 'Something went wrong',
+                    error
+                  });
+                });
+            })
+            .catch((error) => {
+              response.status(500).json({
+                status: 'Unsuccessful',
+                message: 'Something went wrong',
+                error
+              });
+            });
+        } else {
+          response.status(500).json({
+            status: 'Unsuccessful',
+            message: 'Try again'
+          });
+        }
+      })
+      .catch((error) => {
+        response.status(400).json({
+          status: 'Unsuccessful',
+          message: error
         });
       });
   }

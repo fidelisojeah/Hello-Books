@@ -70,6 +70,8 @@ app.get('/api/v4/search/authors',
   CheckSession.checkLogin, BookProps.searchAuthors);
 
 app.post('/api/v4/books', CheckSession.checkLogin, BookProps.newBook);
+app.get('/api/v4/books/list/:page',
+  CheckSession.checkLogin, BookProps.viewAllBooks);
 app.get('/api/v4/books', CheckSession.checkLogin, BookProps.viewBooks);
 app.put('/api/v4/books/:bookId',
   CheckSession.checkLogin, BookProps.modifyBook);

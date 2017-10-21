@@ -93,5 +93,38 @@ export default class BookVerify {
       }
     });
   }
+  static verifyViewBookVariables(
+    limit,
+    page
+  ) {
+    return new Promise((resolve, reject) => {
+      const errors = [];
+      limit = parseInt(limit, 10);
+      page = parseInt(page, 10);
+      if (isNaN(page) || page < 1) {
+        errors.push({
+          field: 'page',
+          error: 'Invalid Page sent'
+        });
+      }
+      if (isNaN(limit) || limit < 10) {
+        errors.push({
+          field: 'limit',
+          error: 'Invalid limit sent'
+        });
+      }
+      if (errors && errors.length > 0) {
+        reject(errors);
+      } else {
+        const offset = limit * (page - 1);
+        const viewBookDetails = {
+          offset,
+          limit,
+          page
+        };
+        resolve(viewBookDetails);
+      }
+    });
+  }
 
 }

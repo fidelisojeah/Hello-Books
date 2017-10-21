@@ -26,11 +26,10 @@ const BookCard = ({ bookName,
           <div className="carousel-image">
             <img
               src={imgHref}
-              style={{ width: 97, height: 150 }}
               alt=""
             />
           </div>
-          <span>
+          <span className="book-title">
             {bookName}
           </span>
         </a>

@@ -1316,6 +1316,9 @@ input[type='search'] {
     user-select: none;
     & .carousel-image {
         margin-bottom: 6px!important;
+        & img{
+            width: 100px;
+        }
     }
 }
 
@@ -1845,11 +1848,15 @@ input[type='search'] {
 }
 .list-books{
     margin-bottom:22px;
-    & div{
+    &>div{
         font-size: 28px;
         line-height: 36px;
         color: #111;
         margin-bottom: 2px;
+    }
+    & .book-title{
+        display: block;
+        margin-top:10px;
     }
     & .book-grid{
         border-top: 1px solid #eaeded;
@@ -1857,6 +1864,7 @@ input[type='search'] {
         padding: 0;
         overflow: auto;
         & li{
+            margin-left:0;
             min-width: 250px;
             overflow: hidden;
             position: relative;
@@ -1874,11 +1882,11 @@ input[type='search'] {
             @media (min-width: $screen-lg){
                 width: 20%;
             }
-            div{
+            &>div{
                 height: 290px;
                 padding: 23px 28px 0 28px;
                 & .carousel-image{
-                    height: 160px;
+                    height: 220px;
                     position: relative;
                     & img{
                         vertical-align: top;
@@ -1896,5 +1904,9 @@ input[type='search'] {
                 }
             }
         }
+    }
+    & .c-row,
+    .ratings-panel{
+margin-top:7px;
     }
 }

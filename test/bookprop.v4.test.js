@@ -814,3 +814,104 @@ describe('GET /api/v4/search/authors?q=', () => {
       });
   });
 });
+describe('GET /api/v4/books/list/:page version 4', () => {
+  describe('when incomplete details are passed in', () => {
+    it('should return a 400 when invalid page is sent', (done) => {
+      chai.request(app)
+        .get('/api/v4/books/list/invalidNumber?limit=0')
+        .set('x-access-token', goodToken)
+        .end((error, response) => {
+          should.exist(error);
+          response.status.should.equal(400);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Unsuccessful');
+          response.body.message.should.all.have.property('error');
+          response.body.message.should.all.have.property('field');
+          response.body.message.should
+            .contain.an.item.with.property('field', 'page');
+          response.body.message.should.contain.an
+            .item.with.property('error', 'Invalid Page sent');
+          done();
+        });
+    });
+    it('should return a 400 when page is less than 1', (done) => {
+      chai.request(app)
+        .get('/api/v4/books/list/0?limit=0')
+        .set('x-access-token', goodToken)
+        .end((error, response) => {
+          should.exist(error);
+          response.status.should.equal(400);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Unsuccessful');
+          response.body.message.should.all.have.property('error');
+          response.body.message.should.all.have.property('field');
+          response.body.message.should
+            .contain.an.item.with.property('field', 'page');
+          response.body.message.should.contain.an
+            .item.with.property('error', 'Invalid Page sent');
+          done();
+        });
+    });
+    it('should return a 400 when no limit is sent', (done) => {
+      chai.request(app)
+        .get('/api/v4/books/list/1')
+        .set('x-access-token', goodToken)
+        .end((error, response) => {
+          should.exist(error);
+          response.status.should.equal(400);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Unsuccessful');
+          response.body.message.should.all.have.property('error');
+          response.body.message.should.all.have.property('field');
+          response.body.message.should
+            .contain.an.item.with.property('field', 'limit');
+          response.body.message.should.contain.an
+            .item.with.property('error', 'Invalid limit sent');
+          done();
+        });
+    });
+    it('should return a 400 when invalid limit is sent', (done) => {
+      chai.request(app)
+        .get('/api/v4/books/list/1?limit=-10')
+        .set('x-access-token', goodToken)
+        .end((error, response) => {
+          should.exist(error);
+          response.status.should.equal(400);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Unsuccessful');
+          response.body.message.should.all.have.property('error');
+          response.body.message.should.all.have.property('field');
+          response.body.message.should
+            .contain.an.item.with.property('field', 'limit');
+          response.body.message.should.contain.an
+            .item.with.property('error', 'Invalid limit sent');
+          done();
+        });
+    });
+    it('should return 400 when multiple details are invalid', (done) => {
+      chai.request(app)
+        .get('/api/v4/books/list/invalid?limit=invalid')
+        .set('x-access-token', goodToken)
+        .end((error, response) => {
+          should.exist(error);
+          response.status.should.equal(400);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Unsuccessful');
+          response.body.message.should.all.have.property('error');
+          response.body.message.should.all.have.property('field');
+          response.body.message.should
+            .contain.an.item.with.property('field', 'limit');
+          response.body.message.should
+            .contain.an.item.with.property('field', 'page');
+          response.body.message.should.contain.an
+            .item.with.property('error', 'Invalid limit sent');
+          response.body.message.should.contain.an
+            .item.with.property('error', 'Invalid Page sent');
+          done();
+        });
+    });
+  });
+  describe('when Complete details are passed in', () => {
+
+  });
+});
