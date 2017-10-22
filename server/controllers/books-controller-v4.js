@@ -553,6 +553,7 @@ class BookProps {
     orBy.push([
       'id', 'DESC'
     ]);
+
     BookVerify
       .verifyViewBookVariables(
       limit, page)

@@ -75,8 +75,8 @@ class UserLoginDetails {
 
     UserHelper
       .validateSignup(userName,
-        password, lastName, firstName, email,
-      )
+      password, lastName, firstName, email,
+    )
       .then((activation) => {
         if (activation === 'All Good') { // if Vaild
           JwTokens
@@ -116,24 +116,32 @@ class UserLoginDetails {
                                 };
                                 JwTokens
                                   .generateToken(
-                                    request.app.get('JsonSecret'),
-                                    tokenInfo,
-                                    '24h') // expires in 24hours
+                                  request.app.get('JsonSecret'),
+                                  tokenInfo,
+                                  '24h') // expires in 24hours
                                   .then((signupToken) => {
                                     if (signupToken) { // for verification
                                       const infoForVerification = {
-                                        userEmail: signupData.dataValues.emailaddress,
-                                        userFirstName: signupData.dataValues.firstname,
-                                        userLastName: signupData.dataValues.lastname,
-                                        username: signupData.dataValues.username
+                                        userEmail:
+                                        signupData.dataValues.emailaddress,
+                                        userFirstName:
+                                        signupData.dataValues.firstname,
+                                        userLastName:
+                                        signupData.dataValues.lastname,
+                                        username:
+                                        signupData.dataValues.username
                                       };
 
-                                      const sendActivationEmail = new HelloBooksSendMail(infoForVerification, signupToken);
+                                      const sendActivationEmail =
+                                        new HelloBooksSendMail(
+                                          infoForVerification,
+                                          signupToken);
 
                                       sendActivationEmail
                                         .sendVerificationEmail()
                                         .then((mailInfo) => {
-                                          console.log('Mail Sent To:', mailInfo.accepted);
+                                          console.log('Mail Sent To:',
+                                            mailInfo.accepted);
                                         })
                                         .catch((err) => {
                                           console.log(err);
@@ -142,7 +150,8 @@ class UserLoginDetails {
                                       response.status(201).json({
                                         status: 'Success',
                                         message: 'User account created',
-                                        membership: setMembershipDetails.membershipName,
+                                        membership:
+                                        setMembershipDetails.membershipName,
                                         token: signupToken
                                       });
                                     }
@@ -152,7 +161,8 @@ class UserLoginDetails {
                                       status: 'none',
                                       message: `User account created, 
                                       Token unsuccessful`,
-                                      membership: setMembershipDetails.membershipName,
+                                      membership:
+                                      setMembershipDetails.membershipName,
                                       errorMsg: error,
                                     }));
                               })
@@ -171,7 +181,9 @@ class UserLoginDetails {
                         status: 'Unsuccessful',
                         message: error.errors[0].message,
                         inputError:
-                          (error.errors[0].path === 'emailaddress') ? 'email' : error.errors[0].path,
+                        (error.errors[0].path === 'emailaddress') ?
+                          'email'
+                          : error.errors[0].path,
                       }));
                   }
                 }) // unsuccessful hash
@@ -194,7 +206,7 @@ class UserLoginDetails {
           message: error.message,
           inputError: error.field,
         }),
-      );
+    );
   }
   /**
    * @description Method would eventually activate current user's email
@@ -328,9 +340,9 @@ class UserLoginDetails {
                         };
                         JwTokens
                           .generateToken(
-                            request.app.get('JsonSecret'),
-                            userToken,
-                            '96h')
+                          request.app.get('JsonSecret'),
+                          userToken,
+                          '96h')
                           .then((generatedToken) => {
                             if (generatedToken && generatedToken !== null) {
                               CheckSession

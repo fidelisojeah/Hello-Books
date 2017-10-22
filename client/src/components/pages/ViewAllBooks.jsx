@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import BookCard from '../common/BookCard';
+import Sorter from '../common/Sorter';
 import { fetchBooks } from '../actions/loadBooks';
 
 class ViewAllBooks extends React.Component {
@@ -18,12 +19,9 @@ class ViewAllBooks extends React.Component {
     };
   }
   componentDidMount() {
-    this.props.fetchBooks(
-      this.state.page,
-      this.state.limit,
-      this.state.sort
-    );
+    this.fetchAll();
   }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.error &&
       nextProps.error.message) {
@@ -36,6 +34,21 @@ class ViewAllBooks extends React.Component {
         totalPages: nextProps.totalPages
       });
     }
+  }
+  fetchAll() {
+    this.props.fetchBooks(
+      this.state.page,
+      this.state.limit,
+      this.state.sort
+    );
+  }
+  sortFunction = (event, index) => {
+    event.preventDefault();
+    this.setState({
+      sort: index
+    }, () => {
+      this.fetchAll();
+    });
   }
   render() {
     if (!this.props.allBooks) {
@@ -92,32 +105,10 @@ class ViewAllBooks extends React.Component {
                 <div className="c-left">
                   {this.props.totalBooks} Book
                   {this.props.totalBooks > 1 && 's'}</div>
-                <div className="c-right">
-                  <a
-                    href=""
-                    className={this.state.sort === 'newest' &&
-                      '-active'
-                    }
-                  >
-                    Newest
-                    </a>
-                  <a
-                    href=""
-                    className={this.state.sort === 'rating' &&
-                      '-active'
-                    }
-                  >
-                    Rating
-                  </a>
-                  <a
-                    href=""
-                    className={this.state.sort === 'alphabetical' &&
-                      '-active'
-                    }
-                  >
-                    Alphabetical
-                  </a>
-                </div>
+                <Sorter
+                  sortFunction={this.sortFunction}
+                  sortType={this.state.sort}
+                />
 
               </div>
               <ul className="book-grid">
