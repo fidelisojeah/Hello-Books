@@ -393,8 +393,8 @@ describe('POST /api/v4/books version 4', () => {
                 res.body.message.should.all.have.property('field');
                 res.body.message.should
                   .contain.an.item.with.property('field', 'publishyear');
-                res.body.message.should
-                  .contain.an.item.with.property('error', 'Wrong Publish Year Supplied');
+                res.body.message.should.contain.an.item.with
+                  .property('error', 'Wrong Publish Year Supplied');
                 done();
               });
           });
@@ -912,6 +912,27 @@ describe('GET /api/v4/books/list/:page version 4', () => {
     });
   });
   describe('when Complete details are passed in', () => {
-
+    it('should return a 200 with information', (done) => {
+      chai.request(app)
+        .get('/api/v4/books/list/1?limit=10')
+        .set('x-access-token', goodToken)
+        .end((error, response) => {
+          should.not.exist(error);
+          response.status.should.equal(200);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Success');
+          response.body.bookLists.should.all.have.property('id');
+          response.body.bookLists.should.all.have.property('bookName');
+          response.body.bookLists.should.all.have.property('description');
+          response.body.bookLists.should.all.have.property('bookImage');
+          response.body.bookLists.should.all.have.property('publishYear');
+          response.body.bookLists.should.all.have.property('RatingCount');
+          response.body.bookLists.should.all.have.property('RatingSum');
+          response.body.bookLists.should.all.have.property('ratingAvg');
+          should.exist(response.body.totalPages);
+          should.exist(response.body.totalBooksCount);
+          done();
+        });
+    });
   });
 });

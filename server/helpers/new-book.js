@@ -7,6 +7,7 @@ export default class BookVerify {
   * @param {text} desc
   * @param {url} bookimage
   * @param {number} quantity
+  * @param {array} authors
   * @return {array} promise
   */
   static checkNewBookVariables(bookname,

@@ -38,6 +38,9 @@ class Navbar extends React.Component {
   logout(event) {
     event.preventDefault();
     this.props.logout();
+    if (document.body.classList.contains('with--sidebar')) {
+      document.body.classList.remove('with--sidebar');
+    }
     this.context.router.history.push('/signin');
   }
   render() {
@@ -57,7 +60,10 @@ class Navbar extends React.Component {
                   className="usrBtn large-view"
                   role="presentation"
                   onClick={this.show.bind(this)}>
-                  <span className="profile-name">{this.props.username}</span><i className="acc-button" />
+                  <span className="profile-name">
+                    {this.props.username}
+                  </span>
+                  <i className="acc-button" />
                 </a>
                 <a className="usrBtn mobile-view">
                   <span>{this.props.username}</span><i className="acc-button" />

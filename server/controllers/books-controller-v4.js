@@ -536,6 +536,23 @@ class BookProps {
   static viewAllBooks(request, response) {
     const limit = request.query.limit || null;
     const page = request.params.page || null;
+
+    const orderBy = request.query.sort || null;
+    const orBy = [];
+    if (orderBy && orderBy.toLowerCase() === 'alphabetical') {
+      orBy.push(
+        'bookName'
+      );
+    } else if (orderBy && orderBy.toLowerCase() === 'rating') {
+      orBy.push(
+        [sequelize
+          .fn('AVG', sequelize.col('BookRatings.rating')), 'DESC'
+        ]
+      );
+    }
+    orBy.push([
+      'id', 'DESC'
+    ]);
     BookVerify
       .verifyViewBookVariables(
       limit, page)
@@ -588,13 +605,14 @@ class BookProps {
                       .fn('AVG', sequelize.col('BookRatings.rating')),
                       'ratingAvg'
                     ]
-                  ]
+                  ],
+                  order: orBy
                 })
-                .then((listBooks) => {
+                .then((bookLists) => {
                   response.status(200).json({
                     status: 'Success',
-                    message: totalBooksCount,
-                    listBooks,
+                    bookLists,
+                    totalBooksCount,
                     totalPages
                   });
                 })

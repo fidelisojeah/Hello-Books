@@ -16,9 +16,6 @@ class Signin extends React.Component {
     };
   }
   render() {
-    const { userLogin,
-      userSignupRequest,
-      addFlashMessage, isUserExists } = this.props;
     return (
       <div id="login-page-layout" className="layout--container">
         <div className="container">
@@ -38,8 +35,8 @@ class Signin extends React.Component {
                 </div>
                 <div className="form-bottom">
                   <SignInForm
-                    addFlashMessage={addFlashMessage}
-                    userLogin={userLogin}
+                    addFlashMessage={this.props.addFlashMessage}
+                    userLogin={this.props.userLogin}
                   />
                 </div>
               </div>
@@ -54,9 +51,9 @@ class Signin extends React.Component {
                 </div>
                 <div className="form-bottom">
                   <SignUpForm
-                    isUserExists={isUserExists}
-                    userSignupRequest={userSignupRequest}
-                    addFlashMessage={addFlashMessage}
+                    isUserExists={this.props.isUserExists}
+                    userSignupRequest={this.props.userSignupRequest}
+                    addFlashMessage={this.props.addFlashMessage}
                   />
                 </div>
               </div>

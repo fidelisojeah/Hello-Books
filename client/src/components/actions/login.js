@@ -4,6 +4,10 @@ import jwtDecode from 'jwt-decode';
 import { SET_CURRENT_USER } from '../actions/types';
 import setAuthorizationToken from '../../utils/setAuthToken';
 
+/**
+ *
+ * @param {*} user
+ */
 export function setCurrentUser(user) {
   return {
     type: SET_CURRENT_USER,

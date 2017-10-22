@@ -51,6 +51,7 @@ BookCard.defaultProps = {
 };
 
 BookCard.propTypes = {
+  bookID: PropTypes.number.isRequired,
   bookName: PropTypes.string.isRequired,
   synopsis: PropTypes.string.isRequired,
   imgHref: PropTypes.string.isRequired,
