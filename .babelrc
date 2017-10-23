@@ -1,9 +1,22 @@
 {
-  "presets": ["es2015", "stage-2"],
-  "plugins": [],
+  "presets": [
+    "es2015",
+    "stage-2",
+    "react"
+  ],
+  "plugins": [
+    [
+      "transform-class-properties",
+      {
+        "spec": true
+      }
+    ]
+  ],
   "env": {
     "test": {
-      "plugins": ["istanbul"]
+      "plugins": [
+        "istanbul"
+      ]
     }
   }
 }

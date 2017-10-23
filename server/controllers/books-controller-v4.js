@@ -1,15 +1,73 @@
+import sequelize from 'sequelize';
 import {
   Authors,
   Books,
+  BookRatings,
 } from '../models';
-// import jwTokens from '../middleware/helpers';
-import checkSession from '../middleware/session';
 
-// const userCookieInfo = 'userCookieInfo';
+import CheckSession from '../middleware/session';
+import BookVerify from '../helpers/new-book';
 
-class bookProps {
+class BookProps {
+  /**
+   * @description method perfofms active search on database
+   * @param {object} request HTTP Request object
+   * @param {object} response HTTP response Object
+   */
+  static searchAuthors(request, response) {
+    const authorDetails = request.query.q || null;
+    if (authorDetails !== null && authorDetails.length >= 1) {
+      Authors
+        .findAll({
+          where: {
+            $or: [{
+              authorFirstName:
+              { $iLike: `%${authorDetails}%` }
+            }, {
+              authorLastName:
+              { $iLike: `%${authorDetails}%` }
+            }, {
+              authorAKA:
+              { $iLike: `%${authorDetails}%` }
+            }]
+          },
+          attributes:
+          ['id', 'authorFirstName',
+            'authorLastName',
+            'authorAKA', 'dateofBirth'],
+        })
+        .then((foundAuthors) => {
+          if (foundAuthors === null || foundAuthors.length === 0) {
+            response.status(200).json({
+              status: 'None',
+              message: 'No Authors',
+            });
+          } else {
+            response.status(202).json({
+              status: 'Success',
+              data: foundAuthors,
+            });
+          }
+        })
+        .catch(errorMessage =>
+          response.status(500).json({
+            status: 'Unsuccessful',
+            error: errorMessage,
+          }));
+    } else {
+      response.status(200).json({
+        status: 'None',
+        message: 'Type Author details'
+      });
+    }
+  }
+  /**
+   * @description method creates a new author in database
+   * @param {object} req HTTP Request object
+   * @param {object} res HTTP Response object
+   */
   static newAuthor(req, res) {
-    checkSession
+    CheckSession
       .checkAdmin(req.decoded)
       .then(() => {
         // console.log('here');
@@ -32,7 +90,11 @@ class bookProps {
                 message: 'Author Created Successfully',
               });
             })
-            .catch(error => res.status(500).send(error));
+            .catch(errorMessage =>
+              res.status(500).json({
+                status: 'Unsuccessful',
+                error: errorMessage,
+              }));
         } else { // incomplete details
           res.status(400).json({
             status: 'Unsuccessful',
@@ -47,26 +109,56 @@ class bookProps {
         });
       });
   }
+  /**
+   *
+   * @param {object} req HTTP Request object
+   * @param {object} res HTTP Response object
+   */
   static viewBooks(req, res) {
     const bookID = parseInt(req.query.id, 10);
+
     if (isNaN(bookID)) { // for all books
       Books
         .findAll({
           where: {
             isActive: true,
           },
-          include: [{
-            model: Authors,
-            attributes: [
-              'authorAKA'],
-          }],
+          include: [
+            {
+              model: Authors,
+              attributes: ['id', 'authorAKA'],
+              through: { attributes: [] }
+            },
+            {
+              model: BookRatings,
+              attributes: [],
+            }],
+          group: ['Books.id',
+            'Authors.id',
+            'Authors->BookAuthors.authorId',
+            'Authors->BookAuthors.bookId',
+          ],
           attributes:
           ['id', 'bookName', 'bookISBN',
             'description', 'bookImage',
-            'publishYear'],
+            'publishYear',
+            [sequelize
+              .fn('count', sequelize.col('BookRatings.id')),
+              'RatingCount'
+            ],
+            [sequelize
+              .fn('sum', sequelize.col('BookRatings.rating')),
+              'RatingSum'
+            ],
+            [sequelize
+              .fn('AVG', sequelize.col('BookRatings.rating')),
+              'Ratingavg'
+            ]
+          ],
         })
         .then((allBooks) => {
-          if (allBooks === null || allBooks.length === 0) { // if no book is found
+          if (allBooks === null ||
+            allBooks.length === 0) { // if no book is found
             res.status(200).json({
               status: 'Unsuccessful',
               message: 'No Books',
@@ -78,7 +170,11 @@ class bookProps {
             });
           }
         })
-        .catch(error => res.status(500).json(error)); // catch error from findall
+        .catch(errorMessage =>
+          res.status(500).json({
+            status: 'Unsuccessful',
+            error: errorMessage,
+          })); // catch error from findall
     } else {
       Books
         .findOne({
@@ -86,11 +182,34 @@ class bookProps {
             isActive: true,
             id: bookID,
           },
+          group: ['Books.id',
+            'Authors.id',
+            'Authors->BookAuthors.authorId',
+            'Authors->BookAuthors.bookId',
+          ],
+          attributes: [
+            'id', 'bookName', 'bookISBN',
+            'description', 'bookImage',
+            'publishYear', 'bookQuantity',
+            [sequelize
+              .fn('count', sequelize.col('BookRatings.id')),
+              'RatingCount'
+            ],
+            [sequelize
+              .fn('sum', sequelize.col('BookRatings.rating')),
+              'RatingSum'
+            ],
+          ],
           include: [{
             model: Authors,
-            attributes: ['authorFirstName',
+            attributes: ['id', 'authorFirstName',
               'authorLastName',
               'authorAKA', 'dateofBirth'],
+            through: { attributes: [] },
+          },
+          {
+            model: BookRatings,
+            attributes: [],
           }],
         })
         .then((bookInfo) => {
@@ -99,41 +218,19 @@ class bookProps {
             data: bookInfo,
           });
         })
-        .catch(error => res.status(500).send(error));
+        .catch(errorMessage =>
+          res.status(500).json({
+            status: 'Unsuccessful',
+            error: errorMessage,
+          }));
     }
   }
-  static checkNewBookVariables(bookname,
-    ISBN,
-    pubYear,
-    desc,
-    bookimage,
-    quantity,
-  ) {
-    return new Promise((resolve, reject) => {
-      if (bookname === null) {
-        reject('No Book Name Supplied');
-      } else if (ISBN === null) {
-        reject('No ISBN Supplied');
-      } else if (desc === null) {
-        reject('No Description Supplied');
-      } else {
-        const newBookDetails = {
-          bookName: bookname,
-          bookISBN: ISBN,
-          description: desc,
-          bookQuantity: quantity,
-          bookImage:
-          (bookimage !== null) ? bookimage :
-            'default.jpg',
-          publishYear: (pubYear !== null) ? pubYear :
-            '1900',
-        };
-        resolve(newBookDetails);// send book details
-      }
-    });
-  }
+  /**
+   * @param {object} req HTTP Request object
+   * @param {object} res HTTP Response object
+   */
   static newBook(req, res) {
-    checkSession
+    CheckSession
       .checkAdmin(req.decoded)
       .then(() => {
         const bookQuantity = req.body.quantity || 1;
@@ -142,81 +239,86 @@ class bookProps {
         const bookName = req.body.bookname || null;
         const ISBN = req.body.ISBN || null;
         const description = req.body.description || null;
-        let authors = req.body.authorIds || '1'; // author or anonymous
-        authors = authors.split(',').map(Number); // convert to object array
+        const authors = req.body.authorIds || null; // author or anonymous
 
-        if (authors.every(x => !isNaN(x) && x > 0)) {
-          // true if every element is int
-          bookProps.checkNewBookVariables(bookName,
-            ISBN,
-            publishYear,
-            description,
-            bookImage,
-            bookQuantity,
+        // true if every element is int
+        BookVerify
+          .checkNewBookVariables(bookName,
+          ISBN,
+          publishYear,
+          description,
+          bookImage,
+          bookQuantity,
+          authors
           )
-            .then((completeBookDetails) => {
-              // if book details are verified complete
-              if (completeBookDetails) {
-                Authors
-                  .findAll({
-                    where: {
-                      id: authors,
-                    },
-                  })
-                  .then((bookAuthors) => {
-                    if (bookAuthors &&
-                      bookAuthors !== null &&
-                      bookAuthors.length >= 1
-                    ) {
-                      Books
-                        .create(completeBookDetails)
-                        .then((createdBook) => {
-                          createdBook
-                            .addAuthor(bookAuthors)
-                            .then(() =>
-                              res.status(201).json({
-                                status: 'Success',
-                                message: 'Book Created Successfully',
-                                bookID: createdBook.dataValues.id,
-                              }))
-                            .catch(error => res.status(501).send(error));
-                        })
-                        .catch((error) => {
-                          if (error.name === 'SequelizeUniqueConstraintError') {
-                            res.status(400).json({
+          .then((completeBookDetails) => {
+            // if book details are verified complete
+            if (completeBookDetails) {
+              Authors
+                .findAll({
+                  where: {
+                    id: completeBookDetails.authors,
+                  },
+                })
+                .then((bookAuthors) => {
+                  if (bookAuthors &&
+                    bookAuthors !== null &&
+                    bookAuthors.length >= 1
+                  ) {
+                    Books
+                      .create(completeBookDetails)
+                      .then((createdBook) => {
+                        createdBook
+                          .addAuthor(bookAuthors)
+                          .then(() =>
+                            res.status(201).json({
+                              status: 'Success',
+                              message: 'Book Created Successfully',
+                              bookID: createdBook.dataValues.id,
+                            }))
+                          .catch(errorMessage =>
+                            res.status(500).json({
                               status: 'Unsuccessful',
-                              message: 'Book Already Exists',
-                            });
-                          } else {
-                            res.status(500).send(error);
-                          }
-                        });
-                    } else {
-                      res.status(400).json({
-                        status: 'Unsuccessful',
-                        message: 'No Author found',
+                              error: errorMessage,
+                            }));
+                      })
+                      .catch((error) => {
+                        if (error.name === 'SequelizeUniqueConstraintError') {
+                          res.status(400).json({
+                            status: 'Unsuccessful',
+                            message: 'Book Already Exists',
+                          });
+                        } else {
+                          res.status(500).json({
+                            status: 'Unsuccessful',
+                            error,
+                          });
+                        }
                       });
-                    }
-                  })
-                  .catch(error => res.status(501).send(error));
-              } else {
-                res.status(501).json({
-                  status: 'Unsuccessful',
-                  message: 'Server error try again',
-                });
-              }
-            })
-            .catch(error =>// display error
-              res.status(400).json({
+                  } else {
+                    res.status(400).json({
+                      status: 'Unsuccessful',
+                      message: 'No Author found',
+                    });
+                  }
+                })
+                .catch(errorMessage =>
+                  res.status(500).json({
+                    status: 'Unsuccessful',
+                    error: errorMessage,
+                  }));
+            } else {
+              res.status(501).json({
                 status: 'Unsuccessful',
-                message: error,
-              }));
-        } else {
-          res.status(400).json({
-            status: 'Unsuccessful',
-            message: 'Invalid Authors',
-          });
-        }
+                message: 'Server error try again',
+              });
+            }
+          })
+          .catch(error =>// display error
+            res.status(400).json({
+              status: 'Unsuccessful',
+              message: error,
+            }));
       })
       .catch((error) => {
         res.status(401).json({
@@ -225,6 +327,10 @@ class bookProps {
         });
       });
   }
+  /**
+   * @param {object} req HTTP Request object
+   * @param {object} res HTTP Response object
+   */
   static getAuthors(req, res) {
     const authorID = parseInt(req.query.id, 10);
 
@@ -237,7 +343,8 @@ class bookProps {
             'authorAKA', 'dateofBirth'],
         })
         .then((allAuthors) => {
-          if (allAuthors === null || allAuthors.length === 0) { // if no book is found
+          if (allAuthors === null ||
+            allAuthors.length === 0) { // if no book is found
             res.status(200).json({
               status: 'Unsuccessful',
               message: 'No Authors',
@@ -249,7 +356,11 @@ class bookProps {
             });
           }
         })
-        .catch(error => res.status(500).json(error)); // catch error from findall
+        .catch(errorMessage =>
+          res.status(500).json({
+            status: 'Unsuccessful',
+            error: errorMessage,
+          })); // catch error from findall
     } else {
       Authors
         .findOne({
@@ -273,16 +384,25 @@ class bookProps {
             data: authorInfo,
           });
         })
-        .catch(error => res.status(500).send(error));
+        .catch(errorMessage =>
+          res.status(500).json({
+            status: 'Unsuccessful',
+            error: errorMessage,
+          }));
     }
   }
+  /**
+   * @param {object} req HTTP Request object
+   * @param {object} res HTTP Response object
+   */
   static updateBookQuantity(req, res) {
-    checkSession
+    CheckSession
       .checkAdmin(req.decoded)
       .then(() => {
         const bookId = parseInt(req.params.bookId, 10);
         const bookQuantity = parseInt(req.body.quantity, 10);
-        if (!isNaN(bookId) && !isNaN(bookQuantity)) { // has to be a number really
+        if (!isNaN(bookId) &&
+          !isNaN(bookQuantity)) { // has to be a number really
           Books
             .findOne({ // search for book with id
               where: {
@@ -309,10 +429,18 @@ class bookProps {
                     message: 'Book Updated Successfully',
                     data: addBook,
                   }))
-                  .catch(error => res.status(500).send(error));
+                  .catch(errorMessage =>
+                    res.status(500).json({
+                      status: 'Unsuccessful',
+                      error: errorMessage,
+                    }));
               }
             })
-            .catch(error => res.status(501).send(error));
+            .catch(errorMessage =>
+              res.status(501).json({
+                status: 'Unsuccessful',
+                error: errorMessage,
+              }));
         } else if (isNaN(bookId) && !isNaN(bookQuantity)) {
           res.status(404).json({
             status: 'Unsuccessful',
@@ -332,8 +460,12 @@ class bookProps {
         });
       });
   }
+  /**
+   * @param {object} req HTTP Request object
+   * @param {object} res HTTP Response object
+   */
   static modifyBook(req, res) {
-    checkSession
+    CheckSession
       .checkAdmin(req.decoded)
       .then(() => {
         const bookID = parseInt(req.params.bookId, 10);
@@ -366,9 +498,17 @@ class bookProps {
                     message: 'Book Details Updated',
                     data: bookUpdate,
                   }))
-                  .catch(error => res.status(501).send(error));
+                  .catch(errorMessage =>
+                    res.status(501).json({
+                      status: 'Unsuccessful',
+                      error: errorMessage,
+                    }));
               }
-            }).catch(error => res.status(500).send(error)); // catch error from findone
+            }).catch(errorMessage =>
+              res.status(500).json({
+                status: 'Unsuccessful',
+                error: errorMessage,
+              })); // catch error from findone
           } else {
             res.status(400).json({
               status: 'Unsuccessful',
@@ -389,6 +529,123 @@ class bookProps {
         });
       });
   }
+  /**
+  * @param {object} request HTTP Request object
+   * @param {object} response HTTP Response object
+   */
+  static viewAllBooks(request, response) {
+    const limit = request.query.limit || null;
+    const page = request.params.page || null;
+
+    const orderBy = request.query.sort || null;
+    const orBy = [];
+    if (orderBy && orderBy.toLowerCase() === 'alphabetical') {
+      orBy.push(
+        'bookName'
+      );
+    } else if (orderBy && orderBy.toLowerCase() === 'rating') {
+      orBy.push(
+        [sequelize
+          .fn('AVG', sequelize.col('BookRatings.rating')), 'DESC'
+        ]
+      );
+    }
+    orBy.push([
+      'id', 'DESC'
+    ]);
+
+    BookVerify
+      .verifyViewBookVariables(
+      limit, page)
+      .then((viewDetails) => {
+        if (viewDetails) {
+          Books
+            .count({
+              where: {
+                isActive: true
+              }
+            })
+            .then((totalBooksCount) => {
+              const totalPages = Math.ceil(totalBooksCount / limit);
+              Books
+                .findAll({
+                  where: {
+                    isActive: true
+                  },
+                  subQuery: false,
+                  offset: viewDetails.offset,
+                  limit: viewDetails.limit,
+                  include: [
+                    {
+                      model: Authors,
+                      attributes: ['id', 'authorAKA'],
+                      through: { attributes: [] }
+                    },
+                    {
+                      model: BookRatings,
+                      attributes: [],
+                    }],
+                  group: ['Books.id',
+                    'Authors.id',
+                    'Authors->BookAuthors.authorId',
+                    'Authors->BookAuthors.bookId',
+                  ],
+                  attributes:
+                  ['id', 'bookName', 'bookISBN',
+                    'description', 'bookImage',
+                    'publishYear',
+                    [sequelize
+                      .fn('count', sequelize.col('BookRatings.id')),
+                      'RatingCount'
+                    ],
+                    [sequelize
+                      .fn('sum', sequelize.col('BookRatings.rating')),
+                      'RatingSum'
+                    ],
+                    [sequelize
+                      .fn('AVG', sequelize.col('BookRatings.rating')),
+                      'ratingAvg'
+                    ]
+                  ],
+                  order: orBy
+                })
+                .then((bookLists) => {
+                  response.status(200).json({
+                    status: 'Success',
+                    bookLists,
+                    totalBooksCount,
+                    totalPages
+                  });
+                })
+                .catch((error) => {
+                  response.status(500).json({
+                    status: 'Unsuccessful',
+                    message: 'Something went wrong',
+                    error
+                  });
+                });
+            })
+            .catch((error) => {
+              response.status(500).json({
+                status: 'Unsuccessful',
+                message: 'Something went wrong',
+                error
+              });
+            });
+        } else {
+          response.status(500).json({
+            status: 'Unsuccessful',
+            message: 'Try again'
+          });
+        }
+      })
+      .catch((error) => {
+        response.status(400).json({
+          status: 'Unsuccessful',
+          message: error
+        });
+      });
+  }
 }
 
-export default bookProps;
+export default BookProps;

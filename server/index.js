@@ -6,12 +6,10 @@ import cookieEncrypter from 'cookie-encrypter';
 import session from 'express-session';
 import http from 'http';
 
-import UserController from './controllers/UserHandlers';
-import BookController from './controllers/Bookhandlers';
-import bookProps from './controllers/books-controller-v4';
-import userLoginDetails from './controllers/user-controller-v4';
-import userBookInteraction from './controllers/user-books-controller';
-import checkSession from './middleware/session';
+import BookProps from './controllers/books-controller-v4';
+import UserLoginDetails from './controllers/user-controller-v4';
+import UserBookInteraction from './controllers/user-books-controller';
+import CheckSession from './middleware/session';
 
 const app = express();
 // load environmental variables
@@ -45,36 +43,42 @@ app.use(session({
   },
 }));
 
-app.post('/api/v4/users/signup', userLoginDetails.signup);
-app.get('/api/v4/users/verify', userLoginDetails.activateUser);
-app.post('/api/v4/users/signin', userLoginDetails.signin);
+app.post('/api/v4/users/signup', UserLoginDetails.signUp);
+app.get('/api/v4/users/signupCheck/:identifier',
+  UserLoginDetails.checkUserExists);
+app.get('/api/v4/users/verify', UserLoginDetails.activateUser);
+app.post('/api/v4/users/signin', UserLoginDetails.signIn);
 
 // for user - book handling
 app.post('/api/v4/users/:userId/books',
-  checkSession.checkLogin,
-  userBookInteraction.borrowBook);
+  CheckSession.checkLogin,
+  UserBookInteraction.borrowBook);
 app.get('/api/v4/users/:userId/books',
-  checkSession.checkLogin,
-  userBookInteraction.viewBorrowedBook);
+  CheckSession.checkLogin,
+  UserBookInteraction.viewBorrowedBook);
 app.put('/api/v4/users/:userId/books',
-  checkSession.checkLogin,
-  userBookInteraction.returnBook);
-
-app.delete('/api/users', UserController.clearTable);
-app.delete('/api/v1/books', BookController.deleteAllBooks);
+  CheckSession.checkLogin,
+  UserBookInteraction.returnBook);
 
 app.get('/', (req, res) => res.status(202).send({
   message: 'Welcome to Hello-Books',
 }));
 // for book stuff
-app.post('/api/v4/authors', checkSession.checkLogin, bookProps.newAuthor);
-app.get('/api/v4/authors', checkSession.checkLogin, bookProps.getAuthors);
-app.post('/api/v4/books', checkSession.checkLogin, bookProps.newBook);
-app.get('/api/v4/books', checkSession.checkLogin, bookProps.viewBooks);
-app.put('/api/v4/books/:bookId', checkSession.checkLogin, bookProps.modifyBook);
-app.post('/api/v4/books/:bookId/quantity', checkSession.checkLogin, bookProps.updateBookQuantity);
+app.post('/api/v4/authors', CheckSession.checkLogin, BookProps.newAuthor);
+app.get('/api/v4/authors', CheckSession.checkLogin, BookProps.getAuthors);
+app.get('/api/v4/search/authors',
+  CheckSession.checkLogin, BookProps.searchAuthors);
 
-app.get('/api/v4/users/logout', checkSession.clearLogin);
+app.post('/api/v4/books', CheckSession.checkLogin, BookProps.newBook);
+app.get('/api/v4/books/list/:page',
+  CheckSession.checkLogin, BookProps.viewAllBooks);
+app.get('/api/v4/books', CheckSession.checkLogin, BookProps.viewBooks);
+app.put('/api/v4/books/:bookId',
+  CheckSession.checkLogin, BookProps.modifyBook);
+app.post('/api/v4/books/:bookId/quantity',
+  CheckSession.checkLogin, BookProps.updateBookQuantity);
+
+app.get('/api/v4/users/logout', CheckSession.clearLogin);
 
 // set port variable to value of env.Port or default to 8000
 const port = parseInt(process.env.PORT, 10) || 3000;

@@ -43,7 +43,7 @@ describe('POST /api/v4/users/:userId/books version 4', () => {
           duedate: due,
         })
         .end((err, res) => {
-          should.exist(err);// or not
+          should.exist(err);
           res.status.should.equal(404);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Unsuccessful');
@@ -60,7 +60,7 @@ describe('POST /api/v4/users/:userId/books version 4', () => {
           duedate: due,
         })
         .end((err, res) => {
-          should.exist(err);// or not
+          should.exist(err);
           res.status.should.equal(404);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Unsuccessful');
@@ -79,7 +79,7 @@ describe('POST /api/v4/users/:userId/books version 4', () => {
           duedate: due,
         })
         .end((err, res) => {
-          should.exist(err);// or not
+          should.exist(err);
           res.status.should.equal(401);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Unsuccessful');
@@ -96,7 +96,7 @@ describe('POST /api/v4/users/:userId/books version 4', () => {
           duedate: due,
         })
         .end((err, res) => {
-          should.exist(err);// or not
+          should.exist(err);
           res.status.should.equal(401);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Unsuccessful');
@@ -113,7 +113,7 @@ describe('POST /api/v4/users/:userId/books version 4', () => {
           duedate: due,
         })
         .end((err, res) => {
-          should.exist(err);// or not
+          should.exist(err);
           res.status.should.equal(400);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Unsuccessful');
@@ -130,7 +130,7 @@ describe('POST /api/v4/users/:userId/books version 4', () => {
           duedate: due,
         })
         .end((err, res) => {
-          should.not.exist(err);// or not
+          should.not.exist(err);
           res.status.should.equal(202);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Success');
@@ -147,7 +147,7 @@ describe('POST /api/v4/users/:userId/books version 4', () => {
           duedate: due,
         })
         .end((err, res) => {
-          should.not.exist(err);// or not
+          should.not.exist(err);
           res.status.should.equal(202);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Success');
@@ -166,7 +166,7 @@ describe('POST /api/v4/users/:userId/books version 4', () => {
             duedate: due,
           })
           .end((err, res) => {
-            should.not.exist(err);// or not
+            should.not.exist(err);
             res.status.should.equal(200);
             res.type.should.equal('application/json');
             res.body.status.should.eql('Unsuccessful');
@@ -184,7 +184,7 @@ describe('GET /api/v4/users/:userId/books version 4', () => {
         .get('/api/v4/users/q/books')
         .set('x-access-token', goodToken)
         .end((err, res) => {
-          should.exist(err);// or not
+          should.exist(err);
           res.status.should.equal(404);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Unsuccessful');
@@ -199,7 +199,7 @@ describe('GET /api/v4/users/:userId/books version 4', () => {
         .get('/api/v4/users/3/books')// doesn't match token
         .set('x-access-token', goodToken)
         .end((err, res) => {
-          should.exist(err);// or not
+          should.exist(err);
           res.status.should.equal(401);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Unsuccessful');
@@ -212,7 +212,7 @@ describe('GET /api/v4/users/:userId/books version 4', () => {
         .get('/api/v4/users/40/books')// doesn't match token
         .set('x-access-token', goodTokenInvalidUser)
         .end((err, res) => {
-          should.exist(err);// or not
+          should.exist(err);
           res.status.should.equal(401);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Unsuccessful');
@@ -225,7 +225,7 @@ describe('GET /api/v4/users/:userId/books version 4', () => {
         .get('/api/v4/users/2/books')// doesn't match token
         .set('x-access-token', goodToken2)
         .end((err, res) => {
-          should.not.exist(err);// or not
+          should.not.exist(err);
           res.status.should.equal(200);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Unsuccessful');
@@ -238,7 +238,7 @@ describe('GET /api/v4/users/:userId/books version 4', () => {
         .get('/api/v4/users/1/books')
         .set('x-access-token', goodToken)
         .end((err, res) => {
-          should.not.exist(err);// or not
+          should.not.exist(err);
           res.status.should.equal(202);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Success');
@@ -257,7 +257,7 @@ describe('PUT /api/v4/users/:userId/books version 4', () => {
           lendId: 1,
         })
         .end((err, res) => {
-          should.exist(err);// or not
+          should.exist(err);
           res.status.should.equal(404);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Unsuccessful');
@@ -273,7 +273,7 @@ describe('PUT /api/v4/users/:userId/books version 4', () => {
           bookId: 'q3',
         })
         .end((err, res) => {
-          should.exist(err);// or not
+          should.exist(err);
           res.status.should.equal(404);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Unsuccessful');
@@ -289,7 +289,7 @@ describe('PUT /api/v4/users/:userId/books version 4', () => {
           bookId: 1,
         })
         .end((err, res) => {
-          should.exist(err);// or not
+          should.exist(err);
           res.status.should.equal(404);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Unsuccessful');
@@ -305,7 +305,7 @@ describe('PUT /api/v4/users/:userId/books version 4', () => {
           bookId: 1,
         })
         .end((err, res) => {
-          should.exist(err);// or not
+          should.exist(err);
           res.status.should.equal(404);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Unsuccessful');
@@ -322,7 +322,7 @@ describe('PUT /api/v4/users/:userId/books version 4', () => {
           lendId: 'abvs',
         })
         .end((err, res) => {
-          should.exist(err);// or not
+          should.exist(err);
           res.status.should.equal(404);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Unsuccessful');
@@ -341,7 +341,7 @@ describe('PUT /api/v4/users/:userId/books version 4', () => {
           lendId: 1,
         })
         .end((err, res) => {
-          should.exist(err);// or not
+          should.exist(err);
           res.status.should.equal(401);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Unsuccessful');
@@ -358,7 +358,7 @@ describe('PUT /api/v4/users/:userId/books version 4', () => {
           lendId: 1,
         })
         .end((err, res) => {
-          should.exist(err);// or not
+          should.exist(err);
           res.status.should.equal(401);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Unsuccessful');
@@ -375,7 +375,7 @@ describe('PUT /api/v4/users/:userId/books version 4', () => {
           lendId: 309,
         })
         .end((err, res) => {
-          should.exist(err);// or not
+          should.exist(err);
           res.status.should.equal(404);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Unsuccessful');
@@ -392,7 +392,7 @@ describe('PUT /api/v4/users/:userId/books version 4', () => {
           lendId: lndId,
         })
         .end((err, res) => {
-          should.not.exist(err);// or not
+          should.not.exist(err);
           res.status.should.equal(202);
           res.type.should.equal('application/json');
           res.body.status.should.eql('Success');
@@ -409,7 +409,7 @@ describe('PUT /api/v4/users/:userId/books version 4', () => {
             lendId: lndId,
           })
           .end((err, res) => {
-            should.not.exist(err);// or not
+            should.not.exist(err);
             res.status.should.equal(200);
             res.type.should.equal('application/json');
             res.body.status.should.eql('Unsuccessful');

@@ -19,7 +19,7 @@ module.exports = {
           key: 'id',
         },
       },
-      tars: {
+      stars: {
         type: Sequelize.INTEGER,
       },
       createdAt: {

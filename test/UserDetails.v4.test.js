@@ -24,31 +24,31 @@ const invalidUserToken = jwt.sign({
   userId: 99999, // invalid user ID here
   email: 'somebodyelse@user.com.ng',
   authString: 'b921f6ff61ef9e63e4e38dfcedcd79ebdc16a66afef169e9',
-}, app.settings.JsonSecret, {
-  expiresIn: '24h',
-});
+}, app.settings.JsonSecret,
+  {
+    expiresIn: '24h',
+  });
 const invalidToken = jwt.sign({
   username: 'fakeuser', // token not generated for user
   userId: 1,
   email: 'fake@user.com.ng',
   authString: 'b921f6ff61ef9e63e4e38dfcedcd79ebdc16a66afef169e9',
-}, app.settings.JsonSecret, {
-  expiresIn: '24h',
-});
+}, app.settings.JsonSecret,
+  {
+    expiresIn: '24h',
+  });
 const badSignatureToken = jwt.sign({
   username: 'SomebodyElse',
   userId: 1, // invalid user ID here
   email: 'somebodyelse@user.com.ng',
   authString: 'b921f6ff61ef9e63e4e38dfcedcd79ebdc16a66afef169e9',
-}, 'fakeToken_secret_here', {
-  expiresIn: '24h',
-});
+}, 'fakeToken_secret_here',
+  {
+    expiresIn: '24h',
+  });
 
 
 describe('POST /api/v4/users/signup Version 4', () => {
-  before((done) => {
-    chai.request(app).delete('/api/users').end(done);
-  });
   describe('When Users attempt to signup', () => {
     describe('When there is an issue with information provided', () => {
       it('Should respond with code 400 Invalid Username for blank username', (done) => {
@@ -640,5 +640,5 @@ describe('POST /api/v4/users/signin Version 4', () => {
         */
     });
   });
-  describe('When attempting to signin but already signed in', () => {});
+  describe('When attempting to signin but already signed in', () => { });
 });
