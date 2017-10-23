@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import BookCard from '../common/BookCard';
 import Sorter from '../common/Sorter';
+import Pagination from '../common/Pagination';
+import PerPage from '../common/PerPage';
 import { fetchBooks } from '../actions/loadBooks';
 
 class ViewAllBooks extends React.Component {
@@ -12,8 +15,8 @@ class ViewAllBooks extends React.Component {
     this.state = {
       limit: 10,
       page: 1,
-      totalBooks: null,
-      totalPages: null,
+      totalBooks: 0,
+      totalPages: 1,
       sort: 'newest',
       allBooks: [],
     };
@@ -44,11 +47,33 @@ class ViewAllBooks extends React.Component {
   }
   sortFunction = (event, index) => {
     event.preventDefault();
-    this.setState({
-      sort: index
-    }, () => {
-      this.fetchAll();
-    });
+    if (index !== this.state.sort) {
+      this.setState({
+        sort: index
+      }, () => {
+        this.fetchAll();
+      });
+    }
+  }
+  paginationFunction = (event, index) => {
+    event.preventDefault();
+    if (index !== this.state.page) {
+      this.setState({
+        page: index
+      }, () => {
+        this.fetchAll();
+      });
+    }
+  }
+  perPageFunction = (event, index) => {
+    event.preventDefault();
+    if (index !== this.state.limit) {
+      this.setState({
+        limit: index
+      }, () => {
+        this.fetchAll();
+      });
+    }
   }
   render() {
     if (!this.props.allBooks) {
@@ -65,9 +90,14 @@ class ViewAllBooks extends React.Component {
             <div className="container">
               <ul className="breadcrumbs--list">
                 <li className="breadcrumbs--item">
-                  <a href="/" className="breadcrumbs--link">
+                  <Link to="/books" className="breadcrumbs--link">
                     Home
-                </a>
+                </Link>
+                </li>
+                <li className="breadcrumbs--item">
+                  <Link to="/allbooks" className="breadcrumbs--link">
+                    Library
+                </Link>
                 </li>
               </ul>
             </div>
@@ -80,7 +110,7 @@ class ViewAllBooks extends React.Component {
         <div className="layout-header">
           <div className="container">
             <h1 className="page_header--title">
-              Some stuff
+              Library
             </h1>
           </div>
         </div>
@@ -88,9 +118,14 @@ class ViewAllBooks extends React.Component {
           <div className="container">
             <ul className="breadcrumbs--list">
               <li className="breadcrumbs--item">
-                <a href="/" className="breadcrumbs--link">
+                <Link to="/books" className="breadcrumbs--link">
                   Home
-                </a>
+                </Link>
+              </li>
+              <li className="breadcrumbs--item">
+                <Link to="/allbooks" className="breadcrumbs--link">
+                  Library
+                </Link>
               </li>
             </ul>
           </div>
@@ -128,6 +163,17 @@ class ViewAllBooks extends React.Component {
                 )}
               </ul>
             </div>
+          </div>
+          <div className="pagination-view container">
+            <Pagination
+              currentPage={this.state.page}
+              totalPages={this.state.totalPages}
+              paginationFunction={this.paginationFunction}
+            />
+            <PerPage
+              limit={parseInt(this.state.limit, 10)}
+              perPageFunction={this.perPageFunction}
+            />
           </div>
         </div>
       </div>

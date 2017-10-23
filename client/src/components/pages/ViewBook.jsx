@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { viewOneBook } from '../actions/loadBooks';
 
@@ -61,15 +62,21 @@ class ViewBook extends React.Component {
             <div className="container">
               <ul className="breadcrumbs--list">
                 <li className="breadcrumbs--item">
-                  <a href="/" className="breadcrumbs--link">
+                  <Link to="/" className="breadcrumbs--link">
                     Home
-                </a>
+                  </Link>
                 </li>
                 <li className="breadcrumbs--item">
-                  <a href="" className="breadcrumbs--link">Library</a>
+                  <Link to="/allBooks" className="breadcrumbs--link">
+                    Library
+                  </Link>
                 </li>
                 <li className="breadcrumbs--item">
-                  <a href="" className="breadcrumbs--link -active">Book</a>
+                  <Link
+                    to={`/books/${this.props.match.params.bookId}`}
+                    className="breadcrumbs--link">
+                    Book
+                  </Link>
                 </li>
               </ul>
             </div>

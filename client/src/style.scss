@@ -243,16 +243,18 @@ $formControlFocusShadow: 0 1px 1px rgba(0,
     background-image: none;
     border: 1px solid #ccc;
     border-radius: 4px;
-    -moz-transition: border-color ease-in-out .15s,
-    box-shadow ease-in-out .15s;
-    -ms-transition: border-color ease-in-out .15s,
-    box-shadow ease-in-out .15s;
-    -o-transition: border-color ease-in-out .15s,
-    box-shadow ease-in-out .15s;
-    -webkit-transition: border-color ease-in-out .15s,
-    -webkit-box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s,
-    box-shadow ease-in-out .15s;
+    @include transition((border-color ease-in-out .15s,
+    box-shadow ease-in-out .15s));
+    // -moz-transition: border-color ease-in-out .15s,
+    // box-shadow ease-in-out .15s;
+    // -ms-transition: border-color ease-in-out .15s,
+    // box-shadow ease-in-out .15s;
+    // -o-transition: border-color ease-in-out .15s,
+    // box-shadow ease-in-out .15s;
+    // -webkit-transition: border-color ease-in-out .15s,
+    // -webkit-box-shadow ease-in-out .15s;
+    // transition: border-color ease-in-out .15s,
+    // box-shadow ease-in-out .15s;
     @include cust-box-shadow($formControlShadow);
     &:focus {
         outline: 0;
@@ -1572,7 +1574,7 @@ input[type='search'] {
     font-size: 14px;
     font-weight: 400;
     color: #262626;
-    &.-active {
+    &.active {
         color: $primaryColor;
     }
 }
@@ -1863,6 +1865,9 @@ overflow: hidden;
     text-overflow: ellipsis;
     white-space: normal;
     }
+    & a:hover{
+        color: darken($primaryColor, 30);
+    }
     & .book-grid{
         border-top: 1px solid #eaeded;
         margin-left: 0;
@@ -1959,5 +1964,121 @@ margin-top:7px;
             width:100%;
             display: inline-block;
         }
+    }
+}
+.pagination-view{
+    display: block;
+    font-weight:bold;
+    & .limit-per-page{
+        float: left;
+        &>div{
+             display: inline-block;
+             vertical-align: middle;
+              & a{
+                color: black;
+                float: left;
+                padding: 8px 16px;
+                margin-right: 2px;
+                text-decoration: none;
+                @include transition((background-color 0.4s));
+                @include cust-box-shadow((0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)));
+               &:hover{
+                    @include cust-box-shadow((0 4px 4px 0 rgba(0, 0, 0, 0.14), 0 5px 4px -2px rgba(0, 0, 0, 0.2), 0 3px 7px 0 rgba(0, 0, 0, 0.12)));
+              background-color: lighten($secondaryColor, 30);
+                }
+                &.-active{
+                    background-color: $secondaryColor;
+                    color: #fff;
+                    @include cust-box-shadow((0 1px 1px 0 rgba(0, 0, 0, 0.19), 0 1px 1px -2px rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.16)));
+                }
+                
+              }
+        }
+        & span{
+            font-family: 'wf_segoe-ui_light';
+            padding: 0 10px;
+            vertical-align: middle;
+            display: inline-block;
+            font-size: 13px;
+            font-style: italic;
+        }
+    }
+    & .pagination-div{
+        float:right;
+        &>div{
+             display: inline-block;
+             vertical-align: middle;
+              & a{
+                color: black;
+                float: left;
+                padding: 8px 16px;
+                margin-right: 2px;
+                text-decoration: none;
+                @include transition((background-color 0.4s));
+                @include cust-box-shadow((0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)));
+                
+                &:hover{
+                    @include cust-box-shadow((0 4px 4px 0 rgba(0, 0, 0, 0.14), 0 5px 4px -2px rgba(0, 0, 0, 0.2), 0 3px 7px 0 rgba(0, 0, 0, 0.12)));
+              background-color: lighten($secondaryColor, 30);
+                }
+                &.-active{
+                    background-color: $secondaryColor;
+                    color: #fff;
+                    @include cust-box-shadow((0 1px 1px 0 rgba(0, 0, 0, 0.19), 0 1px 1px -2px rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.16)));
+                }
+                &.navigation{
+                    padding: 8px 12px;
+                    margin: 0 10px;
+                   @include cust-box-shadow(none);
+                }
+              }
+              & span{
+                color: black;
+                float: left;
+                padding: 8px 16px;
+                margin-right: 2px;
+                text-decoration: none;
+              }
+        }
+    
+        & .navigation{
+            &:disabled,
+            &[disabled]{
+                background-color:#fff;
+                & i{
+                color: #777;
+            }
+            }
+        }
+}
+    & .angle-left:before{
+        display: inline-block;
+        font-family: 'icons';
+        content: '\f10d';
+        font-style: normal;
+        font-weight: 400;
+        font-variant: normal;
+        line-height: 1;
+        text-decoration: inherit;
+        text-rendering: optimizeLegibility;
+        text-transform: none;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+        font-smoothing: antialiased;
+    }
+    & .angle-right:before{
+        display: inline-block;
+        font-family: 'icons';
+        content: '\f10e';
+        font-style: normal;
+        font-weight: 400;
+        font-variant: normal;
+        line-height: 1;
+        text-decoration: inherit;
+        text-rendering: optimizeLegibility;
+        text-transform: none;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-font-smoothing: antialiased;
+        font-smoothing: antialiased;
     }
 }

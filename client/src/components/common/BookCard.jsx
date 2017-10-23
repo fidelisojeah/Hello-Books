@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
+// /books/:bookId
 import Ratings from './Ratings';
 
 const BookCard = ({ bookName,
@@ -22,7 +24,7 @@ const BookCard = ({ bookName,
   return (
     <li className="carousel-card">
       <div>
-        <a href={`books/${bookID}`}>
+        <Link to={`/books/${bookID}`}>
           <div className="carousel-image">
             <img
               src={imgHref}
@@ -32,7 +34,7 @@ const BookCard = ({ bookName,
           <span className="book-title">
             {bookName}
           </span>
-        </a>
+        </Link>
         <Ratings
           rateSum={ratingSum}
           ratingCount={rateCount}
@@ -43,7 +45,7 @@ const BookCard = ({ bookName,
           </span>
         </div>
       </div>
-    </li>
+    </li >
   );
 };
 BookCard.defaultProps = {

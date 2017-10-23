@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { logout } from './actions/login';
 
@@ -50,10 +51,14 @@ class Navbar extends React.Component {
           <div className="header-nav--inner">
             <ul className="menu">
               <li className="menu-item">
-                <a href="">Home</a>
+                <Link to="/">
+                  Home
+                  </Link>
               </li>
               <li className="menu-item">
-                <a href="">View Library</a>
+                <Link to="/allBooks">
+                  View Library
+                </Link>
               </li>
               <li className="menu-item menu-item-Usr">
                 <a
