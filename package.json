@@ -51,6 +51,7 @@
   "homepage": "https://github.com/fidelisojeah/Hello-Books",
   "devDependencies": {
     "chai": "^4.1.0",
+    "chai-as-promised": "^7.1.1",
     "chai-http": "^3.0.0",
     "chai-things": "^0.2.0",
     "clean-webpack-plugin": "^0.1.16",

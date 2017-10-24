@@ -33,6 +33,12 @@ const nonAdminToken = jwt.sign({
   lastName: 'User',
   role: 'User',
 }, app.settings.JsonSecret);
+const noRoleToken = jwt.sign({
+  userId: 1,
+  username: 'adminUser',
+  firstName: 'admin',
+  lastName: 'User'
+}, app.settings.JsonSecret);
 
 // simulate authors route to authorisation middleware
 describe('Middleware Test', () => {
@@ -80,25 +86,26 @@ describe('Middleware Test', () => {
           done();
         });
     });
-    it('should return 401 Unsuccessful when Expired token is provided', (done) => {
-      chai.request(app)
-        .post('/api/v4/authors')
-        .set('x-access-token', expiredToken)
-        .end((err, res) => {
-          should.exist(err);
-          res.status.should.equal(401);
-          res.type.should.equal('application/json');
-          res.body.status.should.eql('Unsuccessful');
-          res.body.message.should.eql('Unauthenticated');
-          res.body.error.should.eql('TokenExpiredError');
-          res.body.errortype.should.eql('jwt expired');
-          done();
-        });
-    });
+    it('should return 401 Unsuccessful when Expired token is provided',
+      (done) => {
+        chai.request(app)
+          .post('/api/v4/authors')
+          .set('x-access-token', expiredToken)
+          .end((err, res) => {
+            should.exist(err);
+            res.status.should.equal(401);
+            res.type.should.equal('application/json');
+            res.body.status.should.eql('Unsuccessful');
+            res.body.message.should.eql('Unauthenticated');
+            res.body.error.should.eql('TokenExpiredError');
+            res.body.errortype.should.eql('jwt expired');
+            done();
+          });
+      });
   });
   describe('When a valid token is provided', () => {
     describe('When user is not an admin', () => {
-      it('should return 400 Info', (done) => {
+      it('should return 401 Not Allowed', (done) => {
         chai.request(app)
           .post('/api/v4/authors')
           .set('x-access-token', nonAdminToken)
@@ -108,6 +115,22 @@ describe('Middleware Test', () => {
             res.type.should.equal('application/json');
             res.body.status.should.eql('Unsuccessful');
             res.body.message.should.eql('Not allowed');
+            done();
+          });
+      });
+    });
+    describe('When token has no role in it', () => {
+      it('should return 401 invalid token', (done) => {
+        chai.request(app)
+          .post('/api/v4/authors')
+          .set('x-access-token', noRoleToken)
+          .end((err, res) => {
+            should.exist(err);
+            res.status.should.equal(401);
+            res.type.should.equal('application/json');
+            res.body.status.should.eql('Unsuccessful');
+            res.body.message.should.eql('Unathenticated');
+            res.body.error.should.eql('InvalidToken');
             done();
           });
       });

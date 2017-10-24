@@ -140,13 +140,11 @@ class UserLoginDetails {
                                       sendActivationEmail
                                         .sendVerificationEmail()
                                         .then((mailInfo) => {
-                                          console.log('Mail Sent To:',
-                                            mailInfo.accepted);
+                                          console.log(mailInfo);
                                         })
                                         .catch((err) => {
                                           console.log(err);
                                         });
-
                                       response.status(201).json({
                                         status: 'Success',
                                         message: 'User account created',

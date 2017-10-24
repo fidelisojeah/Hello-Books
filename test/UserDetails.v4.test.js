@@ -7,6 +7,7 @@ import app from '../server';
 const should = chai.should();
 
 chai.use(chaiHttp);
+
 let token1;
 let token2;
 
@@ -628,17 +629,49 @@ describe('POST /api/v4/users/signin Version 4', () => {
             });
         });
       });
-      /*
-        describe('When user has been activated', () => {
-          describe('When an Email is used to signin', () => {
-            it('Should return 202 Success with details', (done) => {});
-          });
-          describe('When a username is used to signin', () => {
-            it('Should return 202 Success with details', (done) => {});
+
+      describe('When user has been activated', () => {
+        describe('When an Email is used to signin', () => {
+          it('Should return 202 Success with details', (done) => {
+            chai.request(app)
+              .post('/api/v4/users/signin')
+              .send({
+                password: 'TestUser123$',
+                username: 'Testuser',
+              })
+              .end((err, res) => {
+                should.not.exist(err);
+                res.status.should.equal(202);
+                res.type.should.equal('application/json');
+                res.body.status.should.eql('Successful');
+                res.body.message.should.eql('Signin Successful');
+                should.exist(res.body.token);
+                should.exist(res.headers['set-cookie']);
+                done();
+              });
           });
         });
-        */
+        describe('When a username is used to signin', () => {
+          it('Should return 202 Success with details', (done) => {
+            chai.request(app)
+              .post('/api/v4/users/signin')
+              .send({
+                password: 'SomebodyPassword123$',
+                username: 'somebodyelse@user.com.ng',
+              })
+              .end((err, res) => {
+                should.not.exist(err);
+                res.status.should.equal(202);
+                res.type.should.equal('application/json');
+                res.body.status.should.eql('Successful');
+                res.body.message.should.eql('Signin Successful');
+                should.exist(res.body.token);
+                should.exist(res.headers['set-cookie']);
+                done();
+              });
+          });
+        });
+      });
     });
   });
-  describe('When attempting to signin but already signed in', () => { });
 });

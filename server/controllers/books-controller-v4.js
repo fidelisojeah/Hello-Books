@@ -558,86 +558,79 @@ class BookProps {
       .verifyViewBookVariables(
       limit, page)
       .then((viewDetails) => {
-        if (viewDetails) {
-          Books
-            .count({
-              where: {
-                isActive: true
-              }
-            })
-            .then((totalBooksCount) => {
-              const totalPages = Math.ceil(totalBooksCount / limit);
-              Books
-                .findAll({
-                  where: {
-                    isActive: true
+        Books
+          .count({
+            where: {
+              isActive: true
+            }
+          })
+          .then((totalBooksCount) => {
+            const totalPages = Math.ceil(totalBooksCount / limit);
+            Books
+              .findAll({
+                where: {
+                  isActive: true
+                },
+                subQuery: false,
+                offset: viewDetails.offset,
+                limit: viewDetails.limit,
+                include: [
+                  {
+                    model: Authors,
+                    attributes: ['id', 'authorAKA'],
+                    through: { attributes: [] }
                   },
-                  subQuery: false,
-                  offset: viewDetails.offset,
-                  limit: viewDetails.limit,
-                  include: [
-                    {
-                      model: Authors,
-                      attributes: ['id', 'authorAKA'],
-                      through: { attributes: [] }
-                    },
-                    {
-                      model: BookRatings,
-                      attributes: [],
-                    }],
-                  group: ['Books.id',
-                    'Authors.id',
-                    'Authors->BookAuthors.authorId',
-                    'Authors->BookAuthors.bookId',
+                  {
+                    model: BookRatings,
+                    attributes: [],
+                  }],
+                group: ['Books.id',
+                  'Authors.id',
+                  'Authors->BookAuthors.authorId',
+                  'Authors->BookAuthors.bookId',
+                ],
+                attributes:
+                ['id', 'bookName', 'bookISBN',
+                  'description', 'bookImage',
+                  'publishYear',
+                  [sequelize
+                    .fn('count', sequelize.col('BookRatings.id')),
+                    'RatingCount'
                   ],
-                  attributes:
-                  ['id', 'bookName', 'bookISBN',
-                    'description', 'bookImage',
-                    'publishYear',
-                    [sequelize
-                      .fn('count', sequelize.col('BookRatings.id')),
-                      'RatingCount'
-                    ],
-                    [sequelize
-                      .fn('sum', sequelize.col('BookRatings.rating')),
-                      'RatingSum'
-                    ],
-                    [sequelize
-                      .fn('AVG', sequelize.col('BookRatings.rating')),
-                      'ratingAvg'
-                    ]
+                  [sequelize
+                    .fn('sum', sequelize.col('BookRatings.rating')),
+                    'RatingSum'
                   ],
-                  order: orBy
-                })
-                .then((bookLists) => {
-                  response.status(200).json({
-                    status: 'Success',
-                    bookLists,
-                    totalBooksCount,
-                    totalPages
-                  });
-                })
-                .catch((error) => {
-                  response.status(500).json({
-                    status: 'Unsuccessful',
-                    message: 'Something went wrong',
-                    error
-                  });
+                  [sequelize
+                    .fn('AVG', sequelize.col('BookRatings.rating')),
+                    'ratingAvg'
+                  ]
+                ],
+                order: orBy
+              })
+              .then((bookLists) => {
+                response.status(200).json({
+                  status: 'Success',
+                  bookLists,
+                  totalBooksCount,
+                  totalPages
                 });
-            })
-            .catch((error) => {
-              response.status(500).json({
-                status: 'Unsuccessful',
-                message: 'Something went wrong',
-                error
+              })
+              .catch((error) => {
+                response.status(500).json({
+                  status: 'Unsuccessful',
+                  message: 'Something went wrong',
+                  error
+                });
               });
+          })
+          .catch((error) => {
+            response.status(500).json({
+              status: 'Unsuccessful',
+              message: 'Something went wrong',
+              error
             });
-        } else {
-          response.status(500).json({
-            status: 'Unsuccessful',
-            message: 'Try again'
           });
-        }
       })
       .catch((error) => {
         response.status(400).json({
