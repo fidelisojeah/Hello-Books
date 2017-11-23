@@ -1,17 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import BookCard from '../common/BookCard';
 import Sorter from '../common/Sorter';
 import Pagination from '../common/Pagination';
 import PerPage from '../common/PerPage';
 import { fetchBooks } from '../actions/loadBooks';
+import { logout } from '../actions/login';
+import BreadCrumbs from '../common/BreadCrumbs';
+
+import LoadingPage from './LoadingPage';
 
 class ViewAllBooks extends React.Component {
   constructor(props) {
     super(props);
+    const pageLinks = [];
+    pageLinks.push({
+      linkName: 'Home',
+      link: ''
+    });
+    pageLinks.push({
+      linkName: 'Library',
+      link: 'allBooks'
+    });
+
     this.state = {
       limit: 10,
       page: 1,
@@ -19,6 +32,7 @@ class ViewAllBooks extends React.Component {
       totalPages: 1,
       sort: 'newest',
       allBooks: [],
+      pageLinks
     };
   }
   componentDidMount() {
@@ -30,6 +44,7 @@ class ViewAllBooks extends React.Component {
       nextProps.error.message) {
       // extra check cos why not?
       // ideally, this should never happen
+      this.props.logout();
       this.context.router.history.push('/signin');
     } else {
       this.setState({
@@ -78,31 +93,7 @@ class ViewAllBooks extends React.Component {
   render() {
     if (!this.props.allBooks) {
       return (
-        <div className="layout--container">
-          <div className="layout-header">
-            <div className="container">
-              <h1 className="page_header--title">
-                Loading
-            </h1>
-            </div>
-          </div>
-          <nav className="breadcrumbs">
-            <div className="container">
-              <ul className="breadcrumbs--list">
-                <li className="breadcrumbs--item">
-                  <Link to="/books" className="breadcrumbs--link">
-                    Home
-                </Link>
-                </li>
-                <li className="breadcrumbs--item">
-                  <Link to="/allbooks" className="breadcrumbs--link">
-                    Library
-                </Link>
-                </li>
-              </ul>
-            </div>
-          </nav>
-        </div>
+        <LoadingPage />
       );
     }
     return (
@@ -114,22 +105,9 @@ class ViewAllBooks extends React.Component {
             </h1>
           </div>
         </div>
-        <nav className="breadcrumbs">
-          <div className="container">
-            <ul className="breadcrumbs--list">
-              <li className="breadcrumbs--item">
-                <Link to="/books" className="breadcrumbs--link">
-                  Home
-                </Link>
-              </li>
-              <li className="breadcrumbs--item">
-                <Link to="/allbooks" className="breadcrumbs--link">
-                  Library
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </nav>
+        <BreadCrumbs
+          breadCrumbLinks={this.state.pageLinks}
+        />
         <div className="section">
           <div>
             <div className="list-books">
@@ -185,7 +163,8 @@ ViewAllBooks.propTypes = {
   totalBooks: PropTypes.number,
   totalPages: PropTypes.number,
   allBooks: PropTypes.arrayOf(PropTypes.object),
-  error: PropTypes.objectOf(PropTypes.string)
+  error: PropTypes.objectOf(PropTypes.string),
+  logout: PropTypes.func.isRequired,
 };
 ViewAllBooks.contextTypes = {
   router: PropTypes.object.isRequired,
@@ -210,4 +189,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { fetchBooks })(ViewAllBooks);
+export default connect(mapStateToProps, { fetchBooks, logout })(ViewAllBooks);

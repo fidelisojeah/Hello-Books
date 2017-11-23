@@ -80,7 +80,7 @@ class UserLoginDetails {
       .then((activation) => {
         if (activation === 'All Good') { // if Vaild
           JwTokens
-            .randomString()
+            .randomString(24)
             .then((activationBuf) => {
               bcrypt
                 .hash(password, 8) // hash password
@@ -123,13 +123,13 @@ class UserLoginDetails {
                                     if (signupToken) { // for verification
                                       const infoForVerification = {
                                         userEmail:
-                                        signupData.dataValues.emailaddress,
+                                          signupData.dataValues.emailaddress,
                                         userFirstName:
-                                        signupData.dataValues.firstname,
+                                          signupData.dataValues.firstname,
                                         userLastName:
-                                        signupData.dataValues.lastname,
+                                          signupData.dataValues.lastname,
                                         username:
-                                        signupData.dataValues.username
+                                          signupData.dataValues.username
                                       };
 
                                       const sendActivationEmail =
@@ -140,18 +140,16 @@ class UserLoginDetails {
                                       sendActivationEmail
                                         .sendVerificationEmail()
                                         .then((mailInfo) => {
-                                          console.log('Mail Sent To:',
-                                            mailInfo.accepted);
+                                          console.log(mailInfo);
                                         })
                                         .catch((err) => {
                                           console.log(err);
                                         });
-
                                       response.status(201).json({
                                         status: 'Success',
                                         message: 'User account created',
                                         membership:
-                                        setMembershipDetails.membershipName,
+                                          setMembershipDetails.membershipName,
                                         token: signupToken
                                       });
                                     }
@@ -162,7 +160,7 @@ class UserLoginDetails {
                                       message: `User account created, 
                                       Token unsuccessful`,
                                       membership:
-                                      setMembershipDetails.membershipName,
+                                        setMembershipDetails.membershipName,
                                       errorMsg: error,
                                     }));
                               })
@@ -181,9 +179,9 @@ class UserLoginDetails {
                         status: 'Unsuccessful',
                         message: error.errors[0].message,
                         inputError:
-                        (error.errors[0].path === 'emailaddress') ?
-                          'email'
-                          : error.errors[0].path,
+                          (error.errors[0].path === 'emailaddress') ?
+                            'email'
+                            : error.errors[0].path,
                       }));
                   }
                 }) // unsuccessful hash
@@ -244,7 +242,7 @@ class UserLoginDetails {
                       userToken.activationString) {
                       // if authstring is valid
                       JwTokens
-                        .randomString()
+                        .randomString(24)
                         .then((randString) => {
                           activationUser
                             .update({

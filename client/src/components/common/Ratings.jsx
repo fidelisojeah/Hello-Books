@@ -22,7 +22,7 @@ const Ratings = ({ rateSum, ratingCount }) => {
         }
       </span>
       {ratingCount <= 0 && 'Not Rated'}
-      {ratingCount > 0 && `Ratings: ${avgRate}`}
+      {ratingCount > 0 && `Rating: ${avgRate}`}
     </div>
   );
 };

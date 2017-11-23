@@ -34,13 +34,16 @@ class HelloBooksSendMail {
         text: `Please Verify Your email Address with link ${this.verificationEmailLink}`,
         html: this.htmlEmail
       };
-      transporter
-        .sendMail(message, (error, SendInfo) => {
-          if (error) {
-            reject('Email not Sent');
-          }
-          resolve(SendInfo);
-        });
+
+      if (!this.recipientEmail) {
+        console.log('here');
+        reject('No Recipient Email');
+      } else {
+        console.log('hhere');
+        transporter
+          .sendMail(message);
+        resolve('Mail Sent');
+      }
     });
   }
   emailContent() {

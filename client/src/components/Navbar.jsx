@@ -42,7 +42,7 @@ class Navbar extends React.Component {
     if (document.body.classList.contains('with--sidebar')) {
       document.body.classList.remove('with--sidebar');
     }
-    this.context.router.history.push('/signin');
+    this.context.router.history.push('/');
   }
   render() {
     return (
@@ -64,7 +64,7 @@ class Navbar extends React.Component {
                 <a
                   className="usrBtn large-view"
                   role="presentation"
-                  onClick={this.show.bind(this)}>
+                  onClick={event => this.show(event)}>
                   <span className="profile-name">
                     {this.props.username}
                   </span>

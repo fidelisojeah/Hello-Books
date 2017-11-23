@@ -143,6 +143,24 @@ describe('POST /api/v4/authors version 4', () => {
             done();
           });
       });
+      it('should return 201 success', (done) => {
+        chai.request(app)
+          .post('/api/v4/authors')
+          .set('x-access-token', goodToken)
+          .send({
+            firstname: 'Benny',
+            lastname: 'Ogidan',
+            authorAKA: 'Benny O.',
+          })
+          .end((err, res) => {
+            should.not.exist(err);// or not
+            res.status.should.equal(201);
+            res.type.should.equal('application/json');
+            res.body.status.should.eql('Success');
+            res.body.message.should.eql('Author Created Successfully');
+            done();
+          });
+      });
     });
   });
 });
@@ -410,6 +428,62 @@ describe('POST /api/v4/books version 4', () => {
               publishyear: '1999',
               bookname: 'Harry Potter and the Prisoner of Azkaban',
               ISBN: '0-7475-4215-5',
+              description: `Harry is back at the Dursleys, 
+              where he sees on Muggle television that a 
+              prisoner named Sirius Black has escaped. 
+              Harry involuntarily inflates Aunt Marge 
+              when she comes to visit after she insults 
+              Harry and his parents.`,
+              authorIds: '2',
+            })
+            .end((err, res) => {
+              should.not.exist(err);// or not
+              res.status.should.equal(201);
+              res.type.should.equal('application/json');
+              res.body.status.should.eql('Success');
+              res.body.message.should.eql('Book Created Successfully');
+              bookId = res.body.bookID;
+              done();
+            });
+        });
+        it('should return 201 Book Created', (done) => {
+          chai.request(app)
+            .post('/api/v4/books')
+            .set('x-access-token', goodToken)
+            .send({
+              quantity: 1,
+              image: 'hppa.jpg',
+              publishyear: '2001',
+              bookname: 'Harry Potter and the Chambers of Secrets',
+              ISBN: '0-7475-0100-5',
+              description: `Harry is back at the Dursleys, 
+              where he sees on Muggle television that a 
+              prisoner named Sirius Black has escaped. 
+              Harry involuntarily inflates Aunt Marge 
+              when she comes to visit after she insults 
+              Harry and his parents.`,
+              authorIds: '2',
+            })
+            .end((err, res) => {
+              should.not.exist(err);// or not
+              res.status.should.equal(201);
+              res.type.should.equal('application/json');
+              res.body.status.should.eql('Success');
+              res.body.message.should.eql('Book Created Successfully');
+              bookId = res.body.bookID;
+              done();
+            });
+        });
+        it('should return 201 Book Created', (done) => {
+          chai.request(app)
+            .post('/api/v4/books')
+            .set('x-access-token', goodToken)
+            .send({
+              quantity: 2,
+              image: 'hppa.jpg',
+              publishyear: '2010',
+              bookname: 'Harry Potter and the Half Blood Prince',
+              ISBN: '0-7475-0090-3',
               description: `Harry is back at the Dursleys, 
               where he sees on Muggle television that a 
               prisoner named Sirius Black has escaped. 
@@ -915,6 +989,50 @@ describe('GET /api/v4/books/list/:page version 4', () => {
     it('should return a 200 with information', (done) => {
       chai.request(app)
         .get('/api/v4/books/list/1?limit=10')
+        .set('x-access-token', goodToken)
+        .end((error, response) => {
+          should.not.exist(error);
+          response.status.should.equal(200);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Success');
+          response.body.bookLists.should.all.have.property('id');
+          response.body.bookLists.should.all.have.property('bookName');
+          response.body.bookLists.should.all.have.property('description');
+          response.body.bookLists.should.all.have.property('bookImage');
+          response.body.bookLists.should.all.have.property('publishYear');
+          response.body.bookLists.should.all.have.property('RatingCount');
+          response.body.bookLists.should.all.have.property('RatingSum');
+          response.body.bookLists.should.all.have.property('ratingAvg');
+          should.exist(response.body.totalPages);
+          should.exist(response.body.totalBooksCount);
+          done();
+        });
+    });
+    it('should return a 200 with information', (done) => {
+      chai.request(app)
+        .get('/api/v4/books/list/1?limit=10&sort=rating')
+        .set('x-access-token', goodToken)
+        .end((error, response) => {
+          should.not.exist(error);
+          response.status.should.equal(200);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Success');
+          response.body.bookLists.should.all.have.property('id');
+          response.body.bookLists.should.all.have.property('bookName');
+          response.body.bookLists.should.all.have.property('description');
+          response.body.bookLists.should.all.have.property('bookImage');
+          response.body.bookLists.should.all.have.property('publishYear');
+          response.body.bookLists.should.all.have.property('RatingCount');
+          response.body.bookLists.should.all.have.property('RatingSum');
+          response.body.bookLists.should.all.have.property('ratingAvg');
+          should.exist(response.body.totalPages);
+          should.exist(response.body.totalBooksCount);
+          done();
+        });
+    });
+    it('should return a 200 with information', (done) => {
+      chai.request(app)
+        .get('/api/v4/books/list/1?limit=10&sort=alphabetical')
         .set('x-access-token', goodToken)
         .end((error, response) => {
           should.not.exist(error);

@@ -1,0 +1,12 @@
+machine:
+  node:
+    version: 8.4.0
+  services:
+    - postgres
+  environment:
+    - NODE_ENV=test
+database:
+  override:
+    - psql -c 'drop database if exists dbhellobooks_test;' -U postgres
+    - psql -c 'create database dbhellobooks_test;' -U postgres
+    - psql -c "create user usrhello with login password 'HelloBooksPassword$';" -U postgres

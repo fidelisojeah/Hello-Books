@@ -17,7 +17,7 @@ class Logindex extends React.Component {
       .then((allBooks) => {
         if (allBooks.data.status === 'Success') {
           this.setState({
-            allBooks: allBooks.data.data,
+            allBooks: allBooks.data.allBooks,
           });
         } else {
           console.log(allBooks.data.status);
@@ -35,11 +35,11 @@ class Logindex extends React.Component {
         <div className="layout-header" style={{ padding: 0 }}>
           <div className="container-fluid slide-container">
             <div className="slides fade">
-              <img src="../assets/images/image1.jpg" alt="" />
+              {/* <img src="../assets/images/image1.jpg" alt="" /> */}
               <div className="caption-text">Slide1</div>
             </div>
             <div className="slides fade">
-              <img src="../assets/images/image2.jpg" alt="" />
+              {/* <img src="../assets/images/image2.jpg" alt="" /> */}
               <div className="caption-text">Slide2</div>
             </div>
           </div>

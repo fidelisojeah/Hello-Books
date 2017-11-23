@@ -31,7 +31,7 @@ class AuthorSearch extends React.Component {
         .then((response) => {
           if (response.data.status === 'Success') {
             this.setState({
-              authorList: response.data.data,
+              authorList: response.data.bookAuthors,
             });
           } else {
             this.setState({

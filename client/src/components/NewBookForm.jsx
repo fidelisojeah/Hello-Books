@@ -244,31 +244,32 @@ class NewBookForm extends React.Component {
                     multiple={false}
                     accept="image/*"
                     onDrop={this.onImageDrop}>
-                    <p>Upload Book Image</p>
+                    {!this.state.image && <p>Upload Book Image</p>}
+                    {this.state.isLoading &&
+                      <img
+                        src={loader}
+                        alt="loading"
+                        style={{
+                          padding: '50px'
+                        }}
+                      />
+                    }
+                    {this.state.image !== '' &&
+                      <img
+                        src={this.state.image}
+                        alt="uploaded Book"
+                        style={{
+                          color: 'white',
+                          margin: 'auto',
+                          maxWidth: '100px'
+                        }}
+                      />}
                   </Dropzone>
                 </div>
               </div>
               <div
                 className="col-md-4 col-sm-6 col-xs-4 img-container"
               >
-                {this.state.isLoading &&
-                  <img
-                    src={loader}
-                    alt="loading"
-                    style={{
-                      padding: '50px'
-                    }}
-                  />
-                }
-                {this.state.image !== '' &&
-                  <img
-                    src={this.state.image}
-                    alt="uploaded Book"
-                    style={{
-                      color: 'white',
-                      maxWidth: '200px'
-                    }}
-                  />}
                 {this.state.image !== '' &&
                   <i
                     className="x-button"

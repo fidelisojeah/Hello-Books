@@ -7,6 +7,7 @@ import setAuthorizationToken from '../../utils/setAuthToken';
 /**
  *
  * @param {*} user
+ * @return {object} STATE
  */
 export function setCurrentUser(user) {
   return {
@@ -14,23 +15,29 @@ export function setCurrentUser(user) {
     user,
   };
 }
-export function logout() {
-  return dispatch => {
+/**
+ * @return {function} dispatch
+ */
+export const logout = () =>
+  (dispatch) => {
     localStorage.removeItem('jwtToken');
-    axios.get('/api/v4/users/logout');
     setAuthorizationToken(false);
+    axios.get('/api/v4/users/logout');
     dispatch(setCurrentUser({}));
   };
-}
 
-export function userLogin(userData) {
-  return dispatch => {
-    return axios.post('/api/v4/users/signin', userData)
+/**
+ *
+ * @param {object} userData
+ * @return {function} dispatch
+ */
+export const userLogin = userData =>
+  dispatch =>
+    axios.post('/api/v4/users/signin', userData)
       .then((response) => {
         const token = response.data.token;
         localStorage.setItem('jwtToken', token);
         setAuthorizationToken(token);
         dispatch(setCurrentUser(jwtDecode(token)));
       });
-  };
-}
+
