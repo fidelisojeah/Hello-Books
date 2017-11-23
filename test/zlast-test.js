@@ -31,13 +31,6 @@ const goodToken = jwt.sign({
 }, app.settings.JsonSecret);
 
 describe('Database errors Simulations', () => {
-  // beforeEach((done) => {
-  //   UserDetails.drop().then(() => {
-  //     // Authors.drop().then(() => {
-  //     Books.drop().then(() => done());
-  //     // });
-  //   });
-  // });
   describe('When trying to check if user exists', () => {
     it('should return 500 Unsuccessful when user cannot be found', (done) => {
       chai.request(app)
@@ -207,6 +200,36 @@ describe('Database errors Simulations', () => {
             done();
           });
       });
+    });
+  });
+  describe('When trying to return books', () => {
+    before((done) => {
+      Books.drop();
+      UserDetails
+        .drop()
+        .then(() => {
+          done();
+        })
+        .catch(() => {
+          done();
+        });
+    });
+    it('should return 501 Unsuccessful', (done) => {
+      chai.request(app)
+        .put('/api/v4/users/1/books')
+        .set('x-access-token', goodToken)
+        .send({
+          bookId: 1,
+          lendId: 1,
+        })
+        .end((error, response) => {
+          should.exist(error);
+          response.status.should.equal(501);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Unsuccessful');
+          should.exist(response.body.error);
+          done();
+        });
     });
   });
 });

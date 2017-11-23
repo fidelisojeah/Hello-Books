@@ -36,7 +36,7 @@ class SignInForm extends React.Component {
                 type: 'Successful',
                 text: 'Signin Successful',
               });
-            this.context.router.history.push('/Books');
+            this.context.router.history.push('/');
           })
           .catch((errors) => {
             if (errors.response.data.message ===

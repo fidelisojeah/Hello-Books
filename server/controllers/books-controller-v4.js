@@ -22,22 +22,23 @@ class BookProps {
           where: {
             $or: [{
               authorFirstName:
-              { $iLike: `%${authorDetails}%` }
+                { $iLike: `%${authorDetails}%` }
             }, {
               authorLastName:
-              { $iLike: `%${authorDetails}%` }
+                { $iLike: `%${authorDetails}%` }
             }, {
               authorAKA:
-              { $iLike: `%${authorDetails}%` }
+                { $iLike: `%${authorDetails}%` }
             }]
           },
-          attributes:
-          ['id', 'authorFirstName',
+          attributes: ['id', 'authorFirstName',
             'authorLastName',
             'authorAKA', 'dateofBirth'],
         })
         .then((foundAuthors) => {
-          if (foundAuthors === null || foundAuthors.length === 0) {
+          if (!foundAuthors ||
+            foundAuthors === null
+            || foundAuthors.length === 0) {
             response.status(200).json({
               status: 'None',
               message: 'No Authors',
@@ -45,7 +46,7 @@ class BookProps {
           } else {
             response.status(202).json({
               status: 'Success',
-              data: foundAuthors,
+              bookAuthors: foundAuthors,
             });
           }
         })
@@ -138,8 +139,7 @@ class BookProps {
             'Authors->BookAuthors.authorId',
             'Authors->BookAuthors.bookId',
           ],
-          attributes:
-          ['id', 'bookName', 'bookISBN',
+          attributes: ['id', 'bookName', 'bookISBN',
             'description', 'bookImage',
             'publishYear',
             [sequelize
@@ -157,7 +157,8 @@ class BookProps {
           ],
         })
         .then((allBooks) => {
-          if (allBooks === null ||
+          if (!allBooks ||
+            allBooks === null ||
             allBooks.length === 0) { // if no book is found
             res.status(200).json({
               status: 'Unsuccessful',
@@ -166,7 +167,7 @@ class BookProps {
           } else {
             res.status(202).json({
               status: 'Success',
-              data: allBooks,
+              allBooks,
             });
           }
         })
@@ -193,11 +194,11 @@ class BookProps {
             'publishYear', 'bookQuantity',
             [sequelize
               .fn('count', sequelize.col('BookRatings.id')),
-              'RatingCount'
+              'ratingCount'
             ],
             [sequelize
               .fn('sum', sequelize.col('BookRatings.rating')),
-              'RatingSum'
+              'ratingSum'
             ],
           ],
           include: [{
@@ -215,7 +216,7 @@ class BookProps {
         .then((bookInfo) => {
           res.status(202).json({
             status: 'Success',
-            data: bookInfo,
+            bookInfo,
           });
         })
         .catch(errorMessage =>
@@ -337,14 +338,13 @@ class BookProps {
     if (isNaN(authorID)) { // for all books
       Authors
         .findAll({
-          attributes:
-          ['id', 'authorFirstName',
+          attributes: ['id', 'authorFirstName',
             'authorLastName',
             'authorAKA', 'dateofBirth'],
         })
         .then((allAuthors) => {
           if (allAuthors === null ||
-            allAuthors.length === 0) { // if no book is found
+            allAuthors.length === 0) { // if no author is found
             res.status(200).json({
               status: 'Unsuccessful',
               message: 'No Authors',
@@ -352,7 +352,7 @@ class BookProps {
           } else {
             res.status(202).json({
               status: 'Success',
-              data: allAuthors,
+              allAuthors,
             });
           }
         })
@@ -381,7 +381,7 @@ class BookProps {
         .then((authorInfo) => {
           res.status(202).json({
             status: 'Success',
-            data: authorInfo,
+            authorInfo,
           });
         })
         .catch(errorMessage =>
@@ -419,15 +419,15 @@ class BookProps {
                 bookDetails
                   .update({
                     bookQuantity:
-                    (bookDetails.bookQuantity + bookQuantity) < 1 ? 1 :
-                      (bookDetails.bookQuantity + bookQuantity),
+                      (bookDetails.bookQuantity + bookQuantity) <= 0 ? 0 :
+                        (bookDetails.bookQuantity + bookQuantity),
                     // Never less than 1
                   })
                   .then(
                   addBook => res.status(200).json({
                     status: 'Success',
                     message: 'Book Updated Successfully',
-                    data: addBook,
+                    addBook,
                   }))
                   .catch(errorMessage =>
                     res.status(500).json({
@@ -496,7 +496,7 @@ class BookProps {
                   .then(bookUpdate => res.status(200).json({
                     status: 'Success',
                     message: 'Book Details Updated',
-                    data: bookUpdate,
+                    bookUpdate,
                   }))
                   .catch(errorMessage =>
                     res.status(501).json({
@@ -589,8 +589,7 @@ class BookProps {
                   'Authors->BookAuthors.authorId',
                   'Authors->BookAuthors.bookId',
                 ],
-                attributes:
-                ['id', 'bookName', 'bookISBN',
+                attributes: ['id', 'bookName', 'bookISBN',
                   'description', 'bookImage',
                   'publishYear',
                   [sequelize

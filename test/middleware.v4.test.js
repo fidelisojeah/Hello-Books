@@ -40,6 +40,19 @@ const noRoleToken = jwt.sign({
   lastName: 'User'
 }, app.settings.JsonSecret);
 
+describe('Basic API Test', () => {
+  it('should return 202 welcome', (done) => {
+    chai.request(app)
+      .get('/')
+      .end((error, response) => {
+        should.not.exist(error);
+        response.status.should.equal(202);
+        response.type.should.equal('application/json');
+        response.body.message.should.eql('Welcome to Hello-Books');
+        done();
+      });
+  });
+});
 // simulate authors route to authorisation middleware
 describe('Middleware Test', () => {
   describe('When no token is provided', () => {

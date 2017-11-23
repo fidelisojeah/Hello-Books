@@ -8,6 +8,7 @@ class SiteCache extends React.Component {
   handleClick(event) {
     event.preventDefault();
     document.body.classList.remove('with--sidebar');
+    document.body.classList.remove('with--modal');
   }
   render() {
     return (

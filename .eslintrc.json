@@ -85,6 +85,23 @@
         "react/jsx-no-literals": 0,
         "react/jsx-no-undef": 1,
         "react/jsx-pascal-case": 1,
+        "jsx-a11y/anchor-is-valid": [
+            "error",
+            {
+                "components": [
+                    "Link"
+                ],
+                "specialLink": [
+                    "hrefLeft",
+                    "hrefRight"
+                ],
+                "aspects": [
+                    "noHref",
+                    "invalidHref",
+                    "preferButton"
+                ]
+            }
+        ],
         "react/jsx-sort-prop-types": 0,
         "react/jsx-sort-props": 0,
         "react/jsx-uses-react": 1,

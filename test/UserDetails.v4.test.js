@@ -52,191 +52,201 @@ const badSignatureToken = jwt.sign({
 describe('POST /api/v4/users/signup Version 4', () => {
   describe('When Users attempt to signup', () => {
     describe('When there is an issue with information provided', () => {
-      it('Should respond with code 400 Invalid Username for blank username', (done) => {
-        chai.request(app)
-          .post('/api/v4/users/signup')
-          .send({
-            password: 'TestUser123$',
-            firstname: 'Test',
-            lastname: 'User',
-            email: 'test@user.com.ng',
-          })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(400);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Username Invalid');
-            done();
-          });
-      });
-      it('Should respond with code 400 Username too short for Short username', (done) => {
-        chai.request(app)
-          .post('/api/v4/users/signup')
-          .send({
-            password: 'TestUser123$',
-            firstname: 'Test',
-            username: 't',
-            lastname: 'User',
-            email: 'test@user.com.ng',
-          })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(400);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Username too short');
-            done();
-          });
-      });
-      it('Should respond with code 400 Invalid First Name for blank firstname', (done) => {
-        chai.request(app)
-          .post('/api/v4/users/signup')
-          .send({
-            password: 'TestUser123$',
-            username: 'Test',
-            lastname: 'User',
-            email: 'test@user.com.ng',
-          })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(400);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('First Name Invalid');
-            done();
-          });
-      });
-      it('Should respond with code 400 First Name too short for short firstname', (done) => {
-        chai.request(app)
-          .post('/api/v4/users/signup')
-          .send({
-            password: 'TestUser123$',
-            firstname: 't',
-            username: 'Test',
-            lastname: 'User',
-            email: 'test@user.com.ng',
-          })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(400);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('First Name too short');
-            done();
-          });
-      });
-      it('Should respond with code 400 Invalid Last Name for blank lastname', (done) => {
-        chai.request(app)
-          .post('/api/v4/users/signup')
-          .send({
-            password: 'TestUser123$',
-            username: 'Test',
-            firstname: 'User',
-            email: 'test@user.com.ng',
-          })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(400);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Last Name Invalid');
-            done();
-          });
-      });
-      it('Should respond with code 400 Last Name too short for short lastname', (done) => {
-        chai.request(app)
-          .post('/api/v4/users/signup')
-          .send({
-            password: 'TestUser123$',
-            lastname: 't',
-            username: 'Test',
-            firstname: 'User',
-            email: 'test@user.com.ng',
-          })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(400);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Last Name too short');
-            done();
-          });
-      });
-      it('Should respond with code 400 Password Invalid for blank password', (done) => {
-        chai.request(app)
-          .post('/api/v4/users/signup')
-          .send({
-            firstname: 'Test',
-            username: 'Testuser',
-            lastname: 'User',
-            email: 'test@user.com.ng',
-          })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(400);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Password Invalid');
-            done();
-          });
-      });
-      it('Should respond with code 400 Password too short for short Password', (done) => {
-        chai.request(app)
-          .post('/api/v4/users/signup')
-          .send({
-            password: 'Ts',
-            firstname: 'Test',
-            username: 'Test',
-            lastname: 'User',
-            email: 'test@user.com.ng',
-          })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(400);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Password too short');
-            done();
-          });
-      });
-      it('Should respond with code 400 Email Address Invalid for blank email', (done) => {
-        chai.request(app)
-          .post('/api/v4/users/signup')
-          .send({
-            password: 'TestUser123$',
-            firstname: 'Test',
-            username: 'Testuser',
-            lastname: 'User',
-          })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(400);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('No email Provided');
-            done();
-          });
-      });
-      it('Should respond with code 400 Email Invalid for Wrong email addres', (done) => {
-        chai.request(app)
-          .post('/api/v4/users/signup')
-          .send({
-            password: 'TestUser123$',
-            firstname: 'Test',
-            username: 'Testuser',
-            lastname: 'User',
-            email: 'testuser.com.ng',
-          })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(400);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Email Address invalid');
-            done();
-          });
-      });
+      it('Should respond with code 400 Invalid Username for blank username',
+        (done) => {
+          chai.request(app)
+            .post('/api/v4/users/signup')
+            .send({
+              password: 'TestUser123$',
+              firstname: 'Test',
+              lastname: 'User',
+              email: 'test@user.com.ng',
+            })
+            .end((err, res) => {
+              should.exist(err);
+              res.status.should.equal(400);
+              res.type.should.equal('application/json');
+              res.body.status.should.eql('Unsuccessful');
+              res.body.message.should.eql('Username Invalid');
+              done();
+            });
+        });
+      it('Should respond with code 400 Username too short for Short username',
+        (done) => {
+          chai.request(app)
+            .post('/api/v4/users/signup')
+            .send({
+              password: 'TestUser123$',
+              firstname: 'Test',
+              username: 't',
+              lastname: 'User',
+              email: 'test@user.com.ng',
+            })
+            .end((err, res) => {
+              should.exist(err);
+              res.status.should.equal(400);
+              res.type.should.equal('application/json');
+              res.body.status.should.eql('Unsuccessful');
+              res.body.message.should.eql('Username too short');
+              done();
+            });
+        });
+      it('Should respond with code 400 Invalid First Name for blank firstname',
+        (done) => {
+          chai.request(app)
+            .post('/api/v4/users/signup')
+            .send({
+              password: 'TestUser123$',
+              username: 'Test',
+              lastname: 'User',
+              email: 'test@user.com.ng',
+            })
+            .end((err, res) => {
+              should.exist(err);
+              res.status.should.equal(400);
+              res.type.should.equal('application/json');
+              res.body.status.should.eql('Unsuccessful');
+              res.body.message.should.eql('First Name Invalid');
+              done();
+            });
+        });
+      it('Should respond with code 400 First Name too short',
+        (done) => {
+          chai.request(app)
+            .post('/api/v4/users/signup')
+            .send({
+              password: 'TestUser123$',
+              firstname: 't',
+              username: 'Test',
+              lastname: 'User',
+              email: 'test@user.com.ng',
+            })
+            .end((err, res) => {
+              should.exist(err);
+              res.status.should.equal(400);
+              res.type.should.equal('application/json');
+              res.body.status.should.eql('Unsuccessful');
+              res.body.message.should.eql('First Name too short');
+              done();
+            });
+        });
+      it('Should respond with code 400 for blank lastname',
+        (done) => {
+          chai.request(app)
+            .post('/api/v4/users/signup')
+            .send({
+              password: 'TestUser123$',
+              username: 'Test',
+              firstname: 'User',
+              email: 'test@user.com.ng',
+            })
+            .end((err, res) => {
+              should.exist(err);
+              res.status.should.equal(400);
+              res.type.should.equal('application/json');
+              res.body.status.should.eql('Unsuccessful');
+              res.body.message.should.eql('Last Name Invalid');
+              done();
+            });
+        });
+      it('Should respond with code 400 for short lastname',
+        (done) => {
+          chai.request(app)
+            .post('/api/v4/users/signup')
+            .send({
+              password: 'TestUser123$',
+              lastname: 't',
+              username: 'Test',
+              firstname: 'User',
+              email: 'test@user.com.ng',
+            })
+            .end((err, res) => {
+              should.exist(err);
+              res.status.should.equal(400);
+              res.type.should.equal('application/json');
+              res.body.status.should.eql('Unsuccessful');
+              res.body.message.should.eql('Last Name too short');
+              done();
+            });
+        });
+      it('Should respond with code 400 for blank password',
+        (done) => {
+          chai.request(app)
+            .post('/api/v4/users/signup')
+            .send({
+              firstname: 'Test',
+              username: 'Testuser',
+              lastname: 'User',
+              email: 'test@user.com.ng',
+            })
+            .end((err, res) => {
+              should.exist(err);
+              res.status.should.equal(400);
+              res.type.should.equal('application/json');
+              res.body.status.should.eql('Unsuccessful');
+              res.body.message.should.eql('Password Invalid');
+              done();
+            });
+        });
+      it('Should respond with code 400 for short Password',
+        (done) => {
+          chai.request(app)
+            .post('/api/v4/users/signup')
+            .send({
+              password: 'Ts',
+              firstname: 'Test',
+              username: 'Test',
+              lastname: 'User',
+              email: 'test@user.com.ng',
+            })
+            .end((err, res) => {
+              should.exist(err);
+              res.status.should.equal(400);
+              res.type.should.equal('application/json');
+              res.body.status.should.eql('Unsuccessful');
+              res.body.message.should.eql('Password too short');
+              done();
+            });
+        });
+      it('Should respond with code 400 for blank email',
+        (done) => {
+          chai.request(app)
+            .post('/api/v4/users/signup')
+            .send({
+              password: 'TestUser123$',
+              firstname: 'Test',
+              username: 'Testuser',
+              lastname: 'User',
+            })
+            .end((err, res) => {
+              should.exist(err);
+              res.status.should.equal(400);
+              res.type.should.equal('application/json');
+              res.body.status.should.eql('Unsuccessful');
+              res.body.message.should.eql('No email Provided');
+              done();
+            });
+        });
+      it('Should respond with code 400 for Wrong email addres',
+        (done) => {
+          chai.request(app)
+            .post('/api/v4/users/signup')
+            .send({
+              password: 'TestUser123$',
+              firstname: 'Test',
+              username: 'Testuser',
+              lastname: 'User',
+              email: 'testuser.com.ng',
+            })
+            .end((err, res) => {
+              should.exist(err);
+              res.status.should.equal(400);
+              res.type.should.equal('application/json');
+              res.body.status.should.eql('Unsuccessful');
+              res.body.message.should.eql('Email Address invalid');
+              done();
+            });
+        });
     });
     describe('When the Information provided is correct', () => {
       describe('When the Information provided is unique', () => {
@@ -492,22 +502,23 @@ describe('GET /api/v4/users/verify', () => {
           done();
         });
     });
-    it('Should return User already Activated when User has been activated before', (done) => {
-      chai.request(app)
-        .get('/api/v4/users/verify')
-        .query({
-          id: 'Testuser',
-          key: token1,
-        })
-        .end((err, res) => {
-          should.not.exist(err);
-          res.status.should.equal(200);
-          res.type.should.equal('application/json');
-          res.body.status.should.eql('None');
-          res.body.message.should.eql('User already activated');
-          done();
-        });
-    });
+    it('Should return User already Activated',
+      (done) => {
+        chai.request(app)
+          .get('/api/v4/users/verify')
+          .query({
+            id: 'Testuser',
+            key: token1,
+          })
+          .end((err, res) => {
+            should.not.exist(err);
+            res.status.should.equal(200);
+            res.type.should.equal('application/json');
+            res.body.status.should.eql('None');
+            res.body.message.should.eql('User already activated');
+            done();
+          });
+      });
   });
 });
 describe('POST /api/v4/users/signin Version 4', () => {
@@ -545,38 +556,40 @@ describe('POST /api/v4/users/signin Version 4', () => {
       });
     });
     describe('When wrong details are entered', () => {
-      it('Should respond with code 400 Invalid username for Short username', (done) => {
-        chai.request(app)
-          .post('/api/v4/users/signin')
-          .send({
-            password: 'TestUser123$',
-            username: 't',
-          })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(400);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Invalid Username');
-            done();
-          });
-      });
-      it('Should respond with code 400 Invalid Password for Short Password', (done) => {
-        chai.request(app)
-          .post('/api/v4/users/signin')
-          .send({
-            password: 'Tes',
-            username: 'Testuser',
-          })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(400);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Invalid Password');
-            done();
-          });
-      });
+      it('Should respond with code 400 for Short username',
+        (done) => {
+          chai.request(app)
+            .post('/api/v4/users/signin')
+            .send({
+              password: 'TestUser123$',
+              username: 't',
+            })
+            .end((err, res) => {
+              should.exist(err);
+              res.status.should.equal(400);
+              res.type.should.equal('application/json');
+              res.body.status.should.eql('Unsuccessful');
+              res.body.message.should.eql('Invalid Username');
+              done();
+            });
+        });
+      it('Should respond with code 400 for Short Password',
+        (done) => {
+          chai.request(app)
+            .post('/api/v4/users/signin')
+            .send({
+              password: 'Tes',
+              username: 'Testuser',
+            })
+            .end((err, res) => {
+              should.exist(err);
+              res.status.should.equal(400);
+              res.type.should.equal('application/json');
+              res.body.status.should.eql('Unsuccessful');
+              res.body.message.should.eql('Invalid Password');
+              done();
+            });
+        });
       it('Should respond with a 401 username invalid', (done) => {
         chai.request(app)
           .post('/api/v4/users/signin')

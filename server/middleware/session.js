@@ -44,17 +44,15 @@ class CheckSession {
               error: error.name,
               errortype: error.message,
             });
-          } else if (verifiedToken) {
-            if (verifiedToken.role) {
-              req.decoded = verifiedToken;
-              next();
-            } else {
-              res.status(401).json({
-                status: 'Unsuccessful',
-                message: 'Unathenticated',
-                error: 'InvalidToken',
-              });
-            }
+          } else if (verifiedToken.role) {
+            req.decoded = verifiedToken;
+            next();
+          } else {
+            res.status(401).json({
+              status: 'Unsuccessful',
+              message: 'Unathenticated',
+              error: 'InvalidToken',
+            });
           }
         });
     }

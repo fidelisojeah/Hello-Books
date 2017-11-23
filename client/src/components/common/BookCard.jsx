@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 // /books/:bookId
 import Ratings from './Ratings';
+import AuthorList from '../lists/AuthorList';
 
 const BookCard = ({ bookName,
   bookID,
@@ -14,13 +15,6 @@ const BookCard = ({ bookName,
   bookAuthors }) => {
   const rateCount = parseInt(ratingCount, 10);
   // convert to integer
-  const numAuthors = bookAuthors.length;
-  const authors = bookAuthors.map((authorsSplit, index) =>
-    (<span key={authorsSplit.id}>
-      <a href={authorsSplit.id}>{authorsSplit.authorAKA}</a>
-      {index < (numAuthors - 1) && ', '}
-    </span>),
-  );
   return (
     <li className="carousel-card">
       <div>
@@ -28,7 +22,7 @@ const BookCard = ({ bookName,
           <div className="carousel-image">
             <img
               src={imgHref}
-              alt=""
+              alt={bookName}
             />
           </div>
           <span className="book-title">
@@ -41,7 +35,9 @@ const BookCard = ({ bookName,
         />
         <div className="c-row c-small-text">
           <span className="c-small-text">
-            {authors}
+            <AuthorList
+              bookAuthors={bookAuthors}
+            />
           </span>
         </div>
       </div>

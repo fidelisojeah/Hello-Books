@@ -4,6 +4,8 @@ import {
   Switch,
 } from 'react-router-dom';
 
+import PrivateRoute from './components/PrivateRoute';
+
 import App from './components/App';
 import Signin from './components/pages/Signin';
 import StockMgtPage from './components/pages/admin/StockMgtPage';
@@ -16,11 +18,11 @@ const Main = () => (
   <App>
     <Switch>
       <Route path="/signin" component={Signin} />
-      <Route path="/success" component={SuccessPage} />
-      <Route exact path="/books" component={LogIndex} />
-      <Route exact path="/allbooks" component={ViewAllBooks} />
-      <Route exact path="/books/:bookId" component={ViewBook} />
-      <Route path="/bookmgt" component={StockMgtPage} />
+      <PrivateRoute path="/success" Component={SuccessPage} />
+      <PrivateRoute exact path="/" Component={LogIndex} />
+      <PrivateRoute exact path="/allbooks" Component={ViewAllBooks} />
+      <PrivateRoute exact path="/books/:bookId" Component={ViewBook} />
+      <PrivateRoute exact path="/bookmgt" Component={StockMgtPage} />
     </Switch>
   </App>
 );

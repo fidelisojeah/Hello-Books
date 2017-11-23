@@ -7,6 +7,7 @@ import {
  *
  * @param {*} state
  * @param {object} action
+ * @returns {object} new state
  */
 export default function bookReducer(state = {
   fetchedBooks: {},

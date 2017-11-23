@@ -3,12 +3,12 @@ import crypto from 'crypto';
 
 class JwTokens {
   // random 24 character string
-  static randomString() {
-    return new Promise((resolve, reject) => {
-      crypto.randomBytes(24, (error, buf) => { // generate random bytes
+  static randomString(modifier) {
+    return new Promise((resolve) => {
+      crypto.randomBytes(modifier, (error, buf) => { // generate random bytes
         if (error) {
           reject(error);
-        } else if (buf) {
+        } else {
           resolve(buf.toString('hex'));
         }
       });
@@ -23,12 +23,10 @@ class JwTokens {
           expiresIn: tokenTime,
         },
         (tokenError, encodedToken) => {
-          if (encodedToken) {
-            resolve(encodedToken);
-          } else if (tokenError) {
+          if (tokenError) {
             reject(tokenError);
           } else {
-            reject('error');
+            resolve(encodedToken);
           }
         });
     });
@@ -42,10 +40,8 @@ class JwTokens {
         (error, verifiedToken) => {
           if (error) {
             reject(error);
-          } else if (verifiedToken) {
-            resolve(verifiedToken);
           } else {
-            reject('error');
+            resolve(verifiedToken);
           }
         });
     });

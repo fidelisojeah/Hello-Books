@@ -44,37 +44,53 @@ app.use(session({
 }));
 
 app.post('/api/v4/users/signup', UserLoginDetails.signUp);
+
 app.get('/api/v4/users/signupCheck/:identifier',
   UserLoginDetails.checkUserExists);
+
 app.get('/api/v4/users/verify', UserLoginDetails.activateUser);
+
 app.post('/api/v4/users/signin', UserLoginDetails.signIn);
 
 // for user - book handling
 app.post('/api/v4/users/:userId/books',
   CheckSession.checkLogin,
   UserBookInteraction.borrowBook);
+
 app.get('/api/v4/users/:userId/books',
   CheckSession.checkLogin,
   UserBookInteraction.viewBorrowedBook);
+
 app.put('/api/v4/users/:userId/books',
   CheckSession.checkLogin,
   UserBookInteraction.returnBook);
+
+app.get('/api/v4/users/history/:bookId',
+  CheckSession.checkLogin,
+  UserBookInteraction.userBookHistory
+);
 
 app.get('/', (req, res) => res.status(202).send({
   message: 'Welcome to Hello-Books',
 }));
 // for book stuff
 app.post('/api/v4/authors', CheckSession.checkLogin, BookProps.newAuthor);
+
 app.get('/api/v4/authors', CheckSession.checkLogin, BookProps.getAuthors);
+
 app.get('/api/v4/search/authors',
   CheckSession.checkLogin, BookProps.searchAuthors);
 
 app.post('/api/v4/books', CheckSession.checkLogin, BookProps.newBook);
+
 app.get('/api/v4/books/list/:page',
   CheckSession.checkLogin, BookProps.viewAllBooks);
+
 app.get('/api/v4/books', CheckSession.checkLogin, BookProps.viewBooks);
+
 app.put('/api/v4/books/:bookId',
   CheckSession.checkLogin, BookProps.modifyBook);
+
 app.post('/api/v4/books/:bookId/quantity',
   CheckSession.checkLogin, BookProps.updateBookQuantity);
 
