@@ -2,7 +2,6 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import jwt from 'jsonwebtoken';
 
-import db from '../server/models';
 import app from '../server';
 
 const should = chai.should();
@@ -10,10 +9,10 @@ const should = chai.should();
 chai.use(chaiHttp);
 chai.use(require('chai-things'));
 
-require('./UserDetails.v4.test');
-require('./bookprop.v4.test');
-require('./helpers.test');
-require('./middleware.v4.test');
+require('./0-user-details.test');
+require('./1-book-prop.test');
+require('./2-helpers.test');
+require('./3-middleware.test');
 
 const goodToken = jwt.sign({
   userId: 1,
@@ -48,13 +47,6 @@ const due = todayDate.setMonth(todayDate.getMonth() + 1);
 
 let lndId;
 describe('User Book Interaction tests', () => {
-  after((done) => {
-    db.sequelize.getQueryInterface().dropAllTables()
-      .then(() => {
-        db.sequelize.sync({ force: true, logging: console.log });
-        done();
-      });
-  });
   describe('POST /api/v4/users/:userId/books version 4', () => {
     describe('When incomplete Information is provided', () => {
       it('should return 404 invalid Book Id', (done) => {
@@ -64,12 +56,12 @@ describe('User Book Interaction tests', () => {
           .send({
             duedate: due,
           })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(404);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Invalid Book id');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(404);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Invalid Book id');
             done();
           });
       });
@@ -81,12 +73,12 @@ describe('User Book Interaction tests', () => {
             bookId: 1,
             duedate: due,
           })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(404);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Invalid User id');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(404);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Invalid User id');
             done();
           });
       });
@@ -97,12 +89,12 @@ describe('User Book Interaction tests', () => {
           .send({
             bookId: 1
           })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(400);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Invalid Due date');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(400);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Invalid Due date');
             done();
           });
       });
@@ -117,12 +109,12 @@ describe('User Book Interaction tests', () => {
               bookId: 1,
               duedate: 'rubbishDateFam',
             })
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(400);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Invalid Due date');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Invalid Due date');
               done();
             });
         });
@@ -135,12 +127,12 @@ describe('User Book Interaction tests', () => {
             bookId: 1,
             duedate: due,
           })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(401);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Not Allowed');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(401);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Not Allowed');
             done();
           });
       });
@@ -153,12 +145,12 @@ describe('User Book Interaction tests', () => {
               bookId: 1,
               duedate: due,
             })
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(401);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Not Allowed');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(401);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Not Allowed');
               done();
             });
         });
@@ -170,12 +162,12 @@ describe('User Book Interaction tests', () => {
             bookId: 199,
             duedate: due,
           })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(400);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Invalid Book');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(400);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Invalid Book');
             done();
           });
       });
@@ -187,12 +179,12 @@ describe('User Book Interaction tests', () => {
             bookId: 2,
             duedate: due,
           })
-          .end((err, res) => {
-            should.not.exist(err);
-            res.status.should.equal(202);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Success');
-            res.body.message.should.eql('Book Successfully Borrowed');
+          .end((error, response) => {
+            should.not.exist(error);
+            response.status.should.equal(202);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Success');
+            response.body.message.should.eql('Book Successfully Borrowed');
             done();
           });
       });
@@ -204,13 +196,13 @@ describe('User Book Interaction tests', () => {
             bookId: 1,
             duedate: due,
           })
-          .end((err, res) => {
-            should.not.exist(err);
-            res.status.should.equal(202);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Success');
-            res.body.message.should.eql('Book Successfully Borrowed');
-            lndId = res.body.lendId;
+          .end((error, response) => {
+            should.not.exist(error);
+            response.status.should.equal(202);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Success');
+            response.body.message.should.eql('Book Successfully Borrowed');
+            lndId = response.body.lendId;
             done();
           });
       });
@@ -223,12 +215,12 @@ describe('User Book Interaction tests', () => {
               bookId: 2,
               duedate: due,
             })
-            .end((err, res) => {
-              should.not.exist(err);
-              res.status.should.equal(200);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Book Unavailable');
+            .end((error, response) => {
+              should.not.exist(error);
+              response.status.should.equal(200);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Book Unavailable');
               done();
             });
         });
@@ -243,12 +235,12 @@ describe('User Book Interaction tests', () => {
               bookId: 3,
               duedate: due,
             })
-            .end((err, res) => {
-              should.not.exist(err);
-              res.status.should.equal(202);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Success');
-              res.body.message.should.eql('Book Successfully Borrowed');
+            .end((error, response) => {
+              should.not.exist(error);
+              response.status.should.equal(202);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Success');
+              response.body.message.should.eql('Book Successfully Borrowed');
               done();
             });
         });
@@ -260,12 +252,12 @@ describe('User Book Interaction tests', () => {
               bookId: 4,
               duedate: due,
             })
-            .end((err, res) => {
-              should.not.exist(err);
-              res.status.should.equal(200);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Max borrow limit reached');
+            .end((error, response) => {
+              should.not.exist(error);
+              response.status.should.equal(200);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Max borrow limit reached');
               done();
             });
         });
@@ -278,12 +270,12 @@ describe('User Book Interaction tests', () => {
         chai.request(app)
           .get('/api/v4/users/q/books')
           .set('x-access-token', goodToken)
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(404);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Invalid User id');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(404);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Invalid User id');
             done();
           });
       });
@@ -294,12 +286,12 @@ describe('User Book Interaction tests', () => {
           chai.request(app)
             .get('/api/v4/users/3/books')// doesn't match token
             .set('x-access-token', goodToken)
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(401);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Not Allowed');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(401);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Not Allowed');
               done();
             });
         });
@@ -308,12 +300,12 @@ describe('User Book Interaction tests', () => {
           chai.request(app)
             .get('/api/v4/users/40/books')// doesn't match token
             .set('x-access-token', goodTokenInvalidUser)
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(401);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Not Allowed');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(401);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Not Allowed');
               done();
             });
         });
@@ -322,12 +314,12 @@ describe('User Book Interaction tests', () => {
           chai.request(app)
             .get('/api/v4/users/2/books')// doesn't match token
             .set('x-access-token', goodToken2)
-            .end((err, res) => {
-              should.not.exist(err);
-              res.status.should.equal(200);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('No borrowed Books');
+            .end((error, response) => {
+              should.not.exist(error);
+              response.status.should.equal(200);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('No borrowed Books');
               done();
             });
         });
@@ -335,11 +327,11 @@ describe('User Book Interaction tests', () => {
         chai.request(app)
           .get('/api/v4/users/1/books')
           .set('x-access-token', goodToken)
-          .end((err, res) => {
-            should.not.exist(err);
-            res.status.should.equal(202);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Success');
+          .end((error, response) => {
+            should.not.exist(error);
+            response.status.should.equal(202);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Success');
             done();
           });
       });
@@ -354,12 +346,12 @@ describe('User Book Interaction tests', () => {
           .send({
             lendId: 1,
           })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(404);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Invalid Book id');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(404);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Invalid Book id');
             done();
           });
       });
@@ -370,12 +362,12 @@ describe('User Book Interaction tests', () => {
           .send({
             bookId: 'q3',
           })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(404);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Invalid Book id');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(404);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Invalid Book id');
             done();
           });
       });
@@ -386,12 +378,12 @@ describe('User Book Interaction tests', () => {
           .send({
             bookId: 1,
           })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(404);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Invalid User id');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(404);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Invalid User id');
             done();
           });
       });
@@ -402,12 +394,12 @@ describe('User Book Interaction tests', () => {
           .send({
             bookId: 1,
           })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(404);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Invalid');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(404);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Invalid');
             done();
           });
       });
@@ -419,12 +411,12 @@ describe('User Book Interaction tests', () => {
             bookId: 1,
             lendId: 'abvs',
           })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(404);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Invalid');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(404);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Invalid');
             done();
           });
       });
@@ -438,12 +430,12 @@ describe('User Book Interaction tests', () => {
             bookId: 1,
             lendId: 1,
           })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(401);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Not Allowed');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(401);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Not Allowed');
             done();
           });
       });
@@ -456,12 +448,12 @@ describe('User Book Interaction tests', () => {
               bookId: 1,
               lendId: 1,
             })
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(401);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Not Allowed');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(401);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Not Allowed');
               done();
             });
         });
@@ -473,12 +465,12 @@ describe('User Book Interaction tests', () => {
             bookId: 1,
             lendId: 309,
           })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(404);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('No records found');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(404);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('No records found');
             done();
           });
       });
@@ -490,12 +482,12 @@ describe('User Book Interaction tests', () => {
             bookId: 1,
             lendId: 1,
           })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(401);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('User/Book not matching records');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(401);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('User/Book not matching records');
             done();
           });
       });
@@ -507,12 +499,12 @@ describe('User Book Interaction tests', () => {
             bookId: 1,
             lendId: lndId,
           })
-          .end((err, res) => {
-            should.not.exist(err);
-            res.status.should.equal(202);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Success');
-            should.exist(res.body.message);
+          .end((error, response) => {
+            should.not.exist(error);
+            response.status.should.equal(202);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Success');
+            should.exist(response.body.message);
             done();
           });
       });
@@ -525,12 +517,12 @@ describe('User Book Interaction tests', () => {
               bookId: 1,
               lendId: lndId,
             })
-            .end((err, res) => {
-              should.not.exist(err);
-              res.status.should.equal(200);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Book Already Returned');
+            .end((error, response) => {
+              should.not.exist(error);
+              response.status.should.equal(200);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Book Already Returned');
               done();
             });
         });
@@ -543,12 +535,12 @@ describe('User Book Interaction tests', () => {
         chai.request(app)
           .get('/api/v4/users/history/ay39')
           .set('x-access-token', goodToken)
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(404);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Invalid Book id');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(404);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Invalid Book id');
             done();
           });
       });
@@ -556,12 +548,12 @@ describe('User Book Interaction tests', () => {
         chai.request(app)
           .get('/api/v4/users/history/1')
           .set('x-access-token', invalidUserIdToken)
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(404);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Invalid User id');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(404);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Invalid User id');
             done();
           });
       });
@@ -572,12 +564,12 @@ describe('User Book Interaction tests', () => {
           chai.request(app)
             .get('/api/v4/users/history/1')
             .set('x-access-token', goodTokenInvalidUser)
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(401);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Not Allowed');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(401);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Not Allowed');
               done();
             });
         });
@@ -588,53 +580,15 @@ describe('User Book Interaction tests', () => {
         .get('/api/v4/users/history/1')
         .set('x-access-token', goodToken)
         .end((error, response) => {
-          should.not.exist(error);// or not
+          should.not.exist(error);
           response.status.should.equal(202);
           response.type.should.equal('application/json');
+          response.body.status.should.eql('Success');
+          should.exist(response.body.unreturnedBookCount);
+          should.exist(response.body.userBook);
+          should.exist(response.body.membershipDetail);
           done();
         });
     });
   });
-  describe('Return Book DB ERROR', () => {
-    it('should return 501 Unsuccessful', (done) => {
-      db.BookLendings.drop().then(() => {
-        chai.request(app)
-          .put('/api/v4/users/1/books')
-          .set('x-access-token', goodToken)
-          .send({
-            bookId: 1,
-            lendId: 1,
-          })
-          .end((error, response) => {
-            should.exist(error);
-            response.status.should.equal(500);
-            response.type.should.equal('application/json');
-            response.body.status.should.eql('Unsuccessful');
-            should.exist(response.body.error);
-            done();
-          });
-      });
-    });
-    describe('Borrow Book DB ERROR', () => {
-      it('should return 501', (done) => {
-        db.BookLendings.drop().then(() => {
-          chai.request(app)
-            .post('/api/v4/users/1/books')
-            .set('x-access-token', goodToken)
-            .send({
-              bookId: 1,
-              duedate: due,
-            })
-            .end((err, res) => {
-              // should.exist(err);
-              res.status.should.equal(501);
-              res.type.should.equal('application/json');
-              done();
-            });
-        });
-      });
-    });
-  });
 });
-// .set('x-access-token', goodToken)
-

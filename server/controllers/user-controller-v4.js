@@ -28,7 +28,8 @@ class UserLoginDetails {
         attributes: ['username', 'emailaddress'],
       })
       .then((userHere) => {
-        response.json({
+        response.status(202).json({
+          status: 'Success',
           userHere
         });
       })
@@ -77,126 +78,108 @@ class UserLoginDetails {
       .validateSignup(userName,
       password, lastName, firstName, email,
     )
-      .then((activation) => {
-        if (activation === 'All Good') { // if Vaild
+      .then(() => {
+        Promise.all([
           JwTokens
-            .randomString(24)
-            .then((activationBuf) => {
-              bcrypt
-                .hash(password, 8) // hash password
-                .then((hashPassword) => {
-                  if (!hashPassword) {
-                    response.status(500).json({
-                      status: 'unsuccessful',
-                    });
-                  } else { // if successfully hashed
-                    UserDetails
-                      .create({
-                        firstname: firstName,
-                        lastname: lastName,
-                        emailaddress: email.toLowerCase(),
-                        phonenumber: phone,
-                        username: userName.toLowerCase(),
-                        password: hashPassword,
-                        authString: activationBuf,
-                      })
-                      .then((userSignup) => {
-                        Memberships
-                          .findById(1)
-                          .then((setMembershipDetails) => {
-                            userSignup
-                              .setMembership(setMembershipDetails)
-                              .then((signupData) => {
-                                // Add user info to token
-                                const tokenInfo = {
-                                  username: signupData.dataValues.username,
-                                  userId: signupData.dataValues.id,
-                                  email: signupData.dataValues.emailaddress,
-                                  authString: activationBuf,
-                                };
-                                JwTokens
-                                  .generateToken(
-                                  request.app.get('JsonSecret'),
-                                  tokenInfo,
-                                  '24h') // expires in 24hours
-                                  .then((signupToken) => {
-                                    if (signupToken) { // for verification
-                                      const infoForVerification = {
-                                        userEmail:
-                                          signupData.dataValues.emailaddress,
-                                        userFirstName:
-                                          signupData.dataValues.firstname,
-                                        userLastName:
-                                          signupData.dataValues.lastname,
-                                        username:
-                                          signupData.dataValues.username
-                                      };
+            .randomString(24),
+          bcrypt
+            .hash(password, 8) // hash password
+        ])
+          .then(([activationBuf, hashPassword]) => {
+            UserDetails
+              .create({
+                firstname: firstName,
+                lastname: lastName,
+                emailaddress: email.toLowerCase(),
+                phonenumber: phone,
+                username: userName.toLowerCase(),
+                password: hashPassword,
+                authString: activationBuf,
+              })
+              .then((userSignup) => {
+                Memberships
+                  .findById(1)
+                  .then((setMembershipDetails) => {
+                    userSignup
+                      .setMembership(setMembershipDetails)
+                      .then((signupData) => {
+                        // Add user info to token
+                        const tokenInfo = {
+                          username: signupData.dataValues.username,
+                          userId: signupData.dataValues.id,
+                          email: signupData.dataValues.emailaddress,
+                          authString: activationBuf,
+                        };
+                        JwTokens
+                          .generateToken(
+                          request.app.get('JsonSecret'),
+                          tokenInfo,
+                          '24h') // expires in 24hours
+                          .then((signupToken) => {
+                            if (signupToken) { // for verification
+                              const infoForVerification = {
+                                userEmail:
+                                  signupData.dataValues.emailaddress,
+                                userFirstName:
+                                  signupData.dataValues.firstname,
+                                userLastName:
+                                  signupData.dataValues.lastname,
+                                username:
+                                  signupData.dataValues.username
+                              };
 
-                                      const sendActivationEmail =
-                                        new HelloBooksSendMail(
-                                          infoForVerification,
-                                          signupToken);
+                              const sendActivationEmail =
+                                new HelloBooksSendMail(
+                                  infoForVerification,
+                                  signupToken);
 
-                                      sendActivationEmail
-                                        .sendVerificationEmail()
-                                        .then((mailInfo) => {
-                                          console.log(mailInfo);
-                                        })
-                                        .catch((err) => {
-                                          console.log(err);
-                                        });
-                                      response.status(201).json({
-                                        status: 'Success',
-                                        message: 'User account created',
-                                        membership:
-                                          setMembershipDetails.membershipName,
-                                        token: signupToken
-                                      });
-                                    }
-                                  })
-                                  .catch(error => // if unsuccessful token
-                                    response.status(202).json({
-                                      status: 'none',
-                                      message: `User account created, 
+                              sendActivationEmail
+                                .sendVerificationEmail();
+                              response.status(201).json({
+                                status: 'Success',
+                                message: 'User account created',
+                                membership:
+                                  setMembershipDetails.membershipName,
+                                token: signupToken
+                              });
+                            }
+                          })
+                          .catch(error => // if unsuccessful token
+                            response.status(202).json({
+                              status: 'none',
+                              message: `User account created, 
                                       Token unsuccessful`,
-                                      membership:
-                                        setMembershipDetails.membershipName,
-                                      errorMsg: error,
-                                    }));
-                              })
-                              .catch(errorMessage =>
-                                response.status(500).json({
-                                  status: 'Unsuccessful',
-                                  error: errorMessage,
-                                }));
-                            // set membership unsuccessful
-                          }).catch(error => response.status(400).json({
-                            status: 'Unsuccessful',
-                            message: error.errors[0].message,
-                          }));
+                              membership:
+                                setMembershipDetails.membershipName,
+                              error,
+                            }));
                       })
-                      .catch(error => response.status(400).json({
-                        status: 'Unsuccessful',
-                        message: error.errors[0].message,
-                        inputError:
-                          (error.errors[0].path === 'emailaddress') ?
-                            'email'
-                            : error.errors[0].path,
-                      }));
-                  }
-                }) // unsuccessful hash
-                .catch(error => response.status(500).send(error));
-            })
-            .catch(errorMessage =>
-              response.status(501).json({
+                      .catch(errorMessage =>
+                        response.status(500).json({
+                          status: 'Unsuccessful',
+                          error: errorMessage,
+                        }));
+                    // set membership unsuccessful
+                  })
+                  .catch(error => response.status(501).json({
+                    status: 'Unsuccessful',
+                    error
+                  }));
+              })
+              .catch(error => response.status(400).json({
                 status: 'Unsuccessful',
-                error: errorMessage,
+                message: error.errors[0].message,
+                inputError:
+                  (error.errors[0].path === 'emailaddress') ?
+                    'email'
+                    : error.errors[0].path,
               }));
-        } else {
-          response.status(400).json({
-            status: 'Unsuccessful',
-          });
-        }
+          })
+          .catch(errorMessage =>
+            response.status(501).json({
+              status: 'Unsuccessful',
+              error: errorMessage,
+            }));
       })
       .catch(error => // if information is incomplete
         response.status(400).json({

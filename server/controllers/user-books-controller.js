@@ -59,7 +59,7 @@ class UserBookInteraction {
             }
           })
           .catch(errorMessage =>
-            res.status(501).json({
+            res.status(500).json({
               status: 'Unsuccessful',
               error: errorMessage,
             }));
@@ -146,10 +146,16 @@ class UserBookInteraction {
                             QuantityLeft: bookBorrowed.bookQuantity,
                             dueDate: crtLending.dataValues.dueDate,
                           });
-                        })
-                        .catch(error => res.status(501).send(error));
+                        });
+                      // .catch(error => res.status(501).json({
+                      //   status: 'Unsuccessful',
+                      //   error
+                      // }));
                     })
-                    .catch(error => res.status(501).send(error));
+                    .catch(error => res.status(501).json({
+                      status: 'Unsuccessful',
+                      error
+                    }));
                 }
               } else {
                 res.status(400).json({
@@ -214,53 +220,40 @@ class UserBookInteraction {
                     },
                   })
                   .then((borrowedBook) => {
-                    if (borrowedBook) {
-                      Promise
-                        .all([
-                          foundLentBook // update records
-                            .update({
-                              actualReturnDate: new Date(),
-                            }),
-                          borrowedBook
-                            .update({
-                              bookQuantity:
-                                borrowedBook.bookQuantity + 1,
-                            })])
-                        .then(([lendUpdate, borrowUpdate]) => {
-                          if (lendUpdate && borrowUpdate) {
-                            res.status(202).json({// return info
-                              status: 'Success',
-                              message: {
-                                Bookname: borrowedBook.bookName,
-                                BookQuantity:
-                                  borrowUpdate.bookQuantity,
-                                BorrowedDate: lendUpdate.borrowDate,
-                                DueDate: lendUpdate.dueDate,
-                                returnDate:
-                                  lendUpdate.actualReturnDate,
-                                outStanding:
-                                  (lendUpdate.actualReturnDate -
-                                    lendUpdate.dueDate) < 0 ?
-                                    0 : lendUpdate.actualReturnDate -
-                                    lendUpdate.dueDate,
-                              },
-                            });
-                          } else {
-                            res.status(500).json({
-                              status: 'Unsuccessful',
-                              message: 'An error has occured',
-                              l: lendUpdate,
-                              b: borrowUpdate,
-                            });
-                          }
-                        })
-                        .catch(error => res.status(500).send(error));
-                    } else {
-                      res.status(404).json({
+                    Promise
+                      .all([
+                        foundLentBook // update records
+                          .update({
+                            actualReturnDate: new Date(),
+                          }),
+                        borrowedBook
+                          .update({
+                            bookQuantity:
+                              borrowedBook.bookQuantity + 1,
+                          })])
+                      .then(([lendUpdate, borrowUpdate]) => {
+                        res.status(202).json({// return info
+                          status: 'Success',
+                          message: {
+                            Bookname: borrowedBook.bookName,
+                            BookQuantity:
+                              borrowUpdate.bookQuantity,
+                            BorrowedDate: lendUpdate.borrowDate,
+                            DueDate: lendUpdate.dueDate,
+                            returnDate:
+                              lendUpdate.actualReturnDate,
+                            outStanding:
+                              (lendUpdate.actualReturnDate -
+                                lendUpdate.dueDate) < 0 ?
+                                0 : lendUpdate.actualReturnDate -
+                                lendUpdate.dueDate,
+                          },
+                        });
+                      })
+                      .catch(error => res.status(500).json({
                         status: 'Unsuccessful',
-                        message: 'Book not found',
-                      });
-                    }
+                        error
+                      }));
                   })
                   .catch(errorMessage =>
                     res.status(500).json({
@@ -325,12 +318,16 @@ class UserBookInteraction {
           ])
           .then(([unreturnedBookCount, userBook, membershipDetail]) => {
             response.status(202).json({
+              status: 'Success',
               unreturnedBookCount,
               userBook,
               membershipDetail
             });
           })
-          .catch(error => response.status(500).send(error));
+          .catch(error => response.status(500).json({
+            status: 'Unsuccessful',
+            error
+          }));
       })
       .catch(error =>
         response.status(error.errorCode).json(error.errors)
