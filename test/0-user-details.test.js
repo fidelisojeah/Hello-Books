@@ -48,7 +48,6 @@ const badSignatureToken = jwt.sign({
     expiresIn: '24h',
   });
 
-
 describe('POST /api/v4/users/signup Version 4', () => {
   describe('When Users attempt to signup', () => {
     describe('When there is an issue with information provided', () => {
@@ -62,12 +61,12 @@ describe('POST /api/v4/users/signup Version 4', () => {
               lastname: 'User',
               email: 'test@user.com.ng',
             })
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(400);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Username Invalid');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Username Invalid');
               done();
             });
         });
@@ -82,12 +81,12 @@ describe('POST /api/v4/users/signup Version 4', () => {
               lastname: 'User',
               email: 'test@user.com.ng',
             })
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(400);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Username too short');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Username too short');
               done();
             });
         });
@@ -101,12 +100,12 @@ describe('POST /api/v4/users/signup Version 4', () => {
               lastname: 'User',
               email: 'test@user.com.ng',
             })
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(400);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('First Name Invalid');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('First Name Invalid');
               done();
             });
         });
@@ -121,12 +120,12 @@ describe('POST /api/v4/users/signup Version 4', () => {
               lastname: 'User',
               email: 'test@user.com.ng',
             })
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(400);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('First Name too short');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('First Name too short');
               done();
             });
         });
@@ -140,12 +139,12 @@ describe('POST /api/v4/users/signup Version 4', () => {
               firstname: 'User',
               email: 'test@user.com.ng',
             })
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(400);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Last Name Invalid');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Last Name Invalid');
               done();
             });
         });
@@ -160,12 +159,12 @@ describe('POST /api/v4/users/signup Version 4', () => {
               firstname: 'User',
               email: 'test@user.com.ng',
             })
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(400);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Last Name too short');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Last Name too short');
               done();
             });
         });
@@ -179,12 +178,12 @@ describe('POST /api/v4/users/signup Version 4', () => {
               lastname: 'User',
               email: 'test@user.com.ng',
             })
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(400);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Password Invalid');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Password Invalid');
               done();
             });
         });
@@ -199,12 +198,12 @@ describe('POST /api/v4/users/signup Version 4', () => {
               lastname: 'User',
               email: 'test@user.com.ng',
             })
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(400);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Password too short');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Password too short');
               done();
             });
         });
@@ -218,12 +217,12 @@ describe('POST /api/v4/users/signup Version 4', () => {
               username: 'Testuser',
               lastname: 'User',
             })
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(400);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('No email Provided');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('No email Provided');
               done();
             });
         });
@@ -238,12 +237,12 @@ describe('POST /api/v4/users/signup Version 4', () => {
               lastname: 'User',
               email: 'testuser.com.ng',
             })
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(400);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Email Address invalid');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Email Address invalid');
               done();
             });
         });
@@ -260,14 +259,14 @@ describe('POST /api/v4/users/signup Version 4', () => {
               lastname: 'User',
               email: 'test@user.com.ng',
             })
-            .end((err, res) => {
-              should.not.exist(err);
-              res.status.should.equal(201);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Success');
-              res.body.message.should.eql('User account created');
-              res.body.membership.should.eql('Blue');
-              token1 = res.body.token;
+            .end((error, response) => {
+              should.not.exist(error);
+              response.status.should.equal(201);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Success');
+              response.body.message.should.eql('User account created');
+              response.body.membership.should.eql('Blue');
+              token1 = response.body.token;
               done();
             });
         });
@@ -281,14 +280,14 @@ describe('POST /api/v4/users/signup Version 4', () => {
               lastname: 'Else',
               email: 'somebodyelse@user.com.ng',
             })
-            .end((err, res) => {
-              should.not.exist(err);
-              res.status.should.equal(201);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Success');
-              res.body.message.should.eql('User account created');
-              res.body.membership.should.eql('Blue');
-              token2 = res.body.token;
+            .end((error, response) => {
+              should.not.exist(error);
+              response.status.should.equal(201);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Success');
+              response.body.message.should.eql('User account created');
+              response.body.membership.should.eql('Blue');
+              token2 = response.body.token;
               done();
             });
         });
@@ -302,13 +301,13 @@ describe('POST /api/v4/users/signup Version 4', () => {
               lastname: 'User',
               email: 'unactivated@user.com.ng',
             })
-            .end((err, res) => {
-              should.not.exist(err);
-              res.status.should.equal(201);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Success');
-              res.body.message.should.eql('User account created');
-              res.body.membership.should.eql('Blue');
+            .end((error, response) => {
+              should.not.exist(error);
+              response.status.should.equal(201);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Success');
+              response.body.message.should.eql('User account created');
+              response.body.membership.should.eql('Blue');
               done();
             });
         });
@@ -324,12 +323,12 @@ describe('POST /api/v4/users/signup Version 4', () => {
               lastname: 'Else',
               email: 'somebodyelse@user.com.ng',
             })
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(400);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('emailaddress must be unique');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('emailaddress must be unique');
               done();
             });
         });
@@ -343,12 +342,12 @@ describe('POST /api/v4/users/signup Version 4', () => {
               lastname: 'Else',
               email: 'newemailAddress@user.com.ng',
             })
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(400);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('username must be unique');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('username must be unique');
               done();
             });
         });
@@ -365,12 +364,12 @@ describe('GET /api/v4/users/verify', () => {
           id: 'SomebodyElse',
           key: expiredToken,
         })
-        .end((err, res) => {
-          should.exist(err);
-          res.status.should.equal(403);
-          res.type.should.equal('application/json');
-          res.body.name.should.eql('TokenExpiredError');
-          res.body.message.should.eql('jwt expired');
+        .end((error, response) => {
+          should.exist(error);
+          response.status.should.equal(403);
+          response.type.should.equal('application/json');
+          response.body.name.should.eql('TokenExpiredError');
+          response.body.message.should.eql('jwt expired');
           done();
         });
     });
@@ -381,12 +380,12 @@ describe('GET /api/v4/users/verify', () => {
           id: 'SomebodyElse',
           key: invalidUserToken,
         })
-        .end((err, res) => {
-          should.exist(err);
-          res.status.should.equal(403);
-          res.type.should.equal('application/json');
-          res.body.status.should.eql('Unsuccessful');
-          res.body.message.should.eql('Invalid User');
+        .end((error, response) => {
+          should.exist(error);
+          response.status.should.equal(403);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Unsuccessful');
+          response.body.message.should.eql('Invalid User');
           done();
         });
     });
@@ -397,12 +396,12 @@ describe('GET /api/v4/users/verify', () => {
           id: 'SomebodyElse',
           key: invalidToken,
         })
-        .end((err, res) => {
-          should.exist(err);
-          res.status.should.equal(403);
-          res.type.should.equal('application/json');
-          res.body.status.should.eql('Unsuccessful');
-          res.body.message.should.eql('Invalid Token');
+        .end((error, response) => {
+          should.exist(error);
+          response.status.should.equal(403);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Unsuccessful');
+          response.body.message.should.eql('Invalid Token');
           done();
         });
     });
@@ -413,12 +412,12 @@ describe('GET /api/v4/users/verify', () => {
           id: 'SomebodyElse',
           key: badSignatureToken,
         })
-        .end((err, res) => {
-          should.exist(err);
-          res.status.should.equal(403);
-          res.type.should.equal('application/json');
-          res.body.name.should.eql('JsonWebTokenError');
-          res.body.message.should.eql('invalid signature');
+        .end((error, response) => {
+          should.exist(error);
+          response.status.should.equal(403);
+          response.type.should.equal('application/json');
+          response.body.name.should.eql('JsonWebTokenError');
+          response.body.message.should.eql('invalid signature');
           done();
         });
     });
@@ -428,12 +427,12 @@ describe('GET /api/v4/users/verify', () => {
         .query({
           id: 'SomebodyElse',
         })
-        .end((err, res) => {
-          should.exist(err);
-          res.status.should.equal(400);
-          res.type.should.equal('application/json');
-          res.body.status.should.eql('Unsuccessful');
-          res.body.message.should.eql('Link Invalid');
+        .end((error, response) => {
+          should.exist(error);
+          response.status.should.equal(400);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Unsuccessful');
+          response.body.message.should.eql('Link Invalid');
           done();
         });
     });
@@ -443,12 +442,12 @@ describe('GET /api/v4/users/verify', () => {
         .query({
           key: token2,
         })
-        .end((err, res) => {
-          should.exist(err);
-          res.status.should.equal(400);
-          res.type.should.equal('application/json');
-          res.body.status.should.eql('Unsuccessful');
-          res.body.message.should.eql('Link Invalid');
+        .end((error, response) => {
+          should.exist(error);
+          response.status.should.equal(400);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Unsuccessful');
+          response.body.message.should.eql('Link Invalid');
           done();
         });
     });
@@ -459,12 +458,12 @@ describe('GET /api/v4/users/verify', () => {
           id: 'SomebodyElse',
           key: 'trashtokenwithoutsignature',
         })
-        .end((err, res) => {
-          should.exist(err);
-          res.status.should.equal(403);
-          res.type.should.equal('application/json');
-          res.body.name.should.eql('JsonWebTokenError');
-          res.body.message.should.eql('jwt malformed');
+        .end((error, response) => {
+          should.exist(error);
+          response.status.should.equal(403);
+          response.type.should.equal('application/json');
+          response.body.name.should.eql('JsonWebTokenError');
+          response.body.message.should.eql('jwt malformed');
           done();
         });
     });
@@ -477,12 +476,12 @@ describe('GET /api/v4/users/verify', () => {
           id: 'somebodyelse',
           key: token2,
         })
-        .end((err, res) => {
-          should.not.exist(err);
-          res.status.should.equal(202);
-          res.type.should.equal('application/json');
-          res.body.status.should.eql('Success');
-          res.body.message.should.eql('User Activated');
+        .end((error, response) => {
+          should.not.exist(error);
+          response.status.should.equal(202);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Success');
+          response.body.message.should.eql('User Activated');
           done();
         });
     });
@@ -493,12 +492,12 @@ describe('GET /api/v4/users/verify', () => {
           id: 'Testuser',
           key: token1,
         })
-        .end((err, res) => {
-          should.not.exist(err);
-          res.status.should.equal(202);
-          res.type.should.equal('application/json');
-          res.body.status.should.eql('Success');
-          res.body.message.should.eql('User Activated');
+        .end((error, response) => {
+          should.not.exist(error);
+          response.status.should.equal(202);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Success');
+          response.body.message.should.eql('User Activated');
           done();
         });
     });
@@ -510,12 +509,12 @@ describe('GET /api/v4/users/verify', () => {
             id: 'Testuser',
             key: token1,
           })
-          .end((err, res) => {
-            should.not.exist(err);
-            res.status.should.equal(200);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('None');
-            res.body.message.should.eql('User already activated');
+          .end((error, response) => {
+            should.not.exist(error);
+            response.status.should.equal(200);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('None');
+            response.body.message.should.eql('User already activated');
             done();
           });
       });
@@ -530,12 +529,12 @@ describe('POST /api/v4/users/signin Version 4', () => {
           .send({
             password: 'TestUser123$',
           })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(400);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('No username supplied');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(400);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('No username supplied');
             done();
           });
       });
@@ -545,12 +544,12 @@ describe('POST /api/v4/users/signin Version 4', () => {
           .send({
             username: 'Testuser',
           })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(400);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('No Password supplied');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(400);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('No Password supplied');
             done();
           });
       });
@@ -564,12 +563,12 @@ describe('POST /api/v4/users/signin Version 4', () => {
               password: 'TestUser123$',
               username: 't',
             })
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(400);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Invalid Username');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Invalid Username');
               done();
             });
         });
@@ -581,12 +580,12 @@ describe('POST /api/v4/users/signin Version 4', () => {
               password: 'Tes',
               username: 'Testuser',
             })
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(400);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Invalid Password');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Invalid Password');
               done();
             });
         });
@@ -597,12 +596,12 @@ describe('POST /api/v4/users/signin Version 4', () => {
             password: 'TestUser123$',
             username: 'wrongusername',
           })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(401);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Invalid Username');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(401);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Invalid Username');
             done();
           });
       });
@@ -613,12 +612,12 @@ describe('POST /api/v4/users/signin Version 4', () => {
             password: 'Wrongpassword$',
             username: 'Testuser',
           })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(401);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Invalid Username or password');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(401);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Invalid Username or password');
             done();
           });
       });
@@ -632,12 +631,12 @@ describe('POST /api/v4/users/signin Version 4', () => {
               password: 'unactivatedUser$',
               username: 'UnactivatedUser',
             })
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(401);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Email Address not Verified');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(401);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Email Address not Verified');
               done();
             });
         });
@@ -652,14 +651,14 @@ describe('POST /api/v4/users/signin Version 4', () => {
                 password: 'TestUser123$',
                 username: 'Testuser',
               })
-              .end((err, res) => {
-                should.not.exist(err);
-                res.status.should.equal(202);
-                res.type.should.equal('application/json');
-                res.body.status.should.eql('Successful');
-                res.body.message.should.eql('Signin Successful');
-                should.exist(res.body.token);
-                should.exist(res.headers['set-cookie']);
+              .end((error, response) => {
+                should.not.exist(error);
+                response.status.should.equal(202);
+                response.type.should.equal('application/json');
+                response.body.status.should.eql('Successful');
+                response.body.message.should.eql('Signin Successful');
+                should.exist(response.body.token);
+                should.exist(response.headers['set-cookie']);
                 done();
               });
           });
@@ -672,19 +671,35 @@ describe('POST /api/v4/users/signin Version 4', () => {
                 password: 'SomebodyPassword123$',
                 username: 'somebodyelse@user.com.ng',
               })
-              .end((err, res) => {
-                should.not.exist(err);
-                res.status.should.equal(202);
-                res.type.should.equal('application/json');
-                res.body.status.should.eql('Successful');
-                res.body.message.should.eql('Signin Successful');
-                should.exist(res.body.token);
-                should.exist(res.headers['set-cookie']);
+              .end((error, response) => {
+                should.not.exist(error);
+                response.status.should.equal(202);
+                response.type.should.equal('application/json');
+                response.body.status.should.eql('Successful');
+                response.body.message.should.eql('Signin Successful');
+                should.exist(response.body.token);
+                should.exist(response.headers['set-cookie']);
                 done();
               });
           });
         });
       });
+    });
+  });
+});
+describe('GET /api/v4/users/signupCheck/:identifier', () => {
+  describe('When valid details are entered', () => {
+    it('should return 202 user details', (done) => {
+      chai.request(app)
+        .get('/api/v4/users/signupCheck/SomebodyElse')
+        .end((error, response) => {
+          should.not.exist(error);
+          response.status.should.equal(202);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Success');
+          should.exist(response.body.userHere);
+          done();
+        });
     });
   });
 });
