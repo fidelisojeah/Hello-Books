@@ -283,8 +283,8 @@ describe('Database errors Simulations', () => {
       let jwtsecret;
       let memberShipFindID;
       before((done) => {
-        bcryptHashFunc = bcrypt.hash;
         memberShipFindID = db.Memberships.findById;
+        bcryptHashFunc = bcrypt.hash;
         jwtsecret = app.get('JsonSecret');
         done();
       });
@@ -357,214 +357,323 @@ describe('Database errors Simulations', () => {
               done();
             });
         });
-      // it('Should respond with code 500 Unsuccessful', (done) => {
-      //   bcrypt.hash = () => Promise.reject(1);
-      //   chai.request(app)
-      //     .post('/api/v4/users/signup')
-      //     .send({
-      //       password: 'TestUser123$',
-      //       firstname: 'Test',
-      //       username: 'Testuser123',
-      //       lastname: 'User11',
-      //       email: 'testuser@user.com.ng',
-      //     })
-      //     .end((error, response) => {
-      //       should.exist(error);
-      //       response.status.should.equal(500);
-      //       response.type.should.equal('application/json');
-      //       response.body.status.should.eql('Unsuccessful');
-      //       should.exist(response.body.error);
+    });
+    describe('When trying to activate user', () => {
+      let userDetailsFindOne;
+      before((done) => {
+        userDetailsFindOne = db.UserDetails.findOne;
+        done();
+      });
+      after((done) => {
+        db.UserDetails.findOne = userDetailsFindOne;
+        done();
+      });
+      it('should return 500 Unsuccessful', (done) => {
+        db.UserDetails.findOne = () => Promise.reject(1);
+        chai.request(app)
+          .get('/api/v4/users/verify')
+          .query({
+            id: 'username',
+            key: someToken,
+          })
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(500);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            done();
+          });
+      });
+    });
+    describe('When trying to signin', () => {
+      let userDetailsFindOne;
+      let jwtsecret;
+      let bcryptCompFunc;
 
-      //       done();
-      //     });
-      // });
+      before((done) => {
+        bcryptCompFunc = bcrypt.compare;
+        jwtsecret = app.get('JsonSecret');
+        userDetailsFindOne = db.UserDetails.findOne;
+        done();
+      });
+      after((done) => {
+        bcrypt.compare = bcryptCompFunc;
+        app.set('JsonSecret', jwtsecret);
+        db.UserDetails.findOne = userDetailsFindOne;
+        done();
+      });
+      it('should return 501 Unsuccessful', (done) => {
+        app.set('JsonSecret', undefined);
+        chai.request(app)
+          .post('/api/v4/users/signin')
+          .send({
+            password: 'TestUser123$',
+            username: 'Testuser',
+          })
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(501);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            done();
+          });
+      });
+      it('should return 500 Unsuccessful', (done) => {
+        bcrypt.compare = () => Promise.reject(1);
+        chai.request(app)
+          .post('/api/v4/users/signin')
+          .send({
+            password: 'TestUser123$',
+            username: 'Testuser',
+          })
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(500);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            done();
+          });
+      });
+      it('should return 500 Unsuccessful', (done) => {
+        db.UserDetails.findOne = () => Promise.reject(1);
+        chai.request(app)
+          .post('/api/v4/users/signin')
+          .send({
+            password: 'TestUser123$',
+            username: 'Testuser',
+          })
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(500);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            done();
+          });
+      });
     });
   });
-  // describe('When trying to activate user', () => {
-  //   it('should return 500 Unsuccessful', (done) => {
-  //     chai.request(app)
-  //       .get('/api/v4/users/verify')
-  //       .query({
-  //         id: 'username',
-  //         key: someToken,
-  //       })
-  //       .end((error, response) => {
-  //         should.exist(error);
-  //         response.status.should.equal(500);
-  //         response.type.should.equal('application/json');
-  //         response.body.status.should.equal('Unsuccessful');
-  //         should.exist(response.body.error);
-  //         done();
-  //       });
-  //   });
-  // });
-  // describe('When trying to signin', () => {
-  //   it('should return 500 Unsuccessful', (done) => {
-  //     chai.request(app)
-  //       .post('/api/v4/users/signin')
-  //       .send({
-  //         password: 'TestUser123$',
-  //         username: 'Testuser',
-  //       })
-  //       .end((error, response) => {
-  //         should.exist(error);
-  //         response.status.should.equal(500);
-  //         response.type.should.equal('application/json');
-  //         response.body.status.should.equal('Unsuccessful');
-  //         should.exist(response.body.error);
-  //         done();
-  //       });
-  //   });
-  // });
-  // describe('When trying to add books', () => {
-  //   it('should return 500 Unsuccessful', (done) => {
-  //     chai.request(app)
-  //       .post('/api/v4/books')
-  //       .set('x-access-token', goodToken)
-  //       .send({
-  //         quantity: 1,
-  //         image: 'hppa.jpg',
-  //         publishyear: '1999',
-  //         bookname: 'Harry Potter and the Prisoner of Azkaban',
-  //         ISBN: '0-7475-4215-5',
-  //         description: `Harry is back at the Dursleys, 
-  //             where he sees on Muggle television that a 
-  //             prisoner named Sirius Black has escaped. 
-  //             Harry involuntarily inflates Aunt Marge 
-  //             when she comes to visit after she insults 
-  //             Harry and his parents.`,
-  //         authorIds: '2',
-  //       })
-  //       .end((error, response) => {
-  //         should.exist(error);
-  //         response.status.should.equal(500);
-  //         response.type.should.equal('application/json');
-  //         response.body.status.should.equal('Unsuccessful');
-  //         should.exist(response.body.error);
-  //         done();
-  //       });
-  //   });
-  // });
-  // describe('When trying to get books', () => {
-  //   it('should return 500 Unsuccessful', (done) => {
-  //     chai.request(app)
-  //       .get('/api/v4/books')
-  //       .set('x-access-token', goodToken)
-  //       .end((error, response) => {
-  //         should.exist(error);
-  //         response.status.should.equal(500);
-  //         response.type.should.equal('application/json');
-  //         response.body.status.should.equal('Unsuccessful');
-  //         should.exist(response.body.error);
-  //         done();
-  //       });
-  //   });
-  // });
-  // describe('When trying to get particular book', () => {
-  //   it('should return 500 Unsuccessful', (done) => {
-  //     chai.request(app)
-  //       .get('/api/v4/books')
-  //       .query({
-  //         id: 1,
-  //       })
-  //       .set('x-access-token', goodToken)
-  //       .end((error, response) => {
-  //         should.exist(error);
-  //         response.status.should.equal(500);
-  //         response.type.should.equal('application/json');
-  //         response.body.status.should.equal('Unsuccessful');
-  //         should.exist(response.body.error);
-  //         done();
-  //       });
-  //   });
-  // });
-  // describe('When trying to modify a particular book', () => {
-  //   it('should return 500 Unsuccessful', (done) => {
-  //     Books.drop().then(() => {
-  //       chai.request(app)
-  //         .put('/api/v4/books/3')
-  //         .set('x-access-token', goodToken)
-  //         .send({
-  //           ISBN: '0-7475-5100-6',
-  //         })
-  //         .end((error, response) => {
-  //           should.exist(error);
-  //           response.status.should.equal(500);
-  //           response.type.should.equal('application/json');
-  //           response.body.status.should.equal('Unsuccessful');
-  //           should.exist(response.body.error);
-  //           done();
-  //         });
-  //     });
-  //   });
-  // });
-  // describe('When trying to create authors', () => {
-  //   it('should return 500 Unsuccessful', (done) => {
-  //     Authors.drop();
-  //     chai.request(app)
-  //       .post('/api/v4/authors')
-  //       .set('x-access-token', goodToken)
-  //       .send({
-  //         firstname: 'Joanne',
-  //         lastname: 'Rowling',
-  //         authorAKA: 'J.K Rowling',
-  //         authorDOB: '1965-07-31',
-  //       })
-  //       .end((error, response) => {
-  //         should.exist(error);
-  //         response.status.should.equal(500);
-  //         response.type.should.equal('application/json');
-  //         response.body.status.should.equal('Unsuccessful');
-  //         should.exist(response.body.error);
-  //         done();
-  //       });
-  //   });
-  // });
-  // describe('When trying to search books', () => {
-  //   it('should return 500 Unsuccessful', (done) => {
-  //     Books.drop().then(() => {
-  //       chai.request(app)
-  //         .get('/api/v4/books/list/1?limit=10')
-  //         .set('x-access-token', goodToken)
-  //         .end((error, response) => {
-  //           should.exist(error);
-  //           response.status.should.equal(500);
-  //           response.type.should.equal('application/json');
-  //           response.body.status.should.equal('Unsuccessful');
-  //           should.exist(response.body.error);
-  //           done();
-  //         });
-  //     });
-  //   });
-  // });
-  // describe('When trying to return books', () => {
-  //   before((done) => {
-  //     Books.drop();
-  //     UserDetails
-  //       .drop()
-  //       .then(() => {
-  //         done();
-  //       })
-  //       .catch(() => {
-  //         done();
-  //       });
-  //   });
-  //   it('should return 501 Unsuccessful', (done) => {
-  //     chai.request(app)
-  //       .put('/api/v4/users/1/books')
-  //       .set('x-access-token', goodToken)
-  //       .send({
-  //         bookId: 1,
-  //         lendId: 1,
-  //       })
-  //       .end((error, response) => {
-  //         should.exist(error);
-  //         response.status.should.equal(501);
-  //         response.type.should.equal('application/json');
-  //         response.body.status.should.eql('Unsuccessful');
-  //         should.exist(response.body.error);
-  //         done();
-  //       });
-  //   });
-  // });
+  describe('Book Interactions', () => {
+    describe('When trying to add books', () => {
+      let bookCreate;
+      let authorsFindAll;
+      before((done) => {
+        bookCreate = db.Books.create;
+        authorsFindAll = db.Authors.findAll;
+        done();
+      });
+      after((done) => {
+        db.Books.create = bookCreate;
+        db.Authors.findAll = authorsFindAll;
+        done();
+      });
+      it('should return 501 Unsuccessful', (done) => {
+        db.Books.create = () => Promise.reject(1);
+        chai.request(app)
+          .post('/api/v4/books')
+          .set('x-access-token', goodToken)
+          .send({
+            quantity: 1,
+            image: 'hppa.jpg',
+            publishyear: '1999',
+            bookname: 'Harry Potter and the Prisoner of Azkaban',
+            ISBN: '0-7475-4215-5',
+            description: `Harry is back at the Dursleys, 
+                where he sees on Muggle television that a 
+                prisoner named Sirius Black has escaped. 
+                Harry involuntarily inflates Aunt Marge 
+                when she comes to visit after she insults 
+                Harry and his parents.`,
+            authorIds: '2',
+          })
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(500);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            done();
+          });
+      });
+      it('should return 500 Unsuccessful', (done) => {
+        db.Authors.findAll = () => Promise.reject(1);
+        chai.request(app)
+          .post('/api/v4/books')
+          .set('x-access-token', goodToken)
+          .send({
+            quantity: 1,
+            image: 'hppa.jpg',
+            publishyear: '1999',
+            bookname: 'Harry Potter and the Prisoner of Azkaban',
+            ISBN: '0-7475-4215-5',
+            description: `Harry is back at the Dursleys, 
+                where he sees on Muggle television that a 
+                prisoner named Sirius Black has escaped. 
+                Harry involuntarily inflates Aunt Marge 
+                when she comes to visit after she insults 
+                Harry and his parents.`,
+            authorIds: '2',
+          })
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(500);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            done();
+          });
+      });
+    });
+
+    describe('When trying to get books List', () => {
+      let bookFindAll;
+      let bookCount;
+      before((done) => {
+        bookFindAll = db.Books.findAll;
+        bookCount = db.Books.count;
+        done();
+      });
+      after((done) => {
+        db.Books.findAll = bookFindAll;
+        db.Books.count = bookCount;
+        done();
+      });
+      it('should return 500 Unsuccessful', (done) => {
+        db.Books.findAll = () => Promise.reject(1);
+        chai.request(app)
+          .get('/api/v4/books/list/1?limit=10')
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(500);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            done();
+          });
+      });
+      it('should return 500 Unsuccessful', (done) => {
+        db.Books.count = () => Promise.reject(1);
+        chai.request(app)
+          .get('/api/v4/books/list/1?limit=10')
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(500);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            done();
+          });
+      });
+    });
+    describe('When trying to get books', () => {
+      let bookFindAll;
+      let bookFindOne;
+      before((done) => {
+        bookFindAll = db.Books.findAll;
+        bookFindOne = db.Books.findOne;
+        done();
+      });
+      after((done) => {
+        db.Books.findAll = bookFindAll;
+        db.Books.findOne = bookFindOne;
+        done();
+      });
+      it('should return 500 Unsuccessful', (done) => {
+        db.Books.findAll = () => Promise.reject(1);
+        chai.request(app)
+          .get('/api/v4/books')
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(500);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            done();
+          });
+      });
+      it('should return 500 Unsuccessful for particular book',
+        (done) => {
+          db.Books.findOne = () => Promise.reject(1);
+          chai.request(app)
+            .get('/api/v4/books')
+            .query({
+              id: 1,
+            })
+            .set('x-access-token', goodToken)
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(500);
+              response.type.should.equal('application/json');
+              response.body.status.should.equal('Unsuccessful');
+              should.exist(response.body.error);
+              done();
+            });
+        });
+    });
+    describe('When trying to modify a particular book', () => {
+      let bookFindOne;
+      before((done) => {
+        bookFindOne = db.Books.findOne;
+        done();
+      });
+      after((done) => {
+        db.Books.findOne = bookFindOne;
+        done();
+      });
+      it('should return 500 Unsuccessful', (done) => {
+        db.Books.findOne = () => Promise.reject(1);
+        chai.request(app)
+          .put('/api/v4/books/3')
+          .set('x-access-token', goodToken)
+          .send({
+            ISBN: '0-7475-5100-6',
+          })
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(500);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            done();
+          });
+      });
+    });
+    describe('When trying to create authors', () => {
+      let authorsCreate;
+      before((done) => {
+        authorsCreate = db.Authors.create;
+        done();
+      });
+      after((done) => {
+        db.Authors.create = authorsCreate;
+        done();
+      });
+      it('should return 500 Unsuccessful', (done) => {
+        db.Authors.create = () => Promise.reject(1);
+        chai.request(app)
+          .post('/api/v4/authors')
+          .set('x-access-token', goodToken)
+          .send({
+            firstname: 'Joanne',
+            lastname: 'Rowling',
+            authorAKA: 'J.K Rowling',
+            authorDOB: '1965-07-31',
+          })
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(500);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            done();
+          });
+      });
+    });
+  });
 });

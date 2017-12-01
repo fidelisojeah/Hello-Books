@@ -276,11 +276,6 @@ class BookProps {
                               status: 'Success',
                               message: 'Book Created Successfully',
                               bookID: createdBook.dataValues.id,
-                            }))
-                          .catch(errorMessage =>
-                            res.status(500).json({
-                              status: 'Unsuccessful',
-                              error: errorMessage,
                             }));
                       })
                       .catch((error) => {
