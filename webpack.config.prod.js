@@ -8,7 +8,7 @@ const buildPath = path.join(__dirname, 'dist');
 module.exports = {
   devtool: 'cheap-module-source-map',
   entry: [
-    './client/src/Index.jsx',
+    './client/src/index.jsx',
   ],
   output: {
     filename: 'bundle.js',
