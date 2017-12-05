@@ -57,7 +57,9 @@ $container-md: $container-desktop !default;
 $container-large-desktop: (1140px + $grid-gutter-width) !default;
 //** For `$screen-lg-min` and up.
 $container-lg: $container-large-desktop !default;
+// $primaryColor: #d46a6a;
 $primaryColor: #0078d7;
+// $primaryColorext: #aa3939;
 $primaryColorext: #3348a7;
 $secondaryColor: #FA6330;
 $textFont: Courier New, Courier, monospace;

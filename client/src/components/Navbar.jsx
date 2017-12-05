@@ -56,29 +56,32 @@ class Navbar extends React.Component {
                   </Link>
               </li>
               <li className="menu-item">
-                <Link to="/allBooks">
+                <Link to="/books">
                   View Library
                 </Link>
               </li>
               <li className="menu-item menu-item-Usr">
                 <a
+                  href="/"
                   className="usrBtn large-view"
-                  role="presentation"
                   onClick={event => this.show(event)}>
                   <span className="profile-name">
                     {this.props.username}
                   </span>
                   <i className="acc-button" />
                 </a>
-                <a className="usrBtn mobile-view">
+                <a
+                  href="/"
+                  className="usrBtn mobile-view"
+                >
                   <span>{this.props.username}</span><i className="acc-button" />
                 </a>
                 <div id="profile-stuff" className="profile-dropdown">
                   <ul className="sub-menu">
-                    <li><a href="user_profile.html">Profile</a></li>
-                    <li><a href="">Messages</a></li>
-                    <li><a href="">Membership</a></li>
-                    <li><a href="" onClick={this.logout}>Logout</a></li>
+                    <li><a href="/">Profile</a></li>
+                    <li><a href="/">Messages</a></li>
+                    <li><a href="/">Membership</a></li>
+                    <li><a href="/" onClick={this.logout}>Logout</a></li>
                   </ul>
                 </div>
               </li>

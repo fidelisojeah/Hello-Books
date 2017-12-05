@@ -7,22 +7,22 @@ const PerPage = ({ limit, perPageFunction }) => {
     <div className="limit-per-page">
       <div>
         <a
-          href=""
-          className={limit === 10 && '-active'}
+          href="/"
+          className={limit === 10 ? '-active' : undefined}
           onClick={event => perPageFunction(event, 10)}
         >
           10
         </a>
         <a
-          href=""
-          className={limit === 50 && '-active'}
+          href="/"
+          className={limit === 50 ? '-active' : undefined}
           onClick={event => perPageFunction(event, 50)}
         >
           50
         </a>
         <a
-          href=""
-          className={limit === 100 && '-active'}
+          href="/"
+          className={limit === 100 ? '-active' : undefined}
           onClick={event => perPageFunction(event, 100)}
         >
           100

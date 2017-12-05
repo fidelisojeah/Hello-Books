@@ -20,7 +20,7 @@ const Main = () => (
       <Route path="/signin" component={Signin} />
       <PrivateRoute path="/success" Component={SuccessPage} />
       <PrivateRoute exact path="/" Component={LogIndex} />
-      <PrivateRoute exact path="/allbooks" Component={ViewAllBooks} />
+      <PrivateRoute exact path="/books" Component={ViewAllBooks} />
       <PrivateRoute exact path="/books/:bookId" Component={ViewBook} />
       <PrivateRoute exact path="/bookmgt" Component={StockMgtPage} />
     </Switch>

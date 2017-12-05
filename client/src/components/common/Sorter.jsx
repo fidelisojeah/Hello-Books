@@ -5,28 +5,28 @@ const Sorter = ({ sortFunction, sortType }) => {
   return (
     <div className="c-right">
       <a
-        href=""
+        href="/"
         onClick={event => sortFunction(event, 'newest')}
-        className={sortType === 'newest' &&
-          '-active'
+        className={sortType === 'newest' ?
+          '-active' : undefined
         }
       >
         Newest
                     </a>
       <a
-        href=""
+        href="/"
         onClick={event => sortFunction(event, 'rating')}
-        className={sortType === 'rating' &&
-          '-active'
+        className={sortType === 'rating' ?
+          '-active' : undefined
         }
       >
         Rating
                   </a>
       <a
-        href=""
+        href="/"
         onClick={event => sortFunction(event, 'alphabetical')}
-        className={sortType === 'alphabetical' &&
-          '-active'
+        className={sortType === 'alphabetical' ?
+          '-active' : undefined
         }
       >
         Alphabetical

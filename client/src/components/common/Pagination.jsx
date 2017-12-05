@@ -74,10 +74,10 @@ const Pagination = ({ currentPage, totalPages, paginationFunction }) => {
     }
     return (
       <a
-        role="presentation"
+        href="/"
         key={i}
-        className={pageNumber === currentPage &&
-          '-active'}
+        className={pageNumber === currentPage ?
+          '-active' : undefined}
         onClick={event => paginationFunction(event, pageNumber)}
       >
         {pageNumber}
@@ -89,6 +89,7 @@ const Pagination = ({ currentPage, totalPages, paginationFunction }) => {
     <div className="pagination-div">
       <div>
         <a
+          href="/"
           className="navigation"
           disabled={currentPage === 1}
         >
@@ -96,6 +97,7 @@ const Pagination = ({ currentPage, totalPages, paginationFunction }) => {
         </a>
         {pageDiv}
         <a
+          href="/"
           className="navigation"
           disabled={currentPage === totalPages}
         >

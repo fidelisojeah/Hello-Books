@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
-import moment from 'moment';
 
 const BookModal = (props) => {
   if (props.availableBorrow < 1) {
@@ -53,9 +52,9 @@ const BookModal = (props) => {
       <DatePicker
         inline
         selected={props.startDate}
-        minDate={moment().add(1, 'days')}
+        minDate={props.minDate}
         dateFormat="DD MMMM YYYY"
-        maxDate={moment().add(60, 'days')}
+        maxDate={props.maxDate}
         placeholderText="Specify Return Day"
         onChange={props.handleDateChange}
       />
@@ -73,6 +72,8 @@ const BookModal = (props) => {
 BookModal.propTypes = {
   availableBorrow: PropTypes.number.isRequired,
   startDate: PropTypes.object.isRequired,
+  minDate: PropTypes.object.isRequired,
+  maxDate: PropTypes.object.isRequired,
   handleDateChange: PropTypes.func.isRequired,
   handleBorrowBook: PropTypes.func.isRequired
 };
