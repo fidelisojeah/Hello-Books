@@ -246,16 +246,6 @@ $formControlFocusShadow: 0 1px 1px rgba(0,
     border-radius: 4px;
     @include transition((border-color ease-in-out .15s,
     box-shadow ease-in-out .15s));
-    // -moz-transition: border-color ease-in-out .15s,
-    // box-shadow ease-in-out .15s;
-    // -ms-transition: border-color ease-in-out .15s,
-    // box-shadow ease-in-out .15s;
-    // -o-transition: border-color ease-in-out .15s,
-    // box-shadow ease-in-out .15s;
-    // -webkit-transition: border-color ease-in-out .15s,
-    // -webkit-box-shadow ease-in-out .15s;
-    // transition: border-color ease-in-out .15s,
-    // box-shadow ease-in-out .15s;
     @include cust-box-shadow($formControlShadow);
     &:focus {
         outline: 0;
@@ -281,8 +271,8 @@ fieldset {
     [disabled] {
         & .btn {
             cursor: not-allowed;
-            filter: alpha(opacity=65);
             @include box-shadow-none;
+            filter: alpha(opacity=65);
             opacity: .65;
         }
         & .form-control {
@@ -293,14 +283,6 @@ fieldset {
     }
 }
 
-// textarea {
-//     padding-top: 10px;
-//     padding-bottom: 10px;
-//     line-height: 30px;
-//     &.form-control {
-//         height: auto;
-//     }
-// }
 input,
 button,
 textarea {
@@ -311,9 +293,10 @@ textarea {
     background: none;
 }
 
-p{
+p {
     padding: 10px;
 }
+
 input[type='search'] {
     -webkit-appearance: none;
 }
@@ -1053,7 +1036,7 @@ input[type='search'] {
     .3));
     filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=3, MakeShadow=true, ShadowOpacity=0.30);
     -ms-filter: "progid:DXImageTransform.Microsoft.Blur(PixelRadius=3,MakeShadow=true,ShadowOpacity=0.30)";
-    background-color: darken($primaryColorext,20);
+    background-color: darken($primaryColorext, 20);
     @media (max-width: $screen-lg) {
         padding: 60px 0;
     }
@@ -1098,7 +1081,7 @@ input[type='search'] {
     display: block;
     padding: 0;
     margin: 0 auto;
-    @media(max-width:$screen-sm){
+    @media(max-width: $screen-sm) {
         width:100%;
     }
 }
@@ -1157,7 +1140,6 @@ input[type='search'] {
     @media (max-width:$screen-sm) {
         font-size: 35px;
         line-height: 55px;
-        
     }
 }
 
@@ -1200,21 +1182,23 @@ input[type='search'] {
         overflow: hidden;
     }
 }
-.with--modal{
- & .site-cache {
-            position: fixed;
-            height: 100%;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index:200000;
-            background-color: rgba(0, 0, 0, 0.7);
+
+.with--modal {
+    & .site-cache {
+        position: fixed;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 200000;
+        background-color: rgba(0, 0, 0, 0.7);
     }
-    & .modal{
+    & .modal {
         display: block !important;
-    }  
+    }
 }
+
 .with--sidebar {
     & .header--right {
         @media (max-width: $screen-md - 1) {
@@ -1295,7 +1279,7 @@ input[type='search'] {
     user-select: none;
     & .carousel-image {
         margin-bottom: 6px;
-        & img{
+        & img {
             height: 200px;
         }
     }
@@ -1325,7 +1309,7 @@ input[type='search'] {
 }
 
 .carousel-left {
-    left:5px;
+    left: 5px;
     & .a-button {
         & .button-inner {
             & i {
@@ -1351,7 +1335,7 @@ input[type='search'] {
 }
 
 .a-button {
-    background: rgba(200,200,200,0.1);
+    background: rgba(200, 200, 200, 0.1);
     border-radius: 30px;
     cursor: pointer;
     display: inline-block;
@@ -1360,15 +1344,15 @@ input[type='search'] {
     text-decoration: none!important;
     vertical-align: middle;
     -webkit-tap-highlight-color: transparent;
-    box-shadow: 0 7px 15px rgba(0,0,0,.2);
+    box-shadow: 0 7px 15px rgba(0, 0, 0, .2);
     & .button-inner {
         padding: 10px;
         line-height: 0;
         height: auto;
         display: block;
     }
-    &:hover{
-        background: rgba(255,255,255,0.9);
+    &:hover {
+        background: rgba(255, 255, 255, 0.9);
     }
 }
 
@@ -1806,52 +1790,59 @@ input[type='search'] {
         }
     }
 }
-.primary-book-header{
-    @media(max-width:$screen-sm - 1){
-    text-align: center;
+
+.primary-book-header {
+    @media(max-width: $screen-sm - 1) {
+        text-align: center;
+    }
 }
-}
-.book-card-holder{
-    & img{
+
+.book-card-holder {
+    & img {
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
         display: block;
         border: 1px solid #d9d9d9;
-        border-bottom: 0;    
+        border-bottom: 0;
         width: 100%;
-        @include cust-box-shadow((0 0.75rem 1.5rem 0 rgba(0,0,0,.5)))
+        @include cust-box-shadow((0 0.75rem 1.5rem 0 rgba(0,
+        0,
+        0,
+        .5)))
     }
-    @media (max-width: $screen-md - 1)and (min-width:$screen-sm){
+    @media (max-width: $screen-md - 1)and (min-width:$screen-sm) {
         max-width: 220px;
     }
-    @media(max-width:$screen-sm - 1){
-        width:auto;
-        display:inline-block;
+    @media(max-width:$screen-sm - 1) {
+        width: auto;
+        display: inline-block;
     }
-    & .book-image-div{
-        position:relative;
+    & .book-image-div {
+        position: relative;
         min-width: 10rem;
         width: 100%;
-        @media(max-width:$screen-sm){
+        @media(max-width: $screen-sm) {
             max-width: 180px;
         }
     }
 }
 
-.edit-bar{
-    position:absolute;
+.edit-bar {
+    position: absolute;
     top: -5px;
     right: -10px;
-    & .edit-icon{
-        padding:10px;
-        border-radius:50%;
-        // border: 1px solid #555;
-        background-color:#fff;
+    & .edit-icon {
+        padding: 10px;
+        border-radius: 50%; // border: 1px solid #555;
+        background-color: #fff;
         transition: color 0.28s ease, color 0.28s ease, box-shadow 0.28s ease;
-        @include cust-box-shadow((0 0.75rem 1.5rem 0 rgba(0,0,0,.5)));
-        &:before{
+        @include cust-box-shadow((0 0.75rem 1.5rem 0 rgba(0,
+        0,
+        0,
+        .5)));
+        &:before {
             display: inline-block;
-            content:'\f19e';
+            content: '\f19e';
             font-family: 'icons';
             font-style: normal;
             font-weight: 500;
@@ -1864,51 +1855,56 @@ input[type='search'] {
             -webkit-font-smoothing: antialiased;
             font-smoothing: antialiased;
         }
-        &:hover{
+        &:hover {
             color: $secondaryColor;
         }
     }
 }
+
 .publish-year,
-.book-isbn{
-    display:inline;
-    position:relative;
-    padding:10px;
-    .edit-bar{
-        top:10px;
-        right:-20px;
-        & .edit-icon{
-            padding:3px;
-        @include box-shadow-none;    
+.book-isbn {
+    display: inline;
+    position: relative;
+    padding: 10px;
+    .edit-bar {
+        top: 10px;
+        right: -20px;
+        & .edit-icon {
+            padding: 3px;
+            @include box-shadow-none;
+        }
     }
-    }    
 }
+
 body .visible-lg-block {
-    display:none;
+    display: none;
     visibility: hidden;
     @media (min-width: $screen-lg) {
         visibility: visible;
         display: block;
     }
 }
+
 body .visible-md-block {
-    display:none;
+    display: none;
     visibility: hidden;
     @media (min-width: $screen-md)and(max-width: $screen-lg - 1) {
         visibility: visible;
         display: block;
     }
 }
+
 body .visible-sm-block {
-    display:none;
+    display: none;
     visibility: hidden;
     @media (max-width: $screen-sm - 1) {
         visibility: visible;
         display: block;
     }
 }
+
 body .hidden-sm-block {
-    display:block;
+    display: block;
     visibility: visible;
     @media (max-width: $screen-sm - 1) {
         visibility: hidden;
@@ -1916,110 +1912,120 @@ body .hidden-sm-block {
     }
 }
 
-.borrow-panel{
+.borrow-panel {
     @include clearfix;
-    & .box{
+    & .box {
         -webkit-box-sizing: border-box;
         box-sizing: border-box;
         -webkit-box-shadow: 0 0 7px #e6e6e6;
         box-shadow: 0 0 7px #e6e6e6;
         padding: 2rem 1.5rem;
-        width:100%;
+        width: 100%;
         border: 1px solid #e6e6e6;
         background-color: #fff;
         margin: 3rem 0;
         margin-top: 0;
-        & button{
+        & button {
             @include center-block();
         }
-        @media (max-width: $screen-sm - 1){
+        @media (max-width: $screen-sm - 1) {
             padding: 1rem 0.5rem;
         }
     }
 }
-.book-times-orange{
+
+.book-times-orange {
     padding: 0 4px;
     color: $secondaryColor;
 }
-.book-times-review{
+
+.book-times-review {
     padding: 0 4px;
     color: #33c330;
     font-style: italic;
 }
-.-black{
+
+.-black {
     color: #000;
 }
-.book-extra-info{
+
+.book-extra-info {
     margin: 2rem 0;
-    &>div{
+    &>div {
         padding-bottom: 2rem;
     }
-    @media(max-width:$screen-md - 1){
+    @media(max-width:$screen-md - 1) {
         // padding-bottom: 20px;
         border-bottom: 1px solid #e6e6e6;
-        }
-    .book-rating-card{
-        & .review-stars{
+    }
+    .book-rating-card {
+        & .review-stars {
             margin-right: 12px;
         }
     }
 }
-.about-padding{
+
+.about-padding {
     margin: 0 0 15px 0;
 }
-.book-description{
+
+.book-description {
     border-top: 1px solid #e6e6e6;
     margin-top: 10px;
     padding-top: 20px;
     -webkit-transition: -webkit-transform .6s ease-in-out;
     transition: transform .6s ease-in-out;
-    & .fieldField{
+    & .fieldField {
         letter-spacing: 1.8px;
         font-size: 20px;
-        @media (max-width:$screen-sm - 1){
+        @media (max-width: $screen-sm - 1) {
             font-size: 13px;
         }
     }
 }
-.book-about{
+
+.book-about {
     letter-spacing: 1.8px;
     font-size: 20px;
-    @media (max-width:$screen-sm - 1){
+    @media (max-width: $screen-sm - 1) {
         font-size: 14px;
     }
 }
-.fieldField{
+
+.fieldField {
     padding-right: 10px;
 }
-.bookAuthors{
+
+.bookAuthors {
     overflow: hidden;
     text-overflow: ellipsis;
-    max-height:100px;
+    max-height: 100px;
     padding-bottom: 20px;
 }
-.description{
-    margin-top:10px;
+
+.description {
+    margin-top: 10px;
     font-family: $textFont;
     font-size: 14px;
-    line-height:24px;
+    line-height: 24px;
     text-align: justify;
-    padding-top:25px;
+    padding-top: 25px;
     max-height: 205px;
     overflow: hidden;
     text-overflow: ellipsis;
-    &.expanded{
+    &.expanded {
         max-height: 100%;
     }
-    & .description-toggle{
-        position: absolute; 
+    & .description-toggle {
+        position: absolute;
         left: 50%;
         bottom: -30px;
         margin-left: -20px;
         padding: 10px;
         background-color: #fff;
         box-shadow: $shadow-4;
-        display:none;
-        &:before{
+        display: none;
+        &:before {
             display: inline-block;
             font-family: 'icons';
             font-style: normal;
@@ -2033,55 +2039,55 @@ body .hidden-sm-block {
             -webkit-font-smoothing: antialiased;
             font-smoothing: antialiased;
         }
-        &.-expand{
-            display:block;
-            &:before{ 
+        &.-expand {
+            display: block;
+            &:before {
                 content: '\f12f';
             }
         }
-        &.-collapse{
-            display:block;
+        &.-collapse {
+            display: block;
             bottom: -40px;
-            &:before{
+            &:before {
                 content: '\f135';
             }
         }
-        &:hover{
-            box-shadow: $shadow-6; 
+        &:hover {
+            box-shadow: $shadow-6;
         }
     }
 }
 
-.fieldField{
+.fieldField {
     font-weight: bold;
 }
 
-.list-books{
-    margin-bottom:22px;
-    &>div{
+.list-books {
+    margin-bottom: 22px;
+    &>div {
         font-size: 28px;
         line-height: 36px;
         color: #111;
     }
-    & .book-title{
+    & .book-title {
         display: block;
-        margin-top:10px;
+        margin-top: 10px;
         height: 32px;
         max-height: 32px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: normal;
     }
-    & a:hover{
+    & a:hover {
         color: darken($primaryColor, 30);
     }
-    & .book-grid{
+    & .book-grid {
         border-top: 1px solid #eaeded;
         margin-left: 0;
         padding: 0;
         overflow: auto;
-        & li{
-            margin-left:0;
+        & li {
+            margin-left: 0;
             min-width: 200px;
             position: relative;
             float: left;
@@ -2090,25 +2096,25 @@ body .hidden-sm-block {
             border-right: 1px solid #eaeded;
             border-bottom: 1px solid #eaeded;
             overflow: hidden;
-            @media (max-width:$screen-sm - 1){
+            @media (max-width: $screen-sm - 1) {
                 width: 50%;
             }
-            @media (max-width:$screen-md - 1) and (min-width: $screen-sm){
+            @media (max-width:$screen-md - 1) and (min-width: $screen-sm) {
                 width: 33.333%;
             }
             @media (min-width: $screen-md) and (max-width: $screen-lg - 1) {
                 width: 25%;
             }
-            @media (min-width: $screen-lg){
+            @media (min-width: $screen-lg) {
                 width: 20%;
             }
-            &>div{
+            &>div {
                 height: 290px;
                 padding: 23px 28px 0 28px;
-                & .carousel-image{
+                & .carousel-image {
                     height: 220px;
                     position: relative;
-                    & img{
+                    & img {
                         vertical-align: top;
                         max-width: 100%;
                         border: 0;
@@ -2126,84 +2132,120 @@ body .hidden-sm-block {
         }
     }
     & .c-row,
-    .ratings-panel{
-margin-top:7px;
+    .ratings-panel {
+        margin-top: 7px;
     }
 }
-.categories-sorter{
+
+.categories-sorter {
     padding: 0 20px 0 20px;
-    display:block;
-    & div{
+    display: block;
+    & div {
         font-family: 'wf_segoe-ui_semilight';
         font-size: 18px;
     }
     @include clearfix;
 }
-.c-left{
-    float:left;
-    @media (max-width: $screen-xs){
+
+.c-left {
+    float: left;
+    @media (max-width: $screen-xs) {
         display: block;
         float: none;
     }
 }
-.c-right{
-    margin-right:0;
-    margin-top:10px;
-    float:right;
-    margin-bottom:2px;
-    & a{
+
+.c-right {
+    margin-right: 0;
+    margin-top: 10px;
+    float: right;
+    margin-bottom: 2px;
+    & a {
         font-family: 'wf_segoe-ui_semibold';
         font-size: 14px;
         padding: 10px;
         color: #666677;
-        &:hover{
+        &:hover {
             color: #336;
             border-bottom: 2px solid #336;
         }
-        &.-active{
+        &.-active {
             color: $primaryColor;
             border-bottom: 2px solid $primaryColor;
         }
     }
-    @media (max-width: $screen-xs){
+    @media (max-width: $screen-xs) {
         display: block;
         float: none;
         text-align: center;
-        & a{
-            width:100%;
+        & a {
+            width: 100%;
             display: inline-block;
         }
     }
 }
-.pagination-view{
+
+.pagination-view {
     display: block;
-    font-weight:bold;
-    & .limit-per-page{
+    font-weight: bold;
+    & .limit-per-page {
         float: left;
-        &>div{
-             display: inline-block;
-             vertical-align: middle;
-              & a{
+        &>div {
+            display: inline-block;
+            vertical-align: middle;
+            & a {
                 color: black;
                 float: left;
                 padding: 8px 16px;
                 margin-right: 2px;
                 text-decoration: none;
                 @include transition((background-color 0.4s));
-                @include cust-box-shadow((0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)));
-               &:hover{
-                    @include cust-box-shadow((0 4px 4px 0 rgba(0, 0, 0, 0.14), 0 5px 4px -2px rgba(0, 0, 0, 0.2), 0 3px 7px 0 rgba(0, 0, 0, 0.12)));
-              background-color: lighten($secondaryColor, 30);
+                @include cust-box-shadow((0 2px 2px 0 rgba(0,
+                0,
+                0,
+                0.14),
+                0 3px 1px -2px rgba(0,
+                0,
+                0,
+                0.2),
+                0 1px 5px 0 rgba(0,
+                0,
+                0,
+                0.12)));
+                &:hover {
+                    @include cust-box-shadow((0 4px 4px 0 rgba(0,
+                    0,
+                    0,
+                    0.14),
+                    0 5px 4px -2px rgba(0,
+                    0,
+                    0,
+                    0.2),
+                    0 3px 7px 0 rgba(0,
+                    0,
+                    0,
+                    0.12)));
+                    background-color: lighten($secondaryColor, 30);
                 }
-                &.-active{
+                &.-active {
                     background-color: $secondaryColor;
                     color: #fff;
-                    @include cust-box-shadow((0 1px 1px 0 rgba(0, 0, 0, 0.19), 0 1px 1px -2px rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.16)));
+                    @include cust-box-shadow((0 1px 1px 0 rgba(0,
+                    0,
+                    0,
+                    0.19),
+                    0 1px 1px -2px rgba(0,
+                    0,
+                    0,
+                    0.3),
+                    0 1px 2px 0 rgba(0,
+                    0,
+                    0,
+                    0.16)));
                 }
-                
-              }
+            }
         }
-        & span{
+        & span {
             font-family: 'wf_segoe-ui_light';
             padding: 0 10px;
             vertical-align: middle;
@@ -2212,55 +2254,86 @@ margin-top:7px;
             font-style: italic;
         }
     }
-    & .pagination-div{
-        float:right;
-        &>div{
-             display: inline-block;
-             vertical-align: middle;
-              & a{
+    & .pagination-div {
+        float: right;
+        &>div {
+            display: inline-block;
+            vertical-align: middle;
+            & a {
                 color: black;
                 float: left;
                 padding: 8px 16px;
                 margin-right: 2px;
                 text-decoration: none;
                 @include transition((background-color 0.4s));
-                @include cust-box-shadow((0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12)));
-                
-                &:hover{
-                    @include cust-box-shadow((0 4px 4px 0 rgba(0, 0, 0, 0.14), 0 5px 4px -2px rgba(0, 0, 0, 0.2), 0 3px 7px 0 rgba(0, 0, 0, 0.12)));
-              background-color: lighten($secondaryColor, 30);
+                @include cust-box-shadow((0 2px 2px 0 rgba(0,
+                0,
+                0,
+                0.14),
+                0 3px 1px -2px rgba(0,
+                0,
+                0,
+                0.2),
+                0 1px 5px 0 rgba(0,
+                0,
+                0,
+                0.12)));
+                &:hover {
+                    @include cust-box-shadow((0 4px 4px 0 rgba(0,
+                    0,
+                    0,
+                    0.14),
+                    0 5px 4px -2px rgba(0,
+                    0,
+                    0,
+                    0.2),
+                    0 3px 7px 0 rgba(0,
+                    0,
+                    0,
+                    0.12)));
+                    background-color: lighten($secondaryColor, 30);
                 }
-                &.-active{
+                &.-active {
                     background-color: $secondaryColor;
                     color: #fff;
-                    @include cust-box-shadow((0 1px 1px 0 rgba(0, 0, 0, 0.19), 0 1px 1px -2px rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.16)));
+                    @include cust-box-shadow((0 1px 1px 0 rgba(0,
+                    0,
+                    0,
+                    0.19),
+                    0 1px 1px -2px rgba(0,
+                    0,
+                    0,
+                    0.3),
+                    0 1px 2px 0 rgba(0,
+                    0,
+                    0,
+                    0.16)));
                 }
-                &.navigation{
+                &.navigation {
                     padding: 8px 12px;
                     margin: 0 10px;
-                   @include cust-box-shadow(none);
+                    @include cust-box-shadow(none);
                 }
-              }
-              & span{
+            }
+            & span {
                 color: black;
                 float: left;
                 padding: 8px 16px;
                 margin-right: 2px;
                 text-decoration: none;
-              }
+            }
         }
-    
-        & .navigation{
+        & .navigation {
             &:disabled,
-            &[disabled]{
-                background-color:#fff;
-                & i{
-                color: #777;
-            }
+            &[disabled] {
+                background-color: #fff;
+                & i {
+                    color: #777;
+                }
             }
         }
-}
-    & .angle-left:before{
+    }
+    & .angle-left:before {
         display: inline-block;
         font-family: 'icons';
         content: '\f10d';
@@ -2275,7 +2348,7 @@ margin-top:7px;
         -webkit-font-smoothing: antialiased;
         font-smoothing: antialiased;
     }
-    & .angle-right:before{
+    & .angle-right:before {
         display: inline-block;
         font-family: 'icons';
         content: '\f10e';
@@ -2291,30 +2364,32 @@ margin-top:7px;
         font-smoothing: antialiased;
     }
 }
-.books-container{
+
+.books-container {
     margin: 0 auto;
     max-width: 1140px;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    & .innerSection{
-            -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    width: 100%;
-    margin-top: 40px;
-    padding: 0 20px 0 25px;
-    margin: 0 auto;
-    position: relative;
+    & .innerSection {
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        width: 100%;
+        margin-top: 40px;
+        padding: 0 20px 0 25px;
+        margin: 0 auto;
+        position: relative;
     }
 }
- .modal{
+
+.modal {
     display: none;
     border-radius: 7px;
     position: fixed;
     z-index: 200001;
     left: 50%;
     top: 50%;
-    width: 70%; 
-    max-width: 700px;   
+    width: 70%;
+    max-width: 700px;
     overflow: auto;
     transform: translate(-50%, -50%);
     background-color: rgba(0, 0, 0, 0.4);
@@ -2322,29 +2397,33 @@ margin-top:7px;
     & .modal-content {
         position: relative;
         padding: 0;
-        & .row{
+        & .row {
             @include center-block();
-            & button, p{
-                @include center-block();   
+            & button,
+            p {
+                @include center-block();
             }
         }
-        & .modal-header{
+        & .modal-header {
             padding: 12px 15px;
             color: #fff;
-            @include cust-box-shadow((inset 0 -3px 8px rgba(0, 0, 0, .3)));
-            & h2{
-              font-size: 30px;  
+            @include cust-box-shadow((inset 0 -3px 8px rgba(0,
+            0,
+            0,
+            .3)));
+            & h2 {
+                font-size: 30px;
             }
-            & .close{
+            & .close {
                 color: #aaa;
                 float: right;
                 font-size: 28px;
                 font-weight: bold;
-                &:hover{
+                &:hover {
                     color: $mf-error-color;
                 }
             }
-            &:after{
+            &:after {
                 content: "";
                 background-color: $primaryColor;
                 opacity: 0.2;
@@ -2356,32 +2435,32 @@ margin-top:7px;
                 z-index: -1;
             }
         }
-        & .modal-body{
+        & .modal-body {
             padding: 12px 16px;
-            background-color: #fefefe;            
-            & .borrow-button{
-                float:right;
-                margin-top:40px;
+            background-color: #fefefe;
+            & .borrow-button {
+                float: right;
+                margin-top: 40px;
                 margin-right: 40px;
-                @media (max-width: $screen-sm){
+                @media (max-width: $screen-sm) {
                     float:none;
-                    & .button{
+                    & .button {
                         @include center-block();
                     }
                 }
             }
         }
-
     }
 }
-.swal-button{
+
+.swal-button {
     background-color: $secondaryColor;
-    &:hover{
-        background-color: darken($secondaryColor,10);
+    &:hover {
+        background-color: darken($secondaryColor, 10);
     }
 }
 
-.edit-modal{
+.edit-modal {
     margin-top: 30px;
     & select,
     input:focus,
@@ -2391,10 +2470,10 @@ margin-top:7px;
     textarea:focus,
     textarea:valid,
     textarea.form-file,
-    textarea.has-value{
+    textarea.has-value {
         color: #444;
     }
-    & .control-label{
+    & .control-label {
         color: $secondaryColor;
     }
 }

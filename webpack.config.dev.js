@@ -4,7 +4,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
 
-// export default {
 module.exports = {
   entry: [
     './client/src/Index.jsx',
@@ -115,7 +114,7 @@ module.exports = {
           path.join(__dirname, 'server/helpers'),
         ],
         loader:
-        'babel-loader',
+          'babel-loader',
         exclude: /node_modules/,
         query: {
           cacheDirectory: true,
