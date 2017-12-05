@@ -22,7 +22,7 @@ class ViewAllBooks extends React.Component {
     });
     pageLinks.push({
       linkName: 'Library',
-      link: 'allBooks'
+      link: 'books'
     });
 
     this.state = {
@@ -96,6 +96,11 @@ class ViewAllBooks extends React.Component {
         <LoadingPage />
       );
     }
+    const { totalBooks, allBooks } = this.props;
+    const { page,
+      totalPages,
+      limit,
+      pageLinks, sort } = this.state;
     return (
       <div className="layout--container">
         <div className="layout-header">
@@ -106,7 +111,7 @@ class ViewAllBooks extends React.Component {
           </div>
         </div>
         <BreadCrumbs
-          breadCrumbLinks={this.state.pageLinks}
+          breadCrumbLinks={pageLinks}
         />
         <div className="section">
           <div>
@@ -116,16 +121,16 @@ class ViewAllBooks extends React.Component {
               </div>
               <div className="categories-sorter c-row">
                 <div className="c-left">
-                  {this.props.totalBooks} Book
-                  {this.props.totalBooks > 1 && 's'}</div>
+                  {totalBooks} Book
+                  {totalBooks > 1 && 's'}</div>
                 <Sorter
                   sortFunction={this.sortFunction}
-                  sortType={this.state.sort}
+                  sortType={sort}
                 />
 
               </div>
               <ul className="book-grid">
-                {this.props.allBooks.map(bookInfos =>
+                {allBooks.map(bookInfos =>
                   (<BookCard
                     key={bookInfos.id}
                     bookName={bookInfos.bookName}
@@ -144,12 +149,12 @@ class ViewAllBooks extends React.Component {
           </div>
           <div className="pagination-view container">
             <Pagination
-              currentPage={this.state.page}
-              totalPages={this.state.totalPages}
+              currentPage={page}
+              totalPages={totalPages}
               paginationFunction={this.paginationFunction}
             />
             <PerPage
-              limit={parseInt(this.state.limit, 10)}
+              limit={parseInt(limit, 10)}
               perPageFunction={this.perPageFunction}
             />
           </div>

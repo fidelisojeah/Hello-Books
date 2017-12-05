@@ -18,7 +18,10 @@ const BookCard = ({ bookName,
   return (
     <li className="carousel-card">
       <div>
-        <Link to={`/books/${bookID}`}>
+        <Link
+          href={`/books/${bookID}`}
+          to={`/books/${bookID}`}
+        >
           <div className="carousel-image">
             <img
               src={imgHref}

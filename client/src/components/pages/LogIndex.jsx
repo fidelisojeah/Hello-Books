@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import BookCard from '../common/BookCard';
 import { loadAllBooks } from '../actions/loadBooks';
+import { logout } from '../actions/login';
 
 class Logindex extends React.Component {
   constructor(props) {
@@ -25,6 +26,7 @@ class Logindex extends React.Component {
       })
       .catch((error) => {
         if (error.response.data.message === 'Unauthenticated') {
+          this.props.logout();
           this.context.router.history.push('/signin');
         }
       });
@@ -99,9 +101,10 @@ class Logindex extends React.Component {
 }
 Logindex.propTypes = {
   loadAllBooks: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired
 };
 Logindex.contextTypes = {
   router: PropTypes.object.isRequired,
 };
-export default connect(null, { loadAllBooks })(Logindex);
+export default connect(null, { loadAllBooks, logout })(Logindex);
 

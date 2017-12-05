@@ -11,9 +11,17 @@ const displayYear = dateDetails =>
   moment(dateDetails).format('YYYY');
 const todayDate = () => moment();
 
+const forBookModal = () => {
+  return {
+    maxDate: moment().add(60, 'days'),
+    minDate: moment().add(1, 'days')
+  };
+};
+
 export {
   getMoment,
   displayDate,
   displayYear,
-  todayDate
+  todayDate,
+  forBookModal
 };

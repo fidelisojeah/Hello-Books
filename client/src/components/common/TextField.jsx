@@ -34,6 +34,7 @@ const TextField = ({ formField,
           value={value}
           onChange={onChange}
           required={isRequired}
+          ref={field}
         />
         <label htmlFor="textarea" className="control-label">
           {label}
@@ -66,6 +67,7 @@ const TextField = ({ formField,
         name={field}
         onBlur={checkExists}
         onChange={onChange}
+        id={field}
       />
       <label className="control-label" htmlFor="input">{label}</label>
       <i className="bar" />

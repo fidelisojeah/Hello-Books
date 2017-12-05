@@ -31,7 +31,7 @@ class UserBookInteraction {
               returnedSearch,
             include: [{
               model: Books,
-              attributes: ['bookName',
+              attributes: ['id', 'bookName',
                 'bookISBN', 'bookImage',
                 'publishYear'],
               where: {

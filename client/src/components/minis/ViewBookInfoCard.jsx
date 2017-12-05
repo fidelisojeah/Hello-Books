@@ -4,12 +4,17 @@ import PropTypes from 'prop-types';
 import Ratings from '../common/Ratings';
 import { displayYear } from '../common/calculate-moment';
 
+import EditBar from './EditBar';
 
 const ViewBookInfoCard = props => (
   <div className="col-md-4 col-sm-12 primary-book-header">
     <div className="book-card-holder">
       <div className="main-image-container">
         <div className="book-image-div">
+          <EditBar
+            element="image"
+            editFunction={props.editFunction}
+          />
           <img
             src={props.bookImageURL}
             alt={props.bookTitle}
@@ -25,18 +30,34 @@ const ViewBookInfoCard = props => (
           rateSum={props.ratingSum}
         />
       </div>
-      <div className="book-isbn">
-        <span>ISBN: </span>
-        {props.ISBN}
+      <div className="mini-area">
+        <div className="book-isbn">
+          <EditBar
+            element="ISBN"
+            editFunction={props.editFunction}
+            elementName="editISBN"
+          />
+          <span>ISBN: </span>
+          {props.ISBN}
+        </div>
       </div>
-      <div className="publish-year">
-        <span>Year Published: </span>
-        {displayYear(props.publishYear)}
+      <div className="mini-area">
+        <div className="publish-year">
+          <EditBar
+            element="publish year"
+            editFunction={props.editFunction}
+            elementName="editpublishYear"
+          />
+          <span>Year Published: </span>
+          {displayYear(props.publishYear)}
+
+        </div>
       </div>
     </div>
   </div>
 );
 ViewBookInfoCard.propTypes = {
+  editFunction: PropTypes.func.isRequired,
   publishYear: PropTypes.string.isRequired,
   bookImageURL: PropTypes.string.isRequired,
   bookTitle: PropTypes.string.isRequired,

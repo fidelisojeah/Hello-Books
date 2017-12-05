@@ -11,12 +11,13 @@ import {
 import { logout } from '../actions/login';
 
 
-import { todayDate } from '../common/calculate-moment';
+import { todayDate, forBookModal } from '../common/calculate-moment';
 
 import BreadCrumbs from '../common/BreadCrumbs';
 import LayoutHeader from '../common/LayoutHeader';
 import AuthorList from '../lists/AuthorList';
 import MiddleSector from '../minis/MiddleSector';
+import EditModal from '../minis/EditModal';
 import BookModal from '../minis/BookModal';
 import BorrowBookModule from '../minis/BorrowBookModule';
 import ViewBookInfoCard from '../minis/ViewBookInfoCard';
@@ -34,13 +35,15 @@ class ViewBook extends React.Component {
     });
     pageLinks.push({
       linkName: 'Library',
-      link: 'allBooks'
+      link: 'books'
     });
     pageLinks.push({
       linkName: 'Book',
       link: `books/${this.props.match.params.bookId}`
     });
     this.state = {
+      editModal: false,
+      element: '',
       bookImageURL: '',
       bookId: null,
       bookAuthors: [],
@@ -51,6 +54,7 @@ class ViewBook extends React.Component {
       publishYear: '',
       ISBN: '',
       pageLinks,
+      modalHead: '',
       borrowedBooksCount: 0,
       borrowed: null,
       availableBorrow: 3,
@@ -62,20 +66,12 @@ class ViewBook extends React.Component {
       descriptionHeight: 0,
       divDescHeight: 0,
       expanded: false,
-      startDate: todayDate().add(1, 'days')
+      startDate: todayDate().add(1, 'days'),
+      maxDate: forBookModal().maxDate,
+      minDate: forBookModal().minDate,
+      editpublishYear: undefined,
+      editISBN: undefined
     };
-    this.expandCollapseDescription =
-      this.expandCollapseDescription.bind(this);
-    this.borrowBookClick =
-      this.borrowBookClick.bind(this);
-    this.closeModal =
-      this.closeModal.bind(this);
-    this.handleBorrowBook =
-      this.handleBorrowBook.bind(this);
-    this.handleDateChange =
-      this.handleDateChange.bind(this);
-    this.checkDescriptionHeight =
-      this.checkDescriptionHeight.bind(this);
   }
   componentDidMount() {
     this.props
@@ -132,7 +128,7 @@ class ViewBook extends React.Component {
     window.removeEventListener('load', this.checkDescriptionHeight);
     window.removeEventListener('resize', this.checkDescriptionHeight);
   }
-  handleBorrowBook(event) {
+  handleBorrowBook = (event) => {
     event.preventDefault();
     this.props.borrowBook({
       userId: this.props.userId,
@@ -140,14 +136,14 @@ class ViewBook extends React.Component {
       duedate: this.state.startDate.format('YYYY-MM-DD HH:mm:ss')
     });
   }
-  checkDescriptionHeight() {
+  checkDescriptionHeight = () => {
     if (this.collapsible) {
       this.setState({
         descriptionHeight: this.collapsible.clientHeight,
       });
     }
   }
-  listAuthorstoState(authorFields) {
+  listAuthorstoState = (authorFields) => {
     this.setState({
       authorList: authorFields
     });
@@ -159,11 +155,15 @@ class ViewBook extends React.Component {
     event.preventDefault();
     document.body.classList.remove('with--modal');
   }
-  borrowBookClick(event) {
+  borrowBookClick = (event) => {
     event.preventDefault();
+    this.setState({
+      modalHead: 'Borrow Book',
+      editModal: false
+    });
     document.body.classList.add('with--modal');
   }
-  expandCollapseDescription(event) {
+  expandCollapseDescription = (event) => {
     event.preventDefault();
 
     this.setState({
@@ -173,12 +173,31 @@ class ViewBook extends React.Component {
       .getElementById('description')
       .classList.toggle('expanded');
   }
-  handleDateChange(date) {
+  handleDateChange = (date) => {
     this.setState({
       startDate: date
     });
   }
+  editFunction = (event, element, elementName) => {
+    event.preventDefault();
 
+    this.setState({
+      modalHead: `Edit ${element}`,
+      editModal: true,
+      element
+    }, () => {
+      if (elementName) {
+        // const elementDiv =
+        document.getElementById(elementName).select();
+        // console.log(elementDiv, '+++');
+        // .select();
+      }
+    });
+    document.body.classList.add('with--modal');
+  }
+  handleBookFieldChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value });
+  }
   render() {
     if (!this.props.bookTitle) {
       return (
@@ -206,6 +225,7 @@ class ViewBook extends React.Component {
                       ratingCount={this.state.ratingCount}
                       ratingSum={this.state.ratingSum}
                       ISBN={this.state.ISBN}
+                      editFunction={this.editFunction}
                     />
                     <div className="col-sm-12 visible-sm-block">
                       <BorrowBookModule
@@ -293,16 +313,31 @@ class ViewBook extends React.Component {
                 &times;
               </button>
               <h2 id="modal-head">
-                Borrow Book:
-                </h2>
+                {this.state.modalHead}
+              </h2>
             </div>
             <div className="modal-body">
-              <BookModal
-                availableBorrow={this.state.availableBorrow}
-                startDate={this.state.startDate}
-                handleDateChange={this.handleDateChange}
-                handleBorrowBook={this.handleBorrowBook}
-              />
+              {!this.state.editModal &&
+                <BookModal
+                  availableBorrow={this.state.availableBorrow}
+                  startDate={this.state.startDate}
+                  handleDateChange={this.handleDateChange}
+                  handleBorrowBook={this.handleBorrowBook}
+                  maxDate={this.state.maxDate}
+                  minDate={this.state.minDate}
+                />
+              }
+              {
+                this.state.editModal &&
+                <EditModal
+                  element={this.state.element}
+                  handleFieldChange={this.handleBookFieldChange}
+                  publishyear={this.state.editpublishYear}
+                  oldPublishYear={this.state.publishYear}
+                  oldISBN={this.state.ISBN}
+                  ISBN={this.state.editISBN}
+                />
+              }
             </div>
           </div>
         </div>

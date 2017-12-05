@@ -951,11 +951,11 @@ input[type='search'] {
 .google-btn {
     border: 0;
     display: inline-block;
-    background: #4285f4;
+    background: $primaryColor;
     color: #fff;
     width: auto;
     border-radius: 2px;
-    border: 1px solid #4285f4;
+    border: 1px solid $primaryColor;
     white-space: nowrap;
     @include transition(all .3s);
     @include cust-box-shadow($shadow-2);
@@ -1053,7 +1053,7 @@ input[type='search'] {
     .3));
     filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=3, MakeShadow=true, ShadowOpacity=0.30);
     -ms-filter: "progid:DXImageTransform.Microsoft.Blur(PixelRadius=3,MakeShadow=true,ShadowOpacity=0.30)";
-    background-color: #383d61;
+    background-color: darken($primaryColorext,20);
     @media (max-width: $screen-lg) {
         padding: 60px 0;
     }
@@ -1202,12 +1202,13 @@ input[type='search'] {
 }
 .with--modal{
  & .site-cache {
-            position: absolute;
+            position: fixed;
             height: 100%;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
+            z-index:200000;
             background-color: rgba(0, 0, 0, 0.7);
     }
     & .modal{
@@ -1828,12 +1829,59 @@ input[type='search'] {
         display:inline-block;
     }
     & .book-image-div{
+        position:relative;
         min-width: 10rem;
         width: 100%;
         @media(max-width:$screen-sm){
             max-width: 180px;
         }
     }
+}
+
+.edit-bar{
+    position:absolute;
+    top: -5px;
+    right: -10px;
+    & .edit-icon{
+        padding:10px;
+        border-radius:50%;
+        // border: 1px solid #555;
+        background-color:#fff;
+        transition: color 0.28s ease, color 0.28s ease, box-shadow 0.28s ease;
+        @include cust-box-shadow((0 0.75rem 1.5rem 0 rgba(0,0,0,.5)));
+        &:before{
+            display: inline-block;
+            content:'\f19e';
+            font-family: 'icons';
+            font-style: normal;
+            font-weight: 500;
+            font-variant: normal;
+            line-height: 1;
+            text-decoration: inherit;
+            text-rendering: optimizeLegibility;
+            text-transform: none;
+            -moz-osx-font-smoothing: grayscale;
+            -webkit-font-smoothing: antialiased;
+            font-smoothing: antialiased;
+        }
+        &:hover{
+            color: $secondaryColor;
+        }
+    }
+}
+.publish-year,
+.book-isbn{
+    display:inline;
+    position:relative;
+    padding:10px;
+    .edit-bar{
+        top:10px;
+        right:-20px;
+        & .edit-icon{
+            padding:3px;
+        @include box-shadow-none;    
+    }
+    }    
 }
 body .visible-lg-block {
     display:none;
@@ -2262,7 +2310,7 @@ margin-top:7px;
     display: none;
     border-radius: 7px;
     position: fixed;
-    z-index: 1;
+    z-index: 200001;
     left: 50%;
     top: 50%;
     width: 70%; 
@@ -2330,5 +2378,23 @@ margin-top:7px;
     background-color: $secondaryColor;
     &:hover{
         background-color: darken($secondaryColor,10);
+    }
+}
+
+.edit-modal{
+    margin-top: 30px;
+    & select,
+    input:focus,
+    input:valid,
+    input.form-file,
+    input.has-value,
+    textarea:focus,
+    textarea:valid,
+    textarea.form-file,
+    textarea.has-value{
+        color: #444;
+    }
+    & .control-label{
+        color: $secondaryColor;
     }
 }
