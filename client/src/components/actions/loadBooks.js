@@ -146,7 +146,7 @@ export const borrowBook = info =>
             `${response.data.message}`,
             'error'
           );
-          dispatch(userBorrowBookFailure(error.response));
+          dispatch(userBorrowBookFailure(response.data));
         }
       })
       .catch((error) => {
