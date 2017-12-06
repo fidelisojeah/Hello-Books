@@ -101,7 +101,7 @@ app.get('/api/v4/users/logout', CheckSession.clearLogin);
 
 if (environment === 'production') {
   app.use(express.static(DIST_DIR));
-  app.get('*', (request, response) => response.sendFile(HTML_FILE));
+  app.get('/*', (request, response) => response.sendFile(HTML_FILE));
 } else {
   app.get('/', (request, response) => response.status(202).send({
     message: 'Welcome to Hello-Books',
