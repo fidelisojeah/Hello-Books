@@ -130,7 +130,7 @@ class ViewAllBooks extends React.Component {
 
               </div>
               <ul className="book-grid">
-                {allBooks.map(bookInfos =>
+                {Array.isArray(allBooks) && allBooks.map(bookInfos =>
                   (<BookCard
                     key={bookInfos.id}
                     bookName={bookInfos.bookName}

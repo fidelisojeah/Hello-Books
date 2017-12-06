@@ -34,7 +34,6 @@ const TextField = ({ formField,
           value={value}
           onChange={onChange}
           required={isRequired}
-          ref={field}
         />
         <label htmlFor="textarea" className="control-label">
           {label}

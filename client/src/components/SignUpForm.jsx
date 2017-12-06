@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import isEmpty from 'lodash/isEmpty';
 
 import UserHelper from '../../../server/helpers/user-signup';
 import TextField from './common/TextField';
@@ -29,6 +28,14 @@ class SignUpForm extends React.Component {
   }
   onSubmit(event) {
     event.preventDefault();
+    if (this.state.password !== this.state.passwordConfirmation) {
+      const errors = this.state.errors;
+      errors.password = 'Passwords Mismatch';
+      errors.passwordConfirmation = 'Passwords Mismatch';
+      this
+        .setState({ errors, invalid: Object.keys(errors).length !== 0 });
+      return;
+    }
     UserHelper
       .validateSignup(this.state.username,
       this.state.password,
@@ -75,6 +82,32 @@ class SignUpForm extends React.Component {
         });
       });
   }
+  passwordLengthCheck = (event) => {
+    event.preventDefault();
+    const inputError = event.target.name;
+    const errors = this.state.errors;
+
+    if (event.target.value.length < 6) {
+      errors[inputError] = 'Password too Short';
+    } else {
+      delete errors[inputError];
+    }
+    this.setState({ errors, invalid: Object.keys(errors).length !== 0 });
+  }
+  passwordConfirmationCheck = (event) => {
+    event.preventDefault();
+
+    const inputError = event.target.name;
+    const errors = this.state.errors;
+
+
+    if (event.target.value !== this.state.password) {
+      errors[inputError] = 'Passwords Mismatch';
+    } else {
+      delete errors[inputError];
+    }
+    this.setState({ errors, invalid: Object.keys(errors).length !== 0 });
+  }
   checkUserExists(event) {
     const inputError = event.target.name;
     const val = event.target.value;
@@ -88,7 +121,7 @@ class SignUpForm extends React.Component {
           } else {
             delete errors[inputError];
           }
-          this.setState({ errors, invalid: !isEmpty(errors) });
+          this.setState({ errors, invalid: Object.keys(errors).length !== 0 });
         });
     }
   }
@@ -167,10 +200,12 @@ class SignUpForm extends React.Component {
           <TextField
             inputError={errors.inputError}
             errorMessage={errors.message}
+            errField={errors.password}
             label="Password"
             field="password"
             onChange={this.onChange}
             value={this.state.password}
+            checkExists={this.passwordLengthCheck}
             formField="form-group"
             isRequired
             type="password"
@@ -180,7 +215,9 @@ class SignUpForm extends React.Component {
           <TextField
             inputError={errors.inputError}
             errorMessage={errors.message}
+            errField={errors.passwordConfirmation}
             label="Confirm Password"
+            checkExists={this.passwordConfirmationCheck}
             field="passwordConfirmation"
             onChange={this.onChange}
             value={this.state.passwordConfirmation}

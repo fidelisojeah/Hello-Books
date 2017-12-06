@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import cookieEncrypter from 'cookie-encrypter';
 import session from 'express-session';
 import http from 'http';
+import path from 'path';
 
 import BookProps from './controllers/books-controller-v4';
 import UserLoginDetails from './controllers/user-controller-v4';
@@ -18,6 +19,10 @@ require('dotenv').config();
 const jsonSecretKey = process.env.JSONWEB_SECRET;
 const cookieSecretKey = process.env.COOKIE_SECRET_KEY;
 const sessionSecretKey = process.env.SESSION_SECRET_KEY;
+const environment = process.env.NODE_ENV;
+
+const DIST_DIR = path.join(__dirname, '../dist');
+const HTML_FILE = path.join(DIST_DIR, 'index.html');
 
 // log requests
 app.use(logger('dev'));
@@ -70,9 +75,6 @@ app.get('/api/v4/users/history/:bookId',
   UserBookInteraction.userBookHistory
 );
 
-app.get('/', (req, res) => res.status(202).send({
-  message: 'Welcome to Hello-Books',
-}));
 // for book stuff
 app.post('/api/v4/authors', CheckSession.checkLogin, BookProps.newAuthor);
 
@@ -95,6 +97,17 @@ app.post('/api/v4/books/:bookId/quantity',
   CheckSession.checkLogin, BookProps.updateBookQuantity);
 
 app.get('/api/v4/users/logout', CheckSession.clearLogin);
+
+
+if (environment === 'production') {
+  app.use(express.static(DIST_DIR));
+  app.get('/*', (request, response) => response.sendFile(HTML_FILE));
+} else {
+  app.get('/', (request, response) => response.status(202).send({
+    message: 'Welcome to Hello-Books',
+  }));
+}
+
 
 // set port variable to value of env.Port or default to 8000
 const port = parseInt(process.env.PORT, 10) || 3000;
