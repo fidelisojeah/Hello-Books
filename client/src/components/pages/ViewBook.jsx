@@ -84,12 +84,20 @@ class ViewBook extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.error) {
+      if (nextProps.error.data) {
+        if (nextProps
+          .error.data.message === 'Not Allowed' ||
+          nextProps.error
+            .data.message === 'Unauthenticated') {
+          this.props.logout();
+          this.context.router.history.push('/');
+        }
+      }
       if (nextProps
-        .error.data.message === 'Not Allowed' ||
-        nextProps.error
-          .data.message === 'Unauthenticated') {
-        this.props.logout();
-        this.context.router.history.push('/');
+        .error.message === 'Book Unavailable') {
+        this.setState({
+          bookQuantity: 0
+        });
       }
       return;
     }

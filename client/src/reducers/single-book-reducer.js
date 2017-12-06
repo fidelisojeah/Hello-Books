@@ -1,7 +1,8 @@
 import {
   FETCH_SINGLE_BOOK_COMPLETE,
   FETCH_SINGLE_BOOK_REJECT,
-  BORROW_SINGLE_BOOK_COMPLETE
+  BORROW_SINGLE_BOOK_COMPLETE,
+  BORROW_SINGLE_BOOK_REJECT
 } from '../components/actions/types';
 
 /**
@@ -41,6 +42,17 @@ export default function singleBookReducer(state = {
             action.borrowedBook.QuantityLeft
         }
       };
+    }
+    case BORROW_SINGLE_BOOK_REJECT: {
+      if (action.error.message === 'Book Unavailable') {
+        return {
+          ...state,
+          fetchedBook: {
+            ...state.fetchedBook,
+            bookQuantity: 0
+          }
+        };
+      }
     }
     default:
       return state;
