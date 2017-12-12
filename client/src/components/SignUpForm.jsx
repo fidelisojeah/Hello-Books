@@ -19,14 +19,12 @@ class SignUpForm extends React.Component {
       isLoading: false,
       invalid: false,
     };
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
     this.checkUserExists = this.checkUserExists.bind(this);
   }
-  onChange(event) {
+  onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   }
-  onSubmit(event) {
+  onSubmit = (event) => {
     event.preventDefault();
     if (this.state.password !== this.state.passwordConfirmation) {
       const errors = this.state.errors;
@@ -99,7 +97,6 @@ class SignUpForm extends React.Component {
 
     const inputError = event.target.name;
     const errors = this.state.errors;
-
 
     if (event.target.value !== this.state.password) {
       errors[inputError] = 'Passwords Mismatch';

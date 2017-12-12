@@ -1,12 +1,11 @@
 import {
-  UserDetails,
   Books,
   BookLendings
 } from '../models';
 import Interactions from '../helpers/interactions';
 
 class UserBookInteraction {
-  static viewBorrowedBook(req, res) {
+  static viewBorrowedBook(req, response) {
     const userId = parseInt(req.params.userId, 10);
     const isReturned = req.query.returned || null;
 
@@ -47,28 +46,28 @@ class UserBookInteraction {
           })
           .then((bookLends) => {
             if (bookLends && bookLends.length > 0) {
-              res.status(202).json({
+              response.status(202).json({
                 status: 'Success',
                 data: bookLends,
               });
             } else {
-              res.status(200).json({
+              response.status(200).json({
                 status: 'Unsuccessful',
                 message: 'No borrowed Books',
               });
             }
           })
           .catch(errorMessage =>
-            res.status(500).json({
+            response.status(500).json({
               status: 'Unsuccessful',
               error: errorMessage,
             }));
       })
       .catch(error =>
-        res.status(error.errorCode).json(error.errors)
+        response.status(error.errorCode).json(error.errors)
       );
   }
-  static borrowBook(req, res) {
+  static borrowBook(req, response) {
     const userId = parseInt(req.params.userId, 10);
     const bookId = parseInt(req.body.bookId, 10); // change case
 
@@ -110,7 +109,7 @@ class UserBookInteraction {
             ])
             .then(([foundBook, unreturnedBookCount, membershipDetail]) => {
               if (membershipDetail.maxBooks <= unreturnedBookCount) {
-                return res.status(200).json({
+                return response.status(200).json({
                   status: 'Unsuccessful',
                   message: 'Max borrow limit reached'
                 });
@@ -118,7 +117,7 @@ class UserBookInteraction {
               if (foundBook) {
                 if (foundBook.bookQuantity < 1) {
                   // if all copies of book have been borrowed
-                  res.status(200).json({
+                  response.status(200).json({
                     status: 'Unsuccessful',
                     message: 'Book Unavailable',
                   });
@@ -136,7 +135,7 @@ class UserBookInteraction {
                           bookQuantity: foundBook.bookQuantity - 1,
                         })
                         .then((bookBorrowed) => {
-                          res.status(202).json({
+                          response.status(202).json({
                             status: 'Success',
                             message: 'Book Successfully Borrowed',
                             lendId: crtLending.id,
@@ -147,40 +146,40 @@ class UserBookInteraction {
                             dueDate: crtLending.dataValues.dueDate,
                           });
                         });
-                      // .catch(error => res.status(501).json({
+                      // .catch(error => response.status(501).json({
                       //   status: 'Unsuccessful',
                       //   error
                       // }));
                     })
-                    .catch(error => res.status(501).json({
+                    .catch(error => response.status(501).json({
                       status: 'Unsuccessful',
                       error
                     }));
                 }
               } else {
-                res.status(400).json({
+                response.status(400).json({
                   status: 'Unsuccessful',
                   message: 'Invalid Book',
                 });
               }
             })
             .catch(errorMessage =>
-              res.status(501).json({
+              response.status(501).json({
                 status: 'Unsuccessful',
                 error: errorMessage,
               }));
         })
         .catch(error =>
-          res.status(error.errorCode).json(error.errors)
+          response.status(error.errorCode).json(error.errors)
         );
     } else {
-      res.status(400).json({
+      response.status(400).json({
         status: 'Unsuccessful',
         message: 'Invalid Due date',
       });
     }
   }
-  static returnBook(req, res) {
+  static returnBook(req, response) {
     const userId = parseInt(req.params.userId, 10);
     const bookId = parseInt(req.body.bookId, 10); // change case
     const lendId = parseInt(req.body.lendId, 10);
@@ -202,7 +201,7 @@ class UserBookInteraction {
           })
           .then((foundLentBook) => {
             if (!foundLentBook) {
-              res.status(404).json({
+              response.status(404).json({
                 status: 'Unsuccessful',
                 message: 'No records found',
               });
@@ -232,7 +231,7 @@ class UserBookInteraction {
                               borrowedBook.bookQuantity + 1,
                           })])
                       .then(([lendUpdate, borrowUpdate]) => {
-                        res.status(202).json({// return info
+                        response.status(202).json({// return info
                           status: 'Success',
                           message: {
                             Bookname: borrowedBook.bookName,
@@ -250,37 +249,37 @@ class UserBookInteraction {
                           },
                         });
                       })
-                      .catch(error => res.status(500).json({
+                      .catch(error => response.status(500).json({
                         status: 'Unsuccessful',
                         error
                       }));
                   })
                   .catch(errorMessage =>
-                    res.status(500).json({
+                    response.status(500).json({
                       status: 'Unsuccessful',
                       error: errorMessage,
                     }));
               } else {
-                res.status(401).json({
+                response.status(401).json({
                   status: 'Unsuccessful',
                   message: 'User/Book not matching records',
                 });
               }
             } else if (foundLentBook.actualReturnDate !== null) {
-              res.status(200).json({
+              response.status(200).json({
                 status: 'Unsuccessful',
                 message: 'Book Already Returned',
               });
             }
           })
           .catch(errorMessage =>
-            res.status(500).json({
+            response.status(500).json({
               status: 'Unsuccessful',
               error: errorMessage,
             }));
       })
       .catch(error =>
-        res.status(error.errorCode).json(error.errors)
+        response.status(error.errorCode).json(error.errors)
       );
   }
   static userBookHistory(request, response) {

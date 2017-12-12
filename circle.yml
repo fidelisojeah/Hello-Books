@@ -1,12 +1,27 @@
-machine:
-  node:
-    version: 8.4.0
-  services:
-    - postgres
-  environment:
-    - NODE_ENV=test
-database:
-  override:
-    - psql -c 'drop database if exists dbhellobooks_test;' -U postgres
-    - psql -c 'create database dbhellobooks_test;' -U postgres
-    - psql -c "create user usrhello with login password 'HelloBooksPassword$';" -U postgres
+version: 2
+jobs:
+  build:
+    working_directory: ~/app
+    docker: 
+      - image: circleci/node:8.4.0
+        environment:
+          PGHOST: 127.0.0.1
+          PGUSER: usrhello
+          NODE_ENV: test
+      - image: postgres:9.6.2-alpine
+        environment:
+          POSTGRES_USER: usrhello
+          POSTGRES_DB: dbhellobooks_test
+          POSTGRES_PASSWORD: HelloBooksPassword$
+    steps:
+      - checkout
+      - run: npm install
+      - run:
+          name: Setup Code Climate test-reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+      - run: ./cc-test-reporter before-build
+      - run: npm run test
+      - run: npm run coverage
+      - run: ./cc-test-reporter after-build --exit-code 0

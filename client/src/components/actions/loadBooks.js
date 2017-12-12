@@ -1,5 +1,6 @@
 import axios from 'axios';
 import swal from 'sweetalert';
+import Toastr from '../common/Toastr';
 
 import {
   FETCH_BOOKS_COMPLETE,
@@ -9,10 +10,16 @@ import {
   FETCH_SINGLE_BOOK_HISTORY_COMPLETE,
   FETCH_SINGLE_BOOK_HISTORY_REJECT,
   BORROW_SINGLE_BOOK_REJECT,
-  BORROW_SINGLE_BOOK_COMPLETE
+  BORROW_SINGLE_BOOK_COMPLETE,
+  FETCH_SINGLE_BOOK_INVALID,
+  FETCH_BOOK_CLEAR
 } from './types';
 
 import { getMoment } from '../common/calculate-moment';
+
+export const clearBookStore = () => (
+  { type: FETCH_BOOK_CLEAR }
+);
 
 export const fetchBooksComplete = fetchedBooks => (
   {
@@ -39,6 +46,9 @@ export const fetchBookReject = error => (
     error
   }
 );
+export const fetchBookInvalid = () => ({
+  type: FETCH_SINGLE_BOOK_INVALID
+});
 // for single book
 export const userBookHistoryComplete = fetchedHistory => (
   {
@@ -81,7 +91,11 @@ export const viewOneBook = bookID =>
   dispatch =>
     axios.get(`/api/v4/books?id=${bookID}`)
       .then((response) => {
-        dispatch(fetchBookComplete(response.data.bookInfo));
+        if (response.data.bookInfo) {
+          dispatch(fetchBookComplete(response.data.bookInfo));
+        } else {
+          dispatch(fetchBookInvalid());
+        }
       })
       .catch((error) => {
         if (error.response) {
@@ -152,12 +166,12 @@ export const borrowBook = info =>
       .catch((error) => {
         document.body.classList.remove('with--modal');
         if (error.response) {
-          swal('Too Bad',
-            `${error.response.data.message}`,
-            'error'
-          );
+          Toastr.Failure(error.response.data.message, 4000);
           dispatch(userBorrowBookFailure(error.response));
         } else {
           dispatch(userBorrowBookFailure(error));
         }
       });
+export const clearBookState = () =>
+  dispatch =>
+    dispatch(clearBookStore({}));

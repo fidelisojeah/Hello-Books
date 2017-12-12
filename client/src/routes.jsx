@@ -18,7 +18,7 @@ const Main = () => (
   <App>
     <Switch>
       <Route path="/signin" component={Signin} />
-      <PrivateRoute path="/success" Component={SuccessPage} />
+      <Route path="/success" Component={SuccessPage} />
       <PrivateRoute exact path="/" Component={LogIndex} />
       <PrivateRoute exact path="/books" Component={ViewAllBooks} />
       <PrivateRoute exact path="/books/:bookId" Component={ViewBook} />

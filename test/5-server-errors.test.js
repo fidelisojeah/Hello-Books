@@ -24,15 +24,17 @@ const someToken = jwt.sign({
   role: 'User',
 }, app.settings.JsonSecret);
 
-const goodToken = jwt.sign({
-  userId: 1,
-  username: 'adminUser',
-  firstName: 'admin',
-  lastName: 'User',
-  role: 'Admin',
-}, app.settings.JsonSecret);
+let goodToken = '';
+let goodTokenUserID = 0;
 const goodToken2 = jwt.sign({
   userId: 2,
+  username: 'SomebodyElse',
+  firstName: 'Somebody',
+  lastName: 'Else',
+  role: 'User',
+}, app.settings.JsonSecret);
+const goodToken1 = jwt.sign({
+  userId: 1,
   username: 'SomebodyElse',
   firstName: 'Somebody',
   lastName: 'Else',
@@ -41,6 +43,29 @@ const goodToken2 = jwt.sign({
 const todayDate = new Date();
 const due = todayDate.setMonth(todayDate.getMonth() + 1);
 describe('Database errors Simulations', () => {
+  before((done) => {
+    db.UserDetails
+      .create({
+        firstname: 'Admin2',
+        lastname: 'AdminUser',
+        emailaddress: 'adminuser2@admin.com',
+        username: 'adminuserusername1',
+        password: 'adminuserPassword',
+        authString: 'randomString2',
+        isAdmin: true,
+        isActivated: true
+      }).then((response) => {
+        goodTokenUserID = response.id;
+        goodToken = jwt.sign({
+          userId: response.id,
+          username: response.username,
+          firstName: response.firstname,
+          lastName: response.lastname,
+          role: (response.isAdmin) ? 'Admin' : 'User',
+        }, app.settings.JsonSecret);
+        done();
+      });
+  });
   describe('User - Book Interactions', () => {
     describe('When Trying to borrow a book', () => {
       let bookLendingCreate;
@@ -146,7 +171,7 @@ describe('Database errors Simulations', () => {
           Promise.all = () => Promise.reject(1);
           chai.request(app)
             .put('/api/v4/users/1/books')
-            .set('x-access-token', goodToken)
+            .set('x-access-token', goodToken1)
             .send({
               bookId: 2,
               lendId: 1,
@@ -165,7 +190,7 @@ describe('Database errors Simulations', () => {
           db.Books.findOne = () => Promise.reject(1);
           chai.request(app)
             .put('/api/v4/users/1/books')
-            .set('x-access-token', goodToken)
+            .set('x-access-token', goodToken1)
             .send({
               bookId: 3,
               lendId: 3,
@@ -183,7 +208,7 @@ describe('Database errors Simulations', () => {
         (done) => {
           db.BookLendings.findOne = () => Promise.reject(1);
           chai.request(app)
-            .put('/api/v4/users/1/books')
+            .put(`/api/v4/users/${goodTokenUserID}/books`)
             .set('x-access-token', goodToken)
             .send({
               bookId: 1,
@@ -213,7 +238,7 @@ describe('Database errors Simulations', () => {
         (done) => {
           db.BookLendings.count = () => Promise.reject(1);
           chai.request(app)
-            .get('/api/v4/users/history/1')
+            .get(`/api/v4/users/history/${goodTokenUserID}`)
             .set('x-access-token', goodToken)
             .end((error, response) => {
               should.exist(error);
@@ -239,7 +264,7 @@ describe('Database errors Simulations', () => {
         (done) => {
           db.BookLendings.findAll = () => Promise.reject(1);
           chai.request(app)
-            .get('/api/v4/users/1/books')
+            .get(`/api/v4/users/${goodTokenUserID}/books`)
             .set('x-access-token', goodToken)
             .end((error, response) => {
               should.exist(error);
@@ -632,7 +657,7 @@ describe('Database errors Simulations', () => {
           .put('/api/v4/books/3')
           .set('x-access-token', goodToken)
           .send({
-            ISBN: '0-7475-5100-6',
+            bookISBN: '0-7475-5100-6',
           })
           .end((error, response) => {
             should.exist(error);

@@ -6,6 +6,7 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: [
+    'babel-polyfill',
     './client/src/Index.jsx',
   ],
   output: {
@@ -95,7 +96,7 @@ module.exports = {
           path.join(__dirname, 'server/helpers'),
         ],
         loader: 'babel-loader',
-        exclude: /node_modules/,
+        exclude: [/node_modules/, 'test'],
         query: {
           cacheDirectory: true,
           presets: ['react', 'es2015'],
@@ -115,7 +116,7 @@ module.exports = {
         ],
         loader:
           'babel-loader',
-        exclude: /node_modules/,
+        exclude: [/node_modules/, 'test'],
         query: {
           cacheDirectory: true,
           presets: ['react', 'es2015'],
