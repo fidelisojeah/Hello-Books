@@ -23,5 +23,4 @@ jobs:
             chmod +x ./cc-test-reporter
       - run: ./cc-test-reporter before-build
       - run: npm run test
-      - run: npm run coverage
       - run: ./cc-test-reporter after-build --exit-code 0
