@@ -1,4 +1,7 @@
 import jwt from 'jsonwebtoken';
+import {
+  UserDetails
+} from '../models';
 
 const cookieParams = {
   httpOnly: true,
@@ -11,11 +14,22 @@ class CheckSession {
   static checkAdmin(decodedToken) {
     return new Promise((resolve, reject) => {
       if (decodedToken) {
-        if (decodedToken.role === 'Admin') {
-          resolve('Valid Token');
-        } else {
-          reject('Not allowed');
-        }
+        UserDetails
+          .findOne({
+            where: {
+              id: decodedToken.userId,
+              isAdmin: true
+            }
+          })
+          .then((loginDetails) => {
+            if (!loginDetails) {
+              reject('Not allowed');
+            } else {
+              resolve('Valid Token');
+            }
+          })
+          .catch(error =>
+            reject(error));
       } else {
         reject('Token Invalid');
       }
@@ -46,6 +60,7 @@ class CheckSession {
             });
           } else if (verifiedToken.role) {
             req.decoded = verifiedToken;
+
             next();
           } else {
             res.status(401).json({

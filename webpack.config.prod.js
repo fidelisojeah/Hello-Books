@@ -8,6 +8,7 @@ const buildPath = path.join(__dirname, 'dist');
 module.exports = {
   devtool: 'cheap-module-source-map',
   entry: [
+    'babel-polyfill',
     './client/src/index.jsx',
   ],
   output: {

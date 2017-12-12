@@ -1,0 +1,436 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BreadCrumbs should render breadcrumb component 1`] = `
+<nav
+  className="breadcrumbs"
+>
+  <div
+    className="container"
+  >
+    <ul
+      className="breadcrumbs--list"
+    >
+      <li
+        className="breadcrumbs--item"
+        key="Home"
+      >
+        <Link
+          className="breadcrumbs--link"
+          replace={false}
+          to="//"
+        >
+          Home
+        </Link>
+      </li>
+    </ul>
+  </div>
+</nav>
+`;
+
+exports[`Footer should render footer 1`] = `
+<div
+  className="layout--footer"
+>
+  <footer
+    className="footer"
+  >
+    <div
+      className="footer--inner"
+    >
+      <div
+        className="container"
+      >
+        <div
+          className="footer-copyrights"
+        >
+          <div
+            className="footer-copyrights--container"
+          >
+            <div
+              className="row"
+            >
+              <div
+                className=".col-sm-6 col-xs-12"
+              >
+                <div
+                  className="footer-copyrights--item"
+                >
+                  <div
+                    className="footer-copyrights--logo"
+                  >
+                    <div
+                      dangerouslySetInnerHTML={
+                        Object {
+                          "__html": "test-file-stub",
+                        }
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              <div
+                className=".col-sm-6 col-xs-12"
+              >
+                <div
+                  className="footer-copyrights--item"
+                >
+                  <p
+                    className="footer-copyrights--item_copyrights"
+                  >
+                    Hello Books ©2017. All Rights Reserved.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+`;
+
+exports[`Hamburger Menu Bar should render hamburger component 1`] = `
+<div
+  className="header--menu-opener"
+>
+  <span
+    className="c-hamburger c-hamburger--htx"
+    id="hamburger"
+    onClick={[Function]}
+    role="presentation"
+  >
+    <span
+      className="toggle-menu"
+    >
+      toggle menu
+    </span>
+  </span>
+</div>
+`;
+
+exports[`Layout Header should render Title Header Component 1`] = `
+<div
+  className="layout-header"
+>
+  <div
+    className="container"
+  >
+    <h1
+      className="page_header--title"
+    >
+      Test Header
+    </h1>
+  </div>
+</div>
+`;
+
+exports[`LoadingPage should render LoadingPage component 1`] = `
+<div
+  className="layout--container"
+>
+  <LayoutHeader
+    headerTitle="Loading..."
+  />
+  <BreadCrumbs
+    breadCrumbLinks={
+      Array [
+        Object {
+          "link": "",
+          "linkName": "Home",
+        },
+      ]
+    }
+  />
+</div>
+`;
+
+exports[`Page Limit Selector should render Page Limit Changer
+   Component with 100 as active then change on click 1`] = `
+<div
+  className="limit-per-page"
+>
+  <div>
+    <span
+      id="pp10"
+      onClick={[Function]}
+      role="presentation"
+    >
+      10
+    </span>
+    <span
+      id="pp50"
+      onClick={[Function]}
+      role="presentation"
+    >
+      50
+    </span>
+    <span
+      className="-active"
+      id="pp100"
+      onClick={[Function]}
+      role="presentation"
+    >
+      100
+    </span>
+  </div>
+  <span>
+    Per Page
+  </span>
+</div>
+`;
+
+exports[`Page Limit Selector should render Page Limit Changer Component with 10 as active 1`] = `
+<div
+  className="limit-per-page"
+>
+  <div>
+    <span
+      className="-active"
+      id="pp10"
+      onClick={[Function]}
+      role="presentation"
+    >
+      10
+    </span>
+    <span
+      id="pp50"
+      onClick={[Function]}
+      role="presentation"
+    >
+      50
+    </span>
+    <span
+      id="pp100"
+      onClick={[Function]}
+      role="presentation"
+    >
+      100
+    </span>
+  </div>
+  <span>
+    Per Page
+  </span>
+</div>
+`;
+
+exports[`Page Limit Selector should render Page Limit Changer Component with 50 as active 1`] = `
+<div
+  className="limit-per-page"
+>
+  <div>
+    <span
+      id="pp10"
+      onClick={[Function]}
+      role="presentation"
+    >
+      10
+    </span>
+    <span
+      className="-active"
+      id="pp50"
+      onClick={[Function]}
+      role="presentation"
+    >
+      50
+    </span>
+    <span
+      id="pp100"
+      onClick={[Function]}
+      role="presentation"
+    >
+      100
+    </span>
+  </div>
+  <span>
+    Per Page
+  </span>
+</div>
+`;
+
+exports[`Page Limit Selector should render Page Limit Changer Component with 100 as active 1`] = `
+<div
+  className="limit-per-page"
+>
+  <div>
+    <span
+      id="pp10"
+      onClick={[Function]}
+      role="presentation"
+    >
+      10
+    </span>
+    <span
+      id="pp50"
+      onClick={[Function]}
+      role="presentation"
+    >
+      50
+    </span>
+    <span
+      className="-active"
+      id="pp100"
+      onClick={[Function]}
+      role="presentation"
+    >
+      100
+    </span>
+  </div>
+  <span>
+    Per Page
+  </span>
+</div>
+`;
+
+exports[`Pagination should render Pagination Component 1`] = `
+<div
+  className="pagination-div"
+>
+  <div>
+    <a
+      className="navigation"
+      disabled={true}
+      href="/"
+    >
+      <i
+        className="navigation-dir angle-left"
+      />
+    </a>
+    <a
+      className="-active"
+      href="/"
+      key="1"
+      onClick={[Function]}
+    >
+      1
+    </a>
+    <a
+      href="/"
+      key="2"
+      onClick={[Function]}
+    >
+      2
+    </a>
+    <a
+      href="/"
+      key="3"
+      onClick={[Function]}
+    >
+      3
+    </a>
+    <a
+      href="/"
+      key="4"
+      onClick={[Function]}
+    >
+      4
+    </a>
+    <span
+      className="page-continuation"
+      key="5"
+    >
+      ...
+    </span>
+    <a
+      href="/"
+      key="6"
+      onClick={[Function]}
+    >
+      10
+    </a>
+    <a
+      className="navigation"
+      disabled={false}
+      href="/"
+    >
+      <i
+        className="navigation-dir angle-right"
+      />
+    </a>
+  </div>
+</div>
+`;
+
+exports[`Pagination should render middle page of Pagination Component 1`] = `
+<div
+  className="pagination-div"
+>
+  <div>
+    <a
+      className="navigation"
+      disabled={false}
+      href="/"
+    >
+      <i
+        className="navigation-dir angle-left"
+      />
+    </a>
+    <a
+      href="/"
+      key="1"
+      onClick={[Function]}
+    >
+      1
+    </a>
+    <span
+      className="page-continuation"
+      key="2"
+    >
+      ...
+    </span>
+    <a
+      href="/"
+      key="3"
+      onClick={[Function]}
+    >
+      4
+    </a>
+    <a
+      className="-active"
+      href="/"
+      key="4"
+      onClick={[Function]}
+    >
+      5
+    </a>
+    <a
+      href="/"
+      key="5"
+      onClick={[Function]}
+    >
+      6
+    </a>
+    <span
+      className="page-continuation"
+      key="6"
+    >
+      ...
+    </span>
+    <a
+      href="/"
+      key="7"
+      onClick={[Function]}
+    >
+      10
+    </a>
+    <a
+      className="navigation"
+      disabled={false}
+      href="/"
+    >
+      <i
+        className="navigation-dir angle-right"
+      />
+    </a>
+  </div>
+</div>
+`;
+
+exports[`Site Cache Overlay should render site Cache component 1`] = `
+<div
+  className="site-cache"
+  id="site-cache"
+  onClick={[Function]}
+  role="presentation"
+/>
+`;

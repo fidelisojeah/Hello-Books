@@ -467,12 +467,13 @@ class BookProps {
 
         if (!isNaN(bookID)) { // has to be a number really
           // everyone
-          if (req.body.bookname ||
+          if (req.body.bookName ||
             req.body.publishYear ||
-            req.body.ISBN ||
+            req.body.bookISBN ||
             req.body.description ||
-            req.body.image) {
+            req.body.bookImage) {
             req.body.id = undefined;
+            req.body.bookQuantity = undefined;
             // if a non-empty request has been made
             Books.findOne({ // search for book with id
               where: {
@@ -493,11 +494,18 @@ class BookProps {
                     message: 'Book Details Updated',
                     bookUpdate,
                   }))
-                  .catch(errorMessage =>
-                    res.status(501).json({
+                  .catch((errorMessage) => {
+                    if (errorMessage.errors[0].path === 'bookISBN') {
+                      return res.status(400).json({
+                        status: 'Unsuccessful',
+                        error: errorMessage.errors[0].message
+                      });
+                    }
+                    return res.status(501).json({
                       status: 'Unsuccessful',
                       error: errorMessage,
-                    }));
+                    });
+                  });
               }
             }).catch(errorMessage =>
               res.status(500).json({

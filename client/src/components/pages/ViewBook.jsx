@@ -1,26 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import classnames from 'classnames';
 
 import {
   viewOneBook,
   fetchUserBookHistory,
-  borrowBook
+  borrowBook,
+  clearBookState
 } from '../actions/loadBooks';
+import { editBook } from '../actions/edit-book';
 import { logout } from '../actions/login';
 
+import {
+  bookImageUpload
+} from '../actions/newBookAction';
 
-import { todayDate, forBookModal } from '../common/calculate-moment';
+import {
+  todayDate,
+  forBookModal,
+  displayYear
+} from '../common/calculate-moment';
+import NotFoundComponent from '../common/NotFoundComponent';
 
-import BreadCrumbs from '../common/BreadCrumbs';
-import LayoutHeader from '../common/LayoutHeader';
-import AuthorList from '../lists/AuthorList';
-import MiddleSector from '../minis/MiddleSector';
-import EditModal from '../minis/EditModal';
-import BookModal from '../minis/BookModal';
-import BorrowBookModule from '../minis/BorrowBookModule';
-import ViewBookInfoCard from '../minis/ViewBookInfoCard';
+import BookGlobalComponent from '../view-book-components/BookGlobalComponent';
+
 import LoadingPage from './LoadingPage';
 
 
@@ -28,7 +31,8 @@ class ViewBook extends React.Component {
   constructor(props) {
     super(props);
     const pageLinks = [];
-    this.collapsible = null;
+    this.collapsible =
+      document.getElementById('collapsible-description');
     pageLinks.push({
       linkName: 'Home',
       link: ''
@@ -42,44 +46,63 @@ class ViewBook extends React.Component {
       link: `books/${this.props.match.params.bookId}`
     });
     this.state = {
-      editModal: false,
-      element: '',
-      bookImageURL: '',
-      bookId: null,
-      bookAuthors: [],
-      bookTitle: '',
       authorList: [],
-      bookDescription: '',
-      bookQuantity: 0,
-      publishYear: '',
-      ISBN: '',
-      pageLinks,
-      modalHead: '',
-      borrowedBooksCount: 0,
-      borrowed: null,
       availableBorrow: 3,
-      membershipName: '',
-      unreturnedBookCount: 0,
+      bookAuthors: [],
+      bookDescription: '',
+      bookId: null,
+      bookImageURL: '',
+      bookTitle: '',
+      bookQuantity: 0,
+      borrowed: null,
       borrowedBooks: [],
-      ratingCount: 0,
-      ratingSum: '',
+      borrowedBooksCount: 0,
       descriptionHeight: 0,
       divDescHeight: 0,
+      editBookName: undefined,
+      editDescription: undefined,
+      editISBN: undefined,
+      editModal: false,
+      editModalError: false,
+      editModalErrors: {},
+      editPublishYear: undefined,
+      element: '',
+      error: null,
       expanded: false,
-      startDate: todayDate().add(1, 'days'),
+      fetching: true,
+      ISBN: '',
+      isLoading: false,
       maxDate: forBookModal().maxDate,
+      membershipName: '',
       minDate: forBookModal().minDate,
-      editpublishYear: undefined,
-      editISBN: undefined
+      modalHead: '',
+      newImageURL: undefined,
+      pageLinks,
+      publishYear: '',
+      ratingCount: 0,
+      ratingSum: '',
+      startDate: todayDate().add(1, 'days'),
+      unreturnedBookCount: 0,
+      uploadedImage: null,
+      yearArray: [],
+      yearList: [],
+      yearListShow: true,
     };
   }
   componentDidMount() {
-    this.props
-      .viewOneBook(this.props.match.params.bookId);
-    this.props
-      .fetchUserBookHistory(this.props.match.params.bookId);
-    window.addEventListener('load', this.checkDescriptionHeight);
-    window.addEventListener('resize', this.checkDescriptionHeight);
+    this.allYears(1900);
+    this.collapsible =
+      document.getElementById('collapsible-description');
+    if (!isNaN(parseInt(this.props.match.params.bookId, 10))) {
+      this.props
+        .viewOneBook(this.props.match.params.bookId);
+      this.props
+        .fetchUserBookHistory(this.props.match.params.bookId);
+      window.addEventListener('load', this.checkDescriptionHeight);
+      window.addEventListener('resize', this.checkDescriptionHeight);
+    } else {
+      this.context.router.history.push('/books');
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -99,6 +122,10 @@ class ViewBook extends React.Component {
           bookQuantity: 0
         });
       }
+      this.setState({
+        error: nextProps.error,
+        fetching: nextProps.fetching
+      });
       return;
     }
 
@@ -106,12 +133,15 @@ class ViewBook extends React.Component {
       nextProps.borrowedBooks[0].borrowDate : null;
 
     this.setState({
+      error: nextProps.error,
+      fetching: nextProps.fetching,
       bookTitle: nextProps.bookTitle,
       bookId: nextProps.bookId,
       bookImageURL: nextProps.bookImageURL,
       bookDescription: nextProps.bookDescription,
       bookQuantity: nextProps.bookQuantity,
       ISBN: nextProps.ISBN,
+      isAdmin: nextProps.isAdmin,
       publishYear: nextProps.publishYear,
       borrowedBooksCount: nextProps.borrowedBooksCount,
       ratingSum: nextProps.ratingSum,
@@ -125,6 +155,8 @@ class ViewBook extends React.Component {
     this.listAuthorstoState(nextProps.Authors);
   }
   componentDidUpdate() {
+    this.collapsible =
+      document.getElementById('collapsible-description');
     if (this.collapsible &&
       this.state.descriptionHeight !==
       this.collapsible.clientHeight) {
@@ -132,29 +164,166 @@ class ViewBook extends React.Component {
     }
   }
   componentWillUnmount() {
+    this.props.clearBookState();
     document.body.classList.remove('with--modal');
     window.removeEventListener('load', this.checkDescriptionHeight);
     window.removeEventListener('resize', this.checkDescriptionHeight);
   }
-  handleBorrowBook = (event) => {
-    event.preventDefault();
-    this.props.borrowBook({
-      userId: this.props.userId,
-      bookId: this.state.bookId,
-      duedate: this.state.startDate.format('YYYY-MM-DD HH:mm:ss')
+  onImageDrop = (images) => {
+    this.setState({
+      newImageURL: '',
+      uploadedImage: images[0],
+      isLoading: true
+    });
+    this.handleImageUpload(images[0]);
+  }
+  onChangeBlurEvent = (event) => {
+    const editModalErrors = this.state.editModalErrors;
+    if (event.target.name === 'editPublishYear') {
+      const yearArray = this.state.yearArray;
+      if (
+        !(/^\d+$/.test(event.target.value)) ||
+        !yearArray
+          .includes(parseInt(event.target.value, 10))) {
+        editModalErrors.publishYear =
+          'Please Enter a valid Year';
+      } else {
+        delete editModalErrors.publishYear;
+      }
+      document.getElementById('year-list').style.display = 'none';
+    }
+    if (event.target.name === 'editISBN') {
+      if (event.target.value.length < 4) {
+        editModalErrors.ISBNError =
+          'Enter a valid ISBN';
+      } else {
+        delete editModalErrors.ISBNError;
+      }
+    }
+    if (event.target.name === 'editBookName') {
+      if (event.target.value.length < 1) {
+        editModalErrors.bookNameError =
+          'Enter a valid Book Name';
+      } else {
+        delete editModalErrors.bookNameError;
+      }
+    }
+    this.setState({
+      editModalError: false,
+      editModalErrors
     });
   }
-  checkDescriptionHeight = () => {
-    if (this.collapsible) {
+  handleImageUpload = (image) => {
+    this
+      .props
+      .bookImageUpload(image)
+      .end((error, response) => {
+        if (error) {
+          this.setState({
+            isLoading: false
+          });
+        }
+        if (response.body.secure_url !== '') {
+          this.setState({
+            newImageURL: response.body.secure_url,
+            isLoading: false,
+            uploadedImage: null
+          });
+        } else {
+          this.setState({
+            isLoading: false
+          });
+        }
+      }
+      );
+  }
+  handleYearChangeClick = (event, yearValue) => {
+    event.preventDefault();
+    const editModalErrors = this.state.editModalErrors;
+    delete editModalErrors.publishYear;
+    if (yearValue) {
       this.setState({
-        descriptionHeight: this.collapsible.clientHeight,
+        editModalError: false,
+        editModalErrors,
+        editPublishYear: yearValue.toString()
       });
     }
+    document.getElementById('year-list').style.display = 'none';
   }
-  listAuthorstoState = (authorFields) => {
+  handleImageEditClick = (event) => {
+    event.preventDefault();
     this.setState({
-      authorList: authorFields
+      uploadedImage: null,
+      newImageURL: undefined
     });
+  }
+  handleEditClick = (event) => {
+    event.preventDefault();
+
+    const { bookId, element,
+      editBookName,
+      editDescription,
+      editISBN,
+      editModalErrors,
+      editPublishYear,
+      publishYear,
+      newImageURL
+     } = this.state;
+    if (element === 'publish year') {
+      const editYear = parseInt(editPublishYear, 10);
+      const oldPublishYear = parseInt(publishYear, 10);
+
+      if (editModalErrors.publishYear) {
+        return this.setState({
+          editModalError: true
+        });
+      }
+      if (!editPublishYear ||
+        ((/^\d+$/.test(editPublishYear))
+          && (editYear === oldPublishYear))
+      ) {
+        this.setState({
+          modalHead: '',
+          editDescription: undefined,
+          editISBN: undefined,
+          editPublishYear: undefined,
+          editModal: true,
+          editModalError: false,
+          editModalErrors: {}
+        });
+        return document.body.classList.remove('with--modal');
+      }
+    }
+    if (element === 'ISBN' || element === 'editBookName') {
+      if (editModalErrors.ISBNError || editModalErrors.bookNameError) {
+        return this.setState({
+          editModalError: true
+        });
+      }
+    }
+    if (element === 'image') {
+      if (!newImageURL) {
+        return -1;
+      }
+    }
+    this.props.editBook({
+      bookName: editBookName,
+      description: editDescription,
+      bookImage: newImageURL,
+      bookISBN: editISBN,
+      publishYear: editPublishYear,
+    }, bookId);
+    this.setState({
+      modalHead: '',
+      newImageURL: undefined,
+      editDescription: undefined,
+      editISBN: undefined,
+      editPublishYear: undefined,
+      editModal: true,
+      editModalError: false,
+      editModalErrors: {}
+    });
+    return document.body.classList.remove('with--modal');
   }
   reviewFunction(event) {
     event.preventDefault();
@@ -167,6 +336,7 @@ class ViewBook extends React.Component {
     event.preventDefault();
     this.setState({
       modalHead: 'Borrow Book',
+      editModalError: false,
       editModal: false
     });
     document.body.classList.add('with--modal');
@@ -188,193 +358,189 @@ class ViewBook extends React.Component {
   }
   editFunction = (event, element, elementName) => {
     event.preventDefault();
-
     this.setState({
       modalHead: `Edit ${element}`,
+      editBookName: undefined,
+      editDescription: undefined,
+      editISBN: undefined,
       editModal: true,
+      editModalError: false,
+      editModalErrors: {},
+      editPublishYear: undefined,
       element
     }, () => {
       if (elementName) {
-        // const elementDiv =
         document.getElementById(elementName).select();
-        // console.log(elementDiv, '+++');
-        // .select();
       }
     });
     document.body.classList.add('with--modal');
+    if (element !== 'image') {
+      this.setState({
+        newImageURL: undefined
+      });
+    }
+  }
+  allYears = (minYear) => {
+    const yearArray = [];
+    if (parseInt(minYear, 10) > 0) {
+      for (let i = minYear; i <= displayYear(new Date()); i += 1) {
+        yearArray.push(i);
+      }
+    }
+    this.setState({
+      yearArray
+    });
+  }
+  listAuthorstoState = (authorFields) => {
+    this.setState({
+      authorList: authorFields
+    });
+  }
+  checkDescriptionHeight = () => {
+    if (this.collapsible) {
+      this.setState({
+        descriptionHeight: this.collapsible.clientHeight,
+      });
+    }
+  }
+  handleBorrowBook = (event) => {
+    event.preventDefault();
+    this.props.borrowBook({
+      userId: this.props.userId,
+      bookId: this.state.bookId,
+      duedate: this.state.startDate.format('YYYY-MM-DD HH:mm:ss')
+    });
   }
   handleBookFieldChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
+    const { yearArray, editModalErrors } = this.state;
+    let yearList = [];
+    if (event.target.name === 'editPublishYear') {
+      delete editModalErrors.publishYear;
+
+      if (event.target.value.length >= 1) {
+        const regField = new RegExp(`^${event.target.value}`, 'gm');
+        document.getElementById('year-list').style.display = 'block';
+        yearList = yearArray.filter(years =>
+          regField.test(years)
+        );
+      } else {
+        document.getElementById('year-list').style.display = 'none';
+      }
+    }
+    if (event.target.name === 'editISBN') {
+      if (event.target.value.length >= 4) {
+        delete editModalErrors.ISBNError;
+      }
+    }
+    if (event.target.name === 'editBookName') {
+      if (event.target.value.length >= 1) {
+        delete editModalErrors.bookNameError;
+      }
+    }
+    this.setState({
+      yearList,
+      editModalErrors
+    });
   }
   render() {
-    if (!this.props.bookTitle) {
+    if (this.state.fetching) {
       return (
         <LoadingPage />
       );
     }
-    return (
-      <div>
-        <div className="layout--container">
-          <LayoutHeader
-            headerTitle={this.state.bookTitle}
-          />
-          <BreadCrumbs
-            breadCrumbLinks={this.state.pageLinks}
-          />
-          <div className="section">
-            <div className="books-container">
-              <div className="innerSection">
-                <div className="row">
-                  <div className="col-md-8 col-sm-7 col-xs-12">
-                    <ViewBookInfoCard
-                      publishYear={this.state.publishYear}
-                      bookImageURL={this.state.bookImageURL}
-                      bookTitle={this.state.bookTitle}
-                      ratingCount={this.state.ratingCount}
-                      ratingSum={this.state.ratingSum}
-                      ISBN={this.state.ISBN}
-                      editFunction={this.editFunction}
-                    />
-                    <div className="col-sm-12 visible-sm-block">
-                      <BorrowBookModule
-                        bookQuantity={this.state.bookQuantity}
-                        borrowBookClick={this.borrowBookClick}
-                      />
-                    </div>
-                    <div className="col-md-6 col-md-offset-2 col-sm-12">
-                      <div className="about-padding">
-                        <h2 className="book-about">
-                          <span className="fieldField">
-                            By
-                          </span>
-                          <span className="bookAuthors">
-                            <AuthorList
-                              bookAuthors={this.state.authorList}
-                            />
-                          </span>
-                        </h2>
-                      </div>
-                      <div className="book-description">
-                        <div className="fieldField">
-                          Description:
-                    </div>
-                      </div>
-                      <div
-                        className="description"
-                        id="description"
-                      >
-                        <div
-                          className="collapsible-description"
-                          id="collapsible-description"
-                          ref={(element) => { this.collapsible = element; }}
-                        >
-                          {this.state.bookDescription}
-                        </div>
-                        <i
-                          className={
-                            classnames('description-toggle',
-                              {
-                                '-expand':
-                                  (this.state.descriptionHeight > 205
-                                    &&
-                                    !this.state.expanded
-                                  )
-                              },
-                              {
-                                '-collapse': (this.state.descriptionHeight > 205
-                                  && this.state.expanded
-                                )
-                              })
-                          }
-                          id="description-toggle"
-                          role="presentation"
-                          onClick={this.expandCollapseDescription}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-4 col-sm-5 hidden-sm-block">
-                    <BorrowBookModule
-                      bookQuantity={this.state.bookQuantity}
-                      borrowBookClick={this.borrowBookClick}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="section_divider" />
-        <MiddleSector
-          borrowCount={this.state.borrowedBooksCount}
-          borrowed={this.state.borrowed}
-          reviewFunction={this.reviewFunction}
-          borrowList={this.state.borrowedBooks}
+    if (this.state.error
+      && this.state.error.message === 'No Books Found') {
+      return (
+        <NotFoundComponent
+          title="No Such Book"
+          errorMessage="Invalid Book Maybe?"
+          links={this.state.pageLinks}
         />
-        <div id="msg-modal" className="modal">
-          <div className="modal-content">
-            <div className="modal-header">
-              <button
-                className="close"
-                onClick={this.closeModal}
-              >
-                &times;
-              </button>
-              <h2 id="modal-head">
-                {this.state.modalHead}
-              </h2>
-            </div>
-            <div className="modal-body">
-              {!this.state.editModal &&
-                <BookModal
-                  availableBorrow={this.state.availableBorrow}
-                  startDate={this.state.startDate}
-                  handleDateChange={this.handleDateChange}
-                  handleBorrowBook={this.handleBorrowBook}
-                  maxDate={this.state.maxDate}
-                  minDate={this.state.minDate}
-                />
-              }
-              {
-                this.state.editModal &&
-                <EditModal
-                  element={this.state.element}
-                  handleFieldChange={this.handleBookFieldChange}
-                  publishyear={this.state.editpublishYear}
-                  oldPublishYear={this.state.publishYear}
-                  oldISBN={this.state.ISBN}
-                  ISBN={this.state.editISBN}
-                />
-              }
-            </div>
-          </div>
-        </div>
-      </div>
+      );
+    }
+    return (
+      <BookGlobalComponent
+        authorList={this.state.authorList}
+        availableBorrow={this.state.availableBorrow}
+        bookDescription={this.state.bookDescription}
+        bookImageURL={this.state.bookImageURL}
+        bookQuantity={this.state.bookQuantity}
+        bookTitle={this.state.bookTitle}
+        borrowBookClick={this.borrowBookClick}
+        borrowedBooks={this.state.borrowedBooks}
+        borrowedBooksCount={this.state.borrowedBooksCount}
+        borrowed={this.state.borrowed}
+        closeModal={this.closeModal}
+        descriptionHeight={this.state.descriptionHeight}
+        editBookDescription={this.state.editDescription}
+        editBookName={this.state.editBookName}
+        editFunction={this.editFunction}
+        editISBN={this.state.editISBN}
+        editModal={this.state.editModal}
+        editModalError={this.state.editModalError}
+        editModalErrors={this.state.editModalErrors}
+        editPublishYear={this.state.editPublishYear}
+        element={this.state.element}
+        expandCollapseDescription={this.expandCollapseDescription}
+        expanded={this.state.expanded}
+        handleBookFieldChange={this.handleBookFieldChange}
+        handleBorrowBook={this.handleBorrowBook}
+        handleDateChange={this.handleDateChange}
+        handleEditClick={this.handleEditClick}
+        handleImageEditClick={this.handleImageEditClick}
+        handleYearChangeClick={this.handleYearChangeClick}
+        ISBN={this.state.ISBN}
+        isAdmin={this.state.isAdmin}
+        isLoading={this.state.isLoading}
+        maxDate={this.state.maxDate}
+        minDate={this.state.minDate}
+        modalHead={this.state.modalHead}
+        newImageURL={this.state.newImageURL}
+        onChangeBlurEvent={this.onChangeBlurEvent}
+        onImageDrop={this.onImageDrop}
+        pageLinks={this.state.pageLinks}
+        publishYear={this.state.publishYear}
+        ratingCount={this.state.ratingCount}
+        ratingSum={this.state.ratingSum}
+        reviewFunction={this.reviewFunction}
+        startDate={this.state.startDate}
+        yearList={this.state.yearList}
+        yearListShow={this.state.yearListShow}
+      />
     );
   }
 }
 ViewBook.propTypes = {
-  viewOneBook: PropTypes.func.isRequired,
-  logout: PropTypes.func.isRequired,
-  borrowBook: PropTypes.func.isRequired,
-  fetchUserBookHistory: PropTypes.func.isRequired,
-  bookTitle: PropTypes.string,
-  userId: PropTypes.number.isRequired,
-  bookId: PropTypes.number,
-  bookImageURL: PropTypes.string,
+  Authors: PropTypes.arrayOf(PropTypes.object),
+  availableBorrow: PropTypes.number,
   bookDescription: PropTypes.string,
+  bookId: PropTypes.number,
+  bookImageUpload: PropTypes.func.isRequired,
+  bookImageURL: PropTypes.string,
   bookQuantity: PropTypes.number,
+  bookTitle: PropTypes.string,
+  borrowBook: PropTypes.func.isRequired,
+  borrowedBooks: PropTypes.array,
+  borrowedBooksCount: PropTypes.number,
+  clearBookState: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
+  editBook: PropTypes.func.isRequired,
+  error: PropTypes.object,
+  fetching: PropTypes.bool.isRequired,
+  fetchUserBookHistory: PropTypes.func.isRequired,
+  isAdmin: PropTypes.bool,
   ISBN: PropTypes.string,
+  match: PropTypes.shape({
+    params: PropTypes.object
+  }).isRequired,
+  membershipName: PropTypes.string,
   publishYear: PropTypes.string,
   ratingSum: PropTypes.string,
   ratingCount: PropTypes.string,
-  Authors: PropTypes.arrayOf(PropTypes.object),
-  availableBorrow: PropTypes.number,
-  membershipName: PropTypes.string,
   unreturnedBookCount: PropTypes.number,
-  borrowedBooks: PropTypes.array,
-  borrowedBooksCount: PropTypes.number,
-  error: PropTypes.object
+  userId: PropTypes.number.isRequired,
+  viewOneBook: PropTypes.func.isRequired
 };
 ViewBook.defaultProps = {
   bookTitle: '',
@@ -383,6 +549,7 @@ ViewBook.defaultProps = {
   Authors: [],
   bookDescription: '',
   bookQuantity: 0,
+  isAdmin: false,
   ISBN: '',
   publishYear: null,
   bookImageURL: '',
@@ -403,6 +570,8 @@ ViewBook.contextTypes = {
  */
 function mapStateToProps(state) {
   return {
+    isAdmin: (state.auth.user.role === 'Admin'),
+    fetching: state.singleBookReducer.fetching,
     bookTitle: state.singleBookReducer.fetchedBook.bookName,
     userId: state.auth.user.userId,
     bookId: state.singleBookReducer.fetchedBook.id,
@@ -424,8 +593,11 @@ function mapStateToProps(state) {
 }
 export default connect(mapStateToProps,
   {
+    editBook,
     viewOneBook,
     fetchUserBookHistory,
     borrowBook,
-    logout
+    logout,
+    clearBookState,
+    bookImageUpload
   })(ViewBook);

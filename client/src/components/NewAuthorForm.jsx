@@ -60,8 +60,8 @@ class NewAuthorForm extends React.Component {
       <div id="NewAuth" className="tabs-item">
         <div className="tabs-item-content">
           <h2 className="tabs-title">
-            New <span>
-              Author...
+            New<span>
+              author...
               </span>
           </h2>
           <form onSubmit={this.onSubmit}>

@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 
 import { getMoment, displayDate } from '../common/calculate-moment';
 
-const MiddleSector = (props) => {
+/**
+ *
+ * @param {object} props 
+ */
+function MiddleSector(props) {
   let unreturnedCount = 0;
   const unreturnedBooks = (props.borrowList) ?
     props.borrowList.map((books) => {
@@ -34,9 +38,9 @@ const MiddleSector = (props) => {
             <span
               className="book-times-orange"
             >
-              {` ${props.borrowCount} `}
+              {props.borrowCount > 1 &&
+                `${props.borrowCount} times`}
             </span>
-            {props.borrowCount > 1 && 'times'}
             {props.borrowCount === 1 && 'once'}
             <span
               role="presentation"
@@ -69,7 +73,7 @@ const MiddleSector = (props) => {
         }
       </div></div>
   );
-};
+}
 MiddleSector.propTypes = {
   borrowCount: PropTypes.number.isRequired,
   borrowed: PropTypes.string,

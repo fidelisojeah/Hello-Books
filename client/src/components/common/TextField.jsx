@@ -13,7 +13,9 @@ const TextField = ({ formField,
   isRequired,
   errorMessage,
   checkExists,
-  compoundError }) => {
+  compoundError,
+  autocomplete
+ }) => {
   let hasError = null;
   if (Array.isArray(compoundError)) {
     compoundError.forEach((errorFields) => {
@@ -31,6 +33,7 @@ const TextField = ({ formField,
       >
         <textarea
           name={field}
+          id={field}
           value={value}
           onChange={onChange}
           required={isRequired}
@@ -67,6 +70,7 @@ const TextField = ({ formField,
         onBlur={checkExists}
         onChange={onChange}
         id={field}
+        autoComplete={autocomplete}
       />
       <label className="control-label" htmlFor="input">{label}</label>
       <i className="bar" />
@@ -98,6 +102,7 @@ TextField.propTypes = {
   type: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   checkExists: PropTypes.func,
+  autocomplete: PropTypes.string
 };
 
 TextField.defaultProps = {
@@ -107,6 +112,7 @@ TextField.defaultProps = {
   compoundError: [],
   errorMessage: 'nothing',
   checkExists: null,
+  autocomplete: null
 };
 
 export default TextField;

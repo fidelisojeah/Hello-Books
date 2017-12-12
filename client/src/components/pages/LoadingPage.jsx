@@ -7,8 +7,10 @@ const defaultPageLink = [{
   linkName: 'Home',
   link: ''
 }];
-
-const LoadingPage = () => {
+/**
+ * @return {JSX}
+ */
+function LoadingPage() {
   return (
     <div className="layout--container">
       <LayoutHeader
@@ -19,5 +21,5 @@ const LoadingPage = () => {
       />
     </div>
   );
-};
+}
 export default LoadingPage;

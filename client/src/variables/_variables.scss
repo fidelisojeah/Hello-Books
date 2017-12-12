@@ -62,7 +62,9 @@ $primaryColor: #0078d7;
 // $primaryColorext: #aa3939;
 $primaryColorext: #3348a7;
 $secondaryColor: #FA6330;
-$textFont: Courier New, Courier, monospace;
+$textFont: Courier New,
+Courier,
+monospace;
 // Shadows
 $shadow-inset: inset 0 2px 2px 0 rgba(0, 0, 0, .14);
 $shadow-0: 0 0 1px rgba(0, 0, 0, 0);
@@ -101,7 +103,6 @@ $mf-focus-color: $secondaryColor !default;
 $mf-error-color: #EC1612 !default;
 $mf-transition-speed: 0.28s !default;
 $menu-width: 250px!default;
-
 //date-picker
 $datepicker__background-color: $secondaryColor !default;
 $datepicker__border-color: none !default;
@@ -110,12 +111,63 @@ $datepicker__muted-color: #ccc !default;
 $datepicker__selected-color: $primaryColor !default;
 $datepicker__text-color: #000 !default;
 $datepicker__header-color: #fff !default;
-
 $datepicker__border-radius: .3rem !default;
 $datepicker__day-margin: .166rem !default;
 $datepicker__font-size: .8rem !default;
-$datepicker__font-family: 'wf_segoe-ui_light', 'Segoe UI Light', 'Segoe WP Light', Tahoma, Arial, sans-serif !default;
+$datepicker__font-family: 'wf_segoe-ui_light',
+'Segoe UI Light',
+'Segoe WP Light',
+Tahoma,
+Arial,
+sans-serif !default;
 $datepicker__item-size: 1.7rem !default;
 $datepicker__margin: .4rem !default;
 $datepicker__navigation-size: .45rem !default;
 $datepicker__triangle-size: 8px !default;
+@-webkit-keyframes fadein {
+  from {
+    top: 0;
+    right: 0;
+    opacity: 0;
+  }
+  to {
+    top: 120px;
+    right: 10px;
+    opacity: 1;
+  }
+}
+
+@keyframes fadein {
+  from {
+    top: 0;
+    right: 0;
+    opacity: 0;
+  }
+  to {
+    top: 120px;
+    right: 10px;
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeout {
+  from {
+    right: 10px;
+    opacity: 1;
+  }
+  to {
+    right: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    right: 10px;
+    opacity: 1;
+  }
+  to {
+    right: 0;
+    opacity: 0;
+  }
+}

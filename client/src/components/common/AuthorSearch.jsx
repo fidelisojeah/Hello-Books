@@ -107,8 +107,9 @@ class AuthorSearch extends React.Component {
                 <li
                   key={authors.id}
                 >
-                  <a
+                  <span
                     role="presentation"
+                    className="author-list-span"
                     key={authors.id}
                     onMouseDown={event => this.onMouseDown(event, authors)}
                   >
@@ -116,7 +117,7 @@ class AuthorSearch extends React.Component {
                     {authors.dateofBirth &&
                       <span>{authors.dateofBirth}</span>
                     }
-                  </a>
+                  </span>
                 </li >
               );
             }
@@ -137,6 +138,7 @@ class AuthorSearch extends React.Component {
           checkExists={this.onBlurEvent}
           formField="form-group"
           type="text"
+          autocomplete="off"
         />
         <input
           type="hidden"

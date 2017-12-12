@@ -70,6 +70,26 @@ describe('POST /api/v4/users/signup Version 4', () => {
               done();
             });
         });
+      it('Should respond with code 400 Invalid Username for usernames with spaces',
+        (done) => {
+          chai.request(app)
+            .post('/api/v4/users/signup')
+            .send({
+              username: 'test user with space',
+              password: 'TestUser123$',
+              firstname: 'Test',
+              lastname: 'User',
+              email: 'test@user.com.ng',
+            })
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Username Invalid');
+              done();
+            });
+        });
       it('Should respond with code 400 Username too short for Short username',
         (done) => {
           chai.request(app)

@@ -13,7 +13,7 @@ import {
  * @return {promise} return data
  */
 export function bookImageUpload(imageData) {
-  return dispatch => {
+  return () => {
     return request
       .post(CLOUDINARY_CLOUD_URL)
       .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)

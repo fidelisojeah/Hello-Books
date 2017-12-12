@@ -1,7 +1,11 @@
 // email validation here
 const emailRegex = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+const usernameRegex = /\s+/g;
 const validateEmail = emailAddress =>
   emailRegex.test(emailAddress); // returns true or false
+
+const checkNoSpace = username =>
+  usernameRegex.test(username);
 
 class UserHelper {
   static validateSignup(username,
@@ -31,7 +35,7 @@ class UserHelper {
           message: 'Last Name too short',
           field: 'lastname',
         });
-      } else if (username === null) {
+      } else if (username === null || checkNoSpace(username)) {
         reject({
           message: 'Username Invalid',
           field: 'username',
@@ -62,7 +66,6 @@ class UserHelper {
           field: 'password',
         });
       } else {
-        // generate random string
         resolve('All Good');
       }
     });
