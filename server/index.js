@@ -24,8 +24,6 @@ const environment = process.env.NODE_ENV;
 const DIST_DIR = path.join(__dirname, '../dist');
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
 
-// log requests
-app.use(logger('dev'));
 // Set JWT secret
 app.set('JsonSecret', jsonSecretKey);
 app.use(bodyParser.urlencoded({
@@ -98,11 +96,15 @@ app.post('/api/v4/books/:bookId/quantity',
 
 app.get('/api/v4/users/logout', CheckSession.clearLogin);
 
+app.use('/api-docs/',
+  express.static(path.join(__dirname, '../slate/build/')));
 
 if (environment === 'production') {
   app.use(express.static(DIST_DIR));
   app.get('/*', (request, response) => response.sendFile(HTML_FILE));
 } else {
+  // log requests
+  app.use(logger('dev'));
   app.get('/', (request, response) => response.status(202).send({
     message: 'Welcome to Hello-Books',
   }));
