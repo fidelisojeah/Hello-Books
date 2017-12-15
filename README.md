@@ -3,8 +3,10 @@
 [![Build Status](https://travis-ci.org/fidelisojeah/Hello-Books.svg?branch=develop)](https://travis-ci.org/fidelisojeah/Hello-Books)
 [![Coverage Status](https://coveralls.io/repos/github/fidelisojeah/Hello-Books/badge.svg?branch=develop)](https://coveralls.io/github/fidelisojeah/Hello-Books?branch=develop)
 [![CircleCI](https://circleci.com/gh/fidelisojeah/Hello-Books.svg?style=svg)](https://circleci.com/gh/fidelisojeah/Hello-Books)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/2dc8c75d71b130c0f0b1/test_coverage)](https://codeclimate.com/github/fidelisojeah/Hello-Books/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/2dc8c75d71b130c0f0b1/maintainability)](https://codeclimate.com/github/fidelisojeah/Hello-Books/maintainability)
 
-* Hello Books enables the easy management of an online book library *
+*Hello Books enables the easy management of an online book library*
 
 ## Table of Contents
 
