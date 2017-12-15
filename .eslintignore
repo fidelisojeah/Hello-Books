@@ -1,3 +1,5 @@
 node_modules/
 template/assets/scripts/
 build/
+slate/
+coverage/
