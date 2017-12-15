@@ -14,7 +14,7 @@
     "instrument": false
   },
   "scripts": {
-    "heroku-postbuild": "npm run build:webpack",
+    "heroku-postbuild": "npm run build:webpack && npm run build:docs",
     "install:config": "npm prune && npm install",
     "lint": "markdownlint --config linters/.markdownlint.json",
     "release": "babel src --out-dir lib",
@@ -22,6 +22,7 @@
     "migrate:test": "sequelize db:migrate --env test",
     "migrate": "sequelize db:migrate",
     "build": "babel server/ -d build",
+    "build:docs": "cp -r slate/build dist/apidocs",
     "build:webpack": "webpack --config ./webpack.config.prod.js --progress",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "test": "NODE_ENV=test nyc mocha",
