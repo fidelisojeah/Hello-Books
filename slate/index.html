@@ -1,0 +1,1437 @@
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Hello Books</title>
+
+    <style>
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight .gh {
+  color: #999999;
+}
+.highlight .sr {
+  color: #f6aa11;
+}
+.highlight .go {
+  color: #888888;
+}
+.highlight .gp {
+  color: #555555;
+}
+.highlight .gs {
+}
+.highlight .gu {
+  color: #aaaaaa;
+}
+.highlight .nb {
+  color: #f6aa11;
+}
+.highlight .cm {
+  color: #75715e;
+}
+.highlight .cp {
+  color: #75715e;
+}
+.highlight .c1 {
+  color: #75715e;
+}
+.highlight .cs {
+  color: #75715e;
+}
+.highlight .c, .highlight .cd {
+  color: #75715e;
+}
+.highlight .err {
+  color: #960050;
+}
+.highlight .gr {
+  color: #960050;
+}
+.highlight .gt {
+  color: #960050;
+}
+.highlight .gd {
+  color: #49483e;
+}
+.highlight .gi {
+  color: #49483e;
+}
+.highlight .ge {
+  color: #49483e;
+}
+.highlight .kc {
+  color: #66d9ef;
+}
+.highlight .kd {
+  color: #66d9ef;
+}
+.highlight .kr {
+  color: #66d9ef;
+}
+.highlight .no {
+  color: #66d9ef;
+}
+.highlight .kt {
+  color: #66d9ef;
+}
+.highlight .mf {
+  color: #ae81ff;
+}
+.highlight .mh {
+  color: #ae81ff;
+}
+.highlight .il {
+  color: #ae81ff;
+}
+.highlight .mi {
+  color: #ae81ff;
+}
+.highlight .mo {
+  color: #ae81ff;
+}
+.highlight .m, .highlight .mb, .highlight .mx {
+  color: #ae81ff;
+}
+.highlight .sc {
+  color: #ae81ff;
+}
+.highlight .se {
+  color: #ae81ff;
+}
+.highlight .ss {
+  color: #ae81ff;
+}
+.highlight .sd {
+  color: #e6db74;
+}
+.highlight .s2 {
+  color: #e6db74;
+}
+.highlight .sb {
+  color: #e6db74;
+}
+.highlight .sh {
+  color: #e6db74;
+}
+.highlight .si {
+  color: #e6db74;
+}
+.highlight .sx {
+  color: #e6db74;
+}
+.highlight .s1 {
+  color: #e6db74;
+}
+.highlight .s {
+  color: #e6db74;
+}
+.highlight .na {
+  color: #a6e22e;
+}
+.highlight .nc {
+  color: #a6e22e;
+}
+.highlight .nd {
+  color: #a6e22e;
+}
+.highlight .ne {
+  color: #a6e22e;
+}
+.highlight .nf {
+  color: #a6e22e;
+}
+.highlight .vc {
+  color: #ffffff;
+}
+.highlight .nn {
+  color: #ffffff;
+}
+.highlight .nl {
+  color: #ffffff;
+}
+.highlight .ni {
+  color: #ffffff;
+}
+.highlight .bp {
+  color: #ffffff;
+}
+.highlight .vg {
+  color: #ffffff;
+}
+.highlight .vi {
+  color: #ffffff;
+}
+.highlight .nv {
+  color: #ffffff;
+}
+.highlight .w {
+  color: #ffffff;
+}
+.highlight {
+  color: #ffffff;
+}
+.highlight .n, .highlight .py, .highlight .nx {
+  color: #ffffff;
+}
+.highlight .ow {
+  color: #f92672;
+}
+.highlight .nt {
+  color: #f92672;
+}
+.highlight .k, .highlight .kv {
+  color: #f92672;
+}
+.highlight .kn {
+  color: #f92672;
+}
+.highlight .kp {
+  color: #f92672;
+}
+.highlight .o {
+  color: #f92672;
+}
+    </style>
+    <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" media="print" />
+      <script src="javascripts/all_nosearch.js"></script>
+  </head>
+
+  <body class="index" data-languages="[&quot;shell&quot;]">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" alt="Navbar" />
+      </span>
+    </a>
+    <div class="toc-wrapper">
+      <img src="images/logo.png" class="logo" alt="Logo" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="shell">cURL</a>
+        </div>
+      <div id="toc" class="toc-list-h1">
+          <li>
+            <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#welcome-to-the-hello-books-api" class="toc-h2 toc-link" data-title="Welcome to the Hello Books API">Welcome to the Hello Books API</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#authorization" class="toc-h1 toc-link" data-title="Authorization">Authorization</a>
+          </li>
+          <li>
+            <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#sign-up" class="toc-h2 toc-link" data-title="Sign Up">Sign Up</a>
+                  </li>
+                  <li>
+                    <a href="#sign-in" class="toc-h2 toc-link" data-title="Sign In">Sign In</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#admin-endpoints" class="toc-h1 toc-link" data-title="Admin Endpoints">Admin Endpoints</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#create-new-author" class="toc-h2 toc-link" data-title="Create New Author">Create New Author</a>
+                  </li>
+                  <li>
+                    <a href="#create-book" class="toc-h2 toc-link" data-title="Create Book">Create Book</a>
+                  </li>
+                  <li>
+                    <a href="#modify-book" class="toc-h2 toc-link" data-title="Modify Book">Modify Book</a>
+                  </li>
+                  <li>
+                    <a href="#update-book-quantity" class="toc-h2 toc-link" data-title="Update Book Quantity">Update Book Quantity</a>
+                  </li>
+                  <li>
+                    <a href="#common-errors" class="toc-h2 toc-link" data-title="Common Errors">Common Errors</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#common-endpoints" class="toc-h1 toc-link" data-title="Common Endpoints">Common Endpoints</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get-authors" class="toc-h2 toc-link" data-title="Get Authors">Get Authors</a>
+                  </li>
+                  <li>
+                    <a href="#get-books" class="toc-h2 toc-link" data-title="Get Books">Get Books</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#basic-user-endpoints" class="toc-h1 toc-link" data-title="Basic User Endpoints">Basic User Endpoints</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#borrow-book" class="toc-h2 toc-link" data-title="Borrow Book">Borrow Book</a>
+                  </li>
+                  <li>
+                    <a href="#return-book" class="toc-h2 toc-link" data-title="Return Book">Return Book</a>
+                  </li>
+                  <li>
+                    <a href="#get-borrowed-books" class="toc-h2 toc-link" data-title="Get Borrowed Books">Get Borrowed Books</a>
+                  </li>
+              </ul>
+          </li>
+      </div>
+        <ul class="toc-footer">
+            <li><a href='https://github.com/fidelisojeah/Hello-Books'>Hello Books</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id='introduction'>Introduction</h1><h2 id='welcome-to-the-hello-books-api'>Welcome to the Hello Books API</h2>
+<blockquote>
+<h3 id='api-endpoint'>API Endpoint</h3>
+<p><code>https://fidelishellobooks.herokuapp.com/api/</code></p>
+</blockquote>
+
+<p>Hello Books is a full stack Library management Application. There are a number of helper functions (which you are not exposed to) that perform various authorization checks.</p>
+
+<p>You can use our API to access the Hello Books API endpoints. Our APIs are RESTful and are designed to be resource-oriented and make use of appropraite HTTP response codes.</p>
+
+<p>You can view code examples of calls to our API endpoints by the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
+<h1 id='authorization'>Authorization</h1>
+<p>Certain endpoints require authorizationn before they can be accessed</p>
+
+<p>Calls made to APIs needing authorization need the x-access-token header attached. The content of the x-access-token would be a token signed by the server.</p>
+<pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
+curl <span class="s2">"https://fidelishellobooks.herokuapp.com/api/v1/example"</span>
+  -H <span class="s2">"x-access-token:
+    eyJpZCI6MSwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9._V7HLWjHKM_Aplx2nN1pGcJg1LqZKDR5e40mZagrUjc"</span>
+</code></pre>
+<blockquote>
+<p>the value assigned to <code>x-access-token</code> is the token returned from the <a href="#sign-in">signin endpoint</a></p>
+</blockquote>
+
+<p>The header <code>x-access-token</code> is the value of the token returned once signin is completed</p>
+
+<p>Hello Books expects for the token to be included in API requests to the server (requiring authorizarion) in a header that looks like the following:</p>
+
+<p><code>x-access-token: TOKEN_FROM_SERVER</code></p>
+
+<aside class="notice">
+You must replace <code>TOKEN_FROM_SERVER</code> with token received from server.
+</aside>
+<h1 id='authentication'>Authentication</h1>
+<p>For Authentication:</p>
+
+<ul>
+<li><p>You must first <a href="#sign-up">signup on the server</a></p></li>
+<li><p>A mail would be sent to your email address to activate your account</p></li>
+<li><p>You must signin using either your email/username and password supplied</p></li>
+</ul>
+<h2 id='sign-up'>Sign Up</h2><pre class="highlight shell tab-shell"><code>curl -d <span class="s2">"username=sampleuser&amp;password=samplePassword&amp;email=sample@example.com&amp;firstname=Sample&amp;lastname=User"</span>
+  -X POST <span class="s2">"https://fidelishellobooks.herokuapp.com/api/v1/users/signup"</span>
+</code></pre><h3 id='sign-up-endpoint'>Sign Up endpoint</h3>
+<p><code>POST https://fidelishellobooks.herokuapp.com/api/v1/users/signup</code></p>
+
+<blockquote>
+<h4 id='sample-response'>Sample Response</h4></blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"User account created"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"membership"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Blue"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><h3 id='parameters'>Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>isRequired</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>True</td>
+<td>Username to be used for login purposes by user</td>
+</tr>
+<tr>
+<td>password</td>
+<td>True</td>
+<td>Password to be used for login purposes</td>
+</tr>
+<tr>
+<td>lastname</td>
+<td>True</td>
+<td>Surname of user</td>
+</tr>
+<tr>
+<td>firstname</td>
+<td>True</td>
+<td>First Name of user</td>
+</tr>
+<tr>
+<td>email</td>
+<td>True</td>
+<td>Email address of user (activation email would be sent here)</td>
+</tr>
+<tr>
+<td>phone</td>
+<td>false</td>
+<td>Phone number of user</td>
+</tr>
+</tbody></table>
+<h3 id='sign-up-response-and-errors'>Sign Up Response and Errors</h3>
+<blockquote>
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>201</td>
+<td>User Account Created</td>
+<td>User account has been created successfully and activation email has been sent to account</td>
+</tr>
+<tr>
+<td>202</td>
+<td>User Account Created, Token generation Unsuccessful</td>
+<td>User account was created, However for some reason activation email has yet to be sent to user</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Email/Username must be unique</td>
+<td>The Email address or username is already taken/registered on database</td>
+</tr>
+<tr>
+<td>400</td>
+<td>{<strong>Required</strong>} Field {<strong>invalid/too short</strong>}</td>
+<td>One of the required fields is invalid or missing</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>None</td>
+<td>A server error has occured (from our end)</td>
+</tr>
+</tbody></table>
+</blockquote>
+
+<p>Our API makes use of the regular HTTP response codes to indicate success or failure. Generally, <em>2XX</em> range of reply codes mean that the user has been able to signup successfully</p>
+
+<p>Status codes in the <em>4XX</em> range mostly indicate an error has occured:</p>
+
+<ul>
+<li><p>Could mean that one or more required fields in your query is missing</p></li>
+<li><p>Could mean that one or more fields has invalid content</p></li>
+<li><p>Could also indicate that your email or specified username has already been registered in the system</p></li>
+</ul>
+
+<p>Status codes in the <em>5XX</em> range mostly indicate the error that has occured is from our end, You could report these errors by <a href="mailto://fidelis.ojeah@andela.com">sending an email</a></p>
+<h2 id='sign-in'>Sign In</h2><pre class="highlight shell tab-shell"><code>curl -d <span class="s2">"username=sampleuser&amp;password=samplePassword"</span>
+  -X POST <span class="s2">"https://fidelishellobooks.herokuapp.com/api/v1/users/signin"</span>
+</code></pre>
+<blockquote>
+<p>Sample Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Successful"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Signin Successful"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FtcGxldXNlciIsImZpcnN0TmFtZSI6IlNhbXBsZSIsImxhc3ROYW1lIjoiVXNlciIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNTEzMTc1OTQxLCJleHAiOjE1MTM1MjE1NDF9.OPD-w85wL8ELcF8xnX7bDHUqA3yISsS3FIehGsrp0v4"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>To Signin, you supply the email/username to the username field.</p>
+
+<p>Token generated on sign in only last about a 4 days at best and must be renewed afterwards</p>
+<h3 id='sign-in-endpoint'>Sign In endpoint</h3>
+<p><code>POST https://fidelishellobooks.herokuapp.com/api/v1/users/signin</code></p>
+<h3 id='sign-in-parameters'>Sign In Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>isRequired</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>username</td>
+<td>True</td>
+<td>Either the Username registered with or the email address</td>
+</tr>
+<tr>
+<td>password</td>
+<td>True</td>
+<td>Must be the password used to register on the system</td>
+</tr>
+</tbody></table>
+<h3 id='sign-in-response-and-errors'>Sign In Response and Errors</h3>
+<blockquote>
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>202</td>
+<td>Signin Successful</td>
+<td>User has been signed in on the system and token generated</td>
+</tr>
+<tr>
+<td>400</td>
+<td>{<strong>field</strong>} not supplied/invalid</td>
+<td>The username/email or password is not supplied or is of invalid format</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Invalid Username or Password</td>
+<td>No such user exists or either field is invalid</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Email Address not Verified</td>
+<td>User Has registered but email has not been activated</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>Unsuccessful</td>
+<td>A server error has occured (from our end)</td>
+</tr>
+</tbody></table>
+</blockquote>
+
+<p>Our API makes use of the regular HTTP response codes to indicate success or failure. Generally, <em>2XX</em> range of reply codes mean that the user has been able to signup successfully</p>
+
+<p>Status codes in the <em>4XX</em> range mostly indicate an error has occured:</p>
+
+<ul>
+<li><p>Could mean that the email address has not yet been verified</p></li>
+<li><p>Could mean that either the username supplied or password is incorrect (and authentication impossible) or either is missing</p></li>
+</ul>
+
+<p>Status codes in the <em>5XX</em> range mostly indicate the error that has occured is from our end, You could report these errors by <a href="mailto://fidelis.ojeah@andela.com">sending an email</a></p>
+
+<aside class="notice">
+The response object <code>token</code> Would serve as your <code>x-access-token</code> Hence forth
+</aside>
+<h1 id='admin-endpoints'>Admin Endpoints</h1>
+<p>All Endpoints in this category require the authorization header <a href="#authorization">x-access-token</a></p>
+
+<p>Special access must have been granted to the user for administrative priviledges else all requests would fail</p>
+<h2 id='create-new-author'>Create New Author</h2><pre class="highlight shell tab-shell"><code>curl -d <span class="s2">"firstname=sample&amp;lastname=Author&amp;authorDOB=1992-01-12"</span>
+  -X POST <span class="s2">"https://fidelishellobooks.herokuapp.com/api/v1/authors"</span>
+  -H <span class="s2">"x-access-token:
+  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FtcGxldXNlciIsImZpcnN0TmFtZSI6IlNhbXBsZSIsImxhc3ROYW1lIjoiVXNlciIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNTEzMTc1OTQxLCJleHAiOjE1MTM1MjE1NDF9.OPD-w85wL8ELcF8xnX7bDHUqA3yISsS3FIehGsrp0v4"</span>
+</code></pre>
+<blockquote>
+<p>Sample Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w">  </span><span class="s2">"Author Created Successfully"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Gives admin ability to create a new author</p>
+
+<p><code>POST https://fidelishellobooks.herokuapp.com/api/v1/authors</code></p>
+<h3 id='create-author-parameters'>Create Author Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>isRequired</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>firstname</td>
+<td>True</td>
+<td>First Name of the Author</td>
+</tr>
+<tr>
+<td>lastname</td>
+<td>True</td>
+<td>Surname of the Author</td>
+</tr>
+<tr>
+<td>authorDOB</td>
+<td>False</td>
+<td>Date of Birth of the Author</td>
+</tr>
+<tr>
+<td>authorAKA</td>
+<td>False</td>
+<td>Author&#39;s Pen name, defaults to be the Authors FIrstname + Lastname</td>
+</tr>
+</tbody></table>
+<h3 id='create-author-response-and-errors'>Create Author Response and Errors</h3>
+<blockquote>
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>201</td>
+<td>Created Successfully</td>
+<td>Author has been created and added to the database successfully (and is available for selection)</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Incomplete Details</td>
+<td>Details supplied are incomplete</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>Unsuccessful</td>
+<td>A server error has occured (from our end)</td>
+</tr>
+</tbody></table>
+</blockquote>
+
+<p>The only successful response code here is 201, the message here is unimportant</p>
+
+<p>Status codes in the <em>5XX</em> range mostly indicate the error that has occured is from our end, You could report these errors by <a href="mailto://fidelis.ojeah@andela.com">sending an email</a></p>
+<h2 id='create-book'>Create Book</h2><pre class="highlight shell tab-shell"><code>curl
+  -X POST <span class="s2">"https://fidelishellobooks.herokuapp.com/api/v1/books"</span> -d <span class="s2">"authorIds=1&amp;publishyear=2017&amp;bookname=Sample+Book&amp;description=Sample+description+stuff+xyz+abc&amp;image=xyz.jpg&amp;ISBN=1029-1820-1381-11"</span>
+  -H <span class="s2">"x-access-token:
+  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FtcGxldXNlciIsImZpcnN0TmFtZSI6IlNhbXBsZSIsImxhc3ROYW1lIjoiVXNlciIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNTEzMTc1OTQxLCJleHAiOjE1MTM1MjE1NDF9.OPD-w85wL8ELcF8xnX7bDHUqA3yISsS3FIehGsrp0v4"</span>
+</code></pre>
+<blockquote>
+<p>Sample Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Book Created Successfully"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"bookID"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Create a Book based on given parameters</p>
+
+<p><code>POST https://fidelishellobooks.herokuapp.com/api/v1/books</code></p>
+<h3 id='create-book-parameters'>Create Book Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>isRequired</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>authorIds</td>
+<td>true</td>
+<td>A sort of list of <a href="#get-authors">author IDs</a>, multiple authors would be a set of comma seperated numbers e.g <code>1,2,3</code> as input</td>
+</tr>
+<tr>
+<td>publishyear</td>
+<td>true</td>
+<td>A number (or date) which would indacate the publish year of book</td>
+</tr>
+<tr>
+<td>bookname</td>
+<td>true</td>
+<td>The name of a book</td>
+</tr>
+<tr>
+<td>description</td>
+<td>true</td>
+<td>Description of book</td>
+</tr>
+<tr>
+<td>image</td>
+<td>true</td>
+<td>image URL</td>
+</tr>
+<tr>
+<td>ISBN</td>
+<td>true</td>
+<td>the International Standard Book Number of the book</td>
+</tr>
+<tr>
+<td>quantity</td>
+<td>false</td>
+<td>Number of copies of the book to be added to the library (defaults to 1)</td>
+</tr>
+</tbody></table>
+<h3 id='create-book-response-and-errors'>Create Book Response and Errors</h3>
+<blockquote>
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>201</td>
+<td>Book Successfully Created</td>
+<td>Specifies that book has been created and added to the library</td>
+</tr>
+<tr>
+<td>400</td>
+<td>[No {<strong>field</strong>} Found]</td>
+<td>Returns an array of errors (for each field) e.g <code>[{&quot;field&quot;:&quot;description&quot;,&quot;error&quot;:&quot;No Description Supplied&quot;},{&quot;field&quot;:&quot;authorField&quot;,&quot;error&quot;:&quot;No Authors Selected&quot;}]</code></td>
+</tr>
+<tr>
+<td>400</td>
+<td>Book Already Exists</td>
+<td>When a duplicate ISBN has been entered</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>Unsuccessful</td>
+<td>A server error has occured (from our end)</td>
+</tr>
+</tbody></table>
+</blockquote>
+
+<p>Once a <strong>201</strong> response code is returned, it can be expected that the book has been created and added to the books library</p>
+
+<p>Error code <strong>400</strong> indicate that an error has occured</p>
+
+<p>Status codes in the <em>5XX</em> range mostly indicate the error that has occured is from our end, You could report these errors by <a href="mailto://fidelis.ojeah@andela.com">sending an email</a></p>
+<h2 id='modify-book'>Modify Book</h2><pre class="highlight shell tab-shell"><code>curl
+  -X PUT <span class="s2">"https://fidelishellobooks.herokuapp.com/api/v1/books/1"</span> -d <span class="s2">"description=This+is+a+new+description+hehe"</span>
+  -H <span class="s2">"x-access-token:
+  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FtcGxldXNlciIsImZpcnN0TmFtZSI6IlNhbXBsZSIsImxhc3ROYW1lIjoiVXNlciIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNTEzMTc1OTQxLCJleHAiOjE1MTM1MjE1NDF9.OPD-w85wL8ELcF8xnX7bDHUqA3yISsS3FIehGsrp0v4"</span>
+</code></pre>
+<blockquote>
+<p>Sample Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Book Details Updated"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"bookUpdate"</span><span class="w"> </span><span class="p">:</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"bookName"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Sample Book"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"bookISBN"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"1029-1820-1381-11"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"description"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"This is a new description hehe"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"bookImage"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"xyz.jpg"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"publishYear"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-01-01T00:00:00.000Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"isActive"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"createdAt"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-14T10:07:58.127Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"updatedAt"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-14T10:58:12.828Z"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Modified a Book based on specified parameters</p>
+
+<p><code>POST https://fidelishellobooks.herokuapp.com/api/v1/books/&lt;ID&gt;</code></p>
+<h3 id='modify-book-parameters'>Modify Book Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>isRequired</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>&lt; ID &gt;</td>
+<td>true</td>
+<td>The ID of the book to be modified</td>
+</tr>
+<tr>
+<td>publishyear</td>
+<td>false</td>
+<td>New value for publish year</td>
+</tr>
+<tr>
+<td>bookname</td>
+<td>false</td>
+<td>The modified name of a book</td>
+</tr>
+<tr>
+<td>description</td>
+<td>false</td>
+<td>The modified Description of book</td>
+</tr>
+<tr>
+<td>image</td>
+<td>false</td>
+<td>the modified image URL</td>
+</tr>
+<tr>
+<td>ISBN</td>
+<td>false</td>
+<td>the modified ISBN</td>
+</tr>
+</tbody></table>
+<h3 id='modify-book-response-and-errors'>Modify Book Response and Errors</h3>
+<blockquote>
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Book Details Updated</td>
+<td>Specifies that book has been modified successfully</td>
+</tr>
+<tr>
+<td>400</td>
+<td>No Information Supplied</td>
+<td>Specifies that API has been called without any active field to be modified</td>
+</tr>
+<tr>
+<td>400</td>
+<td>ISBN must be unique</td>
+<td>When a duplicate ISBN has been entered</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Invalid Book</td>
+<td>Specifies that API has been called for a book that does not exist (or not book id entered)</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>Unsuccessful</td>
+<td>A server error has occured (from our end)</td>
+</tr>
+</tbody></table>
+</blockquote>
+
+<p>Once a <strong>200</strong> response code is returned, it can be expected that the book has been modified in the library</p>
+
+<p>Error code <strong>400</strong> indicate that No fields have been supplied for modification or ISBN has already been used by another book</p>
+
+<p>Error code <strong>404</strong> indicate that Book ID has not been specified</p>
+
+<p>Status codes in the <em>5XX</em> range mostly indicate the error that has occured is from our end, You could report these errors by <a href="mailto://fidelis.ojeah@andela.com">sending an email</a></p>
+<h2 id='update-book-quantity'>Update Book Quantity</h2><pre class="highlight shell tab-shell"><code>curl
+  -X POST <span class="s2">"https://fidelishellobooks.herokuapp.com/api/v1/books/1/quantity"</span> -d <span class="s2">"quantity=3"</span>
+  -H <span class="s2">"x-access-token:
+  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FtcGxldXNlciIsImZpcnN0TmFtZSI6IlNhbXBsZSIsImxhc3ROYW1lIjoiVXNlciIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNTEzMTc1OTQxLCJleHAiOjE1MTM1MjE1NDF9.OPD-w85wL8ELcF8xnX7bDHUqA3yISsS3FIehGsrp0v4"</span>
+</code></pre>
+<blockquote>
+<p>Sample Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Book Updated Successfully"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"addBook"</span><span class="w"> </span><span class="p">:</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"bookName"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Sample Book"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"bookISBN"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"1029-1820-1381-11"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"bookQuantity"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"description"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"This is a new description hehe"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"bookImage"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"xyz.jpg"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"publishYear"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-01-01T00:00:00.000Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"isActive"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"createdAt"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-14T10:07:58.127Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"updatedAt"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-14T11:35:48.351Z"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Modified a Book based on specified parameters</p>
+
+<p><code>POST https://fidelishellobooks.herokuapp.com/api/v1/books/&lt;ID&gt;/quantity</code></p>
+<h3 id='update-book-quantity-parameters'>Update Book Quantity Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>isRequired</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>&lt; ID &gt;</td>
+<td>true</td>
+<td>The ID of the book to be updated</td>
+</tr>
+<tr>
+<td>quantity</td>
+<td>true</td>
+<td>Number of new books to be added (or removed), a negative number indicates reduction in number of books</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+The minimum number of a particular book can be __0__, if quantity specied above is more than number of books available, no error would be thrown. However, You wouldn't have a negative number of books sorry
+</aside>
+<h3 id='modify-book-quantity-response-and-errors'>Modify Book Quantity Response and Errors</h3>
+<blockquote>
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Book Updated Successfully</td>
+<td>Specifies that number of copies of the book have been changed successfully</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Missing Information</td>
+<td>Specifies that API has been called without quantity to be added or removed</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Invalid Book</td>
+<td>Specifies that API has been called for a book that does not exist (or not book id entered)</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>Unsuccessful</td>
+<td>A server error has occured (from our end)</td>
+</tr>
+</tbody></table>
+</blockquote>
+
+<p>Once a <strong>200</strong> response code is returned, it can be expected that the book has been modified in the library</p>
+
+<p>Error code <strong>400</strong> indicate that No quantity field was specified</p>
+
+<p>Error code <strong>404</strong> indicate that Book ID has not been specified or book was not found in the library</p>
+<h2 id='common-errors'>Common Errors</h2>
+<blockquote>
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td>You do not have administrative priviledges (or your previous priviledges have been revoked)</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>Unsuccessful</td>
+<td>A server error has occured (from our end)</td>
+</tr>
+</tbody></table>
+</blockquote>
+
+<p>These errors are common amongst all routes requiring administrative priviledges</p>
+
+<p>The <strong>401</strong> means you do not have access to the endpoint you are tyring to visit (either because you do not have priviledges or cos you do not have a token), check the response to see cause of error</p>
+
+<p>Status codes in the <em>5XX</em> range mostly indicate the error that has occured is from our end, You could report these errors by <a href="mailto://fidelis.ojeah@andela.com">sending an email</a></p>
+<h1 id='common-endpoints'>Common Endpoints</h1>
+<p>These endpoints are available to everyone who has an <a href="#authorization">authorization token</a></p>
+<h2 id='get-authors'>Get Authors</h2><pre class="highlight shell tab-shell"><code>curl
+  -X GET <span class="s2">"https://fidelishellobooks.herokuapp.com/api/v1/authors"</span>
+  -H <span class="s2">"x-access-token:
+  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FtcGxldXNlciIsImZpcnN0TmFtZSI6IlNhbXBsZSIsImxhc3ROYW1lIjoiVXNlciIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNTEzMTc1OTQxLCJleHAiOjE1MTM1MjE1NDF9.OPD-w85wL8ELcF8xnX7bDHUqA3yISsS3FIehGsrp0v4"</span>
+</code></pre>
+<blockquote>
+<p>Sample Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"allAuthors"</span><span class="p">:</span><span class="w">
+    </span><span class="p">[{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"authorFirstName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Nil"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"authorLastName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Anonymous"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"authorAKA"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Anonymous"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"dateofBirth"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1900-01-01"</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"authorFirstName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sample"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"authorLastName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Author"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"authorAKA"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sample Author"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"dateofBirth"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1992-01-12"</span><span class="w">
+    </span><span class="p">}]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Lists of all authors</p>
+
+<p><code>GET https://fidelishellobooks.herokuapp.com/api/v1/authors</code></p>
+<h3 id='get-author-query-parameters'>Get Author Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>isRequired</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>false</td>
+<td>Author ID, if specified, only details about a particular author are displayed else all authors would be listed</td>
+</tr>
+</tbody></table>
+<h3 id='get-author-response-and-errors'>GET Author Response and Errors</h3>
+<blockquote>
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>No Authors</td>
+<td>Request was successful, however, there are no authors on the database</td>
+</tr>
+<tr>
+<td>202</td>
+<td>None</td>
+<td>Returns a list of all authors or information about a certain author (including books authored) if <strong>id</strong> is specified</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>Unsuccessful</td>
+<td>A server error has occured (from our end)</td>
+</tr>
+</tbody></table>
+</blockquote>
+
+<p>Once a <strong>202</strong> response code is returned, expect to receive a list of authors/books authored by an author</p>
+
+<p>Status codes in the <em>5XX</em> range mostly indicate the error that has occured is from our end, You could report these errors by <a href="mailto://fidelis.ojeah@andela.com">sending an email</a></p>
+<h2 id='get-books'>Get Books</h2><pre class="highlight shell tab-shell"><code>curl
+  -X GET <span class="s2">"https://fidelishellobooks.herokuapp.com/api/v1/books/list/1?limit=10"</span>
+  -H <span class="s2">"x-access-token:
+  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FtcGxldXNlciIsImZpcnN0TmFtZSI6IlNhbXBsZSIsImxhc3ROYW1lIjoiVXNlciIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNTEzMTc1OTQxLCJleHAiOjE1MTM1MjE1NDF9.OPD-w85wL8ELcF8xnX7bDHUqA3yISsS3FIehGsrp0v4"</span>
+</code></pre>
+<blockquote>
+<p>Sample Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"bookLists"</span><span class="w"> </span><span class="p">:</span><span class="w">
+    </span><span class="p">[{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"bookName"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Sample Book"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"bookISBN"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"1029-1820-1381-11"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"description"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"This is a new description hehe"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"bookImage"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"xyz.jpg"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"publishYear"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-01-01T00:00:00.000Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"RatingCount"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"RatingSum"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"ratingAvg"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"Authors"</span><span class="w"> </span><span class="p">:</span><span class="w">
+        </span><span class="p">[{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"authorAKA"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Anonymous"</span><span class="w">
+        </span><span class="p">}]</span><span class="w">
+    </span><span class="p">}],</span><span class="w">
+    </span><span class="s2">"totalBooksCount"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"totalPages"</span><span class="p">:</span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Lists of all Books Created</p>
+
+<p><code>GET https://fidelishellobooks.herokuapp.com/api/v1/books/list/&lt;page&gt;</code></p>
+<h3 id='get-books-parameters'>Get Books Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>type</th>
+<th>isRequired</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>page</td>
+<td>param</td>
+<td>true</td>
+<td>The page number (based of offset)</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>query</td>
+<td>true</td>
+<td>The number of books expected to be displayed per API call</td>
+</tr>
+<tr>
+<td>sort</td>
+<td>query</td>
+<td>false</td>
+<td>if specified, sorts the result either <em>Alphabetically</em> or by <em>Rating</em> otherwise sorts from newest first values could be <code>alphabetical</code>,<code>rating</code> (case insensitive)</td>
+</tr>
+</tbody></table>
+<h3 id='get-books-response-and-errors'>GET Books Response and Errors</h3>
+<blockquote>
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>None</td>
+<td>Request was successful, A list of books would be returned (or an empty array) with total number of pages</td>
+</tr>
+<tr>
+<td>400</td>
+<td>[Invalid {<strong>field</strong>} sent]</td>
+<td>Returns an array of errors (for limit or/and page fields) e.g <code>[{&quot;field&quot;:&quot;page&quot;,&quot;error&quot;:&quot;Invalid Page sent&quot;},{&quot;field&quot;:&quot;limit&quot;,&quot;error&quot;:&quot;Invalid limit sent&quot;}]</code></td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>Unsuccessful</td>
+<td>A server error has occured (from our end)</td>
+</tr>
+</tbody></table>
+</blockquote>
+
+<p>Once a <strong>200</strong> response code is returned, expect to receive a paginated list of books</p>
+
+<p>Status codes in the <em>5XX</em> range mostly indicate the error that has occured is from our end, You could report these errors by <a href="mailto://fidelis.ojeah@andela.com">sending an email</a></p>
+<h1 id='basic-user-endpoints'>Basic User Endpoints</h1>
+<p>These endpoints are basic endpoints which virtually all users have access to</p>
+
+<p>They require <a href="#authorization">authorization</a></p>
+
+<p>No Special access is required except from the <code>x-access-token</code> given to you when you <a href="#Authentication">Authenticated</a></p>
+<h2 id='borrow-book'>Borrow Book</h2><pre class="highlight shell tab-shell"><code>curl
+  -X POST <span class="s2">"https://fidelishellobooks.herokuapp.com/api/v1/users/1/books"</span> -d <span class="s2">"duedate=2018-01-01&amp;bookId=1"</span>
+  -H <span class="s2">"x-access-token:
+  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FtcGxldXNlciIsImZpcnN0TmFtZSI6IlNhbXBsZSIsImxhc3ROYW1lIjoiVXNlciIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNTEzMTc1OTQxLCJleHAiOjE1MTM1MjE1NDF9.OPD-w85wL8ELcF8xnX7bDHUqA3yISsS3FIehGsrp0v4"</span>
+</code></pre>
+<blockquote>
+<p>Sample Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Book Successfully Borrowed"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"lendId"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"borrowDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-14T11:59:35.883Z"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"book"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Sample Book"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"bookId"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"QuantityLeft"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"dueDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-01-01T00:00:00.000Z"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Borrow a Book from the library based on book ID specied and book availability</p>
+
+<aside class="success">
+A Book can be borrowed multiple times
+</aside>
+
+<p><code>POST https://fidelishellobooks.herokuapp.com/api/v1/users/&lt;userId&gt;/books</code></p>
+<h3 id='borrow-book-parameters'>Borrow Book Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>isRequired</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>&lt; userId &gt;</td>
+<td>true</td>
+<td>The user Id of the user trying to borrow the book</td>
+</tr>
+<tr>
+<td>bookId</td>
+<td>true</td>
+<td>the id of the book to be borrowed from the library</td>
+</tr>
+<tr>
+<td>duedate</td>
+<td>true</td>
+<td>The date the book is meant to be due for return</td>
+</tr>
+</tbody></table>
+<h3 id='borrow-book-response-and-errors'>Borrow Book Response and Errors</h3>
+<blockquote>
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Book Unavailable</td>
+<td>Request was valid. However, you cannot borrow the book as all copies have been borrowed (or are not just available)</td>
+</tr>
+<tr>
+<td>200</td>
+<td>Max borrow limit reached</td>
+<td>Request was valid. However, you cannot borrow the book as you have utilized all available loan slots allocated to you (return some books ?)</td>
+</tr>
+<tr>
+<td>202</td>
+<td>Book Successfully Borrowed</td>
+<td>States that the book has been borrowed from the library, quantity updated and Your available books to be borrowed have been reduced (till you return one of those borrowed)</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Due Date</td>
+<td>Specifies that the due date specifed is either not a real date or it falls behind current day (due date can&#39;t be in the past)</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Not Allowed</td>
+<td>Specifies that the You do not exist on the database or your token does not match your records</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Invalid {<strong>Book/User</strong> ID}</td>
+<td>Specifies that API has been called but bookid or/and user id have not been specified</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>Unsuccessful</td>
+<td>A server error has occured (from our end)</td>
+</tr>
+</tbody></table>
+</blockquote>
+
+<p>a <strong>200</strong> status code indicates that the request was entirely valid but no book was available to be borrowed</p>
+
+<p>Once a <strong>202</strong> response code is returned, it can be expected that the book has been borrowed from the library</p>
+
+<p>Error code <em>4XX</em> indicate that an error has occured from your end (your request or otherwise)</p>
+
+<p>Status codes in the <em>5XX</em> range mostly indicate the error that has occured is from our end, You could report these errors by <a href="mailto://fidelis.ojeah@andela.com">sending an email</a></p>
+<h2 id='return-book'>Return Book</h2><pre class="highlight shell tab-shell"><code>curl
+  -X PUT <span class="s2">"https://fidelishellobooks.herokuapp.com/api/v1/users/1/books"</span> -d <span class="s2">"lendId=1&amp;bookId=1"</span>
+  -H <span class="s2">"x-access-token:
+  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FtcGxldXNlciIsImZpcnN0TmFtZSI6IlNhbXBsZSIsImxhc3ROYW1lIjoiVXNlciIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNTEzMTc1OTQxLCJleHAiOjE1MTM1MjE1NDF9.OPD-w85wL8ELcF8xnX7bDHUqA3yISsS3FIehGsrp0v4"</span>
+</code></pre>
+<blockquote>
+<p>Sample Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Book Returned Successfully"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"Book Details"</span><span class="w"> </span><span class="p">:</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"Bookname"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Sample Book"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"BookQuantity"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"BorrowedDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-14T11:59:35.883Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"DueDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-01-01T00:00:00.000Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"returnDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-14T18:26:49.552Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"outStanding"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Return a Book to the library</p>
+
+<aside class="warning">
+<code>lendId</code> has to match the ID of the borrowed book to be returned
+</aside>
+
+<p><code>PUT https://fidelishellobooks.herokuapp.com/api/v1/users/&lt;userId&gt;/books</code></p>
+<h3 id='return-book-parameters'>Return Book Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>isRequired</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>&lt; userId &gt;</td>
+<td>true</td>
+<td>The user Id of the user trying to return the book</td>
+</tr>
+<tr>
+<td>bookId</td>
+<td>true</td>
+<td>The id of the book to be returned to the library</td>
+</tr>
+<tr>
+<td>lendId</td>
+<td>true</td>
+<td>The id from the borrow book table of this particular record</td>
+</tr>
+</tbody></table>
+<h3 id='return-book-response-and-errors'>Return Book Response and Errors</h3>
+<blockquote>
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Book Already Returned</td>
+<td>Request was valid. However, you have previously returned this book to the library</td>
+</tr>
+<tr>
+<td>202</td>
+<td>Book Returned Successfully</td>
+<td>States that the book was returned successfully, outstanding days from due date are indicated</td>
+</tr>
+<tr>
+<td>400</td>
+<td>User/Book not matching records</td>
+<td>Specifies that the book specied or/and the user don&#39;t match records from lend</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Not Allowed</td>
+<td>Specifies that the You do not exist on the database or your token does not match your records</td>
+</tr>
+<tr>
+<td>404</td>
+<td>No records found</td>
+<td>Indicates that it is impossible to return this book as no record on database matches the lendId provided</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Invalid {<strong>Book/User</strong> ID}</td>
+<td>Specifies that API has been called but bookid or/and user id have not been specified</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>Unsuccessful</td>
+<td>A server error has occured (from our end)</td>
+</tr>
+</tbody></table>
+</blockquote>
+
+<p>a <strong>200</strong> status code indicates that the request was entirely valid but book might have been returned already</p>
+
+<p>Once a <strong>202</strong> response code is returned, the book has successfully been returned</p>
+
+<p>Error code <em>4XX</em> indicate that an error has occured from your end (your request or otherwise)</p>
+
+<p>Status codes in the <em>5XX</em> range mostly indicate the error that has occured is from our end, You could report these errors by <a href="mailto://fidelis.ojeah@andela.com">sending an email</a></p>
+<h2 id='get-borrowed-books'>Get Borrowed Books</h2><pre class="highlight shell tab-shell"><code>curl
+  -X GET <span class="s2">"https://fidelishellobooks.herokuapp.com/api/v1/users/1/books"</span>
+  -H <span class="s2">"x-access-token:
+  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FtcGxldXNlciIsImZpcnN0TmFtZSI6IlNhbXBsZSIsImxhc3ROYW1lIjoiVXNlciIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNTEzMTc1OTQxLCJleHAiOjE1MTM1MjE1NDF9.OPD-w85wL8ELcF8xnX7bDHUqA3yISsS3FIehGsrp0v4"</span>
+</code></pre>
+<blockquote>
+<p>Sample Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"borrowedBooks"</span><span class="w"> </span><span class="p">:</span><span class="w">
+    </span><span class="p">[{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"borrowDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-14T11:59:35.883Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"dueDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-01-01T00:00:00.000Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"actualReturnDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-14T18:26:49.552Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"Book"</span><span class="w"> </span><span class="p">:</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"bookName"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Sample Book"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"bookISBN"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"1029-1820-1381-11"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"bookImage"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"xyz.jpg"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"publishYear"</span><span class="p">:</span><span class="s2">"2017-01-01T00:00:00.000Z"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"borrowDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-15T15:00:35.823Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"dueDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-01-01T00:00:00.000Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"actualReturnDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"Book"</span><span class="w"> </span><span class="p">:</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"bookName"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Sample Book"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"bookISBN"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"1029-1820-1381-11"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"bookImage"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"xyz.jpg"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"publishYear"</span><span class="p">:</span><span class="s2">"2017-01-01T00:00:00.000Z"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Sample Response (<code>returned=false</code>)</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"borrowedBooks"</span><span class="w"> </span><span class="p">:</span><span class="w">
+    </span><span class="p">[{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"borrowDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-15T15:00:35.823Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"dueDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-01-01T00:00:00.000Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"actualReturnDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"Book"</span><span class="w"> </span><span class="p">:</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"bookName"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Sample Book"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"bookISBN"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"1029-1820-1381-11"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"bookImage"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"xyz.jpg"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"publishYear"</span><span class="p">:</span><span class="s2">"2017-01-01T00:00:00.000Z"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Lists of all Books Borrowed by the user (or only those unreturned)</p>
+
+<p><code>GET https://fidelishellobooks.herokuapp.com/api/v1/users/&lt;userId&gt;/books</code></p>
+<h3 id='get-borrowed-books-parameters'>Get Borrowed Books Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>isRequired</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>returned</td>
+<td>false</td>
+<td>Used to specify if to return all borrowed books or only those unreturned</td>
+</tr>
+</tbody></table>
+<h3 id='get-borrowed-books-response-and-errors'>GET Borrowed Books Response and Errors</h3>
+<blockquote>
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>No Borrowed Books</td>
+<td>Request was valid. However, you have never borrowed any books (<em>or you have returned all books previously borrowed</em>)</td>
+</tr>
+<tr>
+<td>202</td>
+<td></td>
+<td>Indicated successful request and returns a list of borrowed books</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Not Allowed</td>
+<td>Specifies that the You do not exist on the database or your token does not match your records</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Invalid UserId</td>
+<td>Specifies that API has been called but user id has not been specified or is invalid</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>Unsuccessful</td>
+<td>A server error has occured (from our end)</td>
+</tr>
+</tbody></table>
+</blockquote>
+
+<p>Once a <strong>202</strong> response code is returned, expect to receive a list of borrowed books</p>
+
+<p>Status codes in the <em>5XX</em> range mostly indicate the error that has occured is from our end, You could report these errors by <a href="mailto://fidelis.ojeah@andela.com">sending an email</a></p>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="shell">cURL</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>
