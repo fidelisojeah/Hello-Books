@@ -96,8 +96,8 @@ app.post('/api/v4/books/:bookId/quantity',
 
 app.get('/api/v4/users/logout', CheckSession.clearLogin);
 
-app.use('/api-docs/',
-  express.static(path.join(__dirname, '../slate/build/')));
+app.use('/apidocs/',
+  express.static(path.join(__dirname, '../slate/build')));
 
 if (environment === 'production') {
   app.use(express.static(DIST_DIR));
