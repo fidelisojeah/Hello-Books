@@ -32,7 +32,9 @@
     "start:dev": "nodemon ./server/index.js --watch server/ --exec babel-node --presets es2015,stage-2",
     "start": "babel-node ./server/index.js --presets es2015,stage-2",
     "server": "nodemon --exec babel-node -- ./bin/index.js",
-    "start:front": "webpack-dev-server --open --config ./webpack.config.dev.js"
+    "start:front": "webpack-dev-server --open --config ./webpack.config.dev.js",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "jest": {
     "setupFiles": [
@@ -164,10 +166,12 @@
     "webpack": "^3.5.6",
     "webpack-dev-middleware": "^1.12.0",
     "webpack-dev-server": "^2.7.1",
-    "webpack-hot-middleware": "^2.19.1"
+    "webpack-hot-middleware": "^2.19.1",
+    "snyk": "^1.59.1"
   },
   "main": "index.js",
   "directories": {
     "test": "test"
-  }
+  },
+  "snyk": true
 }
