@@ -64,6 +64,10 @@ app.get('/api/v4/users/:userId/books',
   CheckSession.checkLogin,
   UserBookInteraction.viewBorrowedBook);
 
+app.get('/api/v4/users/:userId/books/list/:page',
+  CheckSession.checkLogin,
+  UserBookInteraction.viewBorrowedBookHistory);
+
 app.put('/api/v4/users/:userId/books',
   CheckSession.checkLogin,
   UserBookInteraction.returnBook);

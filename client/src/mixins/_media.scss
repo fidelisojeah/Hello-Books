@@ -1,227 +1,255 @@
+@mixin icons-before() {
+  display: inline-block;
+  font-family: "icons";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  position: absolute;
+}
+
 @mixin appearance($value) {
-    -o-appearance: $value;
-    -ms-appearance: $value;
-    -moz-appearance: $value;
-    -webkit-appearance: $value;
-    appearance: $value;
+  -o-appearance: $value;
+  -ms-appearance: $value;
+  -moz-appearance: $value;
+  -webkit-appearance: $value;
+  appearance: $value;
 }
 
 @mixin shake-transform {
-    animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
-    transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
+  animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+@keyframes blink {
+  0% {
+    opacity: .2;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: .2;
+  }
 }
 
 @keyframes shake {
-    10%,
-    90% {
-        transform: translate3d(-1px, 0, 0);
-    }
-    20%,
-    80% {
-        transform: translate3d(2px, 0, 0);
-    }
-    30%,
-    50%,
-    70% {
-        transform: translate3d(-4px, 0, 0);
-    }
-    40%,
-    60% {
-        transform: translate3d(4px, 0, 0);
-    }
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }
 
 @mixin border-box {
-    -o-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 @mixin box-shadow-none {
-    -o-box-shadow: none;
-    -ms-box-shadow: none;
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
-    box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 
 @mixin cust-box-shadow($val) {
-    -o-box-shadow: $val;
-    -ms-box-shadow: $val;
-    -moz-box-shadow: $val;
-    -webkit-box-shadow: $val;
-    box-shadow: $val;
+  -o-box-shadow: $val;
+  -ms-box-shadow: $val;
+  -moz-box-shadow: $val;
+  -webkit-box-shadow: $val;
+  box-shadow: $val;
 }
 
 @mixin transition($tranValue) {
-    -moz-transition: $tranValue;
-    -o-transition: $tranValue;
-    -ms-transition: $tranValue;
-    -webkit-transition: $tranValue;
-    transition: $tranValue;
+  -moz-transition: $tranValue;
+  -o-transition: $tranValue;
+  -ms-transition: $tranValue;
+  -webkit-transition: $tranValue;
+  transition: $tranValue;
 }
 
 @mixin transition-duration($transvalue) {
-    -moz-transition-duration: $transvalue;
-    -o-transition-duration: $transvalue;
-    -ms-transition-duration: $transvalue;
-    -webkit-transition-duration: $transvalue;
-    transition-duration: $transvalue;
+  -moz-transition-duration: $transvalue;
+  -o-transition-duration: $transvalue;
+  -ms-transition-duration: $transvalue;
+  -webkit-transition-duration: $transvalue;
+  transition-duration: $transvalue;
 }
 
 @mixin transition-delay($delayVal) {
-    -o-transition-delay: $delayVal;
-    -moz-transition-delay: $delayVal;
-    -ms-transition-delay: $delayVal;
-    -webkit-transition-delay: $delayVal;
-    transition-delay: $delayVal;
+  -o-transition-delay: $delayVal;
+  -moz-transition-delay: $delayVal;
+  -ms-transition-delay: $delayVal;
+  -webkit-transition-delay: $delayVal;
+  transition-delay: $delayVal;
 }
 
 @mixin transition-03 {
-    -moz-transition: opacity 0.3s ease;
-    -o-transition: opacity 0.3s ease;
-    -ms-transition: opacity 0.3s ease;
-    -webkit-transition: opacity 0.3s ease;
-    transition: opacity 0.3s ease;
+  -moz-transition: opacity 0.3s ease;
+  -o-transition: opacity 0.3s ease;
+  -ms-transition: opacity 0.3s ease;
+  -webkit-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 
 @mixin border-radius($info) {
-    -o-border-radius: $info;
-    -ms-border-radius: $info;
-    -moz-border-radius: $info;
-    -webkit-border-radius: $info;
-    border-radius: $info;
+  -o-border-radius: $info;
+  -ms-border-radius: $info;
+  -moz-border-radius: $info;
+  -webkit-border-radius: $info;
+  border-radius: $info;
 }
 
 @mixin animation-duration($val) {
-    -ms-animation-duration: $val;
-    -moz-animation-duration: $val;
-    -o-animation-duration: $val;
-    -webkit-animation-duration: $val;
-    animation-duration: $val;
+  -ms-animation-duration: $val;
+  -moz-animation-duration: $val;
+  -o-animation-duration: $val;
+  -webkit-animation-duration: $val;
+  animation-duration: $val;
 }
 
 @mixin animation-timing-function($val) {
-    -ms-animation-timing-function: $val;
-    -o-animation-timing-function: $val;
-    -webkit-animation-timing-function: $val;
-    animation-timing-function: $val;
+  -ms-animation-timing-function: $val;
+  -o-animation-timing-function: $val;
+  -webkit-animation-timing-function: $val;
+  animation-timing-function: $val;
 }
 
 .media {
-    // Proper spacing between instances of .media
-    margin-top: 15px;
-    &:first-child {
-        margin-top: 0;
-    }
+  // Proper spacing between instances of .media
+  margin-top: 15px;
+  &:first-child {
+    margin-top: 0;
+  }
 }
 
 .media,
 .media-body {
-    zoom: 1;
-    overflow: hidden;
+  zoom: 1;
+  overflow: hidden;
 }
 
 .media-body {
-    width: 10000px;
+  width: 10000px;
 }
 
 .media-object {
-    display: block; // Fix collapse in webkit from max-width: 100% and display: table-cell.
-    &.img-thumbnail {
-        max-width: none;
-    }
+  display: block; // Fix collapse in webkit from max-width: 100% and display: table-cell.
+  &.img-thumbnail {
+    max-width: none;
+  }
 }
 
 .media-right,
 .media>.pull-right {
-    padding-left: 10px;
+  padding-left: 10px;
 }
 
 .media-left,
 .media>.pull-left {
-    padding-right: 10px;
+  padding-right: 10px;
 }
 
 .media-left,
 .media-right,
 .media-body {
-    display: table-cell;
-    vertical-align: top;
+  display: table-cell;
+  vertical-align: top;
 }
 
 .media-middle {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 .media-bottom {
-    vertical-align: bottom;
+  vertical-align: bottom;
 }
 
 // Reset margins on headings for tighter default spacing
 .media-heading {
-    margin-top: 0;
-    margin-bottom: 5px;
+  margin-top: 0;
+  margin-bottom: 5px;
 }
 
 // Media list variation
 //
 // Undo default ul/ol styles
 .media-list {
-    padding-left: 0;
-    list-style: none;
+  padding-left: 0;
+  list-style: none;
 }
 
 // Date Picker
 %triangle-arrow {
-    margin-left: -$datepicker__triangle-size;
+  margin-left: -$datepicker__triangle-size;
+  position: absolute;
+  &,
+  &::before {
+    box-sizing: content-box;
     position: absolute;
-    &,
-    &::before {
-        box-sizing: content-box;
-        position: absolute;
-        border: $datepicker__triangle-size solid transparent;
-        height: 0;
-        width: 1px;
-    }
-    &::before {
-        content: "";
-        z-index: -1;
-        border-width: $datepicker__triangle-size;
-        left: -$datepicker__triangle-size;
-        border-bottom-color: $datepicker__border-color;
-    }
+    border: $datepicker__triangle-size solid transparent;
+    height: 0;
+    width: 1px;
+  }
+  &::before {
+    content: "";
+    z-index: -1;
+    border-width: $datepicker__triangle-size;
+    left: -$datepicker__triangle-size;
+    border-bottom-color: $datepicker__border-color;
+  }
 }
 
 %triangle-arrow-up {
-    @extend %triangle-arrow;
-    top: 0;
-    margin-top: -$datepicker__triangle-size;
-    &,
-    &::before {
-        border-top: none;
-        border-bottom-color: $datepicker__background-color;
-    }
-    &::before {
-        top: -1px;
-        border-bottom-color: $datepicker__border-color;
-    }
+  @extend %triangle-arrow;
+  top: 0;
+  margin-top: -$datepicker__triangle-size;
+  &,
+  &::before {
+    border-top: none;
+    border-bottom-color: $datepicker__background-color;
+  }
+  &::before {
+    top: -1px;
+    border-bottom-color: $datepicker__border-color;
+  }
 }
 
 %triangle-arrow-down {
-    @extend %triangle-arrow;
-    bottom: 0;
-    margin-bottom: -$datepicker__triangle-size;
-    &,
-    &::before {
-        border-bottom: none;
-        border-top-color: #fff;
-    }
-    &::before {
-        bottom: -1px;
-        border-top-color: $datepicker__border-color;
-    }
+  @extend %triangle-arrow;
+  bottom: 0;
+  margin-bottom: -$datepicker__triangle-size;
+  &,
+  &::before {
+    border-bottom: none;
+    border-top-color: #fff;
+  }
+  &::before {
+    bottom: -1px;
+    border-top-color: $datepicker__border-color;
+  }
 }

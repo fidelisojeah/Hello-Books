@@ -250,7 +250,7 @@ describe('Database errors Simulations', () => {
             });
         });
     });
-    describe('When trying to view user history', () => {
+    describe('When trying to view Lending history', () => {
       let bookLendingFindAll;
       before((done) => {
         bookLendingFindAll = db.BookLendings.findAll;
@@ -265,6 +265,60 @@ describe('Database errors Simulations', () => {
           db.BookLendings.findAll = () => Promise.reject(1);
           chai.request(app)
             .get(`/api/v4/users/${goodTokenUserID}/books`)
+            .set('x-access-token', goodToken)
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(500);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              should.exist(response.body.error);
+              done();
+            });
+        });
+    });
+    describe('When trying to view Lending history (Paginated)', () => {
+      let bookLendingFindAll;
+      let bookLendingCountAll;
+      before((done) => {
+        bookLendingFindAll = db.BookLendings.findAll;
+        bookLendingCountAll = db.BookLendings.count;
+        done();
+      });
+      after((done) => {
+        db.BookLendings.findAll = bookLendingFindAll;
+        db.BookLendings.count = bookLendingCountAll;
+        done();
+      });
+      it('should return 500 Unsuccessful when BookLending method unavailable',
+        (done) => {
+          db.BookLendings.findAll = () => Promise.reject(1);
+          chai.request(app)
+            .get(`/api/v4/users/${goodTokenUserID}/books/list/1`)
+            .query({
+              order: 'false',
+              sort: 'dateborrowed',
+              limit: '10'
+            })
+            .set('x-access-token', goodToken)
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(500);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              should.exist(response.body.error);
+              done();
+            });
+        });
+      it('should return 500 Unsuccessful when BookLending count method unavailable',
+        (done) => {
+          db.BookLendings.count = () => Promise.reject(1);
+          chai.request(app)
+            .get(`/api/v4/users/${goodTokenUserID}/books/list/1`)
+            .query({
+              order: 'false',
+              sort: 'dateborrowed',
+              limit: '10'
+            })
             .set('x-access-token', goodToken)
             .end((error, response) => {
               should.exist(error);
