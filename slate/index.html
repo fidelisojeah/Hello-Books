@@ -279,6 +279,9 @@
                   <li>
                     <a href="#get-borrowed-books" class="toc-h2 toc-link" data-title="Get Borrowed Books">Get Borrowed Books</a>
                   </li>
+                  <li>
+                    <a href="#get-borrowed-books-paginated" class="toc-h2 toc-link" data-title="Get Borrowed Books (Paginated)">Get Borrowed Books (Paginated)</a>
+                  </li>
               </ul>
           </li>
       </div>
@@ -854,7 +857,7 @@ The response object <code>token</code> Would serve as your <code>x-access-token<
 </tbody></table>
 
 <aside class="notice">
-The minimum number of a particular book can be __0__, if quantity specied above is more than number of books available, no error would be thrown. However, You wouldn't have a negative number of books sorry
+The minimum number of a particular book can be 0, if quantity specified above is more than number of books available, no error would be thrown. However, You wouldn't have a negative number of books sorry
 </aside>
 <h3 id='modify-book-quantity-response-and-errors'>Modify Book Quantity Response and Errors</h3>
 <blockquote>
@@ -1113,7 +1116,7 @@ The minimum number of a particular book can be __0__, if quantity specied above 
     </span><span class="s2">"dueDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-01-01T00:00:00.000Z"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>Borrow a Book from the library based on book ID specied and book availability</p>
+<p>Borrow a Book from the library based on book ID specified and book availability</p>
 
 <aside class="success">
 A Book can be borrowed multiple times
@@ -1209,7 +1212,8 @@ A Book can be borrowed multiple times
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
     </span><span class="s2">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
     </span><span class="s2">"message"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Book Returned Successfully"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"Book Details"</span><span class="w"> </span><span class="p">:</span><span class="w">
+    </span><span class="s2">"lendId"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"bookDetails"</span><span class="w"> </span><span class="p">:</span><span class="w">
     </span><span class="p">{</span><span class="w">
         </span><span class="s2">"Bookname"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Sample Book"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"BookQuantity"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
@@ -1403,6 +1407,147 @@ A Book can be borrowed multiple times
 <td>202</td>
 <td></td>
 <td>Indicated successful request and returns a list of borrowed books</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Not Allowed</td>
+<td>Specifies that the You do not exist on the database or your token does not match your records</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Invalid UserId</td>
+<td>Specifies that API has been called but user id has not been specified or is invalid</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>Unsuccessful</td>
+<td>A server error has occured (from our end)</td>
+</tr>
+</tbody></table>
+</blockquote>
+
+<p>Once a <strong>202</strong> response code is returned, expect to receive a list of borrowed books</p>
+
+<p>Status codes in the <em>5XX</em> range mostly indicate the error that has occured is from our end, You could report these errors by <a href="mailto://fidelis.ojeah@andela.com">sending an email</a></p>
+<h2 id='get-borrowed-books-paginated'>Get Borrowed Books (Paginated)</h2><pre class="highlight shell tab-shell"><code>curl
+  -X GET <span class="s2">"https://fidelishellobooks.herokuapp.com/api/v1/users/1/books/list/1?order=false&amp;sort=dateborrowed&amp;limit=10"</span>
+  -H <span class="s2">"x-access-token:
+  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FtcGxldXNlciIsImZpcnN0TmFtZSI6IlNhbXBsZSIsImxhc3ROYW1lIjoiVXNlciIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNTEzMTc1OTQxLCJleHAiOjE1MTM1MjE1NDF9.OPD-w85wL8ELcF8xnX7bDHUqA3yISsS3FIehGsrp0v4"</span>
+</code></pre>
+<blockquote>
+<p>Sample Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"totalages"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"borrowedBooks"</span><span class="w"> </span><span class="p">:</span><span class="w">
+    </span><span class="p">[{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"borrowDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-14T11:59:35.883Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"dueDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-01-01T00:00:00.000Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"actualReturnDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-14T18:26:49.552Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"Book"</span><span class="w"> </span><span class="p">:</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"bookName"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Sample Book"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"bookISBN"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"1029-1820-1381-11"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"bookImage"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"xyz.jpg"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"publishYear"</span><span class="p">:</span><span class="s2">"2017-01-01T00:00:00.000Z"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"borrowDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-15T15:00:35.823Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"dueDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-01-01T00:00:00.000Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"actualReturnDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"Book"</span><span class="w"> </span><span class="p">:</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"bookName"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Sample Book"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"bookISBN"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"1029-1820-1381-11"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"bookImage"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"xyz.jpg"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"publishYear"</span><span class="p">:</span><span class="s2">"2017-01-01T00:00:00.000Z"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<blockquote>
+<p>Sample Response (<code>returned=false</code>)</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"borrowedBooks"</span><span class="w"> </span><span class="p">:</span><span class="w">
+    </span><span class="p">[{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"borrowDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-12-15T15:00:35.823Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"dueDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2018-01-01T00:00:00.000Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"actualReturnDate"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"Book"</span><span class="w"> </span><span class="p">:</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"bookName"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Sample Book"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"bookISBN"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"1029-1820-1381-11"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"bookImage"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"xyz.jpg"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"publishYear"</span><span class="p">:</span><span class="s2">"2017-01-01T00:00:00.000Z"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Lists of all Books Borrowed by the user (or only those unreturned)</p>
+
+<p><code>GET https://fidelishellobooks.herokuapp.com/api/v1/users/&lt;userId&gt;/books/list/&lt;page&gt;</code></p>
+<h3 id='get-borrowed-books-parameters-paginated'>Get Borrowed Books Parameters (Paginated)</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>isRequired</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>page</td>
+<td>param</td>
+<td>true</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>query</td>
+<td>true</td>
+</tr>
+<tr>
+<td>sort</td>
+<td>query</td>
+<td>false</td>
+</tr>
+<tr>
+<td>returned</td>
+<td>false</td>
+<td>Used to specify if to return all borrowed books or only those unreturned</td>
+</tr>
+</tbody></table>
+<h3 id='get-borrowed-books-response-and-errors-paginated'>GET Borrowed Books Response and Errors (Paginated)</h3>
+<blockquote>
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>No Borrowed Books</td>
+<td>Request was valid. However, you have never borrowed any books (<em>or you have returned all books previously borrowed</em>)</td>
+</tr>
+<tr>
+<td>202</td>
+<td></td>
+<td>Indicated successful request and returns a list of borrowed books</td>
+</tr>
+<tr>
+<td>400</td>
+<td>[Invalid {<strong>field</strong>} sent]</td>
+<td>Returns an array of errors (for limit or/and page fields) e.g <code>[{&quot;field&quot;:&quot;page&quot;,&quot;error&quot;:&quot;Invalid Page sent&quot;},{&quot;field&quot;:&quot;limit&quot;,&quot;error&quot;:&quot;Invalid limit sent&quot;}]</code></td>
 </tr>
 <tr>
 <td>401</td>

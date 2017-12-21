@@ -29,7 +29,7 @@ const BookModal = (props) => {
               </p>
           </div>
           <div className="col-sm-5 col-xs-12 col-sm-offset-2">
-            <Link to="/">
+            <Link to="/profile">
               <button className="btn button">
                 <span>
                   Return Books

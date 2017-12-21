@@ -332,9 +332,268 @@ describe('User Book Interaction tests', () => {
             response.status.should.equal(202);
             response.type.should.equal('application/json');
             response.body.status.should.eql('Success');
+            should.exist(response.body.borrowedBooks);
             done();
           });
       });
+      it('should return 202 and book list', (done) => {
+        chai.request(app)
+          .get('/api/v4/users/1/books')
+          .query({
+            returned: 'false'
+          })
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.not.exist(error);
+            response.status.should.equal(202);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Success');
+            should.exist(response.body.borrowedBooks);
+            done();
+          });
+      });
+    });
+  });
+  describe('GET /api/v4/users/:userId/books/list/:page version 4', () => {
+    describe('When incomplete Information is provided', () => {
+      it('should return a 400 when no limit is sent', (done) => {
+        chai.request(app)
+          .get('/api/v4/users/1/books/list/1')
+          .query({
+            order: 'false',
+            sort: 'dateborrowed',
+          })
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(400);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.all.have.property('error');
+            response.body.message.should.all.have.property('field');
+            response.body.message.should
+              .contain.an.item.with.property('field', 'limit');
+            response.body.message.should.contain.an
+              .item.with.property('error', 'Invalid limit sent');
+            done();
+          });
+      });
+      it('should return a 400 when invalid limit is sent', (done) => {
+        chai.request(app)
+          .get('/api/v4/users/1/books/list/1')
+          .query({
+            order: 'false',
+            sort: 'dateborrowed',
+            limit: '-10'
+          })
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(400);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.all.have.property('error');
+            response.body.message.should.all.have.property('field');
+            response.body.message.should
+              .contain.an.item.with.property('field', 'limit');
+            response.body.message.should.contain.an
+              .item.with.property('error', 'Invalid limit sent');
+            done();
+          });
+      });
+      it('should return a 400 when invalid page is sent', (done) => {
+        chai.request(app)
+          .get('/api/v4/users/1/books/list/invalidNumber')
+          .query({
+            order: 'false',
+            sort: 'dateborrowed',
+            limit: '50'
+          })
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(400);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.all.have.property('error');
+            response.body.message.should.all.have.property('field');
+            response.body.message.should
+              .contain.an.item.with.property('field', 'page');
+            response.body.message.should.contain.an
+              .item.with.property('error', 'Invalid Page sent');
+            done();
+          });
+      });
+      it('should return a 400 when page number is less than 1', (done) => {
+        chai.request(app)
+          .get('/api/v4/users/1/books/list/0')
+          .query({
+            order: 'true',
+            sort: 'dateborrowed',
+            limit: '50'
+          })
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(400);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.all.have.property('error');
+            response.body.message.should.all.have.property('field');
+            response.body.message.should
+              .contain.an.item.with.property('field', 'page');
+            response.body.message.should.contain.an
+              .item.with.property('error', 'Invalid Page sent');
+            done();
+          });
+      });
+      it('should return 400 when multiple details are invalid', (done) => {
+        chai.request(app)
+          .get('/api/v4/users/1/books/list/invalid')
+          .query({
+            order: 'false',
+            sort: 'dateborrowed',
+            limit: 'invalid'
+          })
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(400);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.all.have.property('error');
+            response.body.message.should.all.have.property('field');
+            response.body.message.should
+              .contain.an.item.with.property('field', 'limit');
+            response.body.message.should
+              .contain.an.item.with.property('field', 'page');
+            response.body.message.should.contain.an
+              .item.with.property('error', 'Invalid limit sent');
+            response.body.message.should.contain.an
+              .item.with.property('error', 'Invalid Page sent');
+            done();
+          });
+      });
+    });
+    it('should return 404 invalid User Id', (done) => {
+      chai.request(app)
+        .get('/api/v4/users/q/books/list/1')
+        .set('x-access-token', goodToken)
+        .end((error, response) => {
+          should.exist(error);
+          response.status.should.equal(404);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Unsuccessful');
+          response.body.message.should.eql('Invalid User id');
+          done();
+        });
+    });
+  });
+  describe('When Complete Information is provided', () => {
+    it('should return 401 when wrong user tries to borrow books',
+      (done) => {
+        chai.request(app)
+          .get('/api/v4/users/3/books/list/1')
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(401);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Not Allowed');
+            done();
+          });
+      });
+    it('should return 401 when invalid user tries to view borrow books',
+      (done) => {
+        chai.request(app)
+          .get('/api/v4/users/40/books/list/1')
+          .set('x-access-token', goodTokenInvalidUser)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(401);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Not Allowed');
+            done();
+          });
+      });
+    it('should return 200 Unsuccessful when User hasn\'t borrowed any books',
+      (done) => {
+        chai.request(app)
+          .get('/api/v4/users/2/books/list/1')
+          .query({
+            order: 'false',
+            sort: 'dateborrowed',
+            limit: '10'
+          })
+          .set('x-access-token', goodToken2)
+          .end((error, response) => {
+            should.not.exist(error);
+            response.status.should.equal(200);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('No borrowed Books');
+            done();
+          });
+      });
+    it('should return 202 and book list', (done) => {
+      chai.request(app)
+        .get('/api/v4/users/1/books/list/1')
+        .query({
+          order: 'true',
+          sort: 'returndate',
+          limit: '50'
+        })
+        .set('x-access-token', goodToken)
+        .end((error, response) => {
+          should.not.exist(error);
+          response.status.should.equal(202);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Success');
+          response.body.totalPages.should.eql(1);
+          should.exist(response.body.borrowedBooks);
+          done();
+        });
+    });
+    it('should return 202 and book list', (done) => {
+      chai.request(app)
+        .get('/api/v4/users/1/books/list/1')
+        .query({
+          order: 'false',
+          sort: 'duedate',
+          limit: '50'
+        })
+        .set('x-access-token', goodToken)
+        .end((error, response) => {
+          should.not.exist(error);
+          response.status.should.equal(202);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Success');
+          response.body.totalPages.should.eql(1);
+          should.exist(response.body.borrowedBooks);
+          done();
+        });
+    });
+    it('should return 202 and book list', (done) => {
+      chai.request(app)
+        .get('/api/v4/users/1/books/list/1')
+        .query({
+          order: 'false',
+          sort: 'dateborrowed',
+          returned: 'false',
+          limit: '50'
+        })
+        .set('x-access-token', goodToken)
+        .end((error, response) => {
+          should.not.exist(error);
+          response.status.should.equal(202);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Success');
+          response.body.totalPages.should.eql(1);
+          should.exist(response.body.borrowedBooks);
+          done();
+        });
     });
   });
   describe('PUT /api/v4/users/:userId/books version 4', () => {
@@ -484,7 +743,7 @@ describe('User Book Interaction tests', () => {
           })
           .end((error, response) => {
             should.exist(error);
-            response.status.should.equal(401);
+            response.status.should.equal(400);
             response.type.should.equal('application/json');
             response.body.status.should.eql('Unsuccessful');
             response.body.message.should.eql('User/Book not matching records');
@@ -504,7 +763,8 @@ describe('User Book Interaction tests', () => {
             response.status.should.equal(202);
             response.type.should.equal('application/json');
             response.body.status.should.eql('Success');
-            should.exist(response.body.message);
+            response.body.message.should.eql('Book Returned Successfully');
+            should.exist(response.body.bookDetails);
             done();
           });
       });

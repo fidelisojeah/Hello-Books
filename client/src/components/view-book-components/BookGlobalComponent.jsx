@@ -11,103 +11,108 @@ import BookModal from './BookModal';
 
 import EditModal from '../edit-modal/EditModal';
 
+/**
+ * @param {object} props
+ * @returns {JSX} JSX element
+ */
+function BookGlobalComponent(props) {
+  return (
+    <div>
+      <div className="layout--container">
+        <LayoutHeader
+          headerTitle={props.bookTitle}
+        />
+        <BreadCrumbs
+          breadCrumbLinks={props.pageLinks}
+        />
 
-const BookGlobalComponent = props => (
-  <div>
-    <div className="layout--container">
-      <LayoutHeader
-        headerTitle={props.bookTitle}
+      </div>
+      <MainSection
+        publishYear={props.publishYear}
+        bookImageURL={props.bookImageURL}
+        bookTitle={props.bookTitle}
+        ratingCount={props.ratingCount}
+        ratingSum={props.ratingSum}
+        isAdmin={props.isAdmin}
+        ISBN={props.ISBN}
+        editFunction={props.editFunction}
+        bookQuantity={props.bookQuantity}
+        borrowBookClick={props.borrowBookClick}
+        authorList={props.authorList}
+        bookDescription={props.bookDescription}
+        descriptionHeight={props.descriptionHeight}
+        expanded={props.expanded}
+        expandCollapseDescription={props.expandCollapseDescription}
       />
-      <BreadCrumbs
-        breadCrumbLinks={props.pageLinks}
+      <div className="section_divider" />
+      <MiddleSector
+        borrowCount={props.borrowedBooksCount}
+        borrowed={props.borrowed}
+        reviewFunction={props.reviewFunction}
+        borrowList={props.borrowedBooks}
       />
-
-    </div>
-    <MainSection
-      publishYear={props.publishYear}
-      bookImageURL={props.bookImageURL}
-      bookTitle={props.bookTitle}
-      ratingCount={props.ratingCount}
-      ratingSum={props.ratingSum}
-      isAdmin={props.isAdmin}
-      ISBN={props.ISBN}
-      editFunction={props.editFunction}
-      bookQuantity={props.bookQuantity}
-      borrowBookClick={props.borrowBookClick}
-      authorList={props.authorList}
-      bookDescription={props.bookDescription}
-      descriptionHeight={props.descriptionHeight}
-      expanded={props.expanded}
-      expandCollapseDescription={props.expandCollapseDescription}
-    />
-    <div className="section_divider" />
-    <MiddleSector
-      borrowCount={props.borrowedBooksCount}
-      borrowed={props.borrowed}
-      reviewFunction={props.reviewFunction}
-      borrowList={props.borrowedBooks}
-    />
-    <div
-      id="msg-modal"
-      className={`modal ${(props.editModalError
-        && props.editModal) ?
-        '-has-error' : ''
-        }`}
-    >
-      <div className="modal-content">
-        <div className="modal-header">
-          <button
-            className="close"
-            onClick={props.closeModal}
-          >
-            &times;
+      <div
+        id="msg-modal"
+        className={`modal ${(props.editModalError
+          && props.editModal) ?
+          '-has-error' : ''
+          }`}
+      >
+        <div className="modal-content">
+          <div className="modal-header">
+            <button
+              className="close"
+              onClick={props.closeModal}
+            >
+              &times;
               </button>
-          <h2 id="modal-head">
-            {props.modalHead}
-          </h2>
-        </div>
-        <div className="modal-body">
-          {!props.editModal &&
-            <BookModal
-              availableBorrow={props.availableBorrow}
-              startDate={props.startDate}
-              handleDateChange={props.handleDateChange}
-              handleBorrowBook={props.handleBorrowBook}
-              maxDate={props.maxDate}
-              minDate={props.minDate}
-            />
-          }
-          {
-            props.editModal &&
-            props.isAdmin &&
-            <EditModal
-              bookName={props.editBookName}
-              description={props.editBookDescription}
-              element={props.element}
-              error={props.editModalErrors}
-              handleFieldChange={props.handleBookFieldChange}
-              handleEditClick={props.handleEditClick}
-              handleImageEditClick={props.handleImageEditClick}
-              handleYearChangeClick={props.handleYearChangeClick}
-              ISBN={props.editISBN}
-              isLoading={props.isLoading}
-              newImageURL={props.newImageURL}
-              oldBookName={props.bookTitle}
-              oldDescription={props.bookDescription}
-              oldPublishYear={props.publishYear}
-              oldISBN={props.ISBN}
-              onChangeBlurEvent={props.onChangeBlurEvent}
-              onImageDrop={props.onImageDrop}
-              publishyear={props.editPublishYear}
-              yearList={props.yearList}
-              yearListShow={props.yearListShow}
-            />
-          }
+            <h2 id="modal-head">
+              {props.modalHead}
+            </h2>
+          </div>
+          <div className="modal-body">
+            {!props.editModal &&
+              <BookModal
+                availableBorrow={props.availableBorrow}
+                startDate={props.startDate}
+                handleDateChange={props.handleDateChange}
+                handleBorrowBook={props.handleBorrowBook}
+                maxDate={props.maxDate}
+                minDate={props.minDate}
+              />
+            }
+            {
+              props.editModal &&
+              props.isAdmin &&
+              <EditModal
+                bookName={props.editBookName}
+                description={props.editBookDescription}
+                element={props.element}
+                error={props.editModalErrors}
+                handleFieldChange={props.handleBookFieldChange}
+                handleEditClick={props.handleEditClick}
+                handleImageEditClick={props.handleImageEditClick}
+                handleYearChangeClick={props.handleYearChangeClick}
+                ISBN={props.editISBN}
+                isLoading={props.isLoading}
+                newImageURL={props.newImageURL}
+                oldBookName={props.bookTitle}
+                oldDescription={props.bookDescription}
+                oldPublishYear={props.publishYear}
+                oldISBN={props.ISBN}
+                onChangeBlurEvent={props.onChangeBlurEvent}
+                onImageDrop={props.onImageDrop}
+                publishyear={props.editPublishYear}
+                yearList={props.yearList}
+                yearListShow={props.yearListShow}
+              />
+            }
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+}
 BookGlobalComponent.defaultProps = {
   authorList: [],
   borrowed: null,
