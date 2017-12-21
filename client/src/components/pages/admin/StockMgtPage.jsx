@@ -10,13 +10,24 @@ import {
 } from '../../actions/newBookAction';
 import NewBookForm from '../../NewBookForm';
 import NewAuthorForm from '../../NewAuthorForm';
+import BreadCrumbs from '../../common/BreadCrumbs';
+import LayoutHeader from '../../common/LayoutHeader';
 
 
 class StockMgtPage extends React.Component {
   constructor(props) {
     super(props);
+    const pageLinks = [];
+    pageLinks.push({
+      linkName: 'Home',
+      link: ''
+    });
+    pageLinks.push({
+      linkName: 'Stock Management',
+      link: 'bookmgt'
+    });
     this.state = {
-      initial: 0,
+      pageLinks
     };
   }
   handleClick(event) {
@@ -32,40 +43,14 @@ class StockMgtPage extends React.Component {
     document.getElementById(event.target.name).style.display = 'block';
   }
   render() {
-    const {
-      newAuthorRequest,
-      bookImageUpload,
-      newBookRequest,
-      checkAuthorsRequest
-    } = this.props;
     return (
       <div className="layout--container">
-        <div className="layout-header">
-          <div className="container">
-            <h1 className="page_header--title">
-              Stock Management
-            </h1>
-          </div>
-        </div>
-        <nav className="breadcrumbs">
-          <div className="container">
-            <ul className="breadcrumbs--list">
-              <li className="breadcrumbs--item">
-                <a href="/" className="breadcrumbs--link">
-                  Home
-                </a>
-              </li>
-              <li className="breadcrumbs--item">
-                <a
-                  href=""
-                  className="breadcrumbs--link -active"
-                >
-                  Stock Management
-                </a>
-              </li>
-            </ul>
-          </div>
-        </nav>
+        <LayoutHeader
+          headerTitle="Stock Management"
+        />
+        <BreadCrumbs
+          breadCrumbLinks={this.state.pageLinks}
+        />
         <div className="section">
           <div className="container">
             <div className="innerSection">
@@ -111,12 +96,12 @@ class StockMgtPage extends React.Component {
               </div>
               <div className="tabbed-content">
                 <NewBookForm
-                  bookImageUpload={bookImageUpload}
-                  newBookRequest={newBookRequest}
-                  checkAuthorsRequest={checkAuthorsRequest}
+                  bookImageUpload={this.props.bookImageUpload}
+                  newBookRequest={this.props.newBookRequest}
+                  checkAuthorsRequest={this.props.checkAuthorsRequest}
                 />
                 <NewAuthorForm
-                  newAuthorRequest={newAuthorRequest}
+                  newAuthorRequest={this.props.newAuthorRequest}
                 />
               </div>
             </div>

@@ -12,6 +12,7 @@ import StockMgtPage from './components/pages/admin/StockMgtPage';
 import ViewBook from './components/pages/ViewBook';
 import SuccessPage from './components/pages/SuccessPage';
 import LogIndex from './components/pages/LogIndex';
+import ProfilePage from './components/pages/ProfilePage';
 import ViewAllBooks from './components/pages/ViewAllBooks';
 
 const Main = () => (
@@ -21,6 +22,7 @@ const Main = () => (
       <Route path="/success" Component={SuccessPage} />
       <PrivateRoute exact path="/" Component={LogIndex} />
       <PrivateRoute exact path="/books" Component={ViewAllBooks} />
+      <PrivateRoute exact path="/profile" Component={ProfilePage} />
       <PrivateRoute exact path="/books/:bookId" Component={ViewBook} />
       <PrivateRoute exact path="/bookmgt" Component={StockMgtPage} />
     </Switch>

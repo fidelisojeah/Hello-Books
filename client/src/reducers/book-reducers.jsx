@@ -21,14 +21,15 @@ export default function bookReducer(state = {
         ...state,
         fetching: false,
         fetched: true,
-        fetchedBooks: action.fetchedBooks
+        fetchedBooks: action.fetchedBooks,
+        error: null
       };
     }
     case FETCH_BOOKS_REJECT: {
       return {
         ...state,
         fetching: false,
-        error: action.error.data
+        error: action.error
       };
     }
     default:

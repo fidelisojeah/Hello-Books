@@ -1,12 +1,14 @@
 <img alt="Hello Books" src="https://fidelisojeah.github.io/assets/home_books_logo.svg" width="400">
 
 [![Build Status](https://travis-ci.org/fidelisojeah/Hello-Books.svg?branch=develop)](https://travis-ci.org/fidelisojeah/Hello-Books)
-[![Coverage Status](https://coveralls.io/repos/github/fidelisojeah/Hello-Books/badge.svg?branch=develop)](https://coveralls.io/github/fidelisojeah/Hello-Books?branch=develop)
+[![Coverage Status](https://coveralls.io/repos/github/fidelisojeah/Hello-Books/badge.svg?branch=feature%2F152213916%2Fapi-documentation)](https://coveralls.io/github/fidelisojeah/Hello-Books?branch=feature%2F152213916%2Fapi-documentation)
 [![CircleCI](https://circleci.com/gh/fidelisojeah/Hello-Books.svg?style=svg)](https://circleci.com/gh/fidelisojeah/Hello-Books)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/2dc8c75d71b130c0f0b1/test_coverage)](https://codeclimate.com/github/fidelisojeah/Hello-Books/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/2dc8c75d71b130c0f0b1/maintainability)](https://codeclimate.com/github/fidelisojeah/Hello-Books/maintainability)
 
 *Hello Books enables the easy management of an online book library*
+
+API documentation can be viewed [here](https://fidelishellobooks.herokuapp.com/apidocs)
 
 ## Table of Contents
 

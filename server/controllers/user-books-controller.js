@@ -4,15 +4,17 @@ import {
 } from '../models';
 import Interactions from '../helpers/interactions';
 
+import BookVerify from '../helpers/new-book';
+
 class UserBookInteraction {
-  static viewBorrowedBook(req, response) {
-    const userId = parseInt(req.params.userId, 10);
-    const isReturned = req.query.returned || null;
+  static viewBorrowedBook(request, response) {
+    const userId = parseInt(request.params.userId, 10);
+    const isReturned = request.query.returned || null;
 
     const validateAll = new Interactions(userId,
       100,
       100,
-      req.decoded.userId
+      request.decoded.userId
       , true);
 
     validateAll
@@ -48,7 +50,7 @@ class UserBookInteraction {
             if (bookLends && bookLends.length > 0) {
               response.status(202).json({
                 status: 'Success',
-                data: bookLends,
+                borrowedBooks: bookLends,
               });
             } else {
               response.status(200).json({
@@ -67,12 +69,130 @@ class UserBookInteraction {
         response.status(error.errorCode).json(error.errors)
       );
   }
-  static borrowBook(req, response) {
-    const userId = parseInt(req.params.userId, 10);
-    const bookId = parseInt(req.body.bookId, 10); // change case
+  static viewBorrowedBookHistory(request, response) {
+    const userId = parseInt(request.params.userId, 10);
+    const isReturned = request.query.returned || null;
+
+    const limit = request.query.limit || null;
+    const page = request.params.page;
+
+    const orderBy = request.query.sort || null;
+
+    const orderDESC = (request.query.order === 'true') ? 'DESC'
+      : 'ASC';
+
+    const orderList = [];
+
+    if (orderBy) {
+      if (orderBy.toLowerCase() === 'dateborrowed') {
+        orderList.push(
+          ['borrowDate', orderDESC]
+        );
+      } else if (orderBy.toLowerCase() === 'duedate') {
+        orderList.push(
+          ['dueDate', orderDESC]
+        );
+      } else if (orderBy.toLowerCase() === 'returndate') {
+        orderList.push(
+          ['actualReturnDate', orderDESC]
+        );
+      }
+    }
+    orderList.push(
+      [Books, 'bookName', orderDESC]
+    );
+
+    const validateAll = new Interactions(userId,
+      100,
+      100,
+      request.decoded.userId
+      , true);
+
+    validateAll
+      .validateEntryandUser()
+      .then((userLoginDetails) => {
+        BookVerify
+          .verifyViewBookVariables(
+          limit, page)
+          .then((viewDetails) => {
+            const returnedSearch = (isReturned === 'false') ? {
+              userId: userLoginDetails.id,
+              actualReturnDate: null,
+            } : { userId: userLoginDetails.id };
+            BookLendings
+              .count({
+                where: returnedSearch
+              })
+              .then((totalBorrowCount) => {
+                const totalPages = Math.ceil(totalBorrowCount / limit);
+                BookLendings
+                  .findAll({
+                    where:
+                      returnedSearch,
+                    include: [{
+                      model: Books,
+                      attributes: ['id', 'bookName',
+                        'bookISBN', 'bookImage',
+                        'publishYear'],
+                      where: {
+                        isActive: true,
+                      },
+                    }],
+                    attributes: [
+                      'id',
+                      'borrowDate',
+                      'dueDate',
+                      'actualReturnDate',
+                    ],
+                    order: orderList,
+                    offset: viewDetails.offset,
+                    limit: viewDetails.limit
+                  })
+                  .then((bookLends) => {
+                    if (bookLends && bookLends.length > 0) {
+                      response.status(202).json({
+                        status: 'Success',
+                        totalPages,
+                        borrowedBooks: bookLends,
+                      });
+                    } else {
+                      response.status(200).json({
+                        status: 'Unsuccessful',
+                        message: 'No borrowed Books',
+                      });
+                    }
+                  })
+                  .catch(errorMessage =>
+                    response.status(500).json({
+                      status: 'Unsuccessful',
+                      error: errorMessage,
+                    })
+                  );
+              })
+              .catch(errorMessage =>
+                response.status(500).json({
+                  status: 'Unsuccessful',
+                  error: errorMessage,
+                })
+              );
+          })
+          .catch((error) => {
+            response.status(400).json({
+              status: 'Unsuccessful',
+              message: error
+            });
+          });
+      })
+      .catch(error =>
+        response.status(error.errorCode).json(error.errors)
+      );
+  }
+  static borrowBook(request, response) {
+    const userId = parseInt(request.params.userId, 10);
+    const bookId = parseInt(request.body.bookId, 10); // change case
 
     const borrowdate = new Date();
-    const duete = req.body.duedate || null;
+    const duete = request.body.duedate || null;
 
     const duedate = new Date(duete);
 
@@ -82,7 +202,7 @@ class UserBookInteraction {
       const validateAll = new Interactions(userId,
         bookId,
         100,
-        req.decoded.userId
+        request.decoded.userId
         , true);
 
       validateAll
@@ -179,15 +299,15 @@ class UserBookInteraction {
       });
     }
   }
-  static returnBook(req, response) {
-    const userId = parseInt(req.params.userId, 10);
-    const bookId = parseInt(req.body.bookId, 10); // change case
-    const lendId = parseInt(req.body.lendId, 10);
+  static returnBook(request, response) {
+    const userId = parseInt(request.params.userId, 10);
+    const bookId = parseInt(request.body.bookId, 10); // change case
+    const lendId = parseInt(request.body.lendId, 10);
 
     const validateAll = new Interactions(userId,
       bookId,
       lendId,
-      req.decoded.userId
+      request.decoded.userId
       , true);
 
     validateAll
@@ -233,7 +353,9 @@ class UserBookInteraction {
                       .then(([lendUpdate, borrowUpdate]) => {
                         response.status(202).json({// return info
                           status: 'Success',
-                          message: {
+                          message: 'Book Returned Successfully',
+                          lendId,
+                          bookDetails: {
                             Bookname: borrowedBook.bookName,
                             BookQuantity:
                               borrowUpdate.bookQuantity,
@@ -260,7 +382,7 @@ class UserBookInteraction {
                       error: errorMessage,
                     }));
               } else {
-                response.status(401).json({
+                response.status(400).json({
                   status: 'Unsuccessful',
                   message: 'User/Book not matching records',
                 });

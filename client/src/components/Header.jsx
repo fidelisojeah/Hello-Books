@@ -10,6 +10,8 @@ import hbLogo from '../images/h-b-logo.svg';
 import Hamburger from './Hamburger';
 import Navbar from './Navbar';
 
+import { logout } from './actions/login';
+
 
 class Header extends React.Component {
   constructor(props) {
@@ -18,9 +20,41 @@ class Header extends React.Component {
       auth: {}
     };
   }
+  hide = (event) => {
+    if (!event.target.matches('.usrBtn')
+      && !event.target.matches('.menu-item-Usr')
+      && !event.target.matches('.profile-name')
+      && !event.target.matches('.acc-button')
+    ) {
+      // if outside the profile button is clicked
+      const dropdowns = document.getElementsByClassName('profile-dropdown');
+
+      for (let i = 0; i < dropdowns.length; i += 1) {
+        const openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          // show or hide that menu
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+    window.removeEventListener('click', this.hide);
+  }
+  show = (event) => {
+    event.preventDefault();
+    document.getElementById('profile-stuff').classList.toggle('show');
+    document.addEventListener('click', this.hide);
+  }
+
+  logout = (event) => {
+    event.preventDefault();
+    this.props.logout();
+    if (document.body.classList.contains('with--sidebar')) {
+      document.body.classList.remove('with--sidebar');
+    }
+    this.context.router.history.push('/');
+  }
   render() {
     const { isAuthenticated, user } = this.props.auth;
-    const username = user.username;
     return (
       <div className="layout--header">
         <header className="header">
@@ -35,9 +69,13 @@ class Header extends React.Component {
                   </div>
                 </div>
                 <div className="col-lg-10 col-md-10">
-                  {isAuthenticated && <Navbar
-                    username={username}
-                  />}
+                  {isAuthenticated &&
+                    <Navbar
+                      username={user.username}
+                      logout={this.logout}
+                      show={this.show}
+                    />
+                  }
                 </div>
               </div>
             </div>
@@ -49,6 +87,7 @@ class Header extends React.Component {
   }
 }
 Header.propTypes = {
+  logout: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   // isAuthenticated: PropTypes.object,
   // user: PropTypes.object
@@ -57,14 +96,17 @@ Header.defaultProps = {
   isAuthenticated: null,
   user: null
 };
+Header.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
 /**
+ * @param {object} state
  *
- * @param {*} state
- * @return {*} prop assigned to value of state
+ * @return {object} prop assigned to value of state
  */
 function mapStateToProps(state) {
   return {
     auth: state.auth,
   };
 }
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, { logout })(Header);

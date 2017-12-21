@@ -16,6 +16,8 @@ class ViewAllBooks extends React.Component {
   constructor(props) {
     super(props);
     const pageLinks = [];
+    this.timeOutClear = null;
+
     pageLinks.push({
       linkName: 'Home',
       link: ''
@@ -38,22 +40,35 @@ class ViewAllBooks extends React.Component {
   componentDidMount() {
     this.fetchAll();
   }
-
   componentWillReceiveProps(nextProps) {
-    if (nextProps.error &&
+    if (nextProps.error && nextProps.error.status === 504) {
+      // reload on timeout failure
+      if (!this.timeOutClear) {
+        this.timeOutClear =
+          window
+            .setInterval(this.refreshOnTimeOutError, 10000);
+      }
+    } else if (nextProps.error &&
       nextProps.error.message) {
       // extra check cos why not?
       // ideally, this should never happen
       this.props.logout();
       this.context.router.history.push('/signin');
     } else {
+      window.clearInterval(this.timeOutClear);
       this.setState({
         totalBooks: nextProps.totalBooks,
         totalPages: nextProps.totalPages
       });
     }
   }
-  fetchAll() {
+  componentWillUnmount() {
+    window.clearInterval(this.timeOutClear);
+  }
+  refreshOnTimeOutError = () => {
+    this.fetchAll();
+  }
+  fetchAll = () => {
     this.props.fetchBooks(
       this.state.page,
       this.state.limit,
@@ -168,7 +183,7 @@ ViewAllBooks.propTypes = {
   totalBooks: PropTypes.number,
   totalPages: PropTypes.number,
   allBooks: PropTypes.arrayOf(PropTypes.object),
-  error: PropTypes.objectOf(PropTypes.string),
+  error: PropTypes.object,
   logout: PropTypes.func.isRequired,
 };
 ViewAllBooks.contextTypes = {
