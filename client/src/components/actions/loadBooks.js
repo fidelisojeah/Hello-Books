@@ -1,5 +1,4 @@
 import axios from 'axios';
-import swal from 'sweetalert';
 import Toastr from '../common/Toastr';
 
 import {
@@ -16,7 +15,9 @@ import {
   FETCH_SINGLE_BOOK_INVALID,
   FETCH_BORROWED_BOOKS_HISTORY_COMPLETE,
   FETCH_BORROWED_BOOKS_HISTORY_REJECT,
-  FETCH_BOOK_CLEAR
+  FETCH_BOOK_CLEAR,
+  HOME_PAGE_BOOKS_REJECT,
+  HOME_PAGE_BOOKS_COMPLETE
 } from './types';
 
 import { getMoment } from '../common/calculate-moment';
@@ -177,12 +178,32 @@ export const userBookReturnFailure = error => (
     error
   }
 );
+export const getHomePageBooksError = error => (
+  {
+    type: HOME_PAGE_BOOKS_REJECT,
+    error
+  }
+);
+export const getHomePageBooksSuccess = books => (
+  {
+    type: HOME_PAGE_BOOKS_COMPLETE,
+    books
+  }
+);
 /**
  * @return {Promise} Axios request
  */
 export const loadAllBooks = () =>
-  () =>
-    axios.get('/api/v4/books');
+  dispatch =>
+    axios.get('/api/v1/sorted/books')
+      .then((response) => {
+        dispatch(getHomePageBooksSuccess(response.data));
+      }).catch((error) => {
+        dispatch(getHomePageBooksError(error.response));
+        if (error.response.data.message) {
+          Toastr.Failure(error.response.data.message, 4000);
+        }
+      });
 
 /**
  *
@@ -201,9 +222,7 @@ export const viewOneBook = bookID =>
         }
       })
       .catch((error) => {
-        if (error.response) {
-          dispatch(fetchBooksReject(error.response));
-        }
+        dispatch(fetchBookReject(error.response));
       });
 
 /**
@@ -221,11 +240,7 @@ export const fetchBooks = (page, limit, sort) =>
         dispatch(fetchBooksComplete(response.data));
       })
       .catch((error) => {
-        if (error.response) {
-          dispatch(fetchBooksReject(error.response));
-        } else {
-          dispatch(fetchBooksReject(error));
-        }
+        dispatch(fetchBooksReject(error.response));
       });
 /**
  *
@@ -240,11 +255,7 @@ export const fetchUserBookHistory = bookId =>
         dispatch(userBookHistoryComplete(response.data));
       })
       .catch((error) => {
-        if (error.response) {
-          dispatch(userBookHistoryReject(error.response));
-        } else {
-          dispatch(userBookHistoryReject(error));
-        }
+        dispatch(userBookHistoryReject(error.response));
       });
 /**
  *
@@ -258,29 +269,26 @@ export const borrowBook = info =>
       .then((response) => {
         document.body.classList.remove('with--modal');
         if (response.data.status === 'Success') {
-          swal('Great',
-            `Book Successfully Borrowed \n 
-            Book Due for return 
-            ${getMoment(response.data.dueDate)}`,
-            'success'
-          );
+          const modalMessage = `
+          <p>Book Successfully Borrowed</p>
+          <p>Book Due for return
+            ${getMoment(response.data.dueDate)}
+          </p >`;
+          Toastr
+            .Modal(
+            'Book Borrowed',
+            modalMessage
+            );
           dispatch(userBorrowBookSuccess(response.data));
         } else {
-          swal('Too Bad',
-            `${response.data.message}`,
-            'error'
-          );
+          Toastr.Failure(response.data.message, 4000);
           dispatch(userBorrowBookFailure(response.data));
         }
       })
       .catch((error) => {
         document.body.classList.remove('with--modal');
-        if (error.response) {
-          Toastr.Failure(error.response.data.message, 4000);
-          dispatch(userBorrowBookFailure(error.response));
-        } else {
-          dispatch(userBorrowBookFailure(error));
-        }
+        Toastr.Failure(error.response.data.message, 4000);
+        dispatch(userBorrowBookFailure(error.response));
       });
 
 export const clearBookState = () =>
@@ -307,18 +315,13 @@ export const retrieveBorrowHistory = userData =>
         }
       })
       .then((response) => {
-        if (response.data.status === 'Success') {
-          dispatch(userBorrowBookHistorySuccess(response.data));
-        } else {
+        if (response.data.status !== 'Success') {
           Toastr.Caution(response.data.message, 4000);
         }
+        dispatch(userBorrowBookHistorySuccess(response.data));
       })
       .catch((error) => {
-        if (error.response) {
-          dispatch(userBorrowBookHistoryFailure(error.response));
-        } else {
-          dispatch(userBorrowBookHistoryFailure(error));
-        }
+        dispatch(userBorrowBookHistoryFailure(error.response));
       });
 
 /**
@@ -338,17 +341,13 @@ export const returnBook = userData =>
       })
       .then((response) => {
         if (response.data.status === 'Success') {
-          dispatch(userBookReturnComplete(response.data));
           Toastr.Success(response.data.message, 4000);
         } else {
           Toastr.Caution(response.data.message, 4000);
         }
+        dispatch(userBookReturnComplete(response.data));
       })
       .catch((error) => {
-        if (error.response) {
-          dispatch(userBookReturnFailure(error.response));
-        } else {
-          dispatch(userBookReturnComplete(error));
-        }
+        dispatch(userBookReturnFailure(error.response));
       });
 

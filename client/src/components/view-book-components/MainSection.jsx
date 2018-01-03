@@ -13,6 +13,8 @@ import AuthorList from '../lists/AuthorList';
 /**
  *
  * @param {object} props
+ *
+ * @returns {JSX} jsx component
  */
 function MainSection(props) {
   return (

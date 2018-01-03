@@ -2,12 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { newAuthorRequest } from '../../actions/newAuthorActions';
+import { newAuthorRequest } from '../../actions/author-actions';
 import {
   bookImageUpload,
   newBookRequest,
   checkAuthorsRequest
 } from '../../actions/newBookAction';
+
 import NewBookForm from '../../NewBookForm';
 import NewAuthorForm from '../../NewAuthorForm';
 import BreadCrumbs from '../../common/BreadCrumbs';
@@ -18,6 +19,7 @@ class StockMgtPage extends React.Component {
   constructor(props) {
     super(props);
     const pageLinks = [];
+
     pageLinks.push({
       linkName: 'Home',
       link: ''
@@ -30,7 +32,17 @@ class StockMgtPage extends React.Component {
       pageLinks
     };
   }
-  handleClick(event) {
+  componentDidMount() {
+    if (!this.props.isAdmin) {
+      this.context.router.history.push('/books');
+    }
+  }
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.isAdmin) {
+      this.context.router.history.push('/books');
+    }
+  }
+  handleClick = (event) => {
     event.preventDefault();
     const tabContent = document.getElementsByClassName('tabs-item');
     for (let i = 0; i < tabContent.length; i += 1) {
@@ -41,7 +53,9 @@ class StockMgtPage extends React.Component {
       tabbednav[i].className = tabbednav[i].className.replace('active', '');
     }
     document.getElementById(event.target.name).style.display = 'block';
+    event.target.parentNode.classList.add('active');
   }
+
   render() {
     return (
       <div className="layout--container">
@@ -56,41 +70,39 @@ class StockMgtPage extends React.Component {
             <div className="innerSection">
               <div className="tabbed-header">
                 <ul className="tb">
-                  <li className="tabbednav active">
-                    <a
-                      href=""
+                  <li
+                    className="tabbednav active"
+                  >
+                    <button
                       name="NewBook"
                       onClick={this.handleClick}
                     >
                       Add New Book
-                    </a>
+                    </button>
                   </li>
                   <li className="tabbednav">
-                    <a
-                      href=""
+                    <button
                       name="NewAuth"
                       onClick={this.handleClick}
                     >
                       Add New Author
-                    </a>
+                    </button>
                   </li>
                   <li className="tabbednav">
-                    <a
-                      href=""
+                    <button
                       name="ManageBook"
                       onClick={this.handleClick}
                     >
                       Manage Books
-                    </a>
+                    </button>
                   </li>
                   <li className="tabbednav">
-                    <a
-                      href=""
+                    <button
                       name="DeleteBook"
                       onClick={this.handleClick}
                     >
                       Delete Books
-                    </a>
+                    </button>
                   </li>
                 </ul>
               </div>
@@ -113,11 +125,26 @@ class StockMgtPage extends React.Component {
 }
 StockMgtPage.propTypes = {
   newAuthorRequest: PropTypes.func.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
   bookImageUpload: PropTypes.func.isRequired,
   newBookRequest: PropTypes.func.isRequired,
   checkAuthorsRequest: PropTypes.func.isRequired
 };
-export default connect(null,
+StockMgtPage.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
+/**
+ *
+ * @param {object} state
+ *
+ * @returns {object} nextprops
+ */
+function mapStateToProps(state) {
+  return {
+    isAdmin: (state.auth.user.role === 'Admin'),
+  };
+}
+export default connect(mapStateToProps,
   {
     newAuthorRequest,
     bookImageUpload,

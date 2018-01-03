@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 /**
  * @param {object} props
+ *
+ * @returns {JSX} jsx component
  */
 function EditBar(props) {
   return (

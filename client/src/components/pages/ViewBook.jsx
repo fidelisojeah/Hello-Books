@@ -31,6 +31,7 @@ class ViewBook extends React.Component {
   constructor(props) {
     super(props);
     const pageLinks = [];
+    this.timeOutClear = null;
     this.collapsible =
       document.getElementById('collapsible-description');
     pageLinks.push({
@@ -94,26 +95,29 @@ class ViewBook extends React.Component {
     this.collapsible =
       document.getElementById('collapsible-description');
     if (!isNaN(parseInt(this.props.match.params.bookId, 10))) {
-      this.props
-        .viewOneBook(this.props.match.params.bookId);
-      this.props
-        .fetchUserBookHistory(this.props.match.params.bookId);
+      this.fetchAll();
       window.addEventListener('load', this.checkDescriptionHeight);
       window.addEventListener('resize', this.checkDescriptionHeight);
     } else {
       this.context.router.history.push('/books');
     }
   }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.error) {
+      if (nextProps.error.status === 504) {
+        if (!this.timeOutClear) {
+          this.timeOutClear =
+            window
+              .setInterval(this.refreshOnTimeOutError, 10000);
+        }
+      }
       if (nextProps.error.data) {
         if (nextProps
           .error.data.message === 'Not Allowed' ||
           nextProps.error
             .data.message === 'Unauthenticated') {
           this.props.logout();
-          this.context.router.history.push('/');
+          return this.context.router.history.push('/');
         }
       }
       if (nextProps
@@ -124,11 +128,12 @@ class ViewBook extends React.Component {
       }
       this.setState({
         error: nextProps.error,
-        fetching: nextProps.fetching
+        fetching: nextProps.fetching,
+        isAdmin: nextProps.isAdmin || false
       });
       return;
     }
-
+    window.clearInterval(this.timeOutClear);
     const borrowed = (nextProps.borrowedBooks.length > 0) ?
       nextProps.borrowedBooks[0].borrowDate : null;
 
@@ -140,8 +145,8 @@ class ViewBook extends React.Component {
       bookImageURL: nextProps.bookImageURL,
       bookDescription: nextProps.bookDescription,
       bookQuantity: nextProps.bookQuantity,
-      ISBN: nextProps.ISBN,
       isAdmin: nextProps.isAdmin,
+      ISBN: nextProps.ISBN,
       publishYear: nextProps.publishYear,
       borrowedBooksCount: nextProps.borrowedBooksCount,
       ratingSum: nextProps.ratingSum,
@@ -213,6 +218,9 @@ class ViewBook extends React.Component {
       editModalErrors
     });
   }
+  refreshOnTimeOutError = () => {
+    this.fetchAll();
+  }
   handleImageUpload = (image) => {
     this
       .props
@@ -236,6 +244,12 @@ class ViewBook extends React.Component {
         }
       }
       );
+  }
+  fetchAll() {
+    this.props
+      .viewOneBook(this.props.match.params.bookId);
+    this.props
+      .fetchUserBookHistory(this.props.match.params.bookId);
   }
   handleYearChangeClick = (event, yearValue) => {
     event.preventDefault();
@@ -565,7 +579,8 @@ ViewBook.contextTypes = {
   router: PropTypes.object.isRequired,
 };
 /**
- * @param {*} state
+ * @param {object} state
+ *
  * @returns {object} nextprops
  */
 function mapStateToProps(state) {

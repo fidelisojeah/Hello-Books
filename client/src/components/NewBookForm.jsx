@@ -3,25 +3,42 @@ import PropTypes from 'prop-types';
 
 import TextField from './common/TextField';
 import BookVerify from '../../../server/helpers/new-book';
+
 import AuthorSearch from './common/AuthorSearch';
 
+import Toastr from './common/Toastr';
+
 import ImageUploader from './common/ImageUploader';
+import {
+  displayYear
+} from './common/calculate-moment';
 
 
 class NewBookForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      authorField: '',
+      authorIds: '',
+      authorList: [],
+      bookAuthors: [],
+      bookAuthorDetails: [],
       bookname: '',
-      ISBN: '',
-      publishyear: '',
       description: '',
       errors: [],
       image: '',
+      quantity: '1',
+      ISBN: '',
+      isLoading: false,
+      publishyear: '',
       uploadedImage: null,
-      authorIds: '',
-      isLoading: false
+      yearArray: [],
+      yearList: [],
+      yearListShow: false
     };
+  }
+  componentDidMount() {
+    this.allYears(1900);
   }
   onImageDrop = (images) => {
     this.setState({
@@ -32,8 +49,34 @@ class NewBookForm extends React.Component {
     this.handleImageUpload(images[0]);
   }
   onChange = (event) => {
+    let yearList = [];
+
+    if (event.target.name === 'quantity' &&
+      (/[^1-9]/g.test(event.target.value))
+    ) {
+      return;
+    }
     this.setState({ [event.target.name]: event.target.value });
+    if (event.target.name === 'publishyear') {
+      const { yearArray, errors } = this.state;
+      errors
+        .splice((errors
+          .findIndex(val => val.field === 'publishyear')), 1);
+
+      if (event.target.value.length >= 1) {
+        const regField = new RegExp(`^${event.target.value}`, 'gm');
+        yearList = yearArray.filter(years =>
+          regField.test(years)
+        );
+      }
+      this.setState({
+        errors,
+        yearList,
+        yearListShow: true,
+      });
+    }
   }
+
   onSubmit = (event) => {
     event.preventDefault();
     this.setState({ errors: [], isLoading: true });
@@ -52,37 +95,33 @@ class NewBookForm extends React.Component {
           .props
           .newBookRequest(this.state)
           .then((response) => {
-            swal(
-              'Great',
-              response.data.message,
-              'success'
-            );
+            Toastr.Success(response.data.message, 4000);
             this.setState({
               bookname: '',
-              ISBN: '',
-              publishyear: '',
+              authorField: '',
+              authorIds: '',
+              authorList: [],
+              bookAuthors: [],
+              bookAuthorDetails: [],
               description: '',
               errors: [],
               image: '',
+              ISBN: '',
+              isLoading: false,
+              quantity: '1',
+              yearList: [],
+              publishyear: '',
               uploadedImage: null,
-              authorIds: '',
-              isLoading: false
             });
           })
           .catch((error) => {
             if (error.response.data.message === 'Not allowed') {
-              swal(
-                'Too Bad',
-                'You don\'t have access',
-                'error'
-              );
+              Toastr.Failure('You don\'t have access', 4000);
+
               this.context.router.history.push('/Books');
             } else if (error.response.data.message === 'Unauthenticated') {
-              swal(
-                'Too Bad',
-                'Try signing in Please',
-                'error'
-              );
+              Toastr.Failure('Try signing in Please', 4000);
+
               this.context.router.history.push('/signin');
             } else {
               this.setState({
@@ -99,17 +138,102 @@ class NewBookForm extends React.Component {
         });
       });
   }
-  handleAuthorChange = (value) => {
+  onBlurEvent = () => {
+    document.getElementById('listAuthors').style.display = 'none';
+  }
+
+  onAuthorChange = (event) => {
+    this.setState({ authorField: event.target.value });
+    if (event.target.value.length >= 1) {
+      document.getElementById('listAuthors').style.display = 'block';
+      this
+        .props
+        .checkAuthorsRequest(event.target.value)
+        .then((response) => {
+          if (response.data.status === 'Success') {
+            this.setState({
+              authorList: response.data.bookAuthors,
+            });
+          } else {
+            this.setState({
+              authorList: response.data.message,
+            });
+          }
+        })
+        .catch(() => {
+          this.setState({
+            authorList: [],
+          });
+        });
+    } else {
+      document.getElementById('listAuthors').style.display = 'none';
+      this.setState({
+        authorList: [],
+      });
+    }
+  }
+
+  onAuthorMouseDown = (event, author) => {
+    event.preventDefault();
+    const bookAuthors = this.state.bookAuthors;
+    const bookAuthorDetails = this.state.bookAuthorDetails;
+
+    bookAuthors.push(author.id);
+
+    bookAuthorDetails.push({
+      id: author.id,
+      name: author.authorAKA
+    });
     this.setState({
-      authorIds: value
+      authorField: '',
+      authorIds: bookAuthors.join(),
+      authorList: [],
+      bookAuthors,
+      bookAuthorDetails,
     });
   }
-  handleClick = (event) => {
+  handleYearChangeClick = (event, yearValue) => {
     event.preventDefault();
+    const { errors } = this.state;
+    errors
+      .splice((errors
+        .findIndex(val => val.field === 'publishyear')), 1);
+
+    if (yearValue) {
+      this.setState({
+        errors,
+        yearListShow: false,
+        publishyear: yearValue.toString()
+      });
+    }
+  }
+  publishYearBlur = (event) => {
+    const { yearList,
+      errors } = this.state;
+    if (
+      !(/^\d+$/.test(event.target.value)) ||
+      !yearList
+        .includes(parseInt(event.target.value, 10))) {
+      errors.push({
+        field: 'publishyear',
+        error: 'Please Enter a valid Year'
+      });
+    } else {
+      errors
+        .splice((errors
+          .findIndex(val => val.field === 'publishyear')), 1);
+    }
     this.setState({
-      uploadedImage: null,
-      image: ''
+      errors,
+      yearListShow: false
     });
+  }
+  validateQuantity = (event) => {
+    if (event.target.value === '') {
+      this.setState({
+        quantity: '1'
+      });
+    }
   }
   handleImageUpload = (image) => {
     this
@@ -135,13 +259,49 @@ class NewBookForm extends React.Component {
       }
       );
   }
+  handleClick = (event) => {
+    event.preventDefault();
+    this.setState({
+      uploadedImage: null,
+      image: ''
+    });
+  }
+  handleAuthorRemove = (event, position) => {
+    event.preventDefault();
+    const bookAuthorDetails = this.state.bookAuthorDetails;
+    const bookAuthors = this.state.bookAuthors;
+
+    bookAuthorDetails.splice(position, 1);
+    bookAuthors.splice(position, 1);
+
+    this.setState({
+      authorIds: bookAuthors.join(),
+      bookAuthors,
+      bookAuthorDetails,
+    });
+  }
+  allYears = (minYear) => {
+    const yearArray = [];
+    if (parseInt(minYear, 10) > 0) {
+      for (let i = minYear; i <= displayYear(new Date()); i += 1) {
+        yearArray.push(i);
+      }
+    }
+    this.setState({
+      yearArray
+    });
+  }
   render() {
     const { errors,
       ISBN,
       publishyear,
       description,
-      image, isLoading,
-      invalid
+      image,
+      quantity,
+      isLoading,
+      invalid,
+      yearListShow,
+      yearList
      } = this.state;
     return (
       <div id="NewBook" className="tabs-item active">
@@ -184,19 +344,79 @@ class NewBookForm extends React.Component {
               <div className="col-md-6">
                 <AuthorSearch
                   compoundError={errors}
+                  onAuthorMouseDown={this.onAuthorMouseDown}
+                  onBlurEvent={this.onBlurEvent}
+                  handleAuthorRemove={this.handleAuthorRemove}
+                  authorList={this.state.authorList}
+                  bookAuthorDetails={this.state.bookAuthorDetails}
+                  bookAuthors={this.state.bookAuthors}
+                  authorField={this.state.authorField}
+                  onAuthorChange={this.onAuthorChange}
                   handleAuthorChange={this.handleAuthorChange}
                   checkAuthorsRequest={this.props.checkAuthorsRequest}
                 />
               </div>
             </div>
             <div className="row">
-              <div className="col-md-6">
+              <div className="col-md-6 publish-year-book">
                 <TextField
+                  compoundError={errors}
+                  checkExists={this.publishYearBlur}
+                  label="Publish Year..."
+                  onChange={this.onChange}
+                  field="publishyear"
+                  value={publishyear.toString()}
+                  formField="form-group"
+                  isRequired={false}
+                  autocomplete="off"
+                  type="text"
+                />
+
+                {yearListShow &&
+                  <div>
+                    <ul
+                      className="year-list"
+                      id="year-list"
+                    >
+                      {yearList.map(years => (
+                        <li
+                          key={years}
+                          role="presentation"
+                          onMouseDown={event =>
+                            this
+                              .handleYearChangeClick(event, years)}
+                        >
+                          <span
+                            className="year-list-span"
+                          >
+                            {years}
+                          </span>
+                        </li>))}
+                    </ul>
+                  </div>}
+                {/* <TextField
                   label="Publish Year..."
                   compoundError={errors}
                   onChange={this.onChange}
                   field="publishyear"
                   value={publishyear}
+                  formField="form-group"
+                  isRequired={false}
+                  type="text"
+                /> */}
+
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-md-6">
+                <TextField
+                  label="Quantity"
+                  compoundError={errors}
+                  onChange={this.onChange}
+                  checkExists={this.validateQuantity}
+                  field="quantity"
+                  value={quantity}
                   formField="form-group"
                   isRequired={false}
                   type="text"
@@ -217,16 +437,20 @@ class NewBookForm extends React.Component {
                 />
               </div>
             </div>
-            <ImageUploader
-              handleClick={this.handleClick}
-              image={image}
-              isLoading={isLoading}
-              multiple={false}
-              onImageDrop={this.onImageDrop}
-              uploadText="Upload Book Image"
-            />
             <div className="row">
-              <div className="col-md-3">
+              <div className="col-md-6">
+                <ImageUploader
+                  handleClick={this.handleClick}
+                  image={image}
+                  isLoading={isLoading}
+                  multiple={false}
+                  onImageDrop={this.onImageDrop}
+                  uploadText="Upload Book Image"
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-6">
                 <div className="button-container">
                   <button
                     disabled={isLoading ||

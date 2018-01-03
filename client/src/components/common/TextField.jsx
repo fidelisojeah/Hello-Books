@@ -90,19 +90,19 @@ const TextField = ({ formField,
 };
 
 TextField.propTypes = {
-  formField: PropTypes.string.isRequired,
-  isRequired: PropTypes.bool.isRequired,
-  field: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  inputError: PropTypes.string,
+  autocomplete: PropTypes.string,
+  checkExists: PropTypes.func,
   compoundError: PropTypes.arrayOf(PropTypes.object),
   errField: PropTypes.string,
   errorMessage: PropTypes.string,
-  type: PropTypes.string.isRequired,
+  field: PropTypes.string.isRequired,
+  formField: PropTypes.string.isRequired,
+  inputError: PropTypes.string,
+  isRequired: PropTypes.bool.isRequired,
+  label: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  checkExists: PropTypes.func,
-  autocomplete: PropTypes.string
+  type: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
 };
 
 TextField.defaultProps = {

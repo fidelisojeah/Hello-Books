@@ -13,7 +13,7 @@ class HelloBooksSendMail {
     this.subject = `Hi ${userInfo.userFirstName} Please Verify Your Email`;
     this.username = userInfo.username;
     this.htmlEmail = '';
-    this.verificationEmailLink = `${this.appURL}/api/v4/users/verify?key=${token}&id=${userInfo.username}`;
+    this.verificationEmailLink = `${this.appURL}/user/verify?key=${token}&id=${userInfo.username}`;
   }
 
   sendVerificationEmail() {
@@ -36,10 +36,8 @@ class HelloBooksSendMail {
       };
 
       if (!this.recipientEmail) {
-        console.log('here');
         reject('No Recipient Email');
       } else {
-        console.log('hhere');
         transporter
           .sendMail(message);
         resolve('Mail Sent');

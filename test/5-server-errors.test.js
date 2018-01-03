@@ -89,9 +89,11 @@ describe('Database errors Simulations', () => {
         db.UserDetails.getMembership = userDetailsMembership;
         done();
       });
-      it('should return 501 Unsuccessful when model methods unavailable',
+      it(`should return 501
+       Unsuccessful when model methods unavailable`,
         (done) => {
-          db.BookLendings.create = () => Promise.reject(1);
+          db.BookLendings.create = () =>
+            Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
             .post('/api/v4/users/2/books')
             .set('x-access-token', goodToken2)
@@ -108,11 +110,15 @@ describe('Database errors Simulations', () => {
               done();
             });
         });
-      it('should return 501 Unsuccessful when model methods unavailable',
+      it(`should return 501
+       Unsuccessful when model methods unavailable`,
         (done) => {
-          db.BookLendings.count = () => Promise.reject(1);
-          db.Books.findOne = () => Promise.reject(1);
-          db.UserDetails.getMembership = () => Promise.reject(1);
+          db.BookLendings.count = () =>
+            Promise.reject(new Error('WRONG!!!'));
+          db.Books.findOne = () =>
+            Promise.reject(new Error('WRONG!!!'));
+          db.UserDetails.getMembership = () =>
+            Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
             .post('/api/v4/users/2/books')
             .set('x-access-token', goodToken2)
@@ -129,9 +135,11 @@ describe('Database errors Simulations', () => {
               done();
             });
         });
-      it('should return 501 Unsuccessful when model methods unavailable',
+      it(`should return 501 
+      Unsuccessful when model methods unavailable`,
         (done) => {
-          db.UserDetails.findOne = () => Promise.reject(1);
+          db.UserDetails.findOne = () =>
+            Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
             .post('/api/v4/users/2/books')
             .set('x-access-token', goodToken2)
@@ -166,9 +174,11 @@ describe('Database errors Simulations', () => {
         done();
       });
 
-      it('should return 501 Unsuccessful for Books model error (update)',
+      it(`should return 501
+       Unsuccessful for Books model error (update)`,
         (done) => {
-          Promise.all = () => Promise.reject(1);
+          Promise.all = () =>
+            Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
             .put('/api/v4/users/1/books')
             .set('x-access-token', goodToken1)
@@ -185,9 +195,11 @@ describe('Database errors Simulations', () => {
               done();
             });
         });
-      it('should return 501 Unsuccessful for Books model error (findOne)',
+      it(`should return 501 
+      Unsuccessful for Books model error (findOne)`,
         (done) => {
-          db.Books.findOne = () => Promise.reject(1);
+          db.Books.findOne = () =>
+            Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
             .put('/api/v4/users/1/books')
             .set('x-access-token', goodToken1)
@@ -204,9 +216,11 @@ describe('Database errors Simulations', () => {
               done();
             });
         });
-      it('should return 501 Unsuccessful for BookLendings model error',
+      it(`should return 501 
+      Unsuccessful for BookLendings model error`,
         (done) => {
-          db.BookLendings.findOne = () => Promise.reject(1);
+          db.BookLendings.findOne = () =>
+            Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
             .put(`/api/v4/users/${goodTokenUserID}/books`)
             .set('x-access-token', goodToken)
@@ -234,9 +248,11 @@ describe('Database errors Simulations', () => {
         db.BookLendings.count = bookLendingCount;
         done();
       });
-      it('should return 500 Unsuccessful when BookLending method unavailable',
+      it(`should return 500 
+      Unsuccessful when BookLending method unavailable`,
         (done) => {
-          db.BookLendings.count = () => Promise.reject(1);
+          db.BookLendings.count = () =>
+            Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
             .get(`/api/v4/users/history/${goodTokenUserID}`)
             .set('x-access-token', goodToken)
@@ -260,9 +276,11 @@ describe('Database errors Simulations', () => {
         db.BookLendings.findAll = bookLendingFindAll;
         done();
       });
-      it('should return 500 Unsuccessful when BookLending method unavailable',
+      it(`should return 
+      500 Unsuccessful when BookLending method unavailable`,
         (done) => {
-          db.BookLendings.findAll = () => Promise.reject(1);
+          db.BookLendings.findAll = () =>
+            Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
             .get(`/api/v4/users/${goodTokenUserID}/books`)
             .set('x-access-token', goodToken)
@@ -276,62 +294,114 @@ describe('Database errors Simulations', () => {
             });
         });
     });
-    describe('When trying to view Lending history (Paginated)', () => {
-      let bookLendingFindAll;
-      let bookLendingCountAll;
+    describe(`When trying to view
+     Lending history (Paginated)`,
+      () => {
+        let bookLendingFindAll;
+        let bookLendingCountAll;
+        before((done) => {
+          bookLendingFindAll = db.BookLendings.findAll;
+          bookLendingCountAll = db.BookLendings.count;
+          done();
+        });
+        after((done) => {
+          db.BookLendings.findAll = bookLendingFindAll;
+          db.BookLendings.count = bookLendingCountAll;
+          done();
+        });
+        it(`should return 500 
+      Unsuccessful when BookLending method unavailable`,
+          (done) => {
+            db.BookLendings.findAll = () =>
+              Promise.reject(new Error('WRONG!!!'));
+            chai.request(app)
+              .get(`/api/v4/users/${goodTokenUserID}/books/list/1`)
+              .query({
+                order: 'false',
+                sort: 'dateborrowed',
+                limit: '10'
+              })
+              .set('x-access-token', goodToken)
+              .end((error, response) => {
+                should.exist(error);
+                response.status.should.equal(500);
+                response.type.should.equal('application/json');
+                response.body.status.should.eql('Unsuccessful');
+                should.exist(response.body.error);
+                done();
+              });
+          });
+        it(`should return 500 Unsuccessful when 
+      BookLending count method unavailable`,
+          (done) => {
+            db.BookLendings.count = () =>
+              Promise.reject(new Error('WRONG!!!'));
+            chai.request(app)
+              .get(`/api/v4/users/${goodTokenUserID}/books/list/1`)
+              .query({
+                order: 'false',
+                sort: 'dateborrowed',
+                limit: '10'
+              })
+              .set('x-access-token', goodToken)
+              .end((error, response) => {
+                should.exist(error);
+                response.status.should.equal(500);
+                response.type.should.equal('application/json');
+                response.body.status.should.eql('Unsuccessful');
+                should.exist(response.body.error);
+                done();
+              });
+          });
+      });
+  });
+  describe('User Interactions', () => {
+    describe('Resend Verification Email Controller', () => {
+      let promiseAll = Promise.all;
+      let jwtsecret;
       before((done) => {
-        bookLendingFindAll = db.BookLendings.findAll;
-        bookLendingCountAll = db.BookLendings.count;
+        promiseAll = Promise.all;
+        jwtsecret = app.get('JsonSecret');
+
         done();
       });
       after((done) => {
-        db.BookLendings.findAll = bookLendingFindAll;
-        db.BookLendings.count = bookLendingCountAll;
+        app.set('JsonSecret', jwtsecret);
+        Promise.all = promiseAll;
         done();
       });
-      it('should return 500 Unsuccessful when BookLending method unavailable',
+      it(`Should respond with 
+      code 500 Unsuccessful for token generation error`,
         (done) => {
-          db.BookLendings.findAll = () => Promise.reject(1);
+          app.set('JsonSecret', undefined);
           chai.request(app)
-            .get(`/api/v4/users/${goodTokenUserID}/books/list/1`)
-            .query({
-              order: 'false',
-              sort: 'dateborrowed',
-              limit: '10'
-            })
-            .set('x-access-token', goodToken)
+            .get('/api/v4/user/verify/sampleusername')
             .end((error, response) => {
               should.exist(error);
               response.status.should.equal(500);
               response.type.should.equal('application/json');
-              response.body.status.should.eql('Unsuccessful');
+              response.body.status.should.eql('none');
               should.exist(response.body.error);
               done();
             });
         });
-      it('should return 500 Unsuccessful when BookLending count method unavailable',
+      it('should return 500 Unsuccessful when  promise all fails',
         (done) => {
-          db.BookLendings.count = () => Promise.reject(1);
+          Promise.all = () =>
+            Promise
+              .reject(new Error('WRONG!!!'));
           chai.request(app)
-            .get(`/api/v4/users/${goodTokenUserID}/books/list/1`)
-            .query({
-              order: 'false',
-              sort: 'dateborrowed',
-              limit: '10'
-            })
-            .set('x-access-token', goodToken)
+            .get('/api/v4/user/verify/sample')
             .end((error, response) => {
               should.exist(error);
               response.status.should.equal(500);
               response.type.should.equal('application/json');
-              response.body.status.should.eql('Unsuccessful');
+              response.body.status.should.equal('Unsuccessful');
               should.exist(response.body.error);
               done();
             });
         });
     });
-  });
-  describe('User Interactions', () => {
     describe('Check User exists controller', () => {
       let userDetailsfindOne = db.UserDetails.findOne;
       before((done) => {
@@ -344,7 +414,9 @@ describe('Database errors Simulations', () => {
       });
       it('should return 500 Unsuccessful when user cannot be found',
         (done) => {
-          db.UserDetails.findOne = () => Promise.reject(1);
+          db.UserDetails.findOne = () =>
+            Promise
+              .reject(new Error('WRONG!!!'));
           chai.request(app)
             .get('/api/v4/users/signupCheck/randomIdentifier')
             .end((error, response) => {
@@ -373,7 +445,8 @@ describe('Database errors Simulations', () => {
         db.Memberships.findById = memberShipFindID;
         done();
       });
-      it('Should respond with code 202 none for token generation error',
+      it(`Should respond with 
+      code 202 none for token generation error`,
         (done) => {
           app.set('JsonSecret', undefined);
           chai.request(app)
@@ -394,9 +467,11 @@ describe('Database errors Simulations', () => {
               done();
             });
         });
-      it('Should respond with code 500 Unsuccessful for membership model error',
+      it(`Should respond with code 500 
+      Unsuccessful for membership model error`,
         (done) => {
-          db.Memberships.findById = () => Promise.reject(1);
+          db.Memberships.findById = () =>
+            Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
             .post('/api/v4/users/signup')
             .send({
@@ -417,7 +492,8 @@ describe('Database errors Simulations', () => {
         });
       it('Should respond with code 500 Unsuccessful for bcrypt error',
         (done) => {
-          bcrypt.hash = () => Promise.reject(1);
+          bcrypt.hash = () =>
+            Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
             .post('/api/v4/users/signup')
             .send({
@@ -439,16 +515,20 @@ describe('Database errors Simulations', () => {
     });
     describe('When trying to activate user', () => {
       let userDetailsFindOne;
+
       before((done) => {
         userDetailsFindOne = db.UserDetails.findOne;
+
         done();
       });
       after((done) => {
         db.UserDetails.findOne = userDetailsFindOne;
         done();
       });
+
       it('should return 500 Unsuccessful', (done) => {
-        db.UserDetails.findOne = () => Promise.reject(1);
+        db.UserDetails.findOne = () =>
+          Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
           .get('/api/v4/users/verify')
           .query({
@@ -500,7 +580,7 @@ describe('Database errors Simulations', () => {
           });
       });
       it('should return 500 Unsuccessful', (done) => {
-        bcrypt.compare = () => Promise.reject(1);
+        bcrypt.compare = () => Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
           .post('/api/v4/users/signin')
           .send({
@@ -517,7 +597,8 @@ describe('Database errors Simulations', () => {
           });
       });
       it('should return 500 Unsuccessful', (done) => {
-        db.UserDetails.findOne = () => Promise.reject(1);
+        db.UserDetails.findOne = () =>
+          Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
           .post('/api/v4/users/signin')
           .send({
@@ -536,6 +617,106 @@ describe('Database errors Simulations', () => {
     });
   });
   describe('Book Interactions', () => {
+    describe('When trying to Search Authors', () => {
+      let authorsFindAll;
+      let authorsFindOne;
+      before((done) => {
+        authorsFindAll = db.Authors.findAll;
+        authorsFindOne = db.Authors.findOne;
+        done();
+      });
+      after((done) => {
+        db.Authors.findAll = authorsFindAll;
+        db.Authors.findOne = authorsFindOne;
+        done();
+      });
+      it('should return 500 Unsuccessful', (done) => {
+        db.Authors
+          .findAll = () => Promise.reject(new Error('WRONG!!!'));
+        chai.request(app)
+          .get('/api/v4/authors')
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(500);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            done();
+          });
+      });
+      it('should return 500 Unsuccessful', (done) => {
+        db.Authors
+          .findOne = () => Promise.reject(new Error('WRONG!!!'));
+        chai.request(app)
+          .get('/api/v4/authors?id=1')
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(500);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            done();
+          });
+      });
+    });
+    describe('When trying to Search Authors', () => {
+      let authorsFindAll;
+      before((done) => {
+        authorsFindAll = db.Authors.findAll;
+        done();
+      });
+      after((done) => {
+        db.Authors.findAll = authorsFindAll;
+        done();
+      });
+      it('should return 500 Unsuccessful', (done) => {
+        db.Authors
+          .findAll = () => Promise.reject(new Error('WRONG!!!'));
+        chai.request(app)
+          .get('/api/v4/search/authors?q=jo')
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(500);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            done();
+          });
+      });
+    });
+    describe('When trying to Modify Books', () => {
+      let bookFindOne;
+      before((done) => {
+        bookFindOne = db.Books.findOne;
+        done();
+      });
+      after((done) => {
+        db.Books.findOne = bookFindOne;
+        done();
+      });
+      it('should return 500 Unsuccessful', (done) => {
+        db.Books.findOne = () =>
+          Promise.reject(new Error('WRONG!!!'));
+        chai.request(app)
+          .post('/api/v4/books/1/quantity')// a is wrong here
+          .set('x-access-token', goodToken)
+          .send({
+            quantity: 3,
+          })
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(501);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            done();
+          });
+      });
+    });
     describe('When trying to add books', () => {
       let bookCreate;
       let authorsFindAll;
@@ -550,7 +731,8 @@ describe('Database errors Simulations', () => {
         done();
       });
       it('should return 501 Unsuccessful', (done) => {
-        db.Books.create = () => Promise.reject(1);
+        db.Books.create = () =>
+          Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
           .post('/api/v4/books')
           .set('x-access-token', goodToken)
@@ -578,7 +760,8 @@ describe('Database errors Simulations', () => {
           });
       });
       it('should return 500 Unsuccessful', (done) => {
-        db.Authors.findAll = () => Promise.reject(1);
+        db.Authors.findAll = () =>
+          Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
           .post('/api/v4/books')
           .set('x-access-token', goodToken)
@@ -621,7 +804,8 @@ describe('Database errors Simulations', () => {
         done();
       });
       it('should return 500 Unsuccessful', (done) => {
-        db.Books.findAll = () => Promise.reject(1);
+        db.Books.findAll = () =>
+          Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
           .get('/api/v4/books/list/1?limit=10')
           .set('x-access-token', goodToken)
@@ -635,9 +819,36 @@ describe('Database errors Simulations', () => {
           });
       });
       it('should return 500 Unsuccessful', (done) => {
-        db.Books.count = () => Promise.reject(1);
+        db.Books.count = () =>
+          Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
           .get('/api/v4/books/list/1?limit=10')
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(500);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            done();
+          });
+      });
+    });
+    describe('When trying to get books List For homepage', () => {
+      let promiseAll;
+      before((done) => {
+        promiseAll = Promise.all;
+        done();
+      });
+      after((done) => {
+        Promise.all = promiseAll;
+        done();
+      });
+      it('should return 500 Unsuccessful', (done) => {
+        Promise.all = () =>
+          Promise.reject(new Error('WRONG!!!'));
+        chai.request(app)
+          .get('/api/v1/sorted/books')
           .set('x-access-token', goodToken)
           .end((error, response) => {
             should.exist(error);
@@ -663,7 +874,8 @@ describe('Database errors Simulations', () => {
         done();
       });
       it('should return 500 Unsuccessful', (done) => {
-        db.Books.findAll = () => Promise.reject(1);
+        db.Books.findAll = () =>
+          Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
           .get('/api/v4/books')
           .set('x-access-token', goodToken)
@@ -678,7 +890,8 @@ describe('Database errors Simulations', () => {
       });
       it('should return 500 Unsuccessful for particular book',
         (done) => {
-          db.Books.findOne = () => Promise.reject(1);
+          db.Books.findOne = () =>
+            Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
             .get('/api/v4/books')
             .query({
@@ -706,7 +919,8 @@ describe('Database errors Simulations', () => {
         done();
       });
       it('should return 500 Unsuccessful', (done) => {
-        db.Books.findOne = () => Promise.reject(1);
+        db.Books.findOne = () =>
+          Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
           .put('/api/v4/books/3')
           .set('x-access-token', goodToken)
@@ -734,7 +948,8 @@ describe('Database errors Simulations', () => {
         done();
       });
       it('should return 500 Unsuccessful', (done) => {
-        db.Authors.create = () => Promise.reject(1);
+        db.Authors.create = () =>
+          Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
           .post('/api/v4/authors')
           .set('x-access-token', goodToken)

@@ -5,6 +5,7 @@ import Header from './Header';
 import Footer from './Footer';
 import SiteCache from './SiteCache';
 import ToastrComponent from './ToastrComponent';
+import ToastrModal from './ToastrModal';
 
 class App extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class App extends React.Component {
     event.preventDefault();
     document.body.classList.remove('with--sidebar');
     document.body.classList.remove('with--modal');
+    document.body.classList.remove('with--toastr-modal');
   }
   render() {
     return (
@@ -26,6 +28,7 @@ class App extends React.Component {
           {this.props.children}
           <Footer />
         </div>
+        <ToastrModal />
         <ToastrComponent />
         <SiteCache
           handleClick={this.handleCacheClick}

@@ -14,6 +14,7 @@ const menuReduce = (event) => {
   event.preventDefault();
   window.addEventListener('click', removeSiteCache);
   document.body.classList.add('with--sidebar');
+  document.getElementById('nav-bar').classList.add('-clicked');
 };
 
 const Hamburger = () => {

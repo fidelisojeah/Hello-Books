@@ -7,8 +7,10 @@ import {
 
 /**
  *
- * @param {*} state
+ * @param {object} state
+ *
  * @param {object} action
+ *
  * @returns {object} new state
  */
 export default function bookHistoryReducer(state = {
@@ -29,6 +31,7 @@ export default function bookHistoryReducer(state = {
         unreturnedBookCount: action.fetchedHistory.unreturnedBookCount,
         borrowedBooks: action.fetchedHistory.userBook.rows,
         borrowedBooksCount: action.fetchedHistory.userBook.count,
+        error: null
       };
     }
     case FETCH_SINGLE_BOOK_HISTORY_REJECT: {
@@ -52,7 +55,8 @@ export default function bookHistoryReducer(state = {
             dueDate: action.borrowedBook.dueDate
           },
           ...state.borrowedBooks
-        ]
+        ],
+        error: null
       };
     }
     case BORROW_SINGLE_BOOK_REJECT: {

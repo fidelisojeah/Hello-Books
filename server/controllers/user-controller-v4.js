@@ -5,14 +5,144 @@ import {
 } from '../models';
 import JwTokens from '../middleware/helpers';
 import CheckSession from '../middleware/session';
-import UserHelper from '../helpers/user-signup';
+import UserHelper from '../helpers/UserHelper';
 import HelloBooksSendMail from '../helpers/node-email';
 
 class UserLoginDetails {
   /**
+   *
+   * @param {object} data User signup data
+   *
+   * @param {object} tokenInfo info to be generated
+   *
+   * @param {string} jsonSecret JSON token secret
+   *
+   * @returns {promise}
+   */
+  static activationTokenWithEmail(data, tokenInfo, jsonSecret) {
+    return new Promise((resolve, reject) => {
+      JwTokens
+        .generateToken(
+        jsonSecret,
+        tokenInfo,
+        '24h') // expires in 24hours
+        .then((signupToken) => {
+          const infoForVerification = {
+            userEmail:
+              data.emailaddress,
+            userFirstName:
+              data.firstname,
+            userLastName:
+              data.lastname,
+            username:
+              data.username
+          };
+          const sendActivationEmail =
+            new HelloBooksSendMail(
+              infoForVerification,
+              signupToken);
+
+          sendActivationEmail
+            .sendVerificationEmail();
+
+          resolve(signupToken);
+        })
+        .catch(error => // if unsuccessful token
+          reject(error)
+        );
+    });
+  }
+  /**
+  * @description Method Generates new authentication email
+  *
+  * @param {object} request HTTP Request Object
+  *
+  * @param {object} response HTTP Response Object
+  *
+  * @returns {void}
+  */
+  static generateActivationEmail(request, response) {
+    const identifier = request.params.username;
+    Promise.all([
+      UserDetails
+        .findOne({
+          where: {
+            $or: [{
+              username: identifier.toLowerCase(),
+            }, {
+              emailaddress: identifier.toLowerCase(),
+            }],
+            isActivated: false
+          },
+          attributes: [
+            'id', 'username',
+            'firstname', 'lastname',
+            'emailaddress'
+          ]
+        }),
+      JwTokens
+        .randomString(24)
+    ])
+      .then(([foundUser, activationBuffer]) => {
+        if (foundUser) {
+          foundUser
+            .update({
+              authString: activationBuffer
+            })
+            .then(() => {
+              const tokenInfo = {
+                username: foundUser.username,
+                userId: foundUser.id,
+                email: foundUser.emailaddress,
+                authString: activationBuffer,
+              };
+              UserLoginDetails
+                .activationTokenWithEmail(
+                foundUser,
+                tokenInfo,
+                request.app.get('JsonSecret')
+                )
+                .then(() => {
+                  response.status(200).json({
+                    status: 'Success',
+                    message: 'Email Sent'
+                  });
+                })
+                .catch(error =>
+                  response.status(500).json({
+                    status: 'none',
+                    message: 'Something went wrong',
+                    error
+                  }));
+            })
+            .catch((error) => {
+              return response.status(500).json({
+                status: 'Unsuccessful',
+                error
+              });
+            });
+        } else {
+          response.status(400).json({
+            status: 'Unsuccessful',
+            error: 'Username Invalid'
+          });
+        }
+      })
+      .catch(errorMessage =>
+        response.status(500).json({
+          status: 'Unsuccessful',
+          error: errorMessage,
+        })
+      );
+  }
+  /**
    * @description Method checks if user exists
+   *
    * @param {object} request HTTP Request Object
+   *
    * @param {object} response HTTP Response Object
+   *
+   * @returns {void}
    */
   static checkUserExists(request, response) {
     const userName = request.params.identifier;
@@ -41,9 +171,12 @@ class UserLoginDetails {
   }
   /**
    * @description validates signup info
+   *
    * @param {String} verifiedToken
+   *
    * @param {String} userName
-   * @returns {Promise}
+   *
+   * @returns {void}
    */
   static validateActivationToken(verifiedToken, userName) {
     return new Promise((resolve, reject) => {
@@ -62,8 +195,12 @@ class UserLoginDetails {
   // for sign up
   /**
    * @description When user signs up
+   *
    * @param {object} request HTTP Request Object
+   *
    * @param {object} response HTTP Response Object
+   *
+   * @returns {void}
    */
   static signUp(request, response) {
     // declare variables
@@ -110,43 +247,26 @@ class UserLoginDetails {
                           email: signupData.dataValues.emailaddress,
                           authString: activationBuf,
                         };
-                        JwTokens
-                          .generateToken(
-                          request.app.get('JsonSecret'),
+                        UserLoginDetails
+                          .activationTokenWithEmail(
+                          signupData.dataValues,
                           tokenInfo,
-                          '24h') // expires in 24hours
-                          .then((signupToken) => {
-                            const infoForVerification = {
-                              userEmail:
-                                signupData.dataValues.emailaddress,
-                              userFirstName:
-                                signupData.dataValues.firstname,
-                              userLastName:
-                                signupData.dataValues.lastname,
-                              username:
-                                signupData.dataValues.username
-                            };
-
-                            const sendActivationEmail =
-                              new HelloBooksSendMail(
-                                infoForVerification,
-                                signupToken);
-
-                            sendActivationEmail
-                              .sendVerificationEmail();
+                          request.app.get('JsonSecret')
+                          )
+                          .then(signupToken =>
                             response.status(201).json({
                               status: 'Success',
                               message: 'User account created',
                               membership:
                                 setMembershipDetails.membershipName,
                               token: signupToken
-                            });
-                          })
-                          .catch(error => // if unsuccessful token
+                            })
+                          )
+                          .catch(error =>
                             response.status(202).json({
                               status: 'none',
                               message: `User account created, 
-                                      Token unsuccessful`,
+                                        Token unsuccessful`,
                               membership:
                                 setMembershipDetails.membershipName,
                               error,
@@ -189,8 +309,12 @@ class UserLoginDetails {
   }
   /**
    * @description Method would eventually activate current user's email
+   *
    * @param {object} request HTTP Request Object
+   *
    * @param {object} response HTTP Response Object
+   *
+   * @returns {void}
    */
   static activateUser(request, response) {
     const activationToken = request.query.key || null;

@@ -13,6 +13,7 @@ import EditModal from '../edit-modal/EditModal';
 
 /**
  * @param {object} props
+ *
  * @returns {JSX} JSX element
  */
 function BookGlobalComponent(props) {

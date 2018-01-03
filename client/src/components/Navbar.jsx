@@ -1,11 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+/**
+ *
+ * @param {object} props
+ *
+ * @returns {JSX} jsx element
+ */
 function Navbar(props) {
   return (
-    <div className="header--right">
+    <div className="header--right" id="nav-bar">
       <nav className="header-nav">
         <div className="header-nav--inner">
           <ul className="menu">

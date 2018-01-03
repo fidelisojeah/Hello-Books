@@ -51,7 +51,7 @@ class Header extends React.Component {
     if (document.body.classList.contains('with--sidebar')) {
       document.body.classList.remove('with--sidebar');
     }
-    this.context.router.history.push('/');
+    this.context.router.history.push('/signin');
   }
   render() {
     const { isAuthenticated, user } = this.props.auth;

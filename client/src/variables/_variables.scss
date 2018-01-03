@@ -57,6 +57,7 @@ $container-md: $container-desktop !default;
 $container-large-desktop: (1140px + $grid-gutter-width) !default;
 //** For `$screen-lg-min` and up.
 $container-lg: $container-large-desktop !default;
+$card-width:160px;
 // $primaryColor: #d46a6a;
 $primaryColor: #0078d7;
 // $primaryColorext: #aa3939;
@@ -124,6 +125,14 @@ $datepicker__item-size: 1.7rem !default;
 $datepicker__margin: .4rem !default;
 $datepicker__navigation-size: .45rem !default;
 $datepicker__triangle-size: 8px !default;
+$hello-books-success:#00DC7E;
+$loader-size: 80px;
+$cross-height:($loader-size/2 + $loader-size/4);
+$check-height: $loader-size/2;
+$check-width: $check-height/2;
+$check-left: ($loader-size/6 + $loader-size/12);
+$check-thickness: 4px;
+$check-color: $hello-books-success;
 @-webkit-keyframes fadein {
   from {
     top: 0;
@@ -169,5 +178,153 @@ $datepicker__triangle-size: 8px !default;
   to {
     right: 0;
     opacity: 0;
+  }
+}
+
+@-webkit-keyframes background-anim {
+  0% {
+    background-position: 39% 0%
+  }
+  50% {
+    background-position: 62% 100%
+  }
+  100% {
+    background-position: 39% 0%
+  }
+}
+
+@-moz-keyframes background-anim {
+  0% {
+    background-position: 39% 0%
+  }
+  50% {
+    background-position: 62% 100%
+  }
+  100% {
+    background-position: 39% 0%
+  }
+}
+
+@-o-keyframes background-anim {
+  0% {
+    background-position: 39% 0%
+  }
+  50% {
+    background-position: 62% 100%
+  }
+  100% {
+    background-position: 39% 0%
+  }
+}
+
+@keyframes background-anim {
+  0% {
+    background-position: 39% 0%
+  }
+  50% {
+    background-position: 62% 100%
+  }
+  100% {
+    background-position: 39% 0%
+  }
+}
+
+@keyframes animateleft {
+  from {
+    left: -300px;
+    opacity: 0
+  }
+  to {
+    left: 0;
+    opacity: 1
+  }
+}
+
+@keyframes animateright {
+  from {
+    right: -300px;
+    opacity: 0
+  }
+  to {
+    right: 0;
+    opacity: 1
+  }
+}
+
+@keyframes up-tab {
+  0% {
+    background-position: -50px;
+    background-size: 0;
+    background-position: center 50px;
+  }
+  100% {
+    background-position: 0;
+    background-size: 200px;
+    background-position: center center;
+  }
+}
+
+@-webkit-keyframes up-tab {
+  0% {
+    background-position: -50px;
+    background-size: 0;
+    background-position: center 50px;
+  }
+  100% {
+    background-position: 0;
+    background-size: 200px;
+    background-position: center center;
+  }
+}
+
+@keyframes checkmarkfailX1 {
+  0% {
+    transform: scaleX(0.0001) translate(-33%, 33%) rotate(45deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1) translate(-33%, 33%) rotate(45deg);
+  }
+}
+
+@keyframes checkmarkfailX2 {
+  0% {
+    transform: scaleX(0.0001) translate(33%, 33%) rotate(-45deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1) translate(33%, 33%) rotate(-45deg);
+  }
+}
+
+@keyframes checkmark {
+  0% {
+    height: 0;
+    width: 0;
+    opacity: 1;
+  }
+  20% {
+    height: 0;
+    width: $check-width;
+    opacity: 1;
+  }
+  40% {
+    height: $check-height;
+    width: $check-width;
+    opacity: 1;
+  }
+  100% {
+    height: $check-height;
+    width: $check-width;
+    opacity: 1;
+  }
+}
+
+@keyframes loader-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }

@@ -1,12 +1,18 @@
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 
-import { SET_CURRENT_USER } from '../actions/types';
+import Toastr from '../common/Toastr';
+
+import {
+  SET_CURRENT_USER,
+  SIGN_IN_UNSUCCESSFUL
+} from '../actions/types';
 import setAuthorizationToken from '../../utils/setAuthToken';
 
 /**
  *
- * @param {*} user
+ * @param {object} user
+ *
  * @return {object} STATE
  */
 export function setCurrentUser(user) {
@@ -16,19 +22,34 @@ export function setCurrentUser(user) {
   };
 }
 /**
+ *
+ * @param {object} error
+ *
+ * @return {object} STATE
+ */
+export const signInUnsuccessful = error => (
+  {
+    type: SIGN_IN_UNSUCCESSFUL,
+    error,
+  }
+);
+/**
  * @return {function} dispatch
  */
 export const logout = () =>
-  (dispatch) => {
-    localStorage.removeItem('jwtToken');
-    setAuthorizationToken(false);
-    axios.get('/api/v4/users/logout');
-    dispatch(setCurrentUser({}));
-  };
+  dispatch =>
+    axios.get('/api/v4/users/logout')
+      .then(() => {
+        localStorage.removeItem('jwtToken');
+        setAuthorizationToken(false);
+        dispatch(setCurrentUser({}));
+      });
+
 
 /**
  *
  * @param {object} userData
+ *
  * @return {function} dispatch
  */
 export const userLogin = userData =>
@@ -38,6 +59,10 @@ export const userLogin = userData =>
         const token = response.data.token;
         localStorage.setItem('jwtToken', token);
         setAuthorizationToken(token);
+        Toastr.Success('Sign In Successful');
         dispatch(setCurrentUser(jwtDecode(token)));
+      })
+      .catch((error) => {
+        dispatch(signInUnsuccessful(error.response));
       });
 

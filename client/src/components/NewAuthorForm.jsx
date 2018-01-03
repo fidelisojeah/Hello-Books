@@ -1,6 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import swal from 'sweetalert';
+import { connect } from 'react-redux';
+import DatePicker from 'react-datepicker';
+
+import {
+  todayDate
+} from './common/calculate-moment';
 
 import TextField from './common/TextField';
 
@@ -12,47 +17,45 @@ class NewAuthorForm extends React.Component {
       firstname: '',
       lastname: '',
       authorAKA: '',
-      authorDOB: '',
+      authorDOB: null,
+      maxDate: todayDate(),
       errors: {},
       isLoading: false,
       invalid: false
     };
-    this.onSubmit = this.onSubmit.bind(this);
-    this.onChange = this.onChange.bind(this);
   }
-  onChange(event) {
+  componentWillReceiveProps(nextprops) {
+    if (nextprops.error) {
+      if (error.data.message === 'Not allowed') {
+        this.context.router.history.push('/Books');
+      } else if (error.data.message === 'Unauthenticated') {
+        this.context.router.history.push('/signin');
+      }
+      return this.setState({ isLoading: false });
+    }
+    this.setState({
+      firstname: '',
+      lastname: '',
+      authorAKA: '',
+      isLoading: false,
+      authorDOB: null,
+      error: nextprops.error
+    });
+  }
+  onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   }
-  onSubmit(event) {
+  onSubmit = (event) => {
     event.preventDefault();
     this.setState({ errors: {}, isLoading: true });
     this
       .props
-      .newAuthorRequest(this.state)
-      .then((response) => {
-        swal(
-          'Great',
-          response.data.message,
-          'success'
-        );
-      })
-      .catch((error) => {
-        if (error.response.data.message === 'Not allowed') {
-          swal(
-            'Too Bad',
-            'You don\'t have access',
-            'error'
-          );
-          this.context.router.history.push('/Books');
-        } else if (error.response.data.message === 'Unauthenticated') {
-          swal(
-            'Too Bad',
-            'Try signing in Please',
-            'error'
-          );
-          this.context.router.history.push('/signin');
-        }
-      });
+      .newAuthorRequest(this.state);
+  }
+  handleDateChange = (date) => {
+    this.setState({
+      authorDOB: date
+    });
   }
   render() {
     const { errors } = this.state;
@@ -112,21 +115,23 @@ class NewAuthorForm extends React.Component {
             </div>
             <div className="row">
               <div className="col-md-6">
-                <TextField
-                  inputError={errors.inputError}
-                  errorMessage={errors.message}
-                  label="Date of Birth"
-                  onChange={this.onChange}
-                  field="authorDOB"
-                  value={this.state.authorDOB}
-                  formField="form-group"
-                  isRequired={false}
-                  type="text"
+                <div className="datepicker-span">
+                  Date of Birth
+                  </div>
+                <DatePicker
+                  selected={this.state.authorDOB}
+                  inline
+                  maxDate={this.state.maxDate}
+                  showYearDropdown
+                  showMonthDropdown
+                  dropdownMode="select"
+                  dateFormat="DD MMMM YYYY"
+                  onChange={this.handleDateChange}
                 />
               </div>
             </div>
             <div className="row">
-              <div className="col-md-3">
+              <div className="col-md-6">
                 <div className="button-container">
                   <button
                     disabled={this.state.isLoading ||
@@ -149,4 +154,16 @@ NewAuthorForm.propTypes = {
 NewAuthorForm.contextTypes = {
   router: PropTypes.object.isRequired,
 };
-export default NewAuthorForm;
+/**
+ *
+ * @param {object} state
+ *
+ * @returns {object} nextprops
+ */
+function mapStateToProps(state) {
+  return {
+    authorCreated: state.authorReducer.authorCreated,
+    authorCreateError: state.authorReducer.error
+  };
+}
+export default connect(mapStateToProps, null)(NewAuthorForm);

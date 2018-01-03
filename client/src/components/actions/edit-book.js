@@ -20,7 +20,10 @@ export const editBookError = error =>
 
 /**
  * @param {object} info - parameters to edit
+ *
  * @param {number} bookId - The Book ID
+ *
+ * @returns {promise} dispatch
  */
 export function editBook(info, bookId) {
   return dispatch =>
@@ -30,12 +33,7 @@ export function editBook(info, bookId) {
         dispatch(editBookSuccess(response.data));
       })
       .catch((error) => {
-        if (error.response) {
-          Toastr.Failure(error.response.data.error, 4000);
-          dispatch(editBookError(error.response.data));
-        } else {
-          Toastr.Failure(error, 4000);
-          dispatch(editBookError(error));
-        }
+        Toastr.Failure(error.response.data.error, 4000);
+        dispatch(editBookError(error.response));
       });
 }

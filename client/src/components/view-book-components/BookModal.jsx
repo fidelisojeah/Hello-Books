@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 
-const BookModal = (props) => {
+/**
+ *
+ * @param {object} props
+ *
+ * @returns {JSX} div
+ */
+function BookModal(props) {
   if (props.availableBorrow < 1) {
     return (
       <div>

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 /**
  * @param {object} props
+ *
  * @return {JSX}
  */
 function BorrowBookModule(props) {
