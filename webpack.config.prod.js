@@ -65,7 +65,9 @@ module.exports = {
           path.join(__dirname, 'server/helpers'),
         ],
         loader: 'babel-loader',
-        exclude: /node_modules/,
+        exclude: [/node_modules/,
+          path.join(__dirname, 'test'),
+        ],
         query: {
           cacheDirectory: true,
           presets: ['react', 'es2015'],
