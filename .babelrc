@@ -10,15 +10,17 @@
       {
         "spec": true
       }
-    ],
-    [
-      "add-module-exports"
     ]
   ],
   "env": {
     "test": {
       "plugins": [
+        [
+      "add-module-exports"
+        ],
+        [
         "istanbul"
+        ]
       ]
     }
   }
