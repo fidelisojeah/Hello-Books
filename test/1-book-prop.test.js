@@ -45,6 +45,25 @@ describe('Book Controller tests:', () => {
         done();
       });
   });
+  describe('Before Population Tests', () => {
+    describe('GET /api/v4/books', () => {
+      describe('When no book is in database', () => {
+        it('should return 200 No Books', (done) => {
+          chai.request(app)
+            .get('/api/v4/books')
+            .set('x-access-token', goodToken)
+            .end((error, response) => {
+              should.not.exist(error);
+              response.status.should.equal(200);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('No Books');
+              done();
+            });
+        });
+      });
+    });
+  });
   describe('POST /api/v4/authors version 4', () => {
     before((done) => {
       chai.request(app).get('/api/v4/users/logout').end(done);
@@ -59,12 +78,12 @@ describe('Book Controller tests:', () => {
               firstname: 'Joanne',
               authorDOB: '1965-07-31',
             })
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(400);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Incomplete details');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Incomplete details');
               done();
             });
         });
@@ -76,12 +95,12 @@ describe('Book Controller tests:', () => {
               lastname: 'Rowling',
               authorDOB: '1965-07-31',
             })
-            .end((err, res) => {
-              should.exist(err);// or not
-              res.status.should.equal(400);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Incomplete details');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Incomplete details');
               done();
             });
         });
@@ -97,12 +116,12 @@ describe('Book Controller tests:', () => {
               authorAKA: 'J.K Rowling',
               authorDOB: '1965-07-31',
             })
-            .end((err, res) => {
-              should.not.exist(err);// or not
-              res.status.should.equal(201);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Success');
-              res.body.message.should.eql('Author Created Successfully');
+            .end((error, response) => {
+              should.not.exist(error);
+              response.status.should.equal(201);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Success');
+              response.body.message.should.eql('Author Created Successfully');
               done();
             });
         });
@@ -116,12 +135,12 @@ describe('Book Controller tests:', () => {
               authorAKA: 'George R.R Martin',
               authorDOB: '1948-09-20',
             })
-            .end((err, res) => {
-              should.not.exist(err);// or not
-              res.status.should.equal(201);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Success');
-              res.body.message.should.eql('Author Created Successfully');
+            .end((error, response) => {
+              should.not.exist(error);
+              response.status.should.equal(201);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Success');
+              response.body.message.should.eql('Author Created Successfully');
               done();
             });
         });
@@ -135,12 +154,12 @@ describe('Book Controller tests:', () => {
               authorAKA: 'Rachel Cohn',
               authorDOB: '1968-12-14',
             })
-            .end((err, res) => {
-              should.not.exist(err);// or not
-              res.status.should.equal(201);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Success');
-              res.body.message.should.eql('Author Created Successfully');
+            .end((error, response) => {
+              should.not.exist(error);
+              response.status.should.equal(201);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Success');
+              response.body.message.should.eql('Author Created Successfully');
               done();
             });
         });
@@ -154,12 +173,12 @@ describe('Book Controller tests:', () => {
               authorAKA: 'David Levithan',
               authorDOB: '1972-09-07',
             })
-            .end((err, res) => {
-              should.not.exist(err);// or not
-              res.status.should.equal(201);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Success');
-              res.body.message.should.eql('Author Created Successfully');
+            .end((error, response) => {
+              should.not.exist(error);
+              response.status.should.equal(201);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Success');
+              response.body.message.should.eql('Author Created Successfully');
               done();
             });
         });
@@ -172,12 +191,12 @@ describe('Book Controller tests:', () => {
               lastname: 'Ogidan',
               authorAKA: 'Benny O.',
             })
-            .end((err, res) => {
-              should.not.exist(err);// or not
-              res.status.should.equal(201);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Success');
-              res.body.message.should.eql('Author Created Successfully');
+            .end((error, response) => {
+              should.not.exist(error);
+              response.status.should.equal(201);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Success');
+              response.body.message.should.eql('Author Created Successfully');
               done();
             });
         });
@@ -204,12 +223,12 @@ describe('Book Controller tests:', () => {
               Harry and his parents.`,
             authorIds: '2',
           })
-          .end((err, res) => {
-            should.exist(err);
-            res.status.should.equal(401);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Not allowed');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(401);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Not allowed');
             done();
           });
       });
@@ -222,7 +241,6 @@ describe('Book Controller tests:', () => {
             .set('x-access-token', goodToken)
             .send({
               quantity: 1,
-              image: 'book-image.jpg',
               publishyear: '1999',
               // bookname: 'Harry Potter and the Prisoner of Azkaban',
               ISBN: '0-7475-4215-5',
@@ -234,13 +252,15 @@ describe('Book Controller tests:', () => {
               Harry and his parents.`,
               authorIds: '2',
             })
-            .end((err, res) => {
-              should.exist(err);// or not
-              res.status.should.equal(400);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message[0].error.should.eql('No Book Name Supplied');
-              res.body.message[0].field.should.eql('bookname');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response
+                .body.message[0]
+                .error.should.eql('No Book Name Supplied');
+              response.body.message[0].field.should.eql('bookname');
               done();
             });
         });
@@ -249,9 +269,7 @@ describe('Book Controller tests:', () => {
             .post('/api/v4/books')
             .set('x-access-token', goodToken)
             .send({
-              quantity: 1,
               image: 'book-image.jpg',
-              publishyear: '1999',
               bookname: 'Harry Potter and the Prisoner of Azkaban',
               //  ISBN: '0-7475-4215-5',
               desccription: `Harry is back at the Dursleys, 
@@ -262,13 +280,13 @@ describe('Book Controller tests:', () => {
               Harry and his parents.`,
               authorIds: '2',
             })
-            .end((err, res) => {
-              should.exist(err);// or not
-              res.status.should.equal(400);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message[0].error.should.eql('No ISBN Supplied');
-              res.body.message[0].field.should.eql('ISBN');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message[0].error.should.eql('No ISBN Supplied');
+              response.body.message[0].field.should.eql('ISBN');
               done();
             });
         });
@@ -284,13 +302,17 @@ describe('Book Controller tests:', () => {
               ISBN: '0-7475-4215-5',
               authorIds: '2',
             })
-            .end((err, res) => {
-              should.exist(err);// or not
-              res.status.should.equal(400);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message[0].field.should.eql('description');
-              res.body.message[0].error.should.eql('No Description Supplied');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body
+                .status.should.eql('Unsuccessful');
+              response.body
+                .message[0].field.should.eql('description');
+              response.body
+                .message[0].error
+                .should.eql('No Description Supplied');
               done();
             });
         });
@@ -305,25 +327,32 @@ describe('Book Controller tests:', () => {
                 publishyear: '1999',
                 authorIds: '2',
               })
-              .end((err, res) => {
-                should.exist(err);// or not
-                res.status.should.equal(400);
-                res.type.should.equal('application/json');
-                res.body.status.should.eql('Unsuccessful');
-                res.body.message.should.all.have.property('error');
-                res.body.message.should.all.have.property('field');
-                res.body.message.should
+              .end((error, response) => {
+                should.exist(error);
+                response.status.should.equal(400);
+                response.type.should.equal('application/json');
+                response.body.status.should.eql('Unsuccessful');
+                response.body
+                  .message.should.all.have.property('error');
+                response.body
+                  .message.should.all.have.property('field');
+                response.body
+                  .message.should
                   .contain.an.item.with.property('field', 'bookname');
-                res.body.message.should
+                response.body.message.should
                   .contain.an.item.with.property('field', 'ISBN');
-                res.body.message.should
-                  .contain.an.item.with.property('field', 'description');
-                res.body.message.should.contain.an
-                  .item.with.property('error', 'No Book Name Supplied');
-                res.body.message.should
-                  .contain.an.item.with.property('error', 'No ISBN Supplied');
-                res.body.message.should.contain.an
-                  .item.with.property('error', 'No Description Supplied');
+                response.body.message.should
+                  .contain.an.item
+                  .with.property('field', 'description');
+                response.body.message.should.contain.an
+                  .item.with
+                  .property('error', 'No Book Name Supplied');
+                response.body.message.should
+                  .contain.an.item
+                  .with.property('error', 'No ISBN Supplied');
+                response.body.message.should.contain.an
+                  .item.with
+                  .property('error', 'No Description Supplied');
                 done();
               });
           });
@@ -343,64 +372,68 @@ describe('Book Controller tests:', () => {
                 description: 'A wrong book but who cares',
                 authorIds: 'fake', // not a number
               })
-              .end((err, res) => {
-                should.exist(err);// or not
-                res.status.should.equal(400);
-                res.type.should.equal('application/json');
-                res.body.status.should.eql('Unsuccessful');
-                res.body.message.should
+              .end((error, response) => {
+                should.exist(error);
+                response.status.should.equal(400);
+                response.type.should.equal('application/json');
+                response.body.status.should.eql('Unsuccessful');
+                response.body.message.should
                   .contain.an.item.with.property('field', 'authorField');
-                res.body.message.should.contain.an
+                response.body.message.should.contain.an
                   .item.with.property('error', 'Invalid Authors');
                 done();
               });
           });
-          it('should return 400 Unsuccessful when no author supplied', (done) => {
-            chai.request(app)
-              .post('/api/v4/books')
-              .set('x-access-token', goodToken)
-              .send({
-                quantity: 1,
-                image: 'default.jpg',
-                publishyear: '1900',
-                bookname: 'Some book name here',
-                ISBN: '10293716810',
-                description: 'A wrong book but who cares'
-              })
-              .end((err, res) => {
-                should.exist(err);// or not
-                res.status.should.equal(400);
-                res.type.should.equal('application/json');
-                res.body.status.should.eql('Unsuccessful');
-                res.body.message.should
-                  .contain.an.item.with.property('field', 'authorField');
-                res.body.message.should.contain.an
-                  .item.with.property('error', 'No Authors Selected');
-                done();
-              });
-          });
-          it('should return 400 Unsuccessful for non existent author', (done) => {
-            chai.request(app)
-              .post('/api/v4/books')
-              .set('x-access-token', goodToken)
-              .send({
-                quantity: 1,
-                image: 'default.jpg',
-                publishyear: '1900',
-                bookname: 'Some book name here',
-                ISBN: '10293716810',
-                description: 'A wrong book but who cares',
-                authorIds: '999',
-              })
-              .end((err, res) => {
-                should.exist(err);// or not
-                res.status.should.equal(400);
-                res.type.should.equal('application/json');
-                res.body.status.should.eql('Unsuccessful');
-                res.body.message.should.eql('No Author found');
-                done();
-              });
-          });
+          it(`should return 400 
+          Unsuccessful when no author supplied`,
+            (done) => {
+              chai.request(app)
+                .post('/api/v4/books')
+                .set('x-access-token', goodToken)
+                .send({
+                  quantity: 1,
+                  image: 'default.jpg',
+                  publishyear: '1900',
+                  bookname: 'Some book name here',
+                  ISBN: '10293716810',
+                  description: 'A wrong book but who cares'
+                })
+                .end((error, response) => {
+                  should.exist(error);
+                  response.status.should.equal(400);
+                  response.type.should.equal('application/json');
+                  response.body.status.should.eql('Unsuccessful');
+                  response.body.message.should
+                    .contain.an.item.with.property('field', 'authorField');
+                  response.body.message.should.contain.an
+                    .item.with.property('error', 'No Authors Selected');
+                  done();
+                });
+            });
+          it(`should return 400 
+          Unsuccessful for non existent author`,
+            (done) => {
+              chai.request(app)
+                .post('/api/v4/books')
+                .set('x-access-token', goodToken)
+                .send({
+                  quantity: 1,
+                  image: 'default.jpg',
+                  publishyear: '1900',
+                  bookname: 'Some book name here',
+                  ISBN: '10293716810',
+                  description: 'A wrong book but who cares',
+                  authorIds: '999',
+                })
+                .end((error, response) => {
+                  should.exist(error);
+                  response.status.should.equal(400);
+                  response.type.should.equal('application/json');
+                  response.body.status.should.eql('Unsuccessful');
+                  response.body.message.should.eql('No Author found');
+                  done();
+                });
+            });
         });
         describe('When Publish Year is Invalid', () => {
           it('should return 400 and error when Publish year is invalid',
@@ -419,19 +452,19 @@ describe('Book Controller tests:', () => {
               Norah’s Infinite Playlist. Lily has left a red 
               notebook full of challenges on a favorite 
               bookstore shelf, waiting for just the right 
-              guy to come along and accept its dares.`,
+              guy to come along and accept its daresponse.`,
                   authorIds: '5,4',
                 })
-                .end((err, res) => {
-                  should.exist(err);// or not
-                  res.status.should.equal(400);
-                  res.type.should.equal('application/json');
-                  res.body.status.should.eql('Unsuccessful');
-                  res.body.message.should.all.have.property('error');
-                  res.body.message.should.all.have.property('field');
-                  res.body.message.should
+                .end((error, response) => {
+                  should.exist(error);
+                  response.status.should.equal(400);
+                  response.type.should.equal('application/json');
+                  response.body.status.should.eql('Unsuccessful');
+                  response.body.message.should.all.have.property('error');
+                  response.body.message.should.all.have.property('field');
+                  response.body.message.should
                     .contain.an.item.with.property('field', 'publishyear');
-                  res.body.message.should.contain.an.item.with
+                  response.body.message.should.contain.an.item.with
                     .property('error', 'Wrong Publish Year Supplied');
                   done();
                 });
@@ -456,13 +489,13 @@ describe('Book Controller tests:', () => {
               Harry and his parents.`,
                 authorIds: '2',
               })
-              .end((err, res) => {
-                should.not.exist(err);// or not
-                res.status.should.equal(201);
-                res.type.should.equal('application/json');
-                res.body.status.should.eql('Success');
-                res.body.message.should.eql('Book Created Successfully');
-                bookId = res.body.bookID;
+              .end((error, response) => {
+                should.not.exist(error);
+                response.status.should.equal(201);
+                response.type.should.equal('application/json');
+                response.body.status.should.eql('Success');
+                response.body.message.should.eql('Book Created Successfully');
+                bookId = response.body.bookID;
                 done();
               });
           });
@@ -484,13 +517,13 @@ describe('Book Controller tests:', () => {
               Harry and his parents.`,
                 authorIds: '2',
               })
-              .end((err, res) => {
-                should.not.exist(err);// or not
-                res.status.should.equal(201);
-                res.type.should.equal('application/json');
-                res.body.status.should.eql('Success');
-                res.body.message.should.eql('Book Created Successfully');
-                bookId = res.body.bookID;
+              .end((error, response) => {
+                should.not.exist(error);
+                response.status.should.equal(201);
+                response.type.should.equal('application/json');
+                response.body.status.should.eql('Success');
+                response.body.message.should.eql('Book Created Successfully');
+                bookId = response.body.bookID;
                 done();
               });
           });
@@ -512,13 +545,13 @@ describe('Book Controller tests:', () => {
               Harry and his parents.`,
                 authorIds: '2',
               })
-              .end((err, res) => {
-                should.not.exist(err);// or not
-                res.status.should.equal(201);
-                res.type.should.equal('application/json');
-                res.body.status.should.eql('Success');
-                res.body.message.should.eql('Book Created Successfully');
-                bookId = res.body.bookID;
+              .end((error, response) => {
+                should.not.exist(error);
+                response.status.should.equal(201);
+                response.type.should.equal('application/json');
+                response.body.status.should.eql('Success');
+                response.body.message.should.eql('Book Created Successfully');
+                bookId = response.body.bookID;
                 done();
               });
           });
@@ -537,15 +570,15 @@ describe('Book Controller tests:', () => {
               Norah’s Infinite Playlist. Lily has left a red 
               notebook full of challenges on a favorite 
               bookstore shelf, waiting for just the right 
-              guy to come along and accept its dares.`,
+              guy to come along and accept its daresponse.`,
                 authorIds: '5,4',
               })
-              .end((err, res) => {
-                should.not.exist(err);// or not
-                res.status.should.equal(201);
-                res.type.should.equal('application/json');
-                res.body.status.should.eql('Success');
-                res.body.message.should.eql('Book Created Successfully');
+              .end((error, response) => {
+                should.not.exist(error);
+                response.status.should.equal(201);
+                response.type.should.equal('application/json');
+                response.body.status.should.eql('Success');
+                response.body.message.should.eql('Book Created Successfully');
                 done();
               });
           });
@@ -565,15 +598,15 @@ describe('Book Controller tests:', () => {
               Norah’s Infinite Playlist. Lily has left a red 
               notebook full of challenges on a favorite 
               bookstore shelf, waiting for just the right 
-              guy to come along and accept its dares.`,
+              guy to come along and accept its daresponse.`,
                   authorIds: '5,4',
                 })
-                .end((err, res) => {
-                  should.exist(err);// or not
-                  res.status.should.equal(400);
-                  res.type.should.equal('application/json');
-                  res.body.status.should.eql('Unsuccessful');
-                  res.body.message.should.eql('Book Already Exists');
+                .end((error, response) => {
+                  should.exist(error);
+                  response.status.should.equal(400);
+                  response.type.should.equal('application/json');
+                  response.body.status.should.eql('Unsuccessful');
+                  response.body.message.should.eql('Book Already Exists');
                   done();
                 });
             });
@@ -583,6 +616,24 @@ describe('Book Controller tests:', () => {
     });
   });
   describe('PUT /api/v4/books/:bookId version 4', () => {
+    describe('When non admin token is provided', () => {
+      it('Should return a 401 error', (done) => {
+        chai.request(app)
+          .put(`/api/v4/books/${bookId}`)
+          .set('x-access-token', nonAdminToken)
+          .send({
+            bookISBN: '0-7405-8100-5',
+          })
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(401);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Not allowed');
+            done();
+          });
+      });
+    });
     describe('When Invalid Book Id is entered', () => {
       it('should return 404 Unsuccessful for wrong Book Id type',
         (done) => {
@@ -600,12 +651,12 @@ describe('Book Controller tests:', () => {
               publishYear: '2000',
               image: 'hpop.jpg',
             })
-            .end((err, res) => {
-              should.exist(err);// or not
-              res.status.should.equal(404);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Invalid Book');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(404);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Invalid Book');
               done();
             });
         });
@@ -625,12 +676,12 @@ describe('Book Controller tests:', () => {
               publishYear: '2000',
               image: 'hpop.jpg',
             })
-            .end((err, res) => {
-              should.exist(err);
-              res.status.should.equal(404);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Unsuccessful');
-              res.body.message.should.eql('Invalid Book');
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(404);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Invalid Book');
               done();
             });
         });
@@ -645,12 +696,12 @@ describe('Book Controller tests:', () => {
                 bookISBN: '1742374662',
               })
               .set('x-access-token', goodToken)
-              .end((err, res) => {
-                should.exist(err);// or not
-                res.status.should.equal(400);
-                res.type.should.equal('application/json');
-                res.body.status.should.eql('Unsuccessful');
-                res.body.error.should.eql('bookISBN must be unique');
+              .end((error, response) => {
+                should.exist(error);
+                response.status.should.equal(400);
+                response.type.should.equal('application/json');
+                response.body.status.should.eql('Unsuccessful');
+                response.body.error.should.eql('bookISBN must be unique');
                 done();
               });
           });
@@ -661,12 +712,12 @@ describe('Book Controller tests:', () => {
             chai.request(app)
               .put(`/api/v4/books/${bookId}`)
               .set('x-access-token', goodToken)
-              .end((err, res) => {
-                should.exist(err);// or not
-                res.status.should.equal(400);
-                res.type.should.equal('application/json');
-                res.body.status.should.eql('Unsuccessful');
-                res.body.message.should.eql('No Information Supplied');
+              .end((error, response) => {
+                should.exist(error);
+                response.status.should.equal(400);
+                response.type.should.equal('application/json');
+                response.body.status.should.eql('Unsuccessful');
+                response.body.message.should.eql('No Information Supplied');
                 done();
               });
           });
@@ -679,12 +730,12 @@ describe('Book Controller tests:', () => {
             .send({
               bookISBN: '0-7405-8100-5',
             })
-            .end((err, res) => {
-              should.not.exist(err);// or not
-              res.status.should.equal(200);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Success');
-              res.body.message.should.eql('Book Details Updated');
+            .end((error, response) => {
+              should.not.exist(error);
+              response.status.should.equal(200);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Success');
+              response.body.message.should.eql('Book Details Updated');
               done();
             });
         });
@@ -696,12 +747,12 @@ describe('Book Controller tests:', () => {
               .send({
                 publishYear: '2000',
               })
-              .end((err, res) => {
-                should.not.exist(err);// or not
-                res.status.should.equal(200);
-                res.type.should.equal('application/json');
-                res.body.status.should.eql('Success');
-                res.body.message.should.eql('Book Details Updated');
+              .end((error, response) => {
+                should.not.exist(error);
+                response.status.should.equal(200);
+                response.type.should.equal('application/json');
+                response.body.status.should.eql('Success');
+                response.body.message.should.eql('Book Details Updated');
                 done();
               });
           });
@@ -717,12 +768,12 @@ describe('Book Controller tests:', () => {
            save Dudley and himself, Harry is expelled from 
            Hogwarts, but the decision is later rescinded.`,
               })
-              .end((err, res) => {
-                should.not.exist(err);// or not
-                res.status.should.equal(200);
-                res.type.should.equal('application/json');
-                res.body.status.should.eql('Success');
-                res.body.message.should.eql('Book Details Updated');
+              .end((error, response) => {
+                should.not.exist(error);
+                response.status.should.equal(200);
+                response.type.should.equal('application/json');
+                response.body.status.should.eql('Success');
+                response.body.message.should.eql('Book Details Updated');
                 done();
               });
           });
@@ -735,12 +786,12 @@ describe('Book Controller tests:', () => {
                 bookname: 'Harry Potter and the Order of the Phoenix',
                 bookImage: 'hpop.jpg',
               })
-              .end((err, res) => {
-                should.not.exist(err);// or not
-                res.status.should.equal(200);
-                res.type.should.equal('application/json');
-                res.body.status.should.eql('Success');
-                res.body.message.should.eql('Book Details Updated');
+              .end((error, response) => {
+                should.not.exist(error);
+                response.status.should.equal(200);
+                response.type.should.equal('application/json');
+                response.body.status.should.eql('Success');
+                response.body.message.should.eql('Book Details Updated');
                 done();
               });
           });
@@ -754,11 +805,11 @@ describe('Book Controller tests:', () => {
         chai.request(app)
           .get('/api/v4/books')
           .set('x-access-token', goodToken)
-          .end((err, res) => {
-            should.not.exist(err);
-            res.status.should.equal(202);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Success');
+          .end((error, response) => {
+            should.not.exist(error);
+            response.status.should.equal(202);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Success');
             done();
           });
       });
@@ -771,47 +822,65 @@ describe('Book Controller tests:', () => {
           .query({
             id: 1,
           })
-          .end((err, res) => {
-            should.not.exist(err);
-            res.status.should.equal(202);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Success');
+          .end((error, response) => {
+            should.not.exist(error);
+            response.status.should.equal(202);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Success');
             done();
           });
       });
     });
   });
   describe('POST /api/v4/books/:bookId/quantity version 4', () => {
+    describe('When non admin token is provided', () => {
+      it('Should return a 401 error', (done) => {
+        chai.request(app)
+          .post(`/api/v4/books/${bookId}/quantity`)
+          .set('x-access-token', nonAdminToken)
+          .send({
+            quantity: 3,
+          })
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(401);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Not allowed');
+            done();
+          });
+      });
+    });
     describe('When invalid Details are presented', () => {
       it('should return 404 Invalid for invalid bookId character', (done) => {
         chai.request(app)
-          .post('/api/v4/books/a/quantity')// a is wrong here
+          .post('/api/v4/books/a/quantity')
           .set('x-access-token', goodToken)
           .send({
             quantity: 3,
           })
-          .end((err, res) => {
-            should.exist(err);// or not
-            res.status.should.equal(404);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Invalid Book');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(404);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Invalid Book');
             done();
           });
       });
       it('should return 404 Invalid for invalid bookId', (done) => {
         chai.request(app)
-          .post('/api/v4/books/209/quantity')// a is wrong here
+          .post('/api/v4/books/209/quantity')
           .set('x-access-token', goodToken)
           .send({
             quantity: 3,
           })
-          .end((err, res) => {
-            should.exist(err);// or not
-            res.status.should.equal(404);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Invalid Book');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(404);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Invalid Book');
             done();
           });
       });
@@ -819,30 +888,46 @@ describe('Book Controller tests:', () => {
     describe('When Valid Details are presented', () => {
       it('should return 400 Missing Info for no quantity provided', (done) => {
         chai.request(app)
-          .post(`/api/v4/books/${bookId}/quantity`)// a is wrong here
+          .post(`/api/v4/books/${bookId}/quantity`)
           .set('x-access-token', goodToken)
-          .end((err, res) => {
-            should.exist(err);// or not
-            res.status.should.equal(400);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Unsuccessful');
-            res.body.message.should.eql('Missing Information');
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(400);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Missing Information');
             done();
           });
       });
       it('should return 200 Successful', (done) => {
         chai.request(app)
-          .post(`/api/v4/books/${bookId}/quantity`)// a is wrong here
+          .post(`/api/v4/books/${bookId}/quantity`)
+          .set('x-access-token', goodToken)
+          .send({
+            quantity: -9,
+          })
+          .end((error, response) => {
+            should.not.exist(error);
+            response.status.should.equal(200);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Success');
+            response.body.message.should.eql('Book Updated Successfully');
+            done();
+          });
+      });
+      it('should return 200 Successful', (done) => {
+        chai.request(app)
+          .post(`/api/v4/books/${bookId}/quantity`)
           .set('x-access-token', goodToken)
           .send({
             quantity: 3,
           })
-          .end((err, res) => {
-            should.not.exist(err);
-            res.status.should.equal(200);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Success');
-            res.body.message.should.eql('Book Updated Successfully');
+          .end((error, response) => {
+            should.not.exist(error);
+            response.status.should.equal(200);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Success');
+            response.body.message.should.eql('Book Updated Successfully');
             done();
           });
       });
@@ -854,11 +939,11 @@ describe('Book Controller tests:', () => {
         chai.request(app)
           .get('/api/v4/authors')
           .set('x-access-token', goodToken)
-          .end((err, res) => {
-            should.not.exist(err);
-            res.status.should.equal(202);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Success');
+          .end((error, response) => {
+            should.not.exist(error);
+            response.status.should.equal(202);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Success');
             done();
           });
       });
@@ -871,11 +956,11 @@ describe('Book Controller tests:', () => {
             id: 1,
           })
           .set('x-access-token', goodToken)
-          .end((err, res) => {
-            should.not.exist(err);
-            res.status.should.equal(202);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('Success');
+          .end((error, response) => {
+            should.not.exist(error);
+            response.status.should.equal(202);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Success');
             done();
           });
       });
@@ -887,12 +972,12 @@ describe('Book Controller tests:', () => {
         chai.request(app)
           .get('/api/v4/search/authors')
           .set('x-access-token', goodToken)
-          .end((err, res) => {
-            should.not.exist(err);
-            res.status.should.equal(200);
-            res.type.should.equal('application/json');
-            res.body.status.should.eql('None');
-            res.body.message.should.eql('Type Author details');
+          .end((error, response) => {
+            should.not.exist(error);
+            response.status.should.equal(200);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('None');
+            response.body.message.should.eql('Type Author details');
             done();
           });
       });
@@ -903,12 +988,12 @@ describe('Book Controller tests:', () => {
           chai.request(app)
             .get('/api/v4/search/authors?q=gegegegegegegeg')
             .set('x-access-token', goodToken)
-            .end((err, res) => {
-              should.not.exist(err);
-              res.status.should.equal(200);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('None');
-              res.body.message.should.eql('No Authors');
+            .end((error, response) => {
+              should.not.exist(error);
+              response.status.should.equal(200);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('None');
+              response.body.message.should.eql('No Authors');
               done();
             });
         });
@@ -917,11 +1002,11 @@ describe('Book Controller tests:', () => {
           chai.request(app)
             .get('/api/v4/search/authors?q=jo')
             .set('x-access-token', goodToken)
-            .end((err, res) => {
-              should.not.exist(err);
-              res.status.should.equal(202);
-              res.type.should.equal('application/json');
-              res.body.status.should.eql('Success');
+            .end((error, response) => {
+              should.not.exist(error);
+              response.status.should.equal(202);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Success');
               done();
             });
         });
@@ -1088,6 +1173,58 @@ describe('Book Controller tests:', () => {
             response.body.bookLists.should.all.have.property('ratingAvg');
             should.exist(response.body.totalPages);
             should.exist(response.body.totalBooksCount);
+            done();
+          });
+      });
+    });
+  });
+  describe('GET /api/v1/sorted/books version 4', () => {
+    describe('when Complete details are passed in', () => {
+      it('should return a 200 with information', (done) => {
+        chai.request(app)
+          .get('/api/v1/sorted/books')
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.not.exist(error);
+            response.status.should.equal(202);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Success');
+            response.body
+              .message.should.eql('List retrieved Successfully');
+            response.body.ratedBooks
+              .should.all.have.property('id');
+            response.body.ratedBooks
+              .should.all.have.property('bookName');
+            response.body.ratedBooks
+              .should.all.have.property('description');
+            response.body.ratedBooks
+              .should.all.have.property('bookImage');
+            response.body.ratedBooks
+              .should.all.have.property('publishYear');
+            response.body.ratedBooks
+              .should.all.have.property('RatingCount');
+            response.body.ratedBooks
+              .should.all.have.property('RatingSum');
+            response.body.ratedBooks
+              .should.all.have.property('RatingAvg');
+            response.body.byLendingBooks
+              .should.all.have.property('id');
+            response.body.byLendingBooks
+              .should.all.have.property('bookName');
+            response.body.byLendingBooks
+              .should.all.have.property('description');
+            response.body.byLendingBooks
+              .should.all.have.property('bookImage');
+            response.body.byLendingBooks
+              .should.all.have.property('publishYear');
+            response.body.byLendingBooks
+              .should.all.have.property('RatingCount');
+            response.body.byLendingBooks
+              .should.all.have.property('RatingSum');
+            response.body.byLendingBooks
+              .should.all.have.property('RatingAvg');
+            response.body.byLendingBooks
+              .should.all.have.property('LendingCount');
             done();
           });
       });

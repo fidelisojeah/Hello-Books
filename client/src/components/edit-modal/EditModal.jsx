@@ -25,8 +25,7 @@ const EditModal = (props) => {
         handleEditClick={props.handleEditClick}
       />
     );
-  }
-  if (props.element === 'ISBN') {
+  } else if (props.element === 'ISBN') {
     return (
       <EditISBNModal
         error={props.error.ISBNError}
@@ -37,8 +36,7 @@ const EditModal = (props) => {
           props.oldISBN : props.ISBN}
       />
     );
-  }
-  if (props.element === 'image') {
+  } else if (props.element === 'image') {
     return (
       <EditImageModal
         handleImageEditClick={props.handleImageEditClick}
@@ -48,8 +46,7 @@ const EditModal = (props) => {
         handleEditClick={props.handleEditClick}
       />
     );
-  }
-  if (props.element === 'Book Name') {
+  } else if (props.element === 'Book Name') {
     return (<EditBookModal
       error={props.error.bookNameError}
       handleEditClick={props.handleEditClick}
@@ -58,8 +55,7 @@ const EditModal = (props) => {
       bookName={(props.bookName === undefined) ?
         props.oldBookName : props.bookName}
     />);
-  }
-  if (props.element === 'Description') {
+  } else if (props.element === 'Description') {
     return (
       <EditDescModal
         error={props.error.descriptionError}
@@ -71,6 +67,7 @@ const EditModal = (props) => {
       />
     );
   }
+  return (<div>Nothing to see here</div>);
 };
 EditModal.propTypes = {
   bookName: PropTypes.string,

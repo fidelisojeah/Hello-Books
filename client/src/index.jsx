@@ -26,8 +26,15 @@ const store = createStore(
   ),
 );
 if (localStorage.jwtToken) {
-  setAuthorizationToken(localStorage.jwtToken);
-  store.dispatch(setCurrentUser(jwtDecode(localStorage.jwtToken)));
+  const currentTime = Date.now().valueOf() / 1000;
+  const jwtDecoded = jwtDecode(localStorage.jwtToken);
+  if (jwtDecoded.exp < currentTime) {
+    store.dispatch(setCurrentUser({}));
+    localStorage.removeItem('jwtToken');
+  } else {
+    setAuthorizationToken(localStorage.jwtToken);
+    store.dispatch(setCurrentUser(jwtDecoded));
+  }
 } else {
   store.dispatch(setCurrentUser({}));
 }

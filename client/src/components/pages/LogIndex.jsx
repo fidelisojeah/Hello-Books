@@ -6,34 +6,196 @@ import BookCard from '../common/BookCard';
 import { loadAllBooks } from '../actions/loadBooks';
 import { logout } from '../actions/login';
 
-class Logindex extends React.Component {
+import LoadingPage from './LoadingPage';
+
+export class LogIndex extends React.Component {
   constructor(props) {
     super(props);
+    this.timeOutClear = null;
+    this.cardSize = 160;
+    this.throttle('resize', 'optimizedResize');
     this.state = {
-      allBooks: [],
+      ratedBooks: [],
+      byLendingBooks: [],
+      slideWidths: 0,
+      totalPages: 1,
+      curPosRating: 1,
+      curPosLending: 1,
+      showSideRatingLeft: true,
+      showSideRatingRight: true,
+      showSideLendingLeft: true,
+      showSideLendingRight: true
     };
   }
+
   componentDidMount() {
-    this.props.loadAllBooks()
-      .then((allBooks) => {
-        if (allBooks.data.status === 'Success') {
-          this.setState({
-            allBooks: allBooks.data.allBooks,
-          });
-        } else {
-          console.log(allBooks.data.status);
-        }
-      })
-      .catch((error) => {
-        if (error.response.data.message === 'Unauthenticated') {
-          this.props.logout();
-          this.context.router.history.push('/signin');
-        }
-      });
+    this.fetchAll();
+    // this.lendingCards = document.getElementById('lending-cards');
+    // this.ratingCards = document.getElementById('rating-cards');
+    window.addEventListener('optimizedResize', this.calculateSizes);
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.error && nextProps.error.status === 504) {
+      if (!this.timeOutClear) {
+        this.timeOutClear =
+          window
+            .setInterval(this.refreshOnTimeOutError, 10000);
+      }
+    } else if (nextProps.error &&
+      nextProps.error.message) {
+      // extra check cos why not?
+      // ideally, this should never happen
+      this.props.logout();
+      this.context.router.history.push('/signin');
+    } else {
+      window.clearInterval(this.timeOutClear);
+      this.setState({
+        ratedBooks: nextProps.ratedBooks,
+        byLendingBooks: nextProps.byLendingBooks,
+        slideWidths:
+          this.calculateSlides(this.lendingCards)
+      }, () =>
+          this.calculateSizes()
+      );
+    }
+  }
+
+  componentWillUnmount() {
+    window.clearInterval(this.timeOutClear);
+    window.removeEventListener('optimizedResize', this.calculateSizes);
+  }
+  getModifierValues = (
+    isLeft,
+    curPosLending,
+    curPosRating,
+    totalPages) => {
+    let ratingModifier, lendingModifier;
+    if (isLeft) {
+      ratingModifier =
+        (curPosRating > 1) ? (curPosRating - 1)
+          : curPosRating;
+
+      lendingModifier =
+        (curPosLending > 1) ? (curPosLending - 1)
+          : curPosLending;
+    } else {
+      ratingModifier =
+        (curPosRating < totalPages)
+          ? (curPosRating + 1) : curPosRating;
+
+      lendingModifier = (curPosLending < totalPages)
+        ? (curPosLending + 1) : curPosLending;
+    }
+    return {
+      ratingModifier, lendingModifier
+    };
+  }
+  calculateSlides(element) {
+    return Math.round(element.clientWidth / (this.cardSize + 16));
+  }
+  refreshOnTimeOutError = () => {
+    this.fetchAll();
+  }
+  throttle = (type, name, object = window) => {
+    let running = false;
+    const func = () => {
+      if (running) {
+        return;
+      }
+      running = true;
+      requestAnimationFrame(() => {
+        object.dispatchEvent(new CustomEvent(name));
+        running = false;
+      });
+    };
+    object.addEventListener(type, func);
+  }
+  fetchAll() {
+    this.props.loadAllBooks();
+  }
+  updateCarouselWidth = (
+    curPosLending,
+    curPosRating,
+    slideWidths) => {
+    this.lendingCards.getElementsByTagName('ol')[0]
+      .style.marginLeft =
+      `${(curPosLending - 1)
+      * (-1 * ((this.cardSize + 16) * slideWidths))}px`;
+
+    this.ratingCards.getElementsByTagName('ol')[0]
+      .style.marginLeft =
+      `${(curPosRating - 1)
+      * (-1 * ((this.cardSize + 16) * slideWidths))}px`;
+  }
+  calculateSizes = () => {
+    let { curPosLending,
+      curPosRating,
+     } = this.state;
+    const booksLength = this.state.ratedBooks.length;
+    const slideWidths = this.calculateSlides(this.lendingCards);
+    const totalPages = Math.ceil(booksLength / slideWidths);
+
+    curPosLending = (curPosLending < totalPages) ?
+      curPosLending : totalPages;
+    curPosRating = (curPosRating < totalPages) ?
+      curPosRating : totalPages;
+
+    this.updateCarouselWidth(curPosLending, curPosRating, slideWidths);
+
+    this.setState({
+      slideWidths,
+      totalPages,
+      showSideRatingLeft:
+        (booksLength > slideWidths &&
+          curPosRating !== 1),
+      showSideRatingRight:
+        (booksLength > slideWidths
+          && curPosRating !== totalPages),
+      showSideLendingLeft: (booksLength > slideWidths &&
+        curPosLending !== 1),
+      showSideLendingRight: (booksLength > slideWidths
+        && curPosLending !== totalPages),
+      curPosLending,
+      curPosRating
+    });
+  }
+  slideFunctionLending = (event, element, isLeft) => {
+    event.preventDefault();
+    const {
+      curPosLending,
+      curPosRating,
+      totalPages
+     } = this.state;
+
+    const {
+      lendingModifier,
+      ratingModifier
+      } = this
+        .getModifierValues(isLeft,
+        curPosLending,
+        curPosRating,
+        totalPages);
+
+    this.setState({
+      curPosLending:
+        (element === 'lending') ? lendingModifier
+          : curPosLending,
+      curPosRating: (element === 'rating') ? ratingModifier
+        : curPosRating
+    }, () =>
+        this.calculateSizes()
+    );
+  }
+
   render() {
+    if (!this.state.ratedBooks) {
+      return (
+        <LoadingPage />
+      );
+    }
     return (
-      <div className="layout--container">
+      <div className="layout--container -home">
         <div className="layout-header" style={{ padding: 0 }}>
           <div className="container-fluid slide-container">
             <div className="slides fade">
@@ -47,51 +209,159 @@ class Logindex extends React.Component {
           </div>
         </div>
         <div className="section">
-          <div className="container">
-            <div className="innerSection">
-              <h1 className="page_header--title -black -top-picks">
-                Top Picks
+          <div className="innerSection">
+            <h1 className="page_header--title -black -top-picks">
+              Top Picks
               </h1>
-              <div className="top-inner--picks">
-                <div className="row-carousel">
-                  <div className="row-carousel-inner">
-                    <div className="carousel-nav carousel-left">
-                      <a href="" className="a-button a-carousel-button">
-                        <span className="button-inner">
-                          <i className="h-icon" />
-                        </span>
-                      </a>
+            <div className="top-inner--picks">
+              <div className="row-carousel" >
+                <div className="row-carousel-inner">
+                  <div className="carousel-nav carousel-left">
+                    <button
+                      id="lend-left"
+                      onClick={
+                        event => this
+                          .slideFunctionLending(event, 'lending', true)
+                      }
+                      className={`a-button
+                       a-carousel-button ${!this.state.showSideLendingLeft ?
+                          'no-show' : undefined}
+                        `}
+                    >
+                      <span className="button-inner">
+                        <i className="h-icon" />
+                      </span>
+                    </button>
+                  </div>
+                  <div className="carousel-items">
+                    <div
+                      ref={(element) => { this.lendingCards = element; }}
+                      className="carousel-viewport"
+                      id="lending-cards"
+                    >
+                      <ol>
+                        {this.state.byLendingBooks.map(bookInfos =>
+                          (<BookCard
+                            key={bookInfos.id}
+                            bookName={bookInfos.bookName}
+                            bookID={bookInfos.id}
+                            synopsis={bookInfos.description}
+                            ratingSum={(bookInfos.RatingSum === null) ?
+                              'empty' :
+                              bookInfos.RatingSum}
+                            ratingCount={bookInfos.RatingCount}
+                            imgHref={bookInfos.bookImage}
+                            bookAuthors={bookInfos.Authors}
+                          />),
+                        )}
+                      </ol>
                     </div>
-                    <div className="carousel-items">
-                      <div className="carousel-viewport">
-                        <ol>
-                          {this.state.allBooks.map(bookInfos =>
-                            (<BookCard
-                              key={bookInfos.id}
-                              bookName={bookInfos.bookName}
-                              bookID={bookInfos.id}
-                              synopsis={bookInfos.description}
-                              ratingSum={(bookInfos.RatingSum === null) ?
-                                'empty' :
-                                bookInfos.RatingSum}
-                              ratingCount={bookInfos.RatingCount}
-                              imgHref={bookInfos.bookImage}
-                              bookAuthors={bookInfos.Authors}
-                            />),
-                          )}
-                        </ol>
-                      </div>
-                    </div>
-                    <div className="carousel-nav carousel-right">
-                      <a href="" className="a-button a-carousel-button">
-                        <span className="button-inner">
-                          <i className="h-icon" />
-                        </span>
-                      </a>
-                    </div>
+                  </div>
+                  <div className="carousel-nav carousel-right">
+                    <button
+                      id="lend-right"
+                      onClick={
+                        event => this
+                          .slideFunctionLending(event, 'lending', false)
+                      }
+                      className={`a-button
+                       a-carousel-button ${!this.state.showSideLendingRight ?
+                          'no-show' : undefined}
+                        `}
+                    >
+                      <span className="button-inner">
+                        <i className="h-icon" />
+                      </span>
+                    </button>
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+        <div className="section_divider" />
+        <div className="section">
+
+          <div className="innerSection">
+            <h1 className="page_header--title -black -top-picks">
+              Highest Rated
+              </h1>
+            <div className="top-inner--picks">
+              <div className="row-carousel">
+                <div className="row-carousel-inner">
+                  <div className="carousel-nav carousel-left">
+                    <button
+                      id="rate-left"
+                      onClick={
+                        event =>
+                          this
+                            .slideFunctionLending(event, 'rating', true)
+                      }
+
+                      className={`a-button
+                       a-carousel-button ${!this.state.showSideRatingLeft ?
+                          'no-show' : undefined}
+                        `}
+                    >
+                      <span className="button-inner">
+                        <i className="h-icon" />
+                      </span>
+                    </button>
+                  </div>
+                  <div className="carousel-items">
+                    <div
+                      ref={(element) => { this.ratingCards = element; }}
+                      className="carousel-viewport"
+                      id="rating-cards"
+                    >
+                      <ol>
+                        {this.state.ratedBooks.map(bookInfos =>
+                          (<BookCard
+                            key={bookInfos.id}
+                            bookName={bookInfos.bookName}
+                            bookID={bookInfos.id}
+                            synopsis={bookInfos.description}
+                            ratingSum={(bookInfos.RatingSum === null) ?
+                              'empty' :
+                              bookInfos.RatingSum}
+                            ratingCount={bookInfos.RatingCount}
+                            imgHref={bookInfos.bookImage}
+                            bookAuthors={bookInfos.Authors}
+                          />),
+                        )}
+                      </ol>
+                    </div>
+                  </div>
+                  <div className="carousel-nav carousel-right">
+                    <button
+                      id="rate-right"
+                      onClick={
+                        event =>
+                          this
+                            .slideFunctionLending(event, 'rating', false)
+                      }
+                      className={`a-button
+                       a-carousel-button ${!this.state.showSideRatingRight ?
+                          'no-show' : undefined}
+                        `}
+                    >
+                      <span className="button-inner">
+                        <i className="h-icon" />
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="section_divider" />
+        <div className="section">
+          <div className="container">
+            <div className="innerSection">
+              <h1 className="page_header--title -black -top-picks -browse">
+                Browse Authors
+              </h1>
             </div>
           </div>
         </div>
@@ -99,12 +369,36 @@ class Logindex extends React.Component {
     );
   }
 }
-Logindex.propTypes = {
+LogIndex.defaultProps = {
+  byLendingBooks: [],
+  error: null,
+  ratedBooks: []
+};
+LogIndex.propTypes = {
+  byLendingBooks: PropTypes.array,
+  error: PropTypes.object,
   loadAllBooks: PropTypes.func.isRequired,
-  logout: PropTypes.func.isRequired
+  logout: PropTypes.func.isRequired,
+  ratedBooks: PropTypes.array,
 };
-Logindex.contextTypes = {
-  router: PropTypes.object.isRequired,
+LogIndex.contextTypes = {
+  router: PropTypes.object.isRequired
 };
-export default connect(null, { loadAllBooks, logout })(Logindex);
+/**
+ * @param {*} state
+ * @returns {object} nextprops
+ */
+function mapStateToProps(state) {
+  return {
+    ratedBooks: state.homeBooksReducer.ratedBooks,
+    byLendingBooks: state.homeBooksReducer.byLendingBooks,
+    error: state.homeBooksReducer.error
+  };
+}
+export default connect(mapStateToProps,
+  {
+    loadAllBooks,
+    logout
+  }
+)(LogIndex);
 

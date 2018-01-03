@@ -1,7 +1,5 @@
 import {
-  UserDetails,
-  Books,
-  BookLendings
+  UserDetails
 } from '../models';
 
 class Interactions {

@@ -174,6 +174,9 @@ $hamburger-scale:scale(0.4) translate(-50%, -50%);
 
 .header--right {
   float: right;
+  &.-clicked {
+    @include transition(all 0.5s);
+  }
   @media (max-width: $screen-md - 1) {
     z-index: 3000; //  float: none;
     padding: 10px 0 0;
@@ -185,11 +188,11 @@ $hamburger-scale:scale(0.4) translate(-50%, -50%);
     height: calc(100% + 60px);
     height: -moz-calc(100%);
     background-color: #fff;
-    -o-transform: translateX($menu-width * -1);
-    -moz-transform: translateX($menu-width * -1);
-    -ms-transform: translateX($menu-width * -1);
-    -webkit-transform: translateX($menu-width * -1);
-    transform: translateX($menu-width * -1); //   @include transform(translateX($menu-width * -1));
+    -o-transform: translate3d(-100%, 0, 0);
+    -moz-transform: translate3d(-100%, 0, 0);
+    -ms-transform: translate3d(-100%, 0, 0);
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
     a {
       display: block;
       height: 50px;

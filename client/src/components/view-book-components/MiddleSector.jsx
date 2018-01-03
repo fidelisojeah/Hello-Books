@@ -5,7 +5,9 @@ import { getMoment, displayDate } from '../common/calculate-moment';
 
 /**
  *
- * @param {object} props 
+ * @param {object} props
+ *
+ * @returns {JSX} div
  */
 function MiddleSector(props) {
   let unreturnedCount = 0;

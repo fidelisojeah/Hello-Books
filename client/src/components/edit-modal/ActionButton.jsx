@@ -10,17 +10,19 @@ const ActionButton = props => (
         disabled={props.isLoading}
       >
         <span>
-          Edit
-          </span>
+          {props.actionValue}
+        </span>
       </button>
     </div>
   </div>
 );
 
 ActionButton.defaultProps = {
+  actionValue: 'Edit',
   isLoading: false
 };
 ActionButton.propTypes = {
+  actionValue: PropTypes.string,
   handleEditClick: PropTypes.func.isRequired,
   isLoading: PropTypes.bool
 };

@@ -7,7 +7,7 @@ services:
   - postgresql
 
 before_script:
-  - npm install -g codeclimate-test-reporter
+  - npm install -g codeclimate-test-reporter coveralls istanbul-combine
   - psql -c 'drop database if exists dbhellobooks_test;' -U postgres
   - psql -c 'create database dbhellobooks_test;' -U postgres
   - psql -c "create user usrhello with login password 'HelloBooksPassword$';" -U postgres

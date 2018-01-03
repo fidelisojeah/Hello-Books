@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import BookCard from '../common/BookCard';
+import LayoutHeader from '../common/LayoutHeader';
 import Sorter from '../common/Sorter';
 import Pagination from '../common/Pagination';
 import PerPage from '../common/PerPage';
@@ -12,7 +13,7 @@ import BreadCrumbs from '../common/BreadCrumbs';
 
 import LoadingPage from './LoadingPage';
 
-class ViewAllBooks extends React.Component {
+export class ViewAllBooks extends React.Component {
   constructor(props) {
     super(props);
     const pageLinks = [];
@@ -50,8 +51,6 @@ class ViewAllBooks extends React.Component {
       }
     } else if (nextProps.error &&
       nextProps.error.message) {
-      // extra check cos why not?
-      // ideally, this should never happen
       this.props.logout();
       this.context.router.history.push('/signin');
     } else {
@@ -99,6 +98,7 @@ class ViewAllBooks extends React.Component {
     event.preventDefault();
     if (index !== this.state.limit) {
       this.setState({
+        page: 1,
         limit: index
       }, () => {
         this.fetchAll();
@@ -118,13 +118,10 @@ class ViewAllBooks extends React.Component {
       pageLinks, sort } = this.state;
     return (
       <div className="layout--container">
-        <div className="layout-header">
-          <div className="container">
-            <h1 className="page_header--title">
-              Library
-            </h1>
-          </div>
-        </div>
+
+        <LayoutHeader
+          headerTitle="Library"
+        />
         <BreadCrumbs
           breadCrumbLinks={pageLinks}
         />
@@ -197,7 +194,8 @@ ViewAllBooks.defaultProps = {
 };
 
 /**
- * @param {*} state
+ * @param {object} state
+ *
  * @returns {object} nextprops
  */
 function mapStateToProps(state) {

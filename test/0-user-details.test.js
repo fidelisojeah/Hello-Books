@@ -2,6 +2,10 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import jwt from 'jsonwebtoken';
 
+import {
+  UserDetails
+} from '../server/models';
+
 import app from '../server';
 
 const should = chai.should();
@@ -51,7 +55,8 @@ const badSignatureToken = jwt.sign({
 describe('POST /api/v4/users/signup Version 4', () => {
   describe('When Users attempt to signup', () => {
     describe('When there is an issue with information provided', () => {
-      it('Should respond with code 400 Invalid Username for blank username',
+      it(`Should respond with 
+      code 400 Invalid Username for blank username`,
         (done) => {
           chai.request(app)
             .post('/api/v4/users/signup')
@@ -70,7 +75,8 @@ describe('POST /api/v4/users/signup Version 4', () => {
               done();
             });
         });
-      it('Should respond with code 400 Invalid Username for usernames with spaces',
+      it(`Should respond with code 400
+       Invalid Username for usernames with spaces`,
         (done) => {
           chai.request(app)
             .post('/api/v4/users/signup')
@@ -90,7 +96,8 @@ describe('POST /api/v4/users/signup Version 4', () => {
               done();
             });
         });
-      it('Should respond with code 400 Username too short for Short username',
+      it(`Should respond with code 
+      400 Username too short for Short username`,
         (done) => {
           chai.request(app)
             .post('/api/v4/users/signup')
@@ -110,7 +117,8 @@ describe('POST /api/v4/users/signup Version 4', () => {
               done();
             });
         });
-      it('Should respond with code 400 Invalid First Name for blank firstname',
+      it(`Should respond with code 400 
+      Invalid First Name for blank firstname`,
         (done) => {
           chai.request(app)
             .post('/api/v4/users/signup')
@@ -718,6 +726,51 @@ describe('GET /api/v4/users/signupCheck/:identifier', () => {
           response.type.should.equal('application/json');
           response.body.status.should.eql('Success');
           should.exist(response.body.userHere);
+          done();
+        });
+    });
+  });
+});
+describe('GET /api/v4/user/verify', () => {
+  before((done) => {
+    UserDetails
+      .create({
+        firstname: 'sample',
+        lastname: 'User',
+        emailaddress: 'sampleuser@example.com',
+        username: 'sampleusername',
+        password: 'samplePassword',
+        authString: 'randomString',
+        isAdmin: true,
+        isActivated: false
+      }).then(() => {
+        done();
+      });
+  });
+  describe('When user is Invalid', () => {
+    it('Should return 400 Username Invalid', (done) => {
+      chai.request(app)
+        .get('/api/v4/user/verify/rubbishUser')
+        .end((error, response) => {
+          should.exist(error);
+          response.status.should.equal(400);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Unsuccessful');
+          response.body.error.should.eql('Username Invalid');
+          done();
+        });
+    });
+  });
+  describe('When user is Valid', () => {
+    it('Should return 200 Success', (done) => {
+      chai.request(app)
+        .get('/api/v4/user/verify/sampleusername')
+        .end((error, response) => {
+          should.not.exist(error);
+          response.status.should.equal(200);
+          response.type.should.equal('application/json');
+          response.body.status.should.eql('Success');
+          response.body.message.should.eql('Email Sent');
           done();
         });
     });

@@ -10,6 +10,9 @@
       {
         "spec": true
       }
+    ],
+    [
+      "add-module-exports"
     ]
   ],
   "env": {

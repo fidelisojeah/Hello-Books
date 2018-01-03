@@ -46,6 +46,10 @@ app.use(session({
   },
 }));
 
+app.get('/api/v4/user/verify/:username',
+  UserLoginDetails
+    .generateActivationEmail);
+
 app.post('/api/v4/users/signup', UserLoginDetails.signUp);
 
 app.get('/api/v4/users/signupCheck/:identifier',
@@ -77,20 +81,27 @@ app.get('/api/v4/users/history/:bookId',
   UserBookInteraction.userBookHistory
 );
 
-// for book stuff
-app.post('/api/v4/authors', CheckSession.checkLogin, BookProps.newAuthor);
+app.get('/api/v1/sorted/books', CheckSession.checkLogin,
+  BookProps.viewBooksHomePage);
 
-app.get('/api/v4/authors', CheckSession.checkLogin, BookProps.getAuthors);
+// for book stuff
+app.post('/api/v4/authors', CheckSession.checkLogin,
+  BookProps.newAuthor);
+
+app.get('/api/v4/authors', CheckSession.checkLogin,
+  BookProps.getAuthors);
 
 app.get('/api/v4/search/authors',
   CheckSession.checkLogin, BookProps.searchAuthors);
 
-app.post('/api/v4/books', CheckSession.checkLogin, BookProps.newBook);
+app.post('/api/v4/books', CheckSession.checkLogin,
+  BookProps.newBook);
 
 app.get('/api/v4/books/list/:page',
   CheckSession.checkLogin, BookProps.viewAllBooks);
 
-app.get('/api/v4/books', CheckSession.checkLogin, BookProps.viewBooks);
+app.get('/api/v4/books', CheckSession.checkLogin,
+  BookProps.viewBooks);
 
 app.put('/api/v4/books/:bookId',
   CheckSession.checkLogin, BookProps.modifyBook);

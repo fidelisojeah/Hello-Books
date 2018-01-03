@@ -9,7 +9,9 @@ import {
 
 /**
  * @description
- * @param {file} Data
+ *
+ * @param {file} imageData
+ *
  * @return {promise} return data
  */
 export function bookImageUpload(imageData) {
@@ -22,17 +24,20 @@ export function bookImageUpload(imageData) {
 }
 /**
  * @description
+ *
  * @param {object} bookData
+ *
  * @return {promise} return Data
  */
 export function newBookRequest(bookData) {
-  return dispatch => {
-    return axios.post('/api/v4/books', bookData);
-  };
+  return dispatch =>
+    axios.post('/api/v4/books', bookData);
 }
+
 /**
  *
  * @param {object} authorInfo
+ *
  * @return {promise} return dispatch
  */
 export function checkAuthorsRequest(authorInfo) {

@@ -17,7 +17,7 @@ import {
   returnBook
 } from '../actions/loadBooks';
 
-class ProfilePage extends React.Component {
+export class ProfilePage extends React.Component {
   constructor(props) {
     super(props);
     const pageLinks = [];
@@ -133,6 +133,7 @@ class ProfilePage extends React.Component {
     event.preventDefault();
     if (index !== this.state.limit) {
       this.setState({
+        page: 1,
         limit: index
       }, () => {
         this.getBorrowHistory();
@@ -205,12 +206,14 @@ class ProfilePage extends React.Component {
                             />
                           </th>
                           <th
-                            className="hidden-xs-table"
+                            className="hidden-sm-table brwdate"
                             onClick={event =>
                               this.sorterFunction(event, 'dateborrowed')}
                           >
-                            Date Borrowed
-                             <i
+
+                            Date
+                            Borrowed
+                            <i
                               className={`table-sorter 
                               ${sortBy === 'dateborrowed' ?
                                   sortDesc

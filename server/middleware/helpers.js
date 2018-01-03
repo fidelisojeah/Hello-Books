@@ -4,14 +4,15 @@ import crypto from 'crypto';
 class JwTokens {
   // random 24 character string
   static randomString(modifier) {
-    return new Promise((resolve) => {
-      crypto.randomBytes(modifier, (error, buf) => { // generate random bytes
-        if (error) {
-          reject(error);
-        } else {
-          resolve(buf.toString('hex'));
-        }
-      });
+    return new Promise((resolve, reject) => {
+      crypto
+        .randomBytes(modifier, (error, buf) => { // generate random bytes
+          if (error) {
+            reject(error);
+          } else {
+            resolve(buf.toString('hex'));
+          }
+        });
     });
   }
   static generateToken(tokenSecret, tokenInfo, tokenTime) {

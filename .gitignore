@@ -8,3 +8,4 @@ build/
 .nyc_output/
 coverage/
 lib/
+__snapshots__/

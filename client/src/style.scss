@@ -7,6 +7,19 @@
   @import 'variables/date-picker';
   @import './header';
   @font-face {
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    src: url("./fonts/rawline-400.ttf") format("truetype")
+  }
+
+  @font-face {
+    font-family: 'Raleway';
+    font-weight: 700;
+    src: url("./fonts/rawline-700.ttf") format("truetype")
+  }
+
+  @font-face {
     font-family: 'wf_segoe-ui_light';
     src: local('Segoe UI Light'), local('Segoe WP Light'), url('./fonts/segoeui-light.woff') format('woff'), url('./fonts/segoeui-light.ttf') format('truetype');
   }
@@ -130,6 +143,12 @@
     font-size: 100%;
     font: inherit;
     vertical-align: baseline;
+  }
+
+  strong {
+    font-family: "Raleway", sans-serif;
+    letter-spacing: 0.75px;
+    font-weight: 700;
   }
 
   body {
@@ -777,11 +796,9 @@
     cursor: pointer;
     overflow: hidden; // box-shadow: $shadow-2;
     @include cust-box-shadow($shadow-2); // @include transition((background-color $mf-transition-speed ease, color $mf-transition-speed ease, box-shadow $mf-transition-speed ease);
-    -moz-transition: background-color $mf-transition-speed ease, color $mf-transition-speed ease, box-shadow $mf-transition-speed ease;
-    -o-transition: background-color $mf-transition-speed ease, color $mf-transition-speed ease, box-shadow $mf-transition-speed ease;
-    -ms-transition: background-color $mf-transition-speed ease, color $mf-transition-speed ease, box-shadow $mf-transition-speed ease;
-    -webkit-transition: background-color $mf-transition-speed ease, color $mf-transition-speed ease, box-shadow $mf-transition-speed ease;
-    transition: background-color $mf-transition-speed ease, color $mf-transition-speed ease, box-shadow $mf-transition-speed ease;
+    @include transition((background-color $mf-transition-speed ease,
+    color $mf-transition-speed ease,
+    box-shadow $mf-transition-speed ease));
     span {
       color: #fff;
       position: relative;
@@ -810,12 +827,9 @@
     &:focus {
       &::before {
         transform: translate(-50%, -50%) scale(1);
-        opacity: 0; //   @include transition(transform ($mf-transition-speed * 4) ease, opacity $mf-transition-speed ease ($mf-transition-speed * 1.3));
-        -o-transition: transform ($mf-transition-speed * 4) ease, opacity $mf-transition-speed ease ($mf-transition-speed * 1.3);
-        -ms-transition: transform ($mf-transition-speed * 4) ease, opacity $mf-transition-speed ease ($mf-transition-speed * 1.3);
-        -moz-transition: transform ($mf-transition-speed * 4) ease, opacity $mf-transition-speed ease ($mf-transition-speed * 1.3);
-        -webkit-transition: transform ($mf-transition-speed * 4) ease, opacity $mf-transition-speed ease ($mf-transition-speed * 1.3);
-        transition: transform ($mf-transition-speed * 4) ease, opacity $mf-transition-speed ease ($mf-transition-speed * 1.3);
+        opacity: 0;
+        @include transition((transform ($mf-transition-speed * 4) ease,
+        opacity $mf-transition-speed ease ($mf-transition-speed * 1.3)));
       }
     }
     &:focus {
@@ -862,8 +876,7 @@
         border-right-style: none;
       }
       +label {
-        font-family: 'wf_segoe-ui_semibold';
-        font-weight: bold; // letter-spacing: 1.2px;
+        @extend %bold-font; // letter-spacing: 1.2px;
       }
     }
     &:disabled {
@@ -874,7 +887,7 @@
   }
 
   .text--title {
-    font-family: "wf_segoe-ui_semibold";
+    @extend %bold-font;
     color: white;
     font-size: 50px;
     text-transform: none;
@@ -1085,6 +1098,24 @@
     }
   }
 
+  .innerSection {
+    .inner-message {
+      width: 90%;
+      color: #fff;
+      letter-spacing: 1.3px;
+      padding: 20px;
+      text-align: center;
+      @extend %bold-font;
+      @include center-block;
+      &.-error {
+        background-color: $mf-error-color;
+      }
+      &.-success {
+        background-color: $hello-books-success;
+      }
+    }
+  }
+
   .innerSection--section {
     margin: 50px 0 0;
     @media (max-width: $screen-md) {
@@ -1117,12 +1148,12 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     cursor: default;
-    font-family: "wf_segoe-ui_semilight";
     font-size: 60px;
     line-height: 80px;
     color: #fff;
+    @extend %semilight-font;
     span {
-      font-weight: bold;
+      @extend %bold-font;
       font-size: 20px;
       @media (max-width: $screen-md) {
         font-size: 14px;
@@ -1145,13 +1176,16 @@
   .-top-picks {
     text-align: center;
     font-size: 30px;
+    line-height: 40px;
+    letter-spacing: 2.9px;
+    &.-browse {
+      text-align: justify;
+    }
   }
 
   .login-error {
     cursor: default;
     background-color: #fcc;
-    font-family: "wf_segoe-ui_semibold";
-    font-weight: bold;
     color: #f11;
     /*border: 3px solid #fcc;*/
     font-size: 16px;
@@ -1162,6 +1196,7 @@
     -webkit-border-radius: 4px;
     border-radius: 4px;
     margin-bottom: 25px;
+    @extend %bold-font;
     @include cust-box-shadow(inset 0 2px 8px rgba(0,
     0,
     0,
@@ -1183,6 +1218,10 @@
     }
   }
 
+  .site-cache {
+    transition: all 0.5s;
+  }
+
   .with--modal {
     .site-cache {
       position: fixed;
@@ -1199,18 +1238,34 @@
     }
   }
 
+  .with--toastr-modal {
+    .site-cache {
+      position: fixed;
+      height: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 200000;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+    .toastr-modal {
+      display: block !important;
+    }
+  }
+
   .with--sidebar {
     .header--right {
       @media (max-width: $screen-md - 1) {
-        -o-transform: translateX(0);
-        -moz-transform: translateX(0);
-        -ms-transform: translateX(0);
-        -webkit-transform: translateX(0);
-        transform: translateX(0);
-        @include transition-duration(0.4s);
+        -o-transform: translate3d(0, 0, 0);
+        -moz-transform: translate3d(0, 0, 0);
+        -ms-transform: translate3d(0, 0, 0);
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
       }
     }
     .site-cache {
+      transition: all 0.5s;
       @media(max-width: $screen-md) {
         position: absolute;
         height: 100%;
@@ -1286,8 +1341,30 @@
     }
   }
 
+  .-home {
+    margin: 0 30px;
+    @media(max-width: $screen-md - 1) {
+      margin:0;
+    }
+  }
+
   .row-carousel {
-    width: 100%;
+    margin: 0 auto;
+    @media(min-width: $screen-lg) {
+      width: $screen-lg - 60px;
+    }
+    @media(max-width: $screen-lg - 1) {
+      width: $screen-md - 60px;
+    }
+    @media(max-width: $screen-md - 1) {
+      width: $screen-sm - 5px;
+    }
+    @media(max-width:$screen-sm - 1) {
+      width: 580px;
+    }
+    @media(max-width:600px) {
+      width: 430px;
+    }
   }
 
   .row-carousel-inner {
@@ -1318,6 +1395,13 @@
           background-size: 100px;
         }
       }
+    }
+  }
+
+  .a-button {
+    &.no-show {
+      display: none;
+      visibility: hidden;
     }
   }
 
@@ -1352,7 +1436,8 @@
       height: auto;
       display: block;
     }
-    &:hover {
+    &:hover,
+    &:focus {
       background: rgba(255, 255, 255, 0.9);
     }
   }
@@ -1377,6 +1462,7 @@
     position: relative;
     .carousel-viewport {
       width: 100%;
+      margin-left: 0;
       overflow: hidden;
       height: 100%;
     }
@@ -1388,6 +1474,7 @@
       overflow-x: visible;
       color: #111;
       letter-spacing: -4px;
+      transition: margin-left cubic-bezier(.8, -.4, .2, 1.2) 1.3s;
     }
   }
 
@@ -1396,7 +1483,7 @@
     text-align: left;
     overflow: hidden;
     margin-left: 16px;
-    width: 160px;
+    width: $card-width;
     min-height: 100%;
     list-style-type: none;
     display: inline-block;
@@ -1548,30 +1635,51 @@
       display: inline-block;
       width: 100%;
     }
-    &>li {
+    &>* {
       display: inline-block;
-      padding-right: 25px;
+    }
+    &>li {
+      width: 25%;
+      text-align: center;
+      display: inline-block;
+      padding-right: 10px;
       cursor: default;
-      a {
-        font-size: 12px;
-        font-weight: 400;
-        text-transform: uppercase;
+      a,
+      button {
+        font-size: 14px;
+        letter-spacing: 1.2px;
+        white-space: nowrap;
+        color: #666677;
         line-height: 40px;
         border-bottom: 2px solid #e5e5e5;
         outline: none;
-        @include transition(all .3s ease);
+        @extend %bold-font;
+        @include transition((border $mf-transition-speed ease,
+        color $mf-transition-speed ease));
         &:hover,
         &:focus {
           outline: none;
         }
+        @media (max-width:$screen-sm - 1) {
+          letter-spacing: 0.2px;
+        }
       }
       &.active {
-        a {
+        a,
+        button {
+          color: $primaryColor;
           border-color: $primaryColor;
         }
       }
+      &:hover {
+        a,
+        button {
+          color: #336;
+          border-bottom: 2px solid #336;
+        }
+      }
       @media (max-width:$screen-lg) {
-        padding-right: 25px;
+        padding-right: 5px;
       }
       @media (max-width:$screen-xs) {
         width: 100%;
@@ -1676,7 +1784,7 @@
         }
       }
       .control-label {
-        color: #9292f2;
+        color: $primaryColorext;
         ;
       }
     }
@@ -1765,6 +1873,13 @@
         0,
         0.08)));
       }
+    }
+  }
+
+  .publish-year-book {
+    .year-list {
+      display: block;
+      top: 60px;
     }
   }
 
@@ -1866,9 +1981,15 @@
 
   .publish-year,
   .book-isbn {
+    text-overflow: ellipsis;
+    white-space: nowrap;
     display: inline;
     position: relative;
     padding: 10px;
+    span {
+      font-weight: bold;
+      letter-spacing: 1.6px;
+    }
     .edit-bar {
       top: 10px;
       right: -20px;
@@ -2015,6 +2136,7 @@
     padding-top: 20px;
     -webkit-transition: -webkit-transform .6s ease-in-out;
     transition: transform .6s ease-in-out;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
     .fieldField {
       letter-spacing: 1.8px;
       font-size: 20px;
@@ -2053,13 +2175,12 @@
     max-height: 205px;
     overflow: hidden;
     text-overflow: ellipsis;
-    @include transition((max-height 0.2s cubic-bezier(0,
-    0.6,
-    0.2,
+    @include transition((all 0.2s cubic-bezier(0,
+    1,
+    0.5,
     1)));
     &.expanded {
-      max-height: 100%;
-      @include transition((max-height 0.6s ease-in));
+      max-height: 100000px; // @include transition((max-height 0.6s ease-in));
     }
     .description-toggle {
       position: absolute;
@@ -2187,7 +2308,7 @@
     padding: 0 20px 0 20px;
     display: block;
     div {
-      font-family: 'wf_segoe-ui_semilight';
+      @extend %semilight-font;
       font-size: 18px;
     }
     @include clearfix;
@@ -2207,11 +2328,12 @@
     float: right;
     margin-bottom: 2px;
     a {
-      font-family: 'wf_segoe-ui_semibold';
-      font-weight: bold;
       font-size: 14px;
       padding: 10px;
       color: #666677;
+      @extend %bold-font;
+      @include transition((border $mf-transition-speed ease,
+      color $mf-transition-speed ease));
       &:hover {
         color: #336;
         border-bottom: 2px solid #336;
@@ -2307,7 +2429,9 @@
       &>div {
         display: inline-block;
         vertical-align: middle;
-        a {
+        a,
+        button {
+          font-size: 14px;
           color: black;
           float: left;
           padding: 8px 16px;
@@ -2429,7 +2553,8 @@
     }
   }
 
-  .modal {
+  .modal,
+  .toastr-modal {
     display: none;
     border-radius: 7px;
     position: fixed;
@@ -2597,7 +2722,7 @@
     }
     &.success {
       color: $primaryColor;
-      background-color: #00DC7E;
+      background-color: $hello-books-success;
     }
     &.failure {
       background-color: $mf-error-color;
@@ -2621,6 +2746,10 @@
     }
   }
 
+  .brwdate {
+    min-width: 140px
+  }
+
   .borrow-table {
     margin-top: 30px;
     .table-outer {
@@ -2640,12 +2769,11 @@
         th {
           border-style: hidden;
           color: #fff;
-          font-family: "wf_segoe-ui_semibold";
-          font-weight: bold;
           border-left: 1px solid #dddddd;
           overflow-x: scroll;
           white-space: nowrap;
           text-overflow: ellipsis;
+          @extend %bold-font;
           &:first-child {
             border-left: none;
           }
@@ -2727,6 +2855,293 @@
         &:nth-child(#{$i + 1}) {
           animation-delay: #{(0.3 * $i)}s;
         }
+      }
+    }
+  }
+
+  .datepicker-span {
+    color: $primaryColorext;
+    margin-bottom: 20px;
+  }
+
+  .login-page-container {
+    @include cust-box-shadow(inset 0 3px 8px rgba(0,
+    0,
+    0,
+    .3));
+    background: $primaryColor;
+    background: -webkit-linear-gradient(310deg, $primaryColor, $secondaryColor);
+    background: linear-gradient(310deg, $primaryColor, $secondaryColor);
+    background-size: 400% 400%;
+    @include cust-animation((background-anim 32s ease infinite));
+    filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=3, MakeShadow=true, ShadowOpacity=0.30);
+    -ms-filter: "progid:DXImageTransform.Microsoft.Blur(PixelRadius=3,MakeShadow=true,ShadowOpacity=0.30)";
+    &>.row {
+      max-width: none;
+      padding: 0;
+      align-items: stretch;
+      flex-wrap: nowrap;
+      .left-side {
+        color: #ffffff;
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+        &>div {
+          padding: 50px;
+        }
+      }
+      .right-side {
+        .form-box {
+          margin-top: 0;
+          .form-top {
+            padding: 0;
+            .form-top-left {
+              padding: 0;
+              width: 100%;
+              button {
+                width: 50%;
+                height: 100%;
+                @include transition (all ease-in-out .9s);
+                background: rgba(255, 255, 255, 0.1);
+                &.-active {
+                  background: none;
+                  font-weight: bold;
+                  @include cust-animation((up-tab .9s));
+                }
+                h3 {
+                  float: left;
+                  width: 100%;
+                  padding: 20px;
+                }
+                @media (max-width: $screen-xs - 1) {
+                  display: inline-block;
+                  width: 100%;
+                }
+              }
+            }
+          }
+          .form-bottom {
+            background: rgba(0, 0, 0, 0.35);
+            min-height: 700px;
+            overflow-x: hidden;
+            @media (max-width: $screen-sm - 1) {
+              min-height: 10px;
+            }
+            @media(max-width:$screen-md - 1) {
+              padding-right: 5px;
+              padding-left: 5px;
+              .row {
+                margin-left: 0;
+                margin-right: 0;
+              }
+            }
+            .signin-tabs {
+              margin-top: 60px;
+              @include transition(visibility ease-in-out 3s);
+              &.-inactive {
+                visibility: hidden;
+                display: none;
+              }
+              &.-active {
+                display: block;
+                visibility: visible;
+              }
+              .col-xs-6 {
+                padding-left: 10px;
+                padding-right: 0;
+                &:first-child {
+                  padding: 0;
+                }
+              }
+              .row {
+                margin: 40px 10px 0 10px;
+                &:first-child {
+                  margin-top: 0;
+                }
+              }
+            }
+            #sign-in-container {
+              @media (max-width: $screen-sm - 1) {
+                margin-top:20px;
+              }
+              .button-container {
+                margin-top: 20px;
+              }
+            }
+            .button-container {
+              button {
+                margin: 0;
+              }
+            }
+          }
+          @media (max-width: $screen-sm - 1) {
+            background: black;
+          }
+        }
+      }
+    }
+    strong {
+      font-size: 36px;
+      line-height: 43px;
+    }
+    .block {
+      span {
+        display: block;
+        color: #fff;
+        font-weight: 400;
+        margin-top: 30px;
+        letter-spacing: 0.75px;
+        font-size: 28px;
+        line-height: 38px;
+        text-shadow: none;
+      }
+    }
+  }
+
+  .circle-loader {
+    margin: 0 0 30px 10px;
+    border: $check-thickness solid rgba(0, 0, 0, 0.2);
+    border-left-color: $check-color;
+    animation-name: loader-spin;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    &.-failure {
+      border-left-color: $mf-error-color;
+    }
+  }
+
+  .circle-loader,
+  .circle-loader:after {
+    border-radius: 50%;
+    width: $loader-size;
+    height: $loader-size;
+  }
+
+  .load-complete {
+    -webkit-animation: none;
+    animation: none;
+    border-color: $check-color;
+    transition: border 500ms ease-out;
+    &.-failure {
+      border-color: $mf-error-color;
+    }
+  }
+
+  .checkmark {
+    display: none;
+    &.draw:after {
+      animation-duration: 800ms;
+      animation-timing-function: ease;
+      animation-name: checkmark;
+      transform: scaleX(-1) rotate(135deg);
+    }
+    &:after {
+      opacity: 1;
+      height: $check-height;
+      width: $check-width;
+      transform-origin: left top;
+      border-right: $check-thickness solid $check-color;
+      border-top: $check-thickness solid $check-color;
+      content: '';
+      left: 16px;
+      top: $check-height;
+      position: absolute;
+    }
+    &.-failure {
+      &.draw {
+        &:after {
+          // animation-delay: 800ms;
+          animation-timing-function: ease;
+          animation-name: checkmarkfailX1;
+          transform: translate(-33%, 33%) rotate(45deg);
+          @include transition(transform 800ms ease-in-out);
+        }
+        &:before {
+          animation-duration: 800ms;
+          animation-timing-function: ease;
+          animation-name: checkmarkfailX2;
+          transform: translate(33%, 33%) rotate(-45deg);
+          @include transition(transform 800ms ease-in-out);
+        }
+      }
+      &:before {
+        opacity: 1;
+        height: $cross-height;
+        width: $cross-height;
+        transform-origin: center;
+        content: '';
+        left: 6px;
+        top: 6px;
+        position: absolute;
+        border-top: $check-thickness solid $mf-error-color;
+      }
+      &:after {
+        border-top: $check-thickness solid $mf-error-color;
+        border-right: none;
+        transform-origin: center;
+        width: $cross-height;
+        height: $cross-height;
+        left: 6px;
+        top: 6px;
+      }
+    }
+  }
+
+  .toastr-modal {
+    .modal-body {
+      .circle-loader {
+        @include center-block;
+      }
+      p {
+        font-size: 20px;
+        text-transform: none;
+        position: relative;
+        margin: 0 0 .4em;
+        word-wrap: break-word;
+        padding: 0;
+        display: block;
+        text-align: center;
+        letter-spacing: 0.8px;
+        &:first-child {
+          font-size: 30px;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  .verify-container {
+    .sign-in-container {
+      margin-top: 50px;
+      width: 60%;
+      padding: 30px;
+      @media(max-width: $screen-md - 1) {
+        width:80%;
+      }
+      @media(max-width: $screen-sm - 1) {
+        padding: 10px;
+        width: 95%;
+        .row {
+          margin: 30px 0 0 0;
+        }
+      }
+      @include center-block;
+      @include cust-box-shadow($shadow-3);
+      .row {
+        margin: 40px 10px 0 10px;
+        input.hasValue,
+        input {
+          color: #336;
+        }
+        label {
+          color: #336;
+        }
+      }
+      span {
+        display: block;
+        text-align: center;
       }
     }
   }

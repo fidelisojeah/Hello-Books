@@ -60,7 +60,7 @@ function showPages(currentPage, totalPages) {
 const Pagination = ({ currentPage, totalPages, paginationFunction }) => {
   const pageList = showPages(currentPage, totalPages);
   let i = 0;
-  const pageDiv = pageList.map((pageNumber) => {
+  const pageDiv = pageList ? pageList.map((pageNumber) => {
     i += 1;
     if (pageNumber === '...') {
       return (
@@ -73,36 +73,38 @@ const Pagination = ({ currentPage, totalPages, paginationFunction }) => {
       );
     }
     return (
-      <a
-        href="/"
+      <button
         key={i}
         className={pageNumber === currentPage ?
           '-active' : undefined}
         onClick={event => paginationFunction(event, pageNumber)}
       >
         {pageNumber}
-      </a>
+      </button>
     );
-  });
+  }) : undefined;
 
   return (
     <div className="pagination-div">
       <div>
-        <a
+        <button
           href="/"
           className="navigation"
           disabled={currentPage === 1}
+          onClick={event => paginationFunction(event, currentPage - 1)}
         >
           <i className="navigation-dir angle-left" />
-        </a>
+        </button>
         {pageDiv}
-        <a
+        <button
           href="/"
           className="navigation"
           disabled={currentPage === totalPages}
+          onClick={event => paginationFunction(event, currentPage + 1)}
+
         >
           <i className="navigation-dir angle-right" />
-        </a>
+        </button>
       </div>
     </div>
   );

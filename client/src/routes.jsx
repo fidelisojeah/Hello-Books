@@ -7,22 +7,28 @@ import {
 import PrivateRoute from './components/PrivateRoute';
 
 import App from './components/App';
-import Signin from './components/pages/Signin';
+import UserLoginPage from './components/pages/LoginPage';
 import StockMgtPage from './components/pages/admin/StockMgtPage';
 import ViewBook from './components/pages/ViewBook';
-import SuccessPage from './components/pages/SuccessPage';
-import LogIndex from './components/pages/LogIndex';
-import ProfilePage from './components/pages/ProfilePage';
-import ViewAllBooks from './components/pages/ViewAllBooks';
+import LogIndexPage from './components/pages/LogIndex';
+import ConnectedProfilePage from './components/pages/ProfilePage';
+import ViewAllBooksPage from './components/pages/ViewAllBooks';
+import MultiPurposePage from './components/pages/MultiPurpose';
 
 const Main = () => (
   <App>
     <Switch>
-      <Route path="/signin" component={Signin} />
-      <Route path="/success" Component={SuccessPage} />
-      <PrivateRoute exact path="/" Component={LogIndex} />
-      <PrivateRoute exact path="/books" Component={ViewAllBooks} />
-      <PrivateRoute exact path="/profile" Component={ProfilePage} />
+      <Route path="/signin" component={UserLoginPage} />
+      <Route
+        path="/user/:purpose"
+        component={MultiPurposePage}
+      />
+      <PrivateRoute exact path="/" Component={LogIndexPage} />
+      <PrivateRoute
+        exact path="/books"
+        Component={ViewAllBooksPage}
+      />
+      <PrivateRoute exact path="/profile" Component={ConnectedProfilePage} />
       <PrivateRoute exact path="/books/:bookId" Component={ViewBook} />
       <PrivateRoute exact path="/bookmgt" Component={StockMgtPage} />
     </Switch>

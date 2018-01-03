@@ -28,8 +28,8 @@ class CheckSession {
               resolve('Valid Token');
             }
           })
-          .catch(error =>
-            reject(error));
+          .catch(() =>
+            reject('Token Invalid'));
       } else {
         reject('Token Invalid');
       }

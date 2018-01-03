@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 
-
+import db from '../server/models';
 import CheckSession from '../server/middleware/session';
 import HelloBooksSendMail from '../server/helpers/node-email';
 import BookVerify from '../server/helpers/new-book';
@@ -40,6 +40,17 @@ describe('Middleware Tests', () => {
     done();
   });
   describe('Check Admin middleware test', () => {
+    let userDetailsFindOne;
+    before((done) => {
+      userDetailsFindOne = db.UserDetails.findOne;
+      db.UserDetails.findOne = () =>
+        Promise.reject(new Error('WRONG!!!'));
+      done();
+    });
+    after((done) => {
+      db.UserDetails.findOne = userDetailsFindOne;
+      done();
+    });
     it('Should return an error if no token is sent', () =>
       CheckSession
         .checkAdmin()
@@ -49,6 +60,20 @@ describe('Middleware Tests', () => {
         .catch((error) => {
           should.exist(error);
           error.should.equal('Token Invalid');
+          return 1;
+        })
+    );
+    it('Should return an error if dB has error', () =>
+      CheckSession
+        .checkAdmin({
+          userId: 1
+        })
+        .then(response =>
+          should.not.exist(response)
+        )
+        .catch((error) => {
+          should.exist(error);
+          error.should.eql('Token Invalid');
           return 1;
         })
     );
@@ -106,15 +131,6 @@ describe('Middleware Tests', () => {
           .eventually
           .be
           .ok
-          .notify(done);
-      });
-      it('should return a randomly generated string', (done) => {
-        JwTokens
-          .randomString(null)
-          .should
-          .eventually
-          .be
-          .rejected
           .notify(done);
       });
     });

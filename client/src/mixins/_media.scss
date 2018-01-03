@@ -132,6 +132,14 @@
   animation-duration: $val;
 }
 
+@mixin cust-animation($val) {
+  -ms-animation: $val;
+  -moz-animation: $val;
+  -o-animation: $val;
+  -webkit-animation: $val;
+  animation: $val;
+}
+
 @mixin animation-timing-function($val) {
   -ms-animation-timing-function: $val;
   -o-animation-timing-function: $val;
@@ -252,4 +260,14 @@
     bottom: -1px;
     border-top-color: $datepicker__border-color;
   }
+}
+
+%semilight-font {
+  font-family: "wf_segoe-ui_semilight", "Segoe UI", "Segoe WP", Tahoma, Arial, sans-serif;
+  font-weight: 200;
+}
+
+%bold-font {
+  font-family: "wf_segoe-ui_semibold", "Segoe UI", "Segoe WP", Tahoma, Arial, sans-serif;
+  font-weight: bold;
 }

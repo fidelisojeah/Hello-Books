@@ -7,6 +7,7 @@ import { displayYear } from '../common/calculate-moment';
 import EditBar from './EditBar';
 /**
  * @param {object} props
+ *
  * @returns {JSX}
  */
 function ViewBookInfoCard(props) {

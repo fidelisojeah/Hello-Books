@@ -1,9 +1,13 @@
 class localStorage {
   /**
    * @static
+   *
    * @param {any} key
+   *
    * @param {any} value
+   *
    * @returns {object} setItem
+   *
    * @memberOf localStorage
    */
   static setItem(key, value) {
@@ -13,8 +17,11 @@ class localStorage {
 
   /**
    * @static
+   *
    * @param {any} key
+   *
    * @returns  {object} item
+   *
    * @memberOf localStorage
    */
   static getItem(key) {
@@ -23,8 +30,11 @@ class localStorage {
 
   /**
    * @static
+   *
    * @param {any} key
+   *
    * @returns {undefined}
+   *
    * @memberOf localStorage
    */
   static removeItem(key) {
@@ -33,7 +43,9 @@ class localStorage {
 
   /**
    * @static
+   *
    * @returns {undefined}
+   *
    * @memberOf localStorage
    */
   static clear() {

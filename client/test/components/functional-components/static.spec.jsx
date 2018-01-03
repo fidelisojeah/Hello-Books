@@ -1,33 +1,16 @@
 import React from 'react';
 import 'raf/polyfill';
 
-import Footer from '../../src/components/Footer';
-import ToastrComponent from '../../src/components/ToastrComponent';
-import ToastrModal from '../../src/components/ToastrModal';
-import Hamburger from '../../src/components/Hamburger';
-import SiteCache from '../../src/components/SiteCache';
+import ToastrComponent from '../../../src/components/ToastrComponent';
+import ToastrModal from '../../../src/components/ToastrModal';
+import SiteCache from '../../../src/components/SiteCache';
 
-import LoadingPage from '../../src/components/pages/LoadingPage';
-import BreadCrumbs from '../../src/components/common/BreadCrumbs';
-import LayoutHeader from '../../src/components/common/LayoutHeader';
-import Pagination from '../../src/components/common/Pagination';
-import PerPage from '../../src/components/common/PerPage';
+import LoadingPage from '../../../src/components/pages/LoadingPage';
+import BreadCrumbs from '../../../src/components/common/BreadCrumbs';
+import LayoutHeader from '../../../src/components/common/LayoutHeader';
+import PerPage from '../../../src/components/common/PerPage';
 
 
-describe('Footer', () => {
-  test('should render footer', () => {
-    const wrapper = shallow(<Footer />);
-    expect(wrapper.length).toBe(1);
-    expect(wrapper).toMatchSnapshot();
-  });
-});
-describe('Hamburger Menu Bar', () => {
-  test('should render hamburger component', () => {
-    const wrapper = shallow(<Hamburger />);
-    expect(wrapper.length).toBe(1);
-    expect(wrapper).toMatchSnapshot();
-  });
-});
 describe('Toastr Component', () => {
   test('should render toastr component', () => {
     const wrapper = shallow(<ToastrComponent />);
@@ -38,6 +21,13 @@ describe('Toastr Component', () => {
 describe('Toastr Modal Component', () => {
   test('should render Toastr Modalcomponent', () => {
     const wrapper = shallow(<ToastrModal />);
+    expect(wrapper.length).toBe(1);
+    expect(wrapper).toMatchSnapshot();
+  });
+  test('should close modal', () => {
+    const wrapper = shallow(<ToastrModal />);
+    wrapper.find('.close').simulate('click',
+      { preventDefault() { } });
     expect(wrapper.length).toBe(1);
     expect(wrapper).toMatchSnapshot();
   });
@@ -84,29 +74,7 @@ describe('Layout Header', () => {
     expect(wrapper).toMatchSnapshot();
   });
 });
-describe('Pagination', () => {
-  test('should render Pagination Component', () => {
-    const onClick = jest.fn();
-    const wrapper = shallow(<Pagination
-      currentPage={1}
-      totalPages={10}
-      paginationFunction={onClick}
-    />);
-    expect(wrapper.length).toBe(1);
-    expect(wrapper).toMatchSnapshot();
-  });
-  test('should render middle page of Pagination Component',
-    () => {
-      const onClick = jest.fn();
-      const wrapper = shallow(<Pagination
-        currentPage={5}
-        totalPages={10}
-        paginationFunction={onClick}
-      />);
-      expect(wrapper.length).toBe(1);
-      expect(wrapper).toMatchSnapshot();
-    });
-});
+
 describe('Page Limit Selector', () => {
   test('should render Page Limit Changer Component with 50 as active', () => {
     const onClick = jest.fn();

@@ -15,8 +15,9 @@ function BorrowedBooksList(props) {
   const { borrowedList } = props;
   const checkOverdue = (dueDate, returnDate) => {
     const todayDate = new Date();
-    if (returnDate &&
-      todayDate > dueDate
+    const dateDue = new Date(dueDate);
+    if (!returnDate &&
+      todayDate > dateDue
     ) {
       return true;
     }
@@ -38,7 +39,7 @@ function BorrowedBooksList(props) {
                   {bookInfo.Book.bookName}
                 </Link>
               </td>
-              <td className="hidden-xs-table">
+              <td className="hidden-sm-table">
                 {displayDate(bookInfo.borrowDate)}
               </td>
               <td

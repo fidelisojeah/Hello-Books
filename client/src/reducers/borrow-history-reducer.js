@@ -39,18 +39,24 @@ export default function borrowHistoryReducer(state = {
       };
     }
     case RETURN_SINGLE_BOOK_COMPLETE: {
+      if (action.returnedBook.status === 'Success') {
+        return {
+          ...state,
+          loading: false,
+          loaded: true,
+          fetchedBooks:
+            state.fetchedBooks.map((books) => {
+              if (books.id === action.returnedBook.lendId) {
+                books.actualReturnDate =
+                  action.returnedBook.bookDetails.returnDate;
+              }
+              return books;
+            })
+        };
+      }
       return {
         ...state,
         loading: false,
-        loaded: true,
-        fetchedBooks:
-          state.fetchedBooks.map((books) => {
-            if (books.id === action.returnedBook.lendId) {
-              books.actualReturnDate =
-                action.returnedBook.bookDetails.returnDate;
-            }
-            return books;
-          })
       };
     }
     case FETCH_BORROWED_BOOKS_HISTORY_REJECT: {
