@@ -5,6 +5,8 @@ import ActionButton from
   '../../../src/components/edit-modal/ActionButton';
 import EditBookModal from
   '../../../src/components/edit-modal/EditBookModal';
+import EditQuantityModal from
+  '../../../src/components/edit-modal/EditQuantityModal';
 import EditDescModal from
   '../../../src/components/edit-modal/EditDescModal';
 import EditImageModal from
@@ -16,6 +18,33 @@ import EditModal from
 import YearListChange from
   '../../../src/components/edit-modal/YearListChange';
 
+describe('EditQuantityModal Component', () => {
+  const handleQuantityUpdate = jest.fn();
+  const onChangeBlurEvent = jest.fn();
+  const handleFieldChange = jest.fn();
+
+  test('Should render EditQuantityModal Component', () => {
+    const wrapper = shallow(<EditQuantityModal
+      handleQuantityUpdate={handleQuantityUpdate}
+      onChangeBlurEvent={onChangeBlurEvent}
+      handleFieldChange={handleFieldChange}
+      bookQuantity="3"
+    />);
+    expect(wrapper.length).toBe(1);
+    expect(wrapper).toMatchSnapshot();
+  });
+  test('Should render EditQuantityModal Component WITH ERRORS', () => {
+    const wrapper = shallow(<EditQuantityModal
+      handleQuantityUpdate={handleQuantityUpdate}
+      onChangeBlurEvent={onChangeBlurEvent}
+      handleFieldChange={handleFieldChange}
+      bookQuantity="3"
+      error="An error occured?"
+    />);
+    expect(wrapper.length).toBe(1);
+    expect(wrapper).toMatchSnapshot();
+  });
+});
 describe('EditBookModal Component', () => {
   const handleEditClick = jest.fn();
   const onChangeBlurEvent = jest.fn();
@@ -191,6 +220,8 @@ describe('EditModal Component', () => {
       () => {
         const wrapper = shallow(<EditModal
           bookName="Random Book"
+          oldBookQuantity={3}
+          updateQuantity={jest.fn()}
           description="Random Book Description of a random Book"
           element="publish year"
           handleEditClick={handleEditClick}
@@ -218,6 +249,8 @@ describe('EditModal Component', () => {
       () => {
         const wrapper = shallow(<EditModal
           bookName="Random Book"
+          oldBookQuantity={3}
+          updateQuantity={jest.fn()}
           element="publish year"
           handleEditClick={handleEditClick}
           handleFieldChange={handleFieldChange}
@@ -245,6 +278,8 @@ describe('EditModal Component', () => {
       () => {
         const wrapper = shallow(<EditModal
           bookName="Random Book"
+          oldBookQuantity={3}
+          updateQuantity={jest.fn()}
           description="Random Book Description of a random Book"
           element="Description"
           handleEditClick={handleEditClick}
@@ -272,6 +307,8 @@ describe('EditModal Component', () => {
       () => {
         const wrapper = shallow(<EditModal
           bookName="Random Book"
+          oldBookQuantity={3}
+          updateQuantity={jest.fn()}
           element="Description"
           handleEditClick={handleEditClick}
           handleFieldChange={handleFieldChange}
@@ -299,6 +336,8 @@ describe('EditModal Component', () => {
     test('Should render EditModal Component with new ISBN',
       () => {
         const wrapper = shallow(<EditModal
+          oldBookQuantity={3}
+          updateQuantity={jest.fn()}
           bookName="Random Book"
           description="Random Book Description of a random Book"
           element="ISBN"
@@ -326,6 +365,8 @@ describe('EditModal Component', () => {
     test('Should render EditModal Component with old ISBN',
       () => {
         const wrapper = shallow(<EditModal
+          oldBookQuantity={3}
+          updateQuantity={jest.fn()}
           bookName="Random Book"
           element="ISBN"
           handleEditClick={handleEditClick}
@@ -353,6 +394,8 @@ describe('EditModal Component', () => {
     test('Should render EditModal Component with new Book Name',
       () => {
         const wrapper = shallow(<EditModal
+          oldBookQuantity={3}
+          updateQuantity={jest.fn()}
           bookName="Random Book"
           description="Random Book Description of a random Book"
           element="Book Name"
@@ -380,6 +423,8 @@ describe('EditModal Component', () => {
     test('Should render EditModal Component with old Book Name',
       () => {
         const wrapper = shallow(<EditModal
+          oldBookQuantity={3}
+          updateQuantity={jest.fn()}
           element="Book Name"
           handleEditClick={handleEditClick}
           handleFieldChange={handleFieldChange}
@@ -406,6 +451,8 @@ describe('EditModal Component', () => {
     test('Should render EditModal Component with new image',
       () => {
         const wrapper = shallow(<EditModal
+          oldBookQuantity={3}
+          updateQuantity={jest.fn()}
           bookName="Random Book"
           description="Random Book Description of a random Book"
           element="image"
@@ -435,6 +482,8 @@ describe('EditModal Component', () => {
     test('Should render EditModal Component with new image',
       () => {
         const wrapper = shallow(<EditModal
+          oldBookQuantity={3}
+          updateQuantity={jest.fn()}
           bookName="Random Book"
           description="Random Book Description of a random Book"
           element="nonsense"

@@ -1,4 +1,12 @@
 export default {
+  userActionReducer: {
+    message: {
+
+    },
+    error: {
+
+    }
+  },
   bookReducer: {
     fetchedBooks: {
       totalBooksCount: 2,

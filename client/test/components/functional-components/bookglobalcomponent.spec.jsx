@@ -8,7 +8,7 @@ import {
   forBookModal,
   todayDate
 } from
-  '../../../src/components/common/calculate-moment';
+  '../../../src/components/common/calculateMoment';
 
 
 describe('BookGlobalComponent Component', () => {
@@ -43,6 +43,7 @@ describe('BookGlobalComponent Component', () => {
   const maxDate = forBookModal().maxDate;
   const minDate = forBookModal().maxDate;
   const onChangeBlurEvent = jest.fn();
+  const updateQuantity = jest.fn();
   const onImageDrop = jest.fn();
   const pageLinks = [
     {
@@ -98,6 +99,7 @@ describe('BookGlobalComponent Component', () => {
       ratingSum={ratingSum}
       reviewFunction={reviewFunction}
       startDate={startDate}
+      updateQuantity={updateQuantity}
       yearList={yearList}
       yearListShow
     />);
@@ -142,6 +144,7 @@ describe('BookGlobalComponent Component', () => {
       ratingSum={ratingSum}
       reviewFunction={reviewFunction}
       startDate={startDate}
+      updateQuantity={updateQuantity}
       yearList={yearList}
       yearListShow
     />);
@@ -189,6 +192,7 @@ describe('BookGlobalComponent Component', () => {
       ratingSum={ratingSum}
       reviewFunction={reviewFunction}
       startDate={startDate}
+      updateQuantity={updateQuantity}
       yearList={yearList}
       yearListShow
     />);
@@ -234,6 +238,7 @@ describe('BookGlobalComponent Component', () => {
       ratingSum={ratingSum}
       reviewFunction={reviewFunction}
       startDate={startDate}
+      updateQuantity={updateQuantity}
       yearList={yearList}
       yearListShow
     />);

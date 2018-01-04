@@ -27,6 +27,8 @@ const BreadCrumbs = ({ breadCrumbLinks }) => {
   );
 };
 BreadCrumbs.propTypes = {
-  breadCrumbLinks: PropTypes.arrayOf(PropTypes.object).isRequired,
+  breadCrumbLinks:
+    PropTypes.arrayOf(PropTypes.object)
+      .isRequired,
 };
 export default BreadCrumbs;

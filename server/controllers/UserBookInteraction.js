@@ -4,9 +4,17 @@ import {
 } from '../models';
 import Interactions from '../helpers/interactions';
 
-import BookVerify from '../helpers/new-book';
+import BookVerification from '../helpers/BookVerification';
 
 class UserBookInteraction {
+  /**
+   *
+   * @param {object} request HTTP Request Object
+   *
+   * @param {object} response HTTP Response Object
+   *
+   * @returns {void}
+   */
   static viewBorrowedBook(request, response) {
     const userId = parseInt(request.params.userId, 10);
     const isReturned = request.query.returned || null;
@@ -69,6 +77,14 @@ class UserBookInteraction {
         response.status(error.errorCode).json(error.errors)
       );
   }
+  /**
+   *
+   * @param {object} request HTTP Request Object
+   *
+   * @param {object} response HTTP Response Object
+   *
+   * @returns {void}
+   */
   static viewBorrowedBookHistory(request, response) {
     const userId = parseInt(request.params.userId, 10);
     const isReturned = request.query.returned || null;
@@ -111,7 +127,7 @@ class UserBookInteraction {
     validateAll
       .validateEntryandUser()
       .then((userLoginDetails) => {
-        BookVerify
+        BookVerification
           .verifyViewBookVariables(
           limit, page)
           .then((viewDetails) => {
@@ -187,6 +203,14 @@ class UserBookInteraction {
         response.status(error.errorCode).json(error.errors)
       );
   }
+  /**
+   *
+   * @param {object} request HTTP Request Object
+   *
+   * @param {object} response HTTP Response Object
+   *
+   * @returns {void}
+   */
   static borrowBook(request, response) {
     const userId = parseInt(request.params.userId, 10);
     const bookId = parseInt(request.body.bookId, 10); // change case
@@ -299,6 +323,14 @@ class UserBookInteraction {
       });
     }
   }
+  /**
+   *
+   * @param {object} request HTTP Request Object
+   *
+   * @param {object} response HTTP Response Object
+   *
+   * @returns {void}
+   */
   static returnBook(request, response) {
     const userId = parseInt(request.params.userId, 10);
     const bookId = parseInt(request.body.bookId, 10); // change case
@@ -404,6 +436,14 @@ class UserBookInteraction {
         response.status(error.errorCode).json(error.errors)
       );
   }
+  /**
+   *
+   * @param {object} request HTTP Request Object
+   *
+   * @param {object} response HTTP Response Object
+   *
+   * @returns {void}
+   */
   static userBookHistory(request, response) {
     const bookId = parseInt(request.params.bookId, 10);
     const userId = parseInt(request.decoded.userId, 10);

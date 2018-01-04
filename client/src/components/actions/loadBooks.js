@@ -20,8 +20,11 @@ import {
   HOME_PAGE_BOOKS_COMPLETE
 } from './types';
 
-import { getMoment } from '../common/calculate-moment';
+import { getMoment } from '../common/calculateMoment';
 
+/**
+ * @returns {object} action
+ */
 export const clearBookStore = () => (
   { type: FETCH_BOOK_CLEAR }
 );

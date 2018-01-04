@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import LoadingPage from './LoadingPage';
 
 import LayoutHeader from '../common/LayoutHeader';
+import NotFoundComponent from '../common/NotFoundComponent';
 import TextField from '../common/TextField';
 
 import { userLogin } from '../actions/login';
@@ -12,7 +13,7 @@ import { userLogin } from '../actions/login';
 import {
   verifyUser,
   resendActivation
-} from '../actions/user-actions';
+} from '../actions/userActions';
 
 import UserHelper from '../../../../server/helpers/UserHelper';
 
@@ -223,6 +224,16 @@ export class MultiPurpose extends React.Component {
         </div>
       </div>);
     }
+    return (
+      <NotFoundComponent
+        title="No Such Book"
+        errorMessage="Invalid Book Maybe?"
+        links={[{
+          linkName: 'Home',
+          link: ''
+        }]}
+      />
+    );
   }
 }
 MultiPurpose.defaultProps = {

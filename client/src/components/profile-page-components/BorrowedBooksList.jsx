@@ -5,10 +5,11 @@ import { Link } from 'react-router-dom';
 import {
   displayDate,
   getMoment
-} from '../common/calculate-moment';
+} from '../common/calculateMoment';
 
 /**
  * @param {object} props
+ *
  * @returns {JSX} list of borrowed Books
  */
 function BorrowedBooksList(props) {

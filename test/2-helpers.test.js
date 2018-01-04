@@ -4,8 +4,8 @@ import chaiHttp from 'chai-http';
 import db from '../server/models';
 import CheckSession from '../server/middleware/CheckSession';
 import HelloBooksSendMail from '../server/helpers/node-email';
-import BookVerify from '../server/helpers/new-book';
-import JwTokens from '../server/middleware/helpers';
+import BookVerification from '../server/helpers/BookVerification';
+import JwTokens from '../server/helpers/JwTokens';
 
 chai.use(require('chai-as-promised'));
 
@@ -105,7 +105,7 @@ describe('Middleware Tests', () => {
   });
   describe('Test new Book validator', () => {
     it('should return an object with book variables', (done) => {
-      BookVerify
+      BookVerification
         .checkNewBookVariables(
         'A Sample Book',
         '0-1237-19733-1271-1',

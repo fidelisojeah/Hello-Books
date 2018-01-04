@@ -76,6 +76,11 @@ export default function singleBookReducer(state =
         fetchedBook: {
           ...state.fetchedBook,
           description: action.response.bookUpdate.description,
+          bookQuantity:
+            (action.response.bookUpdate.bookQuantity !== undefined)
+              ?
+              action.response.bookUpdate.bookQuantity :
+              state.fetchedBook.bookQuantity,
           bookISBN: action.response.bookUpdate.bookISBN,
           bookName: action.response.bookUpdate.bookName,
           publishYear: action.response.bookUpdate.publishYear,

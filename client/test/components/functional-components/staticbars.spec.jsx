@@ -22,7 +22,10 @@ describe('NavBar', () => {
     const wrapper = shallow(<Navbar
       show={show}
       logout={logout}
-      username="randomPerson"
+      user={{
+        user: 'randomPerson',
+        role: 'Admin'
+      }}
     />);
     expect(wrapper.length).toBe(1);
     wrapper.find('.usrBtn').first().simulate('click');

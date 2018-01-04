@@ -7,7 +7,7 @@ import {
 } from '../models';
 
 import CheckSession from '../middleware/CheckSession';
-import BookVerify from '../helpers/new-book';
+import BookVerification from '../helpers/BookVerification';
 
 class BookProps {
   /**
@@ -354,7 +354,7 @@ class BookProps {
         const authors = request.body.authorIds || null; // author or anonymous
 
         // true if every element is int
-        BookVerify
+        BookVerification
           .checkNewBookVariables(bookName,
           ISBN,
           publishYear,
@@ -529,10 +529,10 @@ class BookProps {
                     // Never less than 1
                   })
                   .then(
-                  addBook => response.status(200).json({
+                  bookUpdate => response.status(200).json({
                     status: 'Success',
                     message: 'Book Updated Successfully',
-                    addBook,
+                    bookUpdate,
                   }))
                   .catch(errorMessage =>
                     response.status(500).json({
@@ -673,7 +673,7 @@ class BookProps {
       'id', 'DESC'
     ]);
 
-    BookVerify
+    BookVerification
       .verifyViewBookVariables(
       limit, page)
       .then((viewDetails) => {

@@ -6,6 +6,7 @@ import BreadCrumbs from '../common/BreadCrumbs';
 
 import MainSection from './MainSection';
 import MiddleSector from './MiddleSector';
+import AdminBookSection from './AdminBookSection';
 import BookModal from './BookModal';
 
 
@@ -46,12 +47,20 @@ function BookGlobalComponent(props) {
         expandCollapseDescription={props.expandCollapseDescription}
       />
       <div className="section_divider" />
-      <MiddleSector
-        borrowCount={props.borrowedBooksCount}
-        borrowed={props.borrowed}
-        reviewFunction={props.reviewFunction}
-        borrowList={props.borrowedBooks}
-      />
+      {!props.isAdmin &&
+        <MiddleSector
+          borrowCount={props.borrowedBooksCount}
+          borrowed={props.borrowed}
+          reviewFunction={props.reviewFunction}
+          borrowList={props.borrowedBooks}
+        />
+      }
+      {props.isAdmin &&
+        <AdminBookSection
+          bookQuantity={props.bookQuantity}
+          editFunction={props.editFunction}
+        />
+      }
       <div
         id="msg-modal"
         className={`modal ${(props.editModalError
@@ -87,6 +96,7 @@ function BookGlobalComponent(props) {
               props.isAdmin &&
               <EditModal
                 bookName={props.editBookName}
+                bookQuantity={props.editBookQuantity}
                 description={props.editBookDescription}
                 element={props.element}
                 error={props.editModalErrors}
@@ -99,8 +109,10 @@ function BookGlobalComponent(props) {
                 newImageURL={props.newImageURL}
                 oldBookName={props.bookTitle}
                 oldDescription={props.bookDescription}
+                oldBookQuantity={props.bookQuantity}
                 oldPublishYear={props.publishYear}
                 oldISBN={props.ISBN}
+                updateQuantity={props.updateQuantity}
                 onChangeBlurEvent={props.onChangeBlurEvent}
                 onImageDrop={props.onImageDrop}
                 publishyear={props.editPublishYear}
@@ -119,6 +131,7 @@ BookGlobalComponent.defaultProps = {
   borrowed: null,
   editBookName: undefined,
   editBookDescription: undefined,
+  editBookQuantity: undefined,
   editISBN: undefined,
   editPublishYear: undefined,
   modalHead: '',
@@ -141,6 +154,7 @@ BookGlobalComponent.propTypes = {
   closeModal: PropTypes.func.isRequired,
   descriptionHeight: PropTypes.number.isRequired,
   editBookDescription: PropTypes.string,
+  editBookQuantity: PropTypes.string,
   editBookName: PropTypes.string,
   editFunction: PropTypes.func.isRequired,
   editISBN: PropTypes.string,
@@ -172,6 +186,7 @@ BookGlobalComponent.propTypes = {
   ratingSum: PropTypes.string.isRequired,
   reviewFunction: PropTypes.func.isRequired,
   startDate: PropTypes.object.isRequired,
+  updateQuantity: PropTypes.func.isRequired,
   yearList: PropTypes.arrayOf(PropTypes.number),
   yearListShow: PropTypes.bool,
 

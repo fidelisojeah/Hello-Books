@@ -18,7 +18,7 @@ import {
   forBookModal,
   todayDate
 } from
-  '../../../src/components/common/calculate-moment';
+  '../../../src/components/common/calculateMoment';
 
 describe('BookModal Component', () => {
   const handleDateChange = jest.fn();

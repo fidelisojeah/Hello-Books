@@ -37,3 +37,23 @@ export function editBook(info, bookId) {
         dispatch(editBookError(error.response));
       });
 }
+/**
+ * @param {object} updateInfo - {quantity, bookId}
+ *
+ * @returns {promise} dispatch
+ */
+export function updateBookQuantity(updateInfo) {
+  return dispatch =>
+    axios
+      .post(`/api/v1/books/${updateInfo.bookId}/quantity`, {
+        quantity: updateInfo.quantity
+      })
+      .then((response) => {
+        Toastr.Success(response.data.message, 4000);
+        dispatch(editBookSuccess(response.data));
+      })
+      .catch((error) => {
+        Toastr.Failure(error.response.data.error, 4000);
+        dispatch(editBookError(error.response));
+      });
+}
