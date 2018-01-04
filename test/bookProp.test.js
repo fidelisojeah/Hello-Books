@@ -7,19 +7,14 @@ import {
   UserDetails
 } from '../server/models';
 
+import { nonAdminToken } from './mockData';
+
 const should = chai.should();
 
 chai.use(chaiHttp);
 chai.use(require('chai-things'));
 
 let goodToken = '';
-const nonAdminToken = jwt.sign({
-  userId: 1,
-  username: 'normalUser',
-  firstName: 'norms',
-  lastName: 'User',
-  role: 'User',
-}, app.settings.JsonSecret);
 let bookId;
 
 describe('Book Controller tests:', () => {

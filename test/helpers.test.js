@@ -3,9 +3,11 @@ import chaiHttp from 'chai-http';
 
 import db from '../server/models';
 import CheckSession from '../server/middleware/CheckSession';
-import HelloBooksSendMail from '../server/helpers/node-email';
+import HelloBooksSendMail from '../server/helpers/HelloBooksSendMail';
 import BookVerification from '../server/helpers/BookVerification';
 import JwTokens from '../server/helpers/JwTokens';
+
+import { fakeMailInfo, fakeMailInfoWrong } from './mockData';
 
 chai.use(require('chai-as-promised'));
 
@@ -15,30 +17,8 @@ chai.use(chaiHttp);
 
 require('dotenv').config();
 
-let fakeMailInfo;
-let fakeMailInfoWrong;
+
 describe('Middleware Tests', () => {
-  before((done) => {
-    fakeMailInfo = {
-      userEmail:
-        'fakeemail@example.com',
-      userFirstName:
-        'fake Firstname',
-      userLastName:
-        'fake Lastname',
-      username:
-        'fakeUsername'
-    };
-    fakeMailInfoWrong = {
-      userFirstName:
-        'fake Firstname',
-      userLastName:
-        'fake Lastname',
-      username:
-        'fakeUsername'
-    };
-    done();
-  });
   describe('Check Admin middleware test', () => {
     let userDetailsFindOne;
     before((done) => {
