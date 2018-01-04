@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { newAuthorRequest } from '../../actions/author-actions';
+import { newAuthorRequest } from '../../actions/authorActions';
 import {
   bookImageUpload,
   newBookRequest,
@@ -90,18 +90,18 @@ class StockMgtPage extends React.Component {
                   </li>
                   <li className="tabbednav">
                     <button
-                      name="ManageBook"
+                      name="NewCategory"
                       onClick={this.handleClick}
                     >
-                      Manage Books
+                      Create New Category
                     </button>
                   </li>
                   <li className="tabbednav">
                     <button
-                      name="DeleteBook"
+                      name="EditCategory"
                       onClick={this.handleClick}
                     >
-                      Delete Books
+                      Edit Category
                     </button>
                   </li>
                 </ul>

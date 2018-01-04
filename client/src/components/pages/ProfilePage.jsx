@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
 import PropTypes from 'prop-types';
 
-import BorrowedBooksList from '../profile-page-components/BorrowedBooksList';
+import BorrowedBooksList from
+  '../profile-page-components/BorrowedBooksList';
 
 import BreadCrumbs from '../common/BreadCrumbs';
 import LoadingBar from '../common/LoadingBar';

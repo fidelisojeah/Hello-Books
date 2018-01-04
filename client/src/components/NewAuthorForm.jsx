@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker';
 
 import {
   todayDate
-} from './common/calculate-moment';
+} from './common/calculateMoment';
 
 import TextField from './common/TextField';
 

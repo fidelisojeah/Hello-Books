@@ -1,15 +1,14 @@
-import swal from 'sweetalert';
-
 import {
   BORROW_SINGLE_BOOK_COMPLETE,
   BORROW_SINGLE_BOOK_REJECT
 } from '../components/actions/types';
 
 
-// import { getMoment } from '../components/common/calculate-moment';
 /**
  * @param {object} state - Redux state
+ *
  * @param {object} action - Redux action
+ *
  * @returns {object} new state
  */
 export default function borrowBookReducer(state = {

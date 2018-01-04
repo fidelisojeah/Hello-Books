@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Ratings from '../common/Ratings';
-import { displayYear } from '../common/calculate-moment';
+import { displayYear } from '../common/calculateMoment';
 
 import EditBar from './EditBar';
 /**

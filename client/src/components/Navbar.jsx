@@ -30,7 +30,7 @@ function Navbar(props) {
                 className="usrBtn large-view"
                 onClick={event => props.show(event)}>
                 <span className="profile-name">
-                  {props.username}
+                  {props.user.username}
                 </span>
                 <i className="acc-button" />
               </a>
@@ -38,7 +38,7 @@ function Navbar(props) {
                 href="/"
                 className="usrBtn mobile-view"
               >
-                <span>{props.username}</span><i className="acc-button" />
+                <span>{props.user.username}</span><i className="acc-button" />
               </a>
               <div id="profile-stuff" className="profile-dropdown">
                 <ul className="sub-menu">
@@ -50,8 +50,16 @@ function Navbar(props) {
                       Profile
                       </Link>
                   </li>
-                  <li><a href="/">Messages</a></li>
-                  <li><a href="/">Membership</a></li>
+                  {props.user.role === 'Admin' &&
+                    <li>
+                      <Link
+                        href="/"
+                        to="/bookmgt"
+                      >
+                        Book Management
+                      </Link>
+                    </li>
+                  }
                   <li><a href="/" onClick={props.logout}>Logout</a></li>
                 </ul>
               </div>
@@ -66,7 +74,7 @@ function Navbar(props) {
 Navbar.propTypes = {
   logout: PropTypes.func.isRequired,
   show: PropTypes.func.isRequired,
-  username: PropTypes.string.isRequired,
+  user: PropTypes.object.isRequired,
 };
 export default Navbar;
 

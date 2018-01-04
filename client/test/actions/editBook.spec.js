@@ -1,5 +1,4 @@
-
-import { editBook } from '../../src/components/actions/edit-book';
+import { editBook } from '../../src/components/actions/editBook';
 import * as types from '../../src/components/actions/types';
 
 describe('Edit Book actions', () => {

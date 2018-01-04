@@ -73,7 +73,7 @@ class Header extends React.Component {
                 <div className="col-lg-10 col-md-10">
                   {isAuthenticated &&
                     <Navbar
-                      username={user.username}
+                      user={user}
                       logout={this.logout}
                       show={this.show}
                     />
@@ -91,8 +91,6 @@ class Header extends React.Component {
 Header.propTypes = {
   logout: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  // isAuthenticated: PropTypes.object,
-  // user: PropTypes.object
 };
 Header.defaultProps = {
   isAuthenticated: null,

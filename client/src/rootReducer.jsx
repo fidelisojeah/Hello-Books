@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux';
 
 import flashMessages from './reducers/flashMessages';
-import bookReducer from './reducers/book-reducers';
-import singleBookReducer from './reducers/single-book-reducer';
-import bookHistoryReducer from './reducers/book-history-reducer';
-import borrowHistoryReducer from './reducers/borrow-history-reducer';
-import homeBooksReducer from './reducers/front-page-reducer';
-import authorReducer from './reducers/author-reducer';
-import userActionReducer from './reducers/user-actions-reducer';
+import bookReducer from './reducers/bookReducers';
+import singleBookReducer from './reducers/singleBookReducer';
+import bookHistoryReducer from './reducers/bookHistoryReducer';
+import borrowHistoryReducer from './reducers/borrowHistoryReducer';
+import homeBooksReducer from './reducers/homeBooksReducer';
+import authorReducer from './reducers/authorReducer';
+import userActionReducer from './reducers/userActionsReducer';
 
 import auth from './reducers/auth';
 

@@ -1,5 +1,5 @@
 
-import * as authorHandler from '../../src/components/actions/author-actions';
+import * as authorHandler from '../../src/components/actions/authorActions';
 import * as types from '../../src/components/actions/types';
 
 describe('Author Handling actions', () => {

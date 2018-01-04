@@ -3,7 +3,7 @@ import {
   UserDetails,
   Memberships,
 } from '../models';
-import JwTokens from '../middleware/helpers';
+import JwTokens from '../helpers/JwTokens';
 import CheckSession from '../middleware/CheckSession';
 import UserHelper from '../helpers/UserHelper';
 import HelloBooksSendMail from '../helpers/node-email';
@@ -11,7 +11,7 @@ import HelloBooksSendMail from '../helpers/node-email';
 class UserLoginDetails {
   /**
    *
-   * @param {object} data User signup data
+   * @param {object} userInfo User signup data
    *
    * @param {object} tokenInfo info to be generated
    *
@@ -19,7 +19,7 @@ class UserLoginDetails {
    *
    * @returns {promise}
    */
-  static activationTokenWithEmail(data, tokenInfo, jsonSecret) {
+  static activationTokenWithEmail(userInfo, tokenInfo, jsonSecret) {
     return new Promise((resolve, reject) => {
       JwTokens
         .generateToken(
@@ -29,13 +29,13 @@ class UserLoginDetails {
         .then((signupToken) => {
           const infoForVerification = {
             userEmail:
-              data.emailaddress,
+              userInfo.emailaddress,
             userFirstName:
-              data.firstname,
+              userInfo.firstname,
             userLastName:
-              data.lastname,
+              userInfo.lastname,
             username:
-              data.username
+              userInfo.username
           };
           const sendActivationEmail =
             new HelloBooksSendMail(

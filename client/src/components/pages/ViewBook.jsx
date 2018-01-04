@@ -8,7 +8,10 @@ import {
   borrowBook,
   clearBookState
 } from '../actions/loadBooks';
-import { editBook } from '../actions/edit-book';
+import {
+  editBook,
+  updateBookQuantity
+} from '../actions/editBook';
 import { logout } from '../actions/login';
 
 import {
@@ -19,10 +22,11 @@ import {
   todayDate,
   forBookModal,
   displayYear
-} from '../common/calculate-moment';
+} from '../common/calculateMoment';
 import NotFoundComponent from '../common/NotFoundComponent';
 
-import BookGlobalComponent from '../view-book-components/BookGlobalComponent';
+import BookGlobalComponent from
+  '../view-book-components/BookGlobalComponent';
 
 import LoadingPage from './LoadingPage';
 
@@ -62,6 +66,7 @@ class ViewBook extends React.Component {
       divDescHeight: 0,
       editBookName: undefined,
       editDescription: undefined,
+      editBookQuantity: undefined,
       editISBN: undefined,
       editModal: false,
       editModalError: false,
@@ -205,6 +210,13 @@ class ViewBook extends React.Component {
         delete editModalErrors.ISBNError;
       }
     }
+    if (event.target.name === 'editBookQuantity') {
+      if (!event.target.value) {
+        this.setState({
+          editBookQuantity: this.state.bookQuantity.toString()
+        });
+      }
+    }
     if (event.target.name === 'editBookName') {
       if (event.target.value.length < 1) {
         editModalErrors.bookNameError =
@@ -300,6 +312,7 @@ class ViewBook extends React.Component {
           modalHead: '',
           editDescription: undefined,
           editISBN: undefined,
+          editBookQuantity: undefined,
           editPublishYear: undefined,
           editModal: true,
           editModalError: false,
@@ -331,6 +344,7 @@ class ViewBook extends React.Component {
       modalHead: '',
       newImageURL: undefined,
       editDescription: undefined,
+      editBookQuantity: undefined,
       editISBN: undefined,
       editPublishYear: undefined,
       editModal: true,
@@ -375,6 +389,7 @@ class ViewBook extends React.Component {
     this.setState({
       modalHead: `Edit ${element}`,
       editBookName: undefined,
+      editBookQuantity: undefined,
       editDescription: undefined,
       editISBN: undefined,
       editModal: true,
@@ -426,7 +441,14 @@ class ViewBook extends React.Component {
     });
   }
   handleBookFieldChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
+    if (event.target.name === 'editBookQuantity') {
+      if (!(/[^0-9]/g.test(event.target.value))) {
+        this.setState({ [event.target.name]: event.target.value });
+      }
+    } else {
+      this.setState({ [event.target.name]: event.target.value });
+    }
+
     const { yearArray, editModalErrors } = this.state;
     let yearList = [];
     if (event.target.name === 'editPublishYear') {
@@ -456,6 +478,36 @@ class ViewBook extends React.Component {
       yearList,
       editModalErrors
     });
+  }
+  updateQuantity = (event) => {
+    event.preventDefault();
+    const {
+      editBookQuantity,
+      bookQuantity,
+      editModalErrors
+    } = this.state;
+    const newBookQuantity = parseInt(editBookQuantity, 10);
+    if (isNaN(newBookQuantity) && editBookQuantity !== undefined) {
+      editModalErrors.quantityError = 'Enter Appropraite Quantiy?';
+      return this.setState({
+        editModalError: true,
+        editModalErrors
+      });
+    }
+    if (newBookQuantity !== bookQuantity) {
+      this.props.updateBookQuantity({
+        quantity: (newBookQuantity - bookQuantity),
+        bookId: this.props.bookId
+      });
+    }
+    this.setState({
+      modalHead: '',
+      editBookQuantity: undefined,
+      editModal: true,
+      editModalError: false,
+      editModalErrors: {}
+    });
+    return document.body.classList.remove('with--modal');
   }
   render() {
     if (this.state.fetching) {
@@ -491,6 +543,7 @@ class ViewBook extends React.Component {
         editBookName={this.state.editBookName}
         editFunction={this.editFunction}
         editISBN={this.state.editISBN}
+        editBookQuantity={this.state.editBookQuantity}
         editModal={this.state.editModal}
         editModalError={this.state.editModalError}
         editModalErrors={this.state.editModalErrors}
@@ -518,6 +571,7 @@ class ViewBook extends React.Component {
         ratingCount={this.state.ratingCount}
         ratingSum={this.state.ratingSum}
         reviewFunction={this.reviewFunction}
+        updateQuantity={this.updateQuantity}
         startDate={this.state.startDate}
         yearList={this.state.yearList}
         yearListShow={this.state.yearListShow}
@@ -553,7 +607,8 @@ ViewBook.propTypes = {
   ratingSum: PropTypes.string,
   ratingCount: PropTypes.string,
   unreturnedBookCount: PropTypes.number,
-  userId: PropTypes.number.isRequired,
+  updateBookQuantity: PropTypes.func.isRequired,
+  userId: PropTypes.number,
   viewOneBook: PropTypes.func.isRequired
 };
 ViewBook.defaultProps = {
@@ -572,6 +627,7 @@ ViewBook.defaultProps = {
   unreturnedBookCount: 0,
   borrowedBooks: [],
   borrowedBooksCount: 0,
+  userId: null,
   ratingCount: '',
   ratingSum: '',
 };
@@ -614,5 +670,6 @@ export default connect(mapStateToProps,
     borrowBook,
     logout,
     clearBookState,
+    updateBookQuantity,
     bookImageUpload
   })(ViewBook);

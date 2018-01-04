@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import TextField from './common/TextField';
-import BookVerify from '../../../server/helpers/new-book';
+import BookVerification from '../../../server/helpers/BookVerification';
 
 import AuthorSearch from './common/AuthorSearch';
 
@@ -11,7 +11,7 @@ import Toastr from './common/Toastr';
 import ImageUploader from './common/ImageUploader';
 import {
   displayYear
-} from './common/calculate-moment';
+} from './common/calculateMoment';
 
 
 class NewBookForm extends React.Component {
@@ -80,7 +80,7 @@ class NewBookForm extends React.Component {
   onSubmit = (event) => {
     event.preventDefault();
     this.setState({ errors: [], isLoading: true });
-    BookVerify
+    BookVerification
       .checkNewBookVariables(
       this.state.bookname,
       this.state.ISBN,
