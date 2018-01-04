@@ -58,7 +58,7 @@ describe('Middleware Test', () => {
   describe('When no token is provided', () => {
     it('should return 401 Unsuccessful when no token is provided', (done) => {
       chai.request(app)
-        .post('/api/v4/authors')
+        .post('/api/v1/authors')
         .end((err, res) => {
           should.exist(err);
           res.status.should.equal(401);
@@ -73,7 +73,7 @@ describe('Middleware Test', () => {
   describe('When an invalid token is provided', () => {
     it('should return 401 Unsuccessful when wrongly signed token is provided', (done) => {
       chai.request(app)
-        .post('/api/v4/authors')
+        .post('/api/v1/authors')
         .set('x-access-token', invalidSignedToken)
         .end((err, res) => {
           should.exist(err);
@@ -87,7 +87,7 @@ describe('Middleware Test', () => {
     });
     it('should return 401 Unsuccessful when Fake but signed token is provided', (done) => {
       chai.request(app)
-        .post('/api/v4/authors')
+        .post('/api/v1/authors')
         .set('x-access-token', fakeToken) // set header 'x-access-token'
         .end((err, res) => {
           should.exist(err);
@@ -102,7 +102,7 @@ describe('Middleware Test', () => {
     it('should return 401 Unsuccessful when Expired token is provided',
       (done) => {
         chai.request(app)
-          .post('/api/v4/authors')
+          .post('/api/v1/authors')
           .set('x-access-token', expiredToken)
           .end((err, res) => {
             should.exist(err);
@@ -120,7 +120,7 @@ describe('Middleware Test', () => {
     describe('When user is not an admin', () => {
       it('should return 401 Not Allowed', (done) => {
         chai.request(app)
-          .post('/api/v4/authors')
+          .post('/api/v1/authors')
           .set('x-access-token', nonAdminToken)
           .end((err, res) => {
             should.exist(err);
@@ -135,7 +135,7 @@ describe('Middleware Test', () => {
     describe('When token has no role in it', () => {
       it('should return 401 invalid token', (done) => {
         chai.request(app)
-          .post('/api/v4/authors')
+          .post('/api/v1/authors')
           .set('x-access-token', noRoleToken)
           .end((err, res) => {
             should.exist(err);

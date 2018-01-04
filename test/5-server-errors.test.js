@@ -95,7 +95,7 @@ describe('Database errors Simulations', () => {
           db.BookLendings.create = () =>
             Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
-            .post('/api/v4/users/2/books')
+            .post('/api/v1/users/2/books')
             .set('x-access-token', goodToken2)
             .send({
               bookId: 3,
@@ -120,7 +120,7 @@ describe('Database errors Simulations', () => {
           db.UserDetails.getMembership = () =>
             Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
-            .post('/api/v4/users/2/books')
+            .post('/api/v1/users/2/books')
             .set('x-access-token', goodToken2)
             .send({
               bookId: 3,
@@ -141,7 +141,7 @@ describe('Database errors Simulations', () => {
           db.UserDetails.findOne = () =>
             Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
-            .post('/api/v4/users/2/books')
+            .post('/api/v1/users/2/books')
             .set('x-access-token', goodToken2)
             .send({
               bookId: 3,
@@ -180,7 +180,7 @@ describe('Database errors Simulations', () => {
           Promise.all = () =>
             Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
-            .put('/api/v4/users/1/books')
+            .put('/api/v1/users/1/books')
             .set('x-access-token', goodToken1)
             .send({
               bookId: 2,
@@ -201,7 +201,7 @@ describe('Database errors Simulations', () => {
           db.Books.findOne = () =>
             Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
-            .put('/api/v4/users/1/books')
+            .put('/api/v1/users/1/books')
             .set('x-access-token', goodToken1)
             .send({
               bookId: 3,
@@ -222,7 +222,7 @@ describe('Database errors Simulations', () => {
           db.BookLendings.findOne = () =>
             Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
-            .put(`/api/v4/users/${goodTokenUserID}/books`)
+            .put(`/api/v1/users/${goodTokenUserID}/books`)
             .set('x-access-token', goodToken)
             .send({
               bookId: 1,
@@ -254,7 +254,7 @@ describe('Database errors Simulations', () => {
           db.BookLendings.count = () =>
             Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
-            .get(`/api/v4/users/history/${goodTokenUserID}`)
+            .get(`/api/v1/users/history/${goodTokenUserID}`)
             .set('x-access-token', goodToken)
             .end((error, response) => {
               should.exist(error);
@@ -282,7 +282,7 @@ describe('Database errors Simulations', () => {
           db.BookLendings.findAll = () =>
             Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
-            .get(`/api/v4/users/${goodTokenUserID}/books`)
+            .get(`/api/v1/users/${goodTokenUserID}/books`)
             .set('x-access-token', goodToken)
             .end((error, response) => {
               should.exist(error);
@@ -315,7 +315,7 @@ describe('Database errors Simulations', () => {
             db.BookLendings.findAll = () =>
               Promise.reject(new Error('WRONG!!!'));
             chai.request(app)
-              .get(`/api/v4/users/${goodTokenUserID}/books/list/1`)
+              .get(`/api/v1/users/${goodTokenUserID}/books/list/1`)
               .query({
                 order: 'false',
                 sort: 'dateborrowed',
@@ -337,7 +337,7 @@ describe('Database errors Simulations', () => {
             db.BookLendings.count = () =>
               Promise.reject(new Error('WRONG!!!'));
             chai.request(app)
-              .get(`/api/v4/users/${goodTokenUserID}/books/list/1`)
+              .get(`/api/v1/users/${goodTokenUserID}/books/list/1`)
               .query({
                 order: 'false',
                 sort: 'dateborrowed',
@@ -375,7 +375,7 @@ describe('Database errors Simulations', () => {
         (done) => {
           app.set('JsonSecret', undefined);
           chai.request(app)
-            .get('/api/v4/user/verify/sampleusername')
+            .get('/api/v1/user/verify/sampleusername')
             .end((error, response) => {
               should.exist(error);
               response.status.should.equal(500);
@@ -391,7 +391,7 @@ describe('Database errors Simulations', () => {
             Promise
               .reject(new Error('WRONG!!!'));
           chai.request(app)
-            .get('/api/v4/user/verify/sample')
+            .get('/api/v1/user/verify/sample')
             .end((error, response) => {
               should.exist(error);
               response.status.should.equal(500);
@@ -418,7 +418,7 @@ describe('Database errors Simulations', () => {
             Promise
               .reject(new Error('WRONG!!!'));
           chai.request(app)
-            .get('/api/v4/users/signupCheck/randomIdentifier')
+            .get('/api/v1/users/signupCheck/randomIdentifier')
             .end((error, response) => {
               should.exist(error);
               response.status.should.equal(500);
@@ -450,7 +450,7 @@ describe('Database errors Simulations', () => {
         (done) => {
           app.set('JsonSecret', undefined);
           chai.request(app)
-            .post('/api/v4/users/signup')
+            .post('/api/v1/users/signup')
             .send({
               password: 'TestUser123$',
               firstname: 'Test',
@@ -473,7 +473,7 @@ describe('Database errors Simulations', () => {
           db.Memberships.findById = () =>
             Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
-            .post('/api/v4/users/signup')
+            .post('/api/v1/users/signup')
             .send({
               password: 'TestUser123$',
               firstname: 'Test',
@@ -495,7 +495,7 @@ describe('Database errors Simulations', () => {
           bcrypt.hash = () =>
             Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
-            .post('/api/v4/users/signup')
+            .post('/api/v1/users/signup')
             .send({
               password: 'TestUser123$',
               firstname: 'Test',
@@ -530,7 +530,7 @@ describe('Database errors Simulations', () => {
         db.UserDetails.findOne = () =>
           Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
-          .get('/api/v4/users/verify')
+          .get('/api/v1/users/verify')
           .query({
             id: 'username',
             key: someToken,
@@ -565,7 +565,7 @@ describe('Database errors Simulations', () => {
       it('should return 501 Unsuccessful', (done) => {
         app.set('JsonSecret', undefined);
         chai.request(app)
-          .post('/api/v4/users/signin')
+          .post('/api/v1/users/signin')
           .send({
             password: 'TestUser123$',
             username: 'Testuser',
@@ -582,7 +582,7 @@ describe('Database errors Simulations', () => {
       it('should return 500 Unsuccessful', (done) => {
         bcrypt.compare = () => Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
-          .post('/api/v4/users/signin')
+          .post('/api/v1/users/signin')
           .send({
             password: 'TestUser123$',
             username: 'Testuser',
@@ -600,7 +600,7 @@ describe('Database errors Simulations', () => {
         db.UserDetails.findOne = () =>
           Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
-          .post('/api/v4/users/signin')
+          .post('/api/v1/users/signin')
           .send({
             password: 'TestUser123$',
             username: 'Testuser',
@@ -634,7 +634,7 @@ describe('Database errors Simulations', () => {
         db.Authors
           .findAll = () => Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
-          .get('/api/v4/authors')
+          .get('/api/v1/authors')
           .set('x-access-token', goodToken)
           .end((error, response) => {
             should.exist(error);
@@ -649,7 +649,7 @@ describe('Database errors Simulations', () => {
         db.Authors
           .findOne = () => Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
-          .get('/api/v4/authors?id=1')
+          .get('/api/v1/authors?id=1')
           .set('x-access-token', goodToken)
           .end((error, response) => {
             should.exist(error);
@@ -675,7 +675,7 @@ describe('Database errors Simulations', () => {
         db.Authors
           .findAll = () => Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
-          .get('/api/v4/search/authors?q=jo')
+          .get('/api/v1/search/authors?q=jo')
           .set('x-access-token', goodToken)
           .end((error, response) => {
             should.exist(error);
@@ -701,7 +701,7 @@ describe('Database errors Simulations', () => {
         db.Books.findOne = () =>
           Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
-          .post('/api/v4/books/1/quantity')// a is wrong here
+          .post('/api/v1/books/1/quantity')// a is wrong here
           .set('x-access-token', goodToken)
           .send({
             quantity: 3,
@@ -734,7 +734,7 @@ describe('Database errors Simulations', () => {
         db.Books.create = () =>
           Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
-          .post('/api/v4/books')
+          .post('/api/v1/books')
           .set('x-access-token', goodToken)
           .send({
             quantity: 1,
@@ -763,7 +763,7 @@ describe('Database errors Simulations', () => {
         db.Authors.findAll = () =>
           Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
-          .post('/api/v4/books')
+          .post('/api/v1/books')
           .set('x-access-token', goodToken)
           .send({
             quantity: 1,
@@ -807,7 +807,7 @@ describe('Database errors Simulations', () => {
         db.Books.findAll = () =>
           Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
-          .get('/api/v4/books/list/1?limit=10')
+          .get('/api/v1/books/list/1?limit=10')
           .set('x-access-token', goodToken)
           .end((error, response) => {
             should.exist(error);
@@ -822,7 +822,7 @@ describe('Database errors Simulations', () => {
         db.Books.count = () =>
           Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
-          .get('/api/v4/books/list/1?limit=10')
+          .get('/api/v1/books/list/1?limit=10')
           .set('x-access-token', goodToken)
           .end((error, response) => {
             should.exist(error);
@@ -877,7 +877,7 @@ describe('Database errors Simulations', () => {
         db.Books.findAll = () =>
           Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
-          .get('/api/v4/books')
+          .get('/api/v1/books')
           .set('x-access-token', goodToken)
           .end((error, response) => {
             should.exist(error);
@@ -893,7 +893,7 @@ describe('Database errors Simulations', () => {
           db.Books.findOne = () =>
             Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
-            .get('/api/v4/books')
+            .get('/api/v1/books')
             .query({
               id: 1,
             })
@@ -922,7 +922,7 @@ describe('Database errors Simulations', () => {
         db.Books.findOne = () =>
           Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
-          .put('/api/v4/books/3')
+          .put('/api/v1/books/3')
           .set('x-access-token', goodToken)
           .send({
             bookISBN: '0-7475-5100-6',
@@ -951,7 +951,7 @@ describe('Database errors Simulations', () => {
         db.Authors.create = () =>
           Promise.reject(new Error('WRONG!!!'));
         chai.request(app)
-          .post('/api/v4/authors')
+          .post('/api/v1/authors')
           .set('x-access-token', goodToken)
           .send({
             firstname: 'Joanne',

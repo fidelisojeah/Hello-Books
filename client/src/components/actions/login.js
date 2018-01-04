@@ -38,7 +38,7 @@ export const signInUnsuccessful = error => (
  */
 export const logout = () =>
   dispatch =>
-    axios.get('/api/v4/users/logout')
+    axios.get('/api/v1/users/logout')
       .then(() => {
         localStorage.removeItem('jwtToken');
         setAuthorizationToken(false);
@@ -54,7 +54,7 @@ export const logout = () =>
  */
 export const userLogin = userData =>
   dispatch =>
-    axios.post('/api/v4/users/signin', userData)
+    axios.post('/api/v1/users/signin', userData)
       .then((response) => {
         const token = response.data.token;
         localStorage.setItem('jwtToken', token);

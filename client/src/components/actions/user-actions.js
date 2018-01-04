@@ -29,7 +29,7 @@ export const verifyUserFailure = error => (
 export const verifyUser = data =>
   dispatch =>
     axios
-      .get('/api/v4/users/verify',
+      .get('/api/v1/users/verify',
       {
         params: data
       })
@@ -49,7 +49,7 @@ export const verifyUser = data =>
 export const resendActivation = data =>
   dispatch =>
     axios
-      .get(`/api/v4/user/verify/${data.username}`)
+      .get(`/api/v1/user/verify/${data.username}`)
       .then((response) => {
         Toastr.Success(response.data.message);
       })

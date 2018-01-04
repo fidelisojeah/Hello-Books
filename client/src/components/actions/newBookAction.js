@@ -31,7 +31,7 @@ export function bookImageUpload(imageData) {
  */
 export function newBookRequest(bookData) {
   return dispatch =>
-    axios.post('/api/v4/books', bookData);
+    axios.post('/api/v1/books', bookData);
 }
 
 /**
@@ -42,6 +42,6 @@ export function newBookRequest(bookData) {
  */
 export function checkAuthorsRequest(authorInfo) {
   return dispatch => {
-    return axios.get(`/api/v4/search/authors?q=${authorInfo}`);
+    return axios.get(`/api/v1/search/authors?q=${authorInfo}`);
   };
 }

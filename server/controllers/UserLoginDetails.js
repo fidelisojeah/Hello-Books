@@ -4,7 +4,7 @@ import {
   Memberships,
 } from '../models';
 import JwTokens from '../middleware/helpers';
-import CheckSession from '../middleware/session';
+import CheckSession from '../middleware/CheckSession';
 import UserHelper from '../helpers/UserHelper';
 import HelloBooksSendMail from '../helpers/node-email';
 

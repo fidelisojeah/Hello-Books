@@ -30,8 +30,6 @@ export class LogIndex extends React.Component {
 
   componentDidMount() {
     this.fetchAll();
-    // this.lendingCards = document.getElementById('lending-cards');
-    // this.ratingCards = document.getElementById('rating-cards');
     window.addEventListener('optimizedResize', this.calculateSizes);
   }
 

@@ -45,8 +45,8 @@ export default class BookVerify {
           description: desc,
           bookQuantity: quantity,
           bookImage:
-          (bookimage !== null) ? bookimage :
-            'default.jpg',
+            (bookimage !== null) ? bookimage :
+              'default.jpg',
           publishYear: (pubYear !== null) ? pubYear :
             '1900',
           authors
@@ -94,6 +94,11 @@ export default class BookVerify {
       }
     });
   }
+  /**
+   * 
+   * @param {number} limit
+   * @param {number} page
+   */
   static verifyViewBookVariables(
     limit,
     page

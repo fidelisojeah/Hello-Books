@@ -47,11 +47,13 @@ class Header extends React.Component {
 
   logout = (event) => {
     event.preventDefault();
-    this.props.logout();
+    this.props.logout()
+      .then(() => {
+        this.context.router.history.push('/signin');
+      });
     if (document.body.classList.contains('with--sidebar')) {
       document.body.classList.remove('with--sidebar');
     }
-    this.context.router.history.push('/signin');
   }
   render() {
     const { isAuthenticated, user } = this.props.auth;
