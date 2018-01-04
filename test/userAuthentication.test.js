@@ -1,6 +1,5 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import jwt from 'jsonwebtoken';
 
 import {
   UserDetails
@@ -8,49 +7,19 @@ import {
 
 import app from '../server';
 
+import {
+  expiredActivationToken,
+  invalidUserActivationToken,
+  invalidActivationToken,
+  badSignatureActivationToken
+} from './mockData';
+
 const should = chai.should();
 
 chai.use(chaiHttp);
 
-let token1;
-let token2;
-
-// generate tokens
-const expiredToken = jwt.sign({
-  username: 'SomebodyElse',
-  userId: 1,
-  email: 'somebodyelse@user.com.ng',
-  authString: 'b921f6ff61ef9e63e4e38dfcedcd79ebdc16a66afef169e9',
-  iat: Math.floor(Date.now() / 1000) - 172800, // generated 2 days ago
-  exp: Math.floor(Date.now() / 1000) - 86400, // expired 1 day ago
-}, app.settings.JsonSecret);
-const invalidUserToken = jwt.sign({
-  username: 'SomebodyElse',
-  userId: 99999, // invalid user ID here
-  email: 'somebodyelse@user.com.ng',
-  authString: 'b921f6ff61ef9e63e4e38dfcedcd79ebdc16a66afef169e9',
-}, app.settings.JsonSecret,
-  {
-    expiresIn: '24h',
-  });
-const invalidToken = jwt.sign({
-  username: 'fakeuser', // token not generated for user
-  userId: 1,
-  email: 'fake@user.com.ng',
-  authString: 'b921f6ff61ef9e63e4e38dfcedcd79ebdc16a66afef169e9',
-}, app.settings.JsonSecret,
-  {
-    expiresIn: '24h',
-  });
-const badSignatureToken = jwt.sign({
-  username: 'SomebodyElse',
-  userId: 1, // invalid user ID here
-  email: 'somebodyelse@user.com.ng',
-  authString: 'b921f6ff61ef9e63e4e38dfcedcd79ebdc16a66afef169e9',
-}, 'fakeToken_secret_here',
-  {
-    expiresIn: '24h',
-  });
+let firstGoodToken;
+let secondGoodToken;
 
 describe('POST /api/v1/users/signup version 1', () => {
   describe('When Users attempt to signup', () => {
@@ -294,7 +263,7 @@ describe('POST /api/v1/users/signup version 1', () => {
               response.body.status.should.eql('Success');
               response.body.message.should.eql('User account created');
               response.body.membership.should.eql('Blue');
-              token1 = response.body.token;
+              firstGoodToken = response.body.token;
               done();
             });
         });
@@ -315,7 +284,7 @@ describe('POST /api/v1/users/signup version 1', () => {
               response.body.status.should.eql('Success');
               response.body.message.should.eql('User account created');
               response.body.membership.should.eql('Blue');
-              token2 = response.body.token;
+              secondGoodToken = response.body.token;
               done();
             });
         });
@@ -390,7 +359,7 @@ describe('GET /api/v1/users/verify', () => {
         .get('/api/v1/users/verify')
         .query({
           id: 'SomebodyElse',
-          key: expiredToken,
+          key: expiredActivationToken,
         })
         .end((error, response) => {
           should.exist(error);
@@ -406,7 +375,7 @@ describe('GET /api/v1/users/verify', () => {
         .get('/api/v1/users/verify')
         .query({
           id: 'SomebodyElse',
-          key: invalidUserToken,
+          key: invalidUserActivationToken,
         })
         .end((error, response) => {
           should.exist(error);
@@ -422,7 +391,7 @@ describe('GET /api/v1/users/verify', () => {
         .get('/api/v1/users/verify')
         .query({
           id: 'SomebodyElse',
-          key: invalidToken,
+          key: invalidActivationToken,
         })
         .end((error, response) => {
           should.exist(error);
@@ -438,7 +407,7 @@ describe('GET /api/v1/users/verify', () => {
         .get('/api/v1/users/verify')
         .query({
           id: 'SomebodyElse',
-          key: badSignatureToken,
+          key: badSignatureActivationToken,
         })
         .end((error, response) => {
           should.exist(error);
@@ -468,7 +437,7 @@ describe('GET /api/v1/users/verify', () => {
       chai.request(app)
         .get('/api/v1/users/verify')
         .query({
-          key: token2,
+          key: secondGoodToken,
         })
         .end((error, response) => {
           should.exist(error);
@@ -502,7 +471,7 @@ describe('GET /api/v1/users/verify', () => {
         .get('/api/v1/users/verify')
         .query({
           id: 'somebodyelse',
-          key: token2,
+          key: secondGoodToken,
         })
         .end((error, response) => {
           should.not.exist(error);
@@ -518,7 +487,7 @@ describe('GET /api/v1/users/verify', () => {
         .get('/api/v1/users/verify')
         .query({
           id: 'Testuser',
-          key: token1,
+          key: firstGoodToken,
         })
         .end((error, response) => {
           should.not.exist(error);
@@ -535,7 +504,7 @@ describe('GET /api/v1/users/verify', () => {
           .get('/api/v1/users/verify')
           .query({
             id: 'Testuser',
-            key: token1,
+            key: firstGoodToken,
           })
           .end((error, response) => {
             should.not.exist(error);

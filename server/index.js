@@ -8,7 +8,7 @@ import http from 'http';
 import path from 'path';
 
 import BookProps from './controllers/BookProps';
-import UserLoginDetails from './controllers/UserLoginDetails';
+import UserAuthentication from './controllers/UserAuthentication';
 import UserBookInteraction from './controllers/UserBookInteraction';
 import CheckSession from './middleware/CheckSession';
 
@@ -47,17 +47,17 @@ app.use(session({
 }));
 
 app.get('/api/v1/user/verify/:username',
-  UserLoginDetails
+  UserAuthentication
     .generateActivationEmail);
 
-app.post('/api/v1/users/signup', UserLoginDetails.signUp);
+app.post('/api/v1/users/signup', UserAuthentication.signUp);
 
 app.get('/api/v1/users/signupCheck/:identifier',
-  UserLoginDetails.checkUserExists);
+  UserAuthentication.checkUserExists);
 
-app.get('/api/v1/users/verify', UserLoginDetails.activateUser);
+app.get('/api/v1/users/verify', UserAuthentication.activateUser);
 
-app.post('/api/v1/users/signin', UserLoginDetails.signIn);
+app.post('/api/v1/users/signin', UserAuthentication.signIn);
 
 // for user - book handling
 app.post('/api/v1/users/:userId/books',

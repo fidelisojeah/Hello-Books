@@ -1,58 +1,34 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import jwt from 'jsonwebtoken';
 
 import app from '../server';
+
+import {
+  firstGoodToken,
+  invalidUserIdToken,
+  goodTokenInvalidUser,
+  secondGoodToken,
+  due
+} from './mockData';
 
 const should = chai.should();
 
 chai.use(chaiHttp);
 chai.use(require('chai-things'));
 
-require('./0-user-details.test');
-require('./1-book-prop.test');
-require('./2-helpers.test');
-require('./3-middleware.test');
+require('./userAuthentication.test');
+require('./bookProp.test');
+require('./helpers.test');
+require('./middleware.test');
 
-const goodToken = jwt.sign({
-  userId: 1,
-  username: 'adminUser',
-  firstName: 'admin',
-  lastName: 'User',
-  role: 'Admin',
-}, app.settings.JsonSecret);
-const invalidUserIdToken = jwt.sign({
-  userId: 'ab3c',
-  username: 'normalUser',
-  firstName: 'user',
-  lastName: 'surname',
-  role: 'User',
-}, app.settings.JsonSecret);
-const goodToken2 = jwt.sign({
-  userId: 2,
-  username: 'SomebodyElse',
-  firstName: 'Somebody',
-  lastName: 'Else',
-  role: 'User',
-}, app.settings.JsonSecret);
-const goodTokenInvalidUser = jwt.sign({
-  userId: 60,
-  username: 'adminUser',
-  firstName: 'admin',
-  lastName: 'User',
-  role: 'Admin',
-}, app.settings.JsonSecret);
-const todayDate = new Date();
-const due = todayDate.setMonth(todayDate.getMonth() + 1);
-
-let lndId;
+let theLendId;
 describe('User Book Interaction tests', () => {
   describe('POST /api/v1/users/:userId/books version 1', () => {
     describe('When incomplete Information is provided', () => {
       it('should return 404 invalid Book Id', (done) => {
         chai.request(app)
           .post('/api/v1/users/1/books')
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .send({
             duedate: due,
           })
@@ -68,7 +44,7 @@ describe('User Book Interaction tests', () => {
       it('should return 404 invalid User Id', (done) => {
         chai.request(app)
           .post('/api/v1/users/q/books')
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .send({
             bookId: 1,
             duedate: due,
@@ -82,29 +58,31 @@ describe('User Book Interaction tests', () => {
             done();
           });
       });
-      it('should return 400 Invalid Due Date when no duedate is sent', (done) => {
-        chai.request(app)
-          .post('/api/v1/users/1/books')
-          .set('x-access-token', goodToken)
-          .send({
-            bookId: 1
-          })
-          .end((error, response) => {
-            should.exist(error);
-            response.status.should.equal(400);
-            response.type.should.equal('application/json');
-            response.body.status.should.eql('Unsuccessful');
-            response.body.message.should.eql('Invalid Due date');
-            done();
-          });
-      });
+      it(`should return 400 Invalid Due
+       Date when no duedate is sent`,
+        (done) => {
+          chai.request(app)
+            .post('/api/v1/users/1/books')
+            .set('x-access-token', firstGoodToken)
+            .send({
+              bookId: 1
+            })
+            .end((error, response) => {
+              should.exist(error);
+              response.status.should.equal(400);
+              response.type.should.equal('application/json');
+              response.body.status.should.eql('Unsuccessful');
+              response.body.message.should.eql('Invalid Due date');
+              done();
+            });
+        });
     });
     describe('When Complete Information is provided', () => {
       describe('When invalid info is sent', () => {
         it('should return 400 Invalid Due Date', (done) => {
           chai.request(app)
             .post('/api/v1/users/1/books')
-            .set('x-access-token', goodToken)
+            .set('x-access-token', firstGoodToken)
             .send({
               bookId: 1,
               duedate: 'rubbishDateFam',
@@ -122,7 +100,7 @@ describe('User Book Interaction tests', () => {
       it('should return 401 when wrong user tries to borrow books', (done) => {
         chai.request(app)
           .post('/api/v1/users/3/books')// doesn't match token
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .send({
             bookId: 1,
             duedate: due,
@@ -157,7 +135,7 @@ describe('User Book Interaction tests', () => {
       it('should return 400 when No such book exists', (done) => {
         chai.request(app)
           .post('/api/v1/users/1/books')// doesn't match token
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .send({
             bookId: 199,
             duedate: due,
@@ -174,7 +152,7 @@ describe('User Book Interaction tests', () => {
       it('should return 202 Successfully Borrowed', (done) => {
         chai.request(app)
           .post('/api/v1/users/1/books')
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .send({
             bookId: 2,
             duedate: due,
@@ -191,7 +169,7 @@ describe('User Book Interaction tests', () => {
       it('should return 202 Successfully Borrowed', (done) => {
         chai.request(app)
           .post('/api/v1/users/1/books')
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .send({
             bookId: 1,
             duedate: due,
@@ -202,7 +180,7 @@ describe('User Book Interaction tests', () => {
             response.type.should.equal('application/json');
             response.body.status.should.eql('Success');
             response.body.message.should.eql('Book Successfully Borrowed');
-            lndId = response.body.lendId;
+            theLendId = response.body.lendId;
             done();
           });
       });
@@ -210,7 +188,7 @@ describe('User Book Interaction tests', () => {
         it('should return 200 Book Unavailable', (done) => {
           chai.request(app)
             .post('/api/v1/users/1/books')
-            .set('x-access-token', goodToken)
+            .set('x-access-token', firstGoodToken)
             .send({
               bookId: 2,
               duedate: due,
@@ -230,7 +208,7 @@ describe('User Book Interaction tests', () => {
         before((done) => {
           chai.request(app)
             .post('/api/v1/users/1/books')
-            .set('x-access-token', goodToken)
+            .set('x-access-token', firstGoodToken)
             .send({
               bookId: 3,
               duedate: due,
@@ -247,7 +225,7 @@ describe('User Book Interaction tests', () => {
         it('should return 200 Max Limit Reached', (done) => {
           chai.request(app)
             .post('/api/v1/users/1/books')
-            .set('x-access-token', goodToken)
+            .set('x-access-token', firstGoodToken)
             .send({
               bookId: 4,
               duedate: due,
@@ -269,7 +247,7 @@ describe('User Book Interaction tests', () => {
       it('should return 404 invalid User Id', (done) => {
         chai.request(app)
           .get('/api/v1/users/q/books')
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .end((error, response) => {
             should.exist(error);
             response.status.should.equal(404);
@@ -285,7 +263,7 @@ describe('User Book Interaction tests', () => {
         (done) => {
           chai.request(app)
             .get('/api/v1/users/3/books')// doesn't match token
-            .set('x-access-token', goodToken)
+            .set('x-access-token', firstGoodToken)
             .end((error, response) => {
               should.exist(error);
               response.status.should.equal(401);
@@ -313,7 +291,7 @@ describe('User Book Interaction tests', () => {
         (done) => {
           chai.request(app)
             .get('/api/v1/users/2/books')// doesn't match token
-            .set('x-access-token', goodToken2)
+            .set('x-access-token', secondGoodToken)
             .end((error, response) => {
               should.not.exist(error);
               response.status.should.equal(200);
@@ -326,7 +304,7 @@ describe('User Book Interaction tests', () => {
       it('should return 202 and book list', (done) => {
         chai.request(app)
           .get('/api/v1/users/1/books')
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .end((error, response) => {
             should.not.exist(error);
             response.status.should.equal(202);
@@ -342,7 +320,7 @@ describe('User Book Interaction tests', () => {
           .query({
             returned: 'false'
           })
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .end((error, response) => {
             should.not.exist(error);
             response.status.should.equal(202);
@@ -363,7 +341,7 @@ describe('User Book Interaction tests', () => {
             order: 'false',
             sort: 'dateborrowed',
           })
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .end((error, response) => {
             should.exist(error);
             response.status.should.equal(400);
@@ -386,7 +364,7 @@ describe('User Book Interaction tests', () => {
             sort: 'dateborrowed',
             limit: '-10'
           })
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .end((error, response) => {
             should.exist(error);
             response.status.should.equal(400);
@@ -409,7 +387,7 @@ describe('User Book Interaction tests', () => {
             sort: 'dateborrowed',
             limit: '50'
           })
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .end((error, response) => {
             should.exist(error);
             response.status.should.equal(400);
@@ -432,7 +410,7 @@ describe('User Book Interaction tests', () => {
             sort: 'dateborrowed',
             limit: '50'
           })
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .end((error, response) => {
             should.exist(error);
             response.status.should.equal(400);
@@ -455,7 +433,7 @@ describe('User Book Interaction tests', () => {
             sort: 'dateborrowed',
             limit: 'invalid'
           })
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .end((error, response) => {
             should.exist(error);
             response.status.should.equal(400);
@@ -478,7 +456,7 @@ describe('User Book Interaction tests', () => {
     it('should return 404 invalid User Id', (done) => {
       chai.request(app)
         .get('/api/v1/users/q/books/list/1')
-        .set('x-access-token', goodToken)
+        .set('x-access-token', firstGoodToken)
         .end((error, response) => {
           should.exist(error);
           response.status.should.equal(404);
@@ -494,7 +472,7 @@ describe('User Book Interaction tests', () => {
       (done) => {
         chai.request(app)
           .get('/api/v1/users/3/books/list/1')
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .end((error, response) => {
             should.exist(error);
             response.status.should.equal(401);
@@ -527,7 +505,7 @@ describe('User Book Interaction tests', () => {
             sort: 'dateborrowed',
             limit: '10'
           })
-          .set('x-access-token', goodToken2)
+          .set('x-access-token', secondGoodToken)
           .end((error, response) => {
             should.not.exist(error);
             response.status.should.equal(200);
@@ -545,7 +523,7 @@ describe('User Book Interaction tests', () => {
           sort: 'returndate',
           limit: '50'
         })
-        .set('x-access-token', goodToken)
+        .set('x-access-token', firstGoodToken)
         .end((error, response) => {
           should.not.exist(error);
           response.status.should.equal(202);
@@ -564,7 +542,7 @@ describe('User Book Interaction tests', () => {
           sort: 'duedate',
           limit: '50'
         })
-        .set('x-access-token', goodToken)
+        .set('x-access-token', firstGoodToken)
         .end((error, response) => {
           should.not.exist(error);
           response.status.should.equal(202);
@@ -584,7 +562,7 @@ describe('User Book Interaction tests', () => {
           returned: 'false',
           limit: '50'
         })
-        .set('x-access-token', goodToken)
+        .set('x-access-token', firstGoodToken)
         .end((error, response) => {
           should.not.exist(error);
           response.status.should.equal(202);
@@ -601,7 +579,7 @@ describe('User Book Interaction tests', () => {
       it('should return 404 invalid Book Id', (done) => {
         chai.request(app)
           .put('/api/v1/users/1/books')
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .send({
             lendId: 1,
           })
@@ -617,7 +595,7 @@ describe('User Book Interaction tests', () => {
       it('should return 404 invalid Book Id for invalid bookId', (done) => {
         chai.request(app)
           .put('/api/v1/users/1/books')
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .send({
             bookId: 'q3',
           })
@@ -633,7 +611,7 @@ describe('User Book Interaction tests', () => {
       it('should return 404 invalid User Id', (done) => {
         chai.request(app)
           .put('/api/v1/users/q/books')
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .send({
             bookId: 1,
           })
@@ -649,7 +627,7 @@ describe('User Book Interaction tests', () => {
       it('should return 404 void lend Id', (done) => {
         chai.request(app)
           .put('/api/v1/users/1/books')
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .send({
             bookId: 1,
           })
@@ -665,7 +643,7 @@ describe('User Book Interaction tests', () => {
       it('should return 404 invalid for invalid lend Id', (done) => {
         chai.request(app)
           .put('/api/v1/users/1/books')
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .send({
             bookId: 1,
             lendId: 'abvs',
@@ -684,7 +662,7 @@ describe('User Book Interaction tests', () => {
       it('should return 401 when wrong user tries to return books', (done) => {
         chai.request(app)
           .put('/api/v1/users/3/books')// doesn't match token
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .send({
             bookId: 1,
             lendId: 1,
@@ -719,7 +697,7 @@ describe('User Book Interaction tests', () => {
       it('should return 404 when No record of borrowed book exists', (done) => {
         chai.request(app)
           .put('/api/v1/users/1/books')// doesn't match token
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .send({
             bookId: 1,
             lendId: 309,
@@ -736,7 +714,7 @@ describe('User Book Interaction tests', () => {
       it('should return 401 when lendId does not match details', (done) => {
         chai.request(app)
           .put('/api/v1/users/1/books')// doesn't match token
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .send({
             bookId: 1,
             lendId: 1,
@@ -753,10 +731,10 @@ describe('User Book Interaction tests', () => {
       it('should return 202 Successfully Returned', (done) => {
         chai.request(app)
           .put('/api/v1/users/1/books')
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .send({
             bookId: 1,
-            lendId: lndId,
+            lendId: theLendId,
           })
           .end((error, response) => {
             should.not.exist(error);
@@ -772,10 +750,10 @@ describe('User Book Interaction tests', () => {
         it('should return 200 Book Already Returned', (done) => {
           chai.request(app)
             .put('/api/v1/users/1/books')
-            .set('x-access-token', goodToken)
+            .set('x-access-token', firstGoodToken)
             .send({
               bookId: 1,
-              lendId: lndId,
+              lendId: theLendId,
             })
             .end((error, response) => {
               should.not.exist(error);
@@ -794,7 +772,7 @@ describe('User Book Interaction tests', () => {
       it('should return 404 invalid Book Id', (done) => {
         chai.request(app)
           .get('/api/v1/users/history/ay39')
-          .set('x-access-token', goodToken)
+          .set('x-access-token', firstGoodToken)
           .end((error, response) => {
             should.exist(error);
             response.status.should.equal(404);
@@ -838,7 +816,7 @@ describe('User Book Interaction tests', () => {
     it('should return 202 and details', (done) => {
       chai.request(app)
         .get('/api/v1/users/history/1')
-        .set('x-access-token', goodToken)
+        .set('x-access-token', firstGoodToken)
         .end((error, response) => {
           should.not.exist(error);
           response.status.should.equal(202);

@@ -6,7 +6,8 @@ import nodemailer from 'nodemailer';
 
 /**
  * 
- * @param {object} userInfo 
+ * @param {object} userInfo
+ *
  * @param {string} token 
  */
 class HelloBooksSendMail {
@@ -19,7 +20,9 @@ class HelloBooksSendMail {
     this.htmlEmail = '';
     this.verificationEmailLink = `${this.appURL}/user/verify?key=${token}&id=${userInfo.username}`;
   }
-
+  /**
+   * @returns {promise} {resolve if mail sent}
+   */
   sendVerificationEmail() {
     return new Promise((resolve, reject) => {
       const transporter = nodemailer.createTransport({

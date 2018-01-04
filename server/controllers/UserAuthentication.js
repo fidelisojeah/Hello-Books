@@ -6,9 +6,9 @@ import {
 import JwTokens from '../helpers/JwTokens';
 import CheckSession from '../middleware/CheckSession';
 import UserHelper from '../helpers/UserHelper';
-import HelloBooksSendMail from '../helpers/node-email';
+import HelloBooksSendMail from '../helpers/HelloBooksSendMail';
 
-class UserLoginDetails {
+class UserAuthentication {
   /**
    *
    * @param {object} userInfo User signup data
@@ -96,7 +96,7 @@ class UserLoginDetails {
                 email: foundUser.emailaddress,
                 authString: activationBuffer,
               };
-              UserLoginDetails
+              UserAuthentication
                 .activationTokenWithEmail(
                 foundUser,
                 tokenInfo,
@@ -247,7 +247,7 @@ class UserLoginDetails {
                           email: signupData.dataValues.emailaddress,
                           authString: activationBuf,
                         };
-                        UserLoginDetails
+                        UserAuthentication
                           .activationTokenWithEmail(
                           signupData.dataValues,
                           tokenInfo,
@@ -326,7 +326,7 @@ class UserLoginDetails {
       JwTokens // verify user token
         .verifyToken(request, activationToken)
         .then((verifiedToken) => { // if token was successfully verified
-          UserLoginDetails
+          UserAuthentication
             .validateActivationToken(verifiedToken, userName)
             .then((userToken) => { // if token is valid
               UserDetails
@@ -499,4 +499,4 @@ class UserLoginDetails {
       });
   }
 }
-export default UserLoginDetails;
+export default UserAuthentication;

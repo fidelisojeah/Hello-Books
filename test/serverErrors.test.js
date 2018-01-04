@@ -6,43 +6,27 @@ import bcrypt from 'bcrypt';
 import db from '../server/models';
 
 import app from '../server';
+import {
+  randomToken,
+  firstValidToken,
+  secondValidToken,
+  todayDate
+} from './mockData';
 
-require('./0-user-details.test');
-require('./1-book-prop.test');
-require('./2-helpers.test');
-require('./3-middleware.test');
-require('./4-user-book-interaction.test');
+require('./userAuthentication.test');
+require('./bookProp.test');
+require('./helpers.test');
+require('./middleware.test');
+require('./userBooksnteraction.test');
 
 const should = chai.should();
 chai.use(chaiHttp);
 
-const someToken = jwt.sign({
-  userId: 1,
-  username: 'username',
-  firstName: 'admin',
-  lastName: 'User',
-  role: 'User',
-}, app.settings.JsonSecret);
-
 let goodToken = '';
 let goodTokenUserID = 0;
-const goodToken2 = jwt.sign({
-  userId: 2,
-  username: 'SomebodyElse',
-  firstName: 'Somebody',
-  lastName: 'Else',
-  role: 'User',
-}, app.settings.JsonSecret);
-const goodToken1 = jwt.sign({
-  userId: 1,
-  username: 'SomebodyElse',
-  firstName: 'Somebody',
-  lastName: 'Else',
-  role: 'User',
-}, app.settings.JsonSecret);
-const todayDate = new Date();
-const due = todayDate.setMonth(todayDate.getMonth() + 1);
+
 describe('Database errors Simulations', () => {
+  const due = todayDate.setMonth(todayDate.getMonth() + 1);
   before((done) => {
     db.UserDetails
       .create({
@@ -96,7 +80,7 @@ describe('Database errors Simulations', () => {
             Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
             .post('/api/v1/users/2/books')
-            .set('x-access-token', goodToken2)
+            .set('x-access-token', secondValidToken)
             .send({
               bookId: 3,
               duedate: due,
@@ -121,7 +105,7 @@ describe('Database errors Simulations', () => {
             Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
             .post('/api/v1/users/2/books')
-            .set('x-access-token', goodToken2)
+            .set('x-access-token', secondValidToken)
             .send({
               bookId: 3,
               duedate: due,
@@ -142,7 +126,7 @@ describe('Database errors Simulations', () => {
             Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
             .post('/api/v1/users/2/books')
-            .set('x-access-token', goodToken2)
+            .set('x-access-token', secondValidToken)
             .send({
               bookId: 3,
               duedate: due,
@@ -181,7 +165,7 @@ describe('Database errors Simulations', () => {
             Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
             .put('/api/v1/users/1/books')
-            .set('x-access-token', goodToken1)
+            .set('x-access-token', firstValidToken)
             .send({
               bookId: 2,
               lendId: 1,
@@ -202,7 +186,7 @@ describe('Database errors Simulations', () => {
             Promise.reject(new Error('WRONG!!!'));
           chai.request(app)
             .put('/api/v1/users/1/books')
-            .set('x-access-token', goodToken1)
+            .set('x-access-token', firstValidToken)
             .send({
               bookId: 3,
               lendId: 3,
@@ -533,7 +517,7 @@ describe('Database errors Simulations', () => {
           .get('/api/v1/users/verify')
           .query({
             id: 'username',
-            key: someToken,
+            key: randomToken,
           })
           .end((error, response) => {
             should.exist(error);

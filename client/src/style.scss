@@ -782,6 +782,9 @@
     .error-field {
       // float:right;
       color: $mf-error-color;
+      font-weight: bold;
+      letter-spacing: 0.8px;
+      font-size: 12px;
     }
   }
 
