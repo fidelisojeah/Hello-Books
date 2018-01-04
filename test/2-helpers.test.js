@@ -2,7 +2,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 
 import db from '../server/models';
-import CheckSession from '../server/middleware/session';
+import CheckSession from '../server/middleware/CheckSession';
 import HelloBooksSendMail from '../server/helpers/node-email';
 import BookVerify from '../server/helpers/new-book';
 import JwTokens from '../server/middleware/helpers';

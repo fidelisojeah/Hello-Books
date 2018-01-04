@@ -52,14 +52,14 @@ const badSignatureToken = jwt.sign({
     expiresIn: '24h',
   });
 
-describe('POST /api/v4/users/signup Version 4', () => {
+describe('POST /api/v1/users/signup version 1', () => {
   describe('When Users attempt to signup', () => {
     describe('When there is an issue with information provided', () => {
       it(`Should respond with 
       code 400 Invalid Username for blank username`,
         (done) => {
           chai.request(app)
-            .post('/api/v4/users/signup')
+            .post('/api/v1/users/signup')
             .send({
               password: 'TestUser123$',
               firstname: 'Test',
@@ -79,7 +79,7 @@ describe('POST /api/v4/users/signup Version 4', () => {
        Invalid Username for usernames with spaces`,
         (done) => {
           chai.request(app)
-            .post('/api/v4/users/signup')
+            .post('/api/v1/users/signup')
             .send({
               username: 'test user with space',
               password: 'TestUser123$',
@@ -100,7 +100,7 @@ describe('POST /api/v4/users/signup Version 4', () => {
       400 Username too short for Short username`,
         (done) => {
           chai.request(app)
-            .post('/api/v4/users/signup')
+            .post('/api/v1/users/signup')
             .send({
               password: 'TestUser123$',
               firstname: 'Test',
@@ -121,7 +121,7 @@ describe('POST /api/v4/users/signup Version 4', () => {
       Invalid First Name for blank firstname`,
         (done) => {
           chai.request(app)
-            .post('/api/v4/users/signup')
+            .post('/api/v1/users/signup')
             .send({
               password: 'TestUser123$',
               username: 'Test',
@@ -140,7 +140,7 @@ describe('POST /api/v4/users/signup Version 4', () => {
       it('Should respond with code 400 First Name too short',
         (done) => {
           chai.request(app)
-            .post('/api/v4/users/signup')
+            .post('/api/v1/users/signup')
             .send({
               password: 'TestUser123$',
               firstname: 't',
@@ -160,7 +160,7 @@ describe('POST /api/v4/users/signup Version 4', () => {
       it('Should respond with code 400 for blank lastname',
         (done) => {
           chai.request(app)
-            .post('/api/v4/users/signup')
+            .post('/api/v1/users/signup')
             .send({
               password: 'TestUser123$',
               username: 'Test',
@@ -179,7 +179,7 @@ describe('POST /api/v4/users/signup Version 4', () => {
       it('Should respond with code 400 for short lastname',
         (done) => {
           chai.request(app)
-            .post('/api/v4/users/signup')
+            .post('/api/v1/users/signup')
             .send({
               password: 'TestUser123$',
               lastname: 't',
@@ -199,7 +199,7 @@ describe('POST /api/v4/users/signup Version 4', () => {
       it('Should respond with code 400 for blank password',
         (done) => {
           chai.request(app)
-            .post('/api/v4/users/signup')
+            .post('/api/v1/users/signup')
             .send({
               firstname: 'Test',
               username: 'Testuser',
@@ -218,7 +218,7 @@ describe('POST /api/v4/users/signup Version 4', () => {
       it('Should respond with code 400 for short Password',
         (done) => {
           chai.request(app)
-            .post('/api/v4/users/signup')
+            .post('/api/v1/users/signup')
             .send({
               password: 'Ts',
               firstname: 'Test',
@@ -238,7 +238,7 @@ describe('POST /api/v4/users/signup Version 4', () => {
       it('Should respond with code 400 for blank email',
         (done) => {
           chai.request(app)
-            .post('/api/v4/users/signup')
+            .post('/api/v1/users/signup')
             .send({
               password: 'TestUser123$',
               firstname: 'Test',
@@ -257,7 +257,7 @@ describe('POST /api/v4/users/signup Version 4', () => {
       it('Should respond with code 400 for Wrong email addres',
         (done) => {
           chai.request(app)
-            .post('/api/v4/users/signup')
+            .post('/api/v1/users/signup')
             .send({
               password: 'TestUser123$',
               firstname: 'Test',
@@ -279,7 +279,7 @@ describe('POST /api/v4/users/signup Version 4', () => {
       describe('When the Information provided is unique', () => {
         it('Should respond with code 201 User Created', (done) => {
           chai.request(app)
-            .post('/api/v4/users/signup')
+            .post('/api/v1/users/signup')
             .send({
               password: 'TestUser123$',
               firstname: 'Test',
@@ -300,7 +300,7 @@ describe('POST /api/v4/users/signup Version 4', () => {
         });
         it('Should respond with code 201 User Created', (done) => {
           chai.request(app)
-            .post('/api/v4/users/signup')
+            .post('/api/v1/users/signup')
             .send({
               password: 'SomebodyPassword123$',
               firstname: 'Somebody',
@@ -321,7 +321,7 @@ describe('POST /api/v4/users/signup Version 4', () => {
         });
         it('Should respond with code 201 User Created', (done) => {
           chai.request(app)
-            .post('/api/v4/users/signup')
+            .post('/api/v1/users/signup')
             .send({
               password: 'unactivatedUser$',
               firstname: 'Unactivated',
@@ -343,7 +343,7 @@ describe('POST /api/v4/users/signup Version 4', () => {
       describe('When Information provided is not unique', () => {
         it('Should respond with a 400 email must be unique', (done) => {
           chai.request(app)
-            .post('/api/v4/users/signup')
+            .post('/api/v1/users/signup')
             .send({
               password: 'SomebodyPassword123$',
               firstname: 'Somebody',
@@ -362,7 +362,7 @@ describe('POST /api/v4/users/signup Version 4', () => {
         });
         it('Should respond with a 400 username must be unique', (done) => {
           chai.request(app)
-            .post('/api/v4/users/signup')
+            .post('/api/v1/users/signup')
             .send({
               password: 'SomebodyPassword123$',
               firstname: 'Somebody',
@@ -383,11 +383,11 @@ describe('POST /api/v4/users/signup Version 4', () => {
     });
   });
 });
-describe('GET /api/v4/users/verify', () => {
+describe('GET /api/v1/users/verify', () => {
   describe('When an invalid token is used to verify email address', () => {
     it('Should return expired token error', (done) => {
       chai.request(app)
-        .get('/api/v4/users/verify')
+        .get('/api/v1/users/verify')
         .query({
           id: 'SomebodyElse',
           key: expiredToken,
@@ -403,7 +403,7 @@ describe('GET /api/v4/users/verify', () => {
     });
     it('Should return Invalid User error', (done) => {
       chai.request(app)
-        .get('/api/v4/users/verify')
+        .get('/api/v1/users/verify')
         .query({
           id: 'SomebodyElse',
           key: invalidUserToken,
@@ -419,7 +419,7 @@ describe('GET /api/v4/users/verify', () => {
     });
     it('Should return Invalid Token error', (done) => {
       chai.request(app)
-        .get('/api/v4/users/verify')
+        .get('/api/v1/users/verify')
         .query({
           id: 'SomebodyElse',
           key: invalidToken,
@@ -435,7 +435,7 @@ describe('GET /api/v4/users/verify', () => {
     });
     it('Should return Invalid Token Signature error', (done) => {
       chai.request(app)
-        .get('/api/v4/users/verify')
+        .get('/api/v1/users/verify')
         .query({
           id: 'SomebodyElse',
           key: badSignatureToken,
@@ -451,7 +451,7 @@ describe('GET /api/v4/users/verify', () => {
     });
     it('Should return Link invalid error when key not supplied', (done) => {
       chai.request(app)
-        .get('/api/v4/users/verify')
+        .get('/api/v1/users/verify')
         .query({
           id: 'SomebodyElse',
         })
@@ -466,7 +466,7 @@ describe('GET /api/v4/users/verify', () => {
     });
     it('Should return Link invalid error when id not supplied', (done) => {
       chai.request(app)
-        .get('/api/v4/users/verify')
+        .get('/api/v1/users/verify')
         .query({
           key: token2,
         })
@@ -481,7 +481,7 @@ describe('GET /api/v4/users/verify', () => {
     });
     it('Should return token malformed when fake token is supplied', (done) => {
       chai.request(app)
-        .get('/api/v4/users/verify')
+        .get('/api/v1/users/verify')
         .query({
           id: 'SomebodyElse',
           key: 'trashtokenwithoutsignature',
@@ -499,7 +499,7 @@ describe('GET /api/v4/users/verify', () => {
   describe('When a valid token is provided', () => {
     it('Should return Success User Activated when all is valid', (done) => {
       chai.request(app)
-        .get('/api/v4/users/verify')
+        .get('/api/v1/users/verify')
         .query({
           id: 'somebodyelse',
           key: token2,
@@ -515,7 +515,7 @@ describe('GET /api/v4/users/verify', () => {
     });
     it('Should return Success User Activated when all is valid', (done) => {
       chai.request(app)
-        .get('/api/v4/users/verify')
+        .get('/api/v1/users/verify')
         .query({
           id: 'Testuser',
           key: token1,
@@ -532,7 +532,7 @@ describe('GET /api/v4/users/verify', () => {
     it('Should return User already Activated',
       (done) => {
         chai.request(app)
-          .get('/api/v4/users/verify')
+          .get('/api/v1/users/verify')
           .query({
             id: 'Testuser',
             key: token1,
@@ -548,12 +548,12 @@ describe('GET /api/v4/users/verify', () => {
       });
   });
 });
-describe('POST /api/v4/users/signin Version 4', () => {
+describe('POST /api/v1/users/signin version 1', () => {
   describe('When attempting to signin and not signedin', () => {
     describe('When incomplete details are entered', () => {
       it('Should respond with a 400 no username supplied', (done) => {
         chai.request(app)
-          .post('/api/v4/users/signin')
+          .post('/api/v1/users/signin')
           .send({
             password: 'TestUser123$',
           })
@@ -568,7 +568,7 @@ describe('POST /api/v4/users/signin Version 4', () => {
       });
       it('Should return a 400 no password supplied', (done) => {
         chai.request(app)
-          .post('/api/v4/users/signin')
+          .post('/api/v1/users/signin')
           .send({
             username: 'Testuser',
           })
@@ -586,7 +586,7 @@ describe('POST /api/v4/users/signin Version 4', () => {
       it('Should respond with code 400 for Short username',
         (done) => {
           chai.request(app)
-            .post('/api/v4/users/signin')
+            .post('/api/v1/users/signin')
             .send({
               password: 'TestUser123$',
               username: 't',
@@ -603,7 +603,7 @@ describe('POST /api/v4/users/signin Version 4', () => {
       it('Should respond with code 400 for Short Password',
         (done) => {
           chai.request(app)
-            .post('/api/v4/users/signin')
+            .post('/api/v1/users/signin')
             .send({
               password: 'Tes',
               username: 'Testuser',
@@ -619,7 +619,7 @@ describe('POST /api/v4/users/signin Version 4', () => {
         });
       it('Should respond with a 401 username invalid', (done) => {
         chai.request(app)
-          .post('/api/v4/users/signin')
+          .post('/api/v1/users/signin')
           .send({
             password: 'TestUser123$',
             username: 'wrongusername',
@@ -635,7 +635,7 @@ describe('POST /api/v4/users/signin Version 4', () => {
       });
       it('Should respond with a 401 invalid username/password', (done) => {
         chai.request(app)
-          .post('/api/v4/users/signin')
+          .post('/api/v1/users/signin')
           .send({
             password: 'Wrongpassword$',
             username: 'Testuser',
@@ -654,7 +654,7 @@ describe('POST /api/v4/users/signin Version 4', () => {
       describe('When user has not been activated yet', () => {
         it('Should return 401 User not activated', (done) => {
           chai.request(app)
-            .post('/api/v4/users/signin')
+            .post('/api/v1/users/signin')
             .send({
               password: 'unactivatedUser$',
               username: 'UnactivatedUser',
@@ -674,7 +674,7 @@ describe('POST /api/v4/users/signin Version 4', () => {
         describe('When an Email is used to signin', () => {
           it('Should return 202 Success with details', (done) => {
             chai.request(app)
-              .post('/api/v4/users/signin')
+              .post('/api/v1/users/signin')
               .send({
                 password: 'TestUser123$',
                 username: 'Testuser',
@@ -694,7 +694,7 @@ describe('POST /api/v4/users/signin Version 4', () => {
         describe('When a username is used to signin', () => {
           it('Should return 202 Success with details', (done) => {
             chai.request(app)
-              .post('/api/v4/users/signin')
+              .post('/api/v1/users/signin')
               .send({
                 password: 'SomebodyPassword123$',
                 username: 'somebodyelse@user.com.ng',
@@ -715,11 +715,11 @@ describe('POST /api/v4/users/signin Version 4', () => {
     });
   });
 });
-describe('GET /api/v4/users/signupCheck/:identifier', () => {
+describe('GET /api/v1/users/signupCheck/:identifier', () => {
   describe('When valid details are entered', () => {
     it('should return 202 user details', (done) => {
       chai.request(app)
-        .get('/api/v4/users/signupCheck/SomebodyElse')
+        .get('/api/v1/users/signupCheck/SomebodyElse')
         .end((error, response) => {
           should.not.exist(error);
           response.status.should.equal(202);
@@ -731,7 +731,7 @@ describe('GET /api/v4/users/signupCheck/:identifier', () => {
     });
   });
 });
-describe('GET /api/v4/user/verify', () => {
+describe('GET /api/v1/user/verify', () => {
   before((done) => {
     UserDetails
       .create({
@@ -750,7 +750,7 @@ describe('GET /api/v4/user/verify', () => {
   describe('When user is Invalid', () => {
     it('Should return 400 Username Invalid', (done) => {
       chai.request(app)
-        .get('/api/v4/user/verify/rubbishUser')
+        .get('/api/v1/user/verify/rubbishUser')
         .end((error, response) => {
           should.exist(error);
           response.status.should.equal(400);
@@ -764,7 +764,7 @@ describe('GET /api/v4/user/verify', () => {
   describe('When user is Valid', () => {
     it('Should return 200 Success', (done) => {
       chai.request(app)
-        .get('/api/v4/user/verify/sampleusername')
+        .get('/api/v1/user/verify/sampleusername')
         .end((error, response) => {
           should.not.exist(error);
           response.status.should.equal(200);

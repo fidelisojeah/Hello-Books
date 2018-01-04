@@ -6,7 +6,7 @@ import {
   BookLendings
 } from '../models';
 
-import CheckSession from '../middleware/session';
+import CheckSession from '../middleware/CheckSession';
 import BookVerify from '../helpers/new-book';
 
 class BookProps {
@@ -217,6 +217,7 @@ class BookProps {
         }));
   }
   /**
+   * @description method view books in library
    *
    * @param {object} request HTTP Request object
    *
@@ -334,6 +335,8 @@ class BookProps {
     }
   }
   /**
+   * @description create a new book for the library
+   *
    * @param {object} request HTTP Request object
    *
    * @param {object} response HTTP Response object
@@ -425,6 +428,8 @@ class BookProps {
       });
   }
   /**
+   * @description retrieves authors from library
+   *
    * @param {object} request HTTP Request object
    *
    * @param {object} response HTTP Response object
@@ -489,6 +494,8 @@ class BookProps {
     }
   }
   /**
+   * @description updates quantity of book in library
+   *
    * @param {object} request HTTP Request object
    *
    * @param {object} response HTTP Response object
@@ -559,6 +566,8 @@ class BookProps {
       });
   }
   /**
+   * @description modifies book information in library
+   *
    * @param {object} request HTTP Request object
    *
    * @param {object} response HTTP Response object
@@ -637,9 +646,11 @@ class BookProps {
       });
   }
   /**
-  * @param {object} request HTTP Request object
-  *
-  * @param {object} response HTTP Response object
+   * @description views all/one book(s) in the library
+   *
+   * @param {object} request HTTP Request object
+   *
+   * @param {object} response HTTP Response object
   */
   static viewAllBooks(request, response) {
     const limit = request.query.limit || null;

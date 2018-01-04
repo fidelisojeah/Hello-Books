@@ -32,7 +32,7 @@ export const authorCreateFailure = error => ({
 export const newAuthorRequest = data =>
   dispatch =>
     axios
-      .post('/api/v4/authors', data)
+      .post('/api/v1/authors', data)
       .then((response) => {
         Toastr.Success(response.data.message, 4000);
         dispatch(authorCreateSuccess());

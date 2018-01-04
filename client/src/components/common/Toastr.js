@@ -1,6 +1,13 @@
 import { setTimeout } from 'timers';
 
 class Toastr {
+  /**
+   * @description successful toastr display
+   *
+   * @param {string} content -Content of toastr
+   *
+   * @param {number} timeOut -How long display should last (defaults 3000ms)
+   */
   static Success(content, timeOut = 3000) {
     const toast = document.getElementById('site-toastr');
     document.getElementById('toastr-content').innerHTML = content;
@@ -15,6 +22,13 @@ class Toastr {
       toast.classList.remove('success');
     }, timeOut);
   }
+  /**
+   * @description Unsuccessful toastr display
+   *
+   * @param {string} content -Content of toastr
+   *
+   * @param {number} timeOut -How long display should last (defaults 3000ms)
+   */
   static Failure(content, timeOut = 3000) {
     const toast = document.getElementById('site-toastr');
     document.getElementById('toastr-content').innerHTML = content;
@@ -29,6 +43,13 @@ class Toastr {
       toast.classList.remove('failure');
     }, timeOut);
   }
+  /**
+   * @description normal toastr display
+   *
+   * @param {string} content -Content of toastr
+   *
+   * @param {number} timeOut -How long display should last (defaults 3000ms)
+   */
   static Caution(content, timeOut = 3000) {
     const toast = document.getElementById('site-toastr');
     document.getElementById('toastr-content').innerHTML = content;
@@ -42,6 +63,17 @@ class Toastr {
       toast.classList.remove('caution');
     }, timeOut);
   }
+  /**
+   * @description HTML modal with optional timeout
+   *
+   * @param {string} header - Header for the modal
+   *
+   * @param {string} content - HTML formatted string
+   *
+   * @param {bool} successful - Determines whether modal would display tick or cross
+   *
+   * @param {number} timeOut - determines whether there should be a timeout (if specified) or none (defaults none)
+   */
   static Modal(header, content, successful = true, timeOut = null) {
     const loader = document.getElementById('loader');
     const modalHead = document.getElementById('ToastrModalHead');
@@ -60,7 +92,6 @@ class Toastr {
       check.classList.remove('-failure');
       loader.classList.remove('-failure');
     }
-
     document.body.classList.add('with--toastr-modal');
 
     setTimeout(() => {

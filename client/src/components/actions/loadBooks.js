@@ -213,7 +213,7 @@ export const loadAllBooks = () =>
  */
 export const viewOneBook = bookID =>
   dispatch =>
-    axios.get(`/api/v4/books?id=${bookID}`)
+    axios.get(`/api/v1/books?id=${bookID}`)
       .then((response) => {
         if (response.data.bookInfo) {
           dispatch(fetchBookComplete(response.data.bookInfo));
@@ -235,7 +235,7 @@ export const viewOneBook = bookID =>
 export const fetchBooks = (page, limit, sort) =>
   dispatch =>
     axios
-      .get(`/api/v4/books/list/${page}?limit=${limit}&sort=${sort}`)
+      .get(`/api/v1/books/list/${page}?limit=${limit}&sort=${sort}`)
       .then((response) => {
         dispatch(fetchBooksComplete(response.data));
       })
@@ -250,7 +250,7 @@ export const fetchBooks = (page, limit, sort) =>
  */
 export const fetchUserBookHistory = bookId =>
   dispatch =>
-    axios.get(`/api/v4/users/history/${bookId}`)
+    axios.get(`/api/v1/users/history/${bookId}`)
       .then((response) => {
         dispatch(userBookHistoryComplete(response.data));
       })
@@ -265,7 +265,7 @@ export const fetchUserBookHistory = bookId =>
  */
 export const borrowBook = info =>
   dispatch =>
-    axios.post(`/api/v4/users/${info.userId}/books`, info)
+    axios.post(`/api/v1/users/${info.userId}/books`, info)
       .then((response) => {
         document.body.classList.remove('with--modal');
         if (response.data.status === 'Success') {
@@ -305,7 +305,7 @@ export const clearBookState = () =>
 export const retrieveBorrowHistory = userData =>
   dispatch =>
     axios
-      .get(`/api/v4/users/${userData.userId}/books/list/${userData.page}`,
+      .get(`/api/v1/users/${userData.userId}/books/list/${userData.page}`,
       {
         params: {
           order: userData.sortDesc,
@@ -334,7 +334,7 @@ export const retrieveBorrowHistory = userData =>
 export const returnBook = userData =>
   dispatch =>
     axios
-      .put(`/api/v4/users/${userData.userId}/books`,
+      .put(`/api/v1/users/${userData.userId}/books`,
       {
         bookId: userData.bookId,
         lendId: userData.lendId

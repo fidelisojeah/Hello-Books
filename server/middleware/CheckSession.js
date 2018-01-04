@@ -11,6 +11,13 @@ const cookieParams = {
 const userCookieInfo = 'userCookieInfo';
 
 class CheckSession {
+  /**
+   * @description helper function used to check if token user had admin priviledges
+   *
+   * @param {object} decodedToken - JSON descoded token
+   *
+   * @returns {promise} {resolve if admin | reject otherwise}
+   */
   static checkAdmin(decodedToken) {
     return new Promise((resolve, reject) => {
       if (decodedToken) {

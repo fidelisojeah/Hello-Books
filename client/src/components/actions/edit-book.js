@@ -27,7 +27,7 @@ export const editBookError = error =>
  */
 export function editBook(info, bookId) {
   return dispatch =>
-    axios.put(`/api/v4/books/${bookId}`, info)
+    axios.put(`/api/v1/books/${bookId}`, info)
       .then((response) => {
         Toastr.Success(response.data.message, 4000);
         dispatch(editBookSuccess(response.data));

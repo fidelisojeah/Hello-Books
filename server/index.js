@@ -7,10 +7,10 @@ import session from 'express-session';
 import http from 'http';
 import path from 'path';
 
-import BookProps from './controllers/books-controller-v4';
-import UserLoginDetails from './controllers/user-controller-v4';
-import UserBookInteraction from './controllers/user-books-controller';
-import CheckSession from './middleware/session';
+import BookProps from './controllers/BookProps';
+import UserLoginDetails from './controllers/UserLoginDetails';
+import UserBookInteraction from './controllers/UserBookInteraction';
+import CheckSession from './middleware/CheckSession';
 
 const app = express();
 // load environmental variables
@@ -46,37 +46,37 @@ app.use(session({
   },
 }));
 
-app.get('/api/v4/user/verify/:username',
+app.get('/api/v1/user/verify/:username',
   UserLoginDetails
     .generateActivationEmail);
 
-app.post('/api/v4/users/signup', UserLoginDetails.signUp);
+app.post('/api/v1/users/signup', UserLoginDetails.signUp);
 
-app.get('/api/v4/users/signupCheck/:identifier',
+app.get('/api/v1/users/signupCheck/:identifier',
   UserLoginDetails.checkUserExists);
 
-app.get('/api/v4/users/verify', UserLoginDetails.activateUser);
+app.get('/api/v1/users/verify', UserLoginDetails.activateUser);
 
-app.post('/api/v4/users/signin', UserLoginDetails.signIn);
+app.post('/api/v1/users/signin', UserLoginDetails.signIn);
 
 // for user - book handling
-app.post('/api/v4/users/:userId/books',
+app.post('/api/v1/users/:userId/books',
   CheckSession.checkLogin,
   UserBookInteraction.borrowBook);
 
-app.get('/api/v4/users/:userId/books',
+app.get('/api/v1/users/:userId/books',
   CheckSession.checkLogin,
   UserBookInteraction.viewBorrowedBook);
 
-app.get('/api/v4/users/:userId/books/list/:page',
+app.get('/api/v1/users/:userId/books/list/:page',
   CheckSession.checkLogin,
   UserBookInteraction.viewBorrowedBookHistory);
 
-app.put('/api/v4/users/:userId/books',
+app.put('/api/v1/users/:userId/books',
   CheckSession.checkLogin,
   UserBookInteraction.returnBook);
 
-app.get('/api/v4/users/history/:bookId',
+app.get('/api/v1/users/history/:bookId',
   CheckSession.checkLogin,
   UserBookInteraction.userBookHistory
 );
@@ -85,31 +85,31 @@ app.get('/api/v1/sorted/books', CheckSession.checkLogin,
   BookProps.viewBooksHomePage);
 
 // for book stuff
-app.post('/api/v4/authors', CheckSession.checkLogin,
+app.post('/api/v1/authors', CheckSession.checkLogin,
   BookProps.newAuthor);
 
-app.get('/api/v4/authors', CheckSession.checkLogin,
+app.get('/api/v1/authors', CheckSession.checkLogin,
   BookProps.getAuthors);
 
-app.get('/api/v4/search/authors',
+app.get('/api/v1/search/authors',
   CheckSession.checkLogin, BookProps.searchAuthors);
 
-app.post('/api/v4/books', CheckSession.checkLogin,
+app.post('/api/v1/books', CheckSession.checkLogin,
   BookProps.newBook);
 
-app.get('/api/v4/books/list/:page',
+app.get('/api/v1/books/list/:page',
   CheckSession.checkLogin, BookProps.viewAllBooks);
 
-app.get('/api/v4/books', CheckSession.checkLogin,
+app.get('/api/v1/books', CheckSession.checkLogin,
   BookProps.viewBooks);
 
-app.put('/api/v4/books/:bookId',
+app.put('/api/v1/books/:bookId',
   CheckSession.checkLogin, BookProps.modifyBook);
 
-app.post('/api/v4/books/:bookId/quantity',
+app.post('/api/v1/books/:bookId/quantity',
   CheckSession.checkLogin, BookProps.updateBookQuantity);
 
-app.get('/api/v4/users/logout', CheckSession.clearLogin);
+app.get('/api/v1/users/logout', CheckSession.clearLogin);
 
 app.use('/apidocs/', express.static(path.resolve(__dirname, '../slate/')));
 

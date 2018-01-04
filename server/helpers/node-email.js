@@ -4,7 +4,11 @@ eslint-disable
 import nodemailer from 'nodemailer';
 
 
-
+/**
+ * 
+ * @param {object} userInfo 
+ * @param {string} token 
+ */
 class HelloBooksSendMail {
   constructor(userInfo, token) {
     this.appURL = process.env.APP_URL;

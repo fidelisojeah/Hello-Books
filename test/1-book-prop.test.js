@@ -46,11 +46,11 @@ describe('Book Controller tests:', () => {
       });
   });
   describe('Before Population Tests', () => {
-    describe('GET /api/v4/books', () => {
+    describe('GET /api/v1/books', () => {
       describe('When no book is in database', () => {
         it('should return 200 No Books', (done) => {
           chai.request(app)
-            .get('/api/v4/books')
+            .get('/api/v1/books')
             .set('x-access-token', goodToken)
             .end((error, response) => {
               should.not.exist(error);
@@ -64,15 +64,15 @@ describe('Book Controller tests:', () => {
       });
     });
   });
-  describe('POST /api/v4/authors version 4', () => {
+  describe('POST /api/v1/authors version 1', () => {
     before((done) => {
-      chai.request(app).get('/api/v4/users/logout').end(done);
+      chai.request(app).get('/api/v1/users/logout').end(done);
     });
     describe('When Valid token is provided', () => {
       describe('When incomplete information is provided', () => {
         it('should return 400 for no author firstname provided', (done) => {
           chai.request(app)
-            .post('/api/v4/authors')
+            .post('/api/v1/authors')
             .set('x-access-token', goodToken)
             .send({
               firstname: 'Joanne',
@@ -89,7 +89,7 @@ describe('Book Controller tests:', () => {
         });
         it('should return 400 for no author firstname provided', (done) => {
           chai.request(app)
-            .post('/api/v4/authors')
+            .post('/api/v1/authors')
             .set('x-access-token', goodToken)
             .send({
               lastname: 'Rowling',
@@ -108,7 +108,7 @@ describe('Book Controller tests:', () => {
       describe('When complete information is supplied', () => {
         it('should return 201 success', (done) => {
           chai.request(app)
-            .post('/api/v4/authors')
+            .post('/api/v1/authors')
             .set('x-access-token', goodToken)
             .send({
               firstname: 'Joanne',
@@ -127,7 +127,7 @@ describe('Book Controller tests:', () => {
         });
         it('should return 201 success', (done) => {
           chai.request(app)
-            .post('/api/v4/authors')
+            .post('/api/v1/authors')
             .set('x-access-token', goodToken)
             .send({
               firstname: 'George',
@@ -146,7 +146,7 @@ describe('Book Controller tests:', () => {
         });
         it('should return 201 success', (done) => {
           chai.request(app)
-            .post('/api/v4/authors')
+            .post('/api/v1/authors')
             .set('x-access-token', goodToken)
             .send({
               firstname: 'Rachel',
@@ -165,7 +165,7 @@ describe('Book Controller tests:', () => {
         });
         it('should return 201 success', (done) => {
           chai.request(app)
-            .post('/api/v4/authors')
+            .post('/api/v1/authors')
             .set('x-access-token', goodToken)
             .send({
               firstname: 'David',
@@ -184,7 +184,7 @@ describe('Book Controller tests:', () => {
         });
         it('should return 201 success', (done) => {
           chai.request(app)
-            .post('/api/v4/authors')
+            .post('/api/v1/authors')
             .set('x-access-token', goodToken)
             .send({
               firstname: 'Benny',
@@ -203,11 +203,11 @@ describe('Book Controller tests:', () => {
       });
     });
   });
-  describe('POST /api/v4/books version 4', () => {
+  describe('POST /api/v1/books version 1', () => {
     describe('When non admin token is provided', () => {
       it('Should return a 401 error', (done) => {
         chai.request(app)
-          .post('/api/v4/books')
+          .post('/api/v1/books')
           .set('x-access-token', nonAdminToken)
           .send({
             quantity: 1,
@@ -237,7 +237,7 @@ describe('Book Controller tests:', () => {
       describe('When other information is incomplete', () => {
         it('should return 400 no book name', (done) => {
           chai.request(app)
-            .post('/api/v4/books')
+            .post('/api/v1/books')
             .set('x-access-token', goodToken)
             .send({
               quantity: 1,
@@ -266,7 +266,7 @@ describe('Book Controller tests:', () => {
         });
         it('should return 400 no ISBN', (done) => {
           chai.request(app)
-            .post('/api/v4/books')
+            .post('/api/v1/books')
             .set('x-access-token', goodToken)
             .send({
               image: 'book-image.jpg',
@@ -292,7 +292,7 @@ describe('Book Controller tests:', () => {
         });
         it('should return 400 no Description', (done) => {
           chai.request(app)
-            .post('/api/v4/books')
+            .post('/api/v1/books')
             .set('x-access-token', goodToken)
             .send({
               quantity: 1,
@@ -319,7 +319,7 @@ describe('Book Controller tests:', () => {
         it('should return 400 and error when multiple info is missing',
           (done) => {
             chai.request(app)
-              .post('/api/v4/books')
+              .post('/api/v1/books')
               .set('x-access-token', goodToken)
               .send({
                 quantity: 1,
@@ -361,7 +361,7 @@ describe('Book Controller tests:', () => {
         describe('When Author Information is invalid', () => {
           it('should return 400 Unsuccessful for invalid author', (done) => {
             chai.request(app)
-              .post('/api/v4/books')
+              .post('/api/v1/books')
               .set('x-access-token', goodToken)
               .send({
                 quantity: 1,
@@ -388,7 +388,7 @@ describe('Book Controller tests:', () => {
           Unsuccessful when no author supplied`,
             (done) => {
               chai.request(app)
-                .post('/api/v4/books')
+                .post('/api/v1/books')
                 .set('x-access-token', goodToken)
                 .send({
                   quantity: 1,
@@ -414,7 +414,7 @@ describe('Book Controller tests:', () => {
           Unsuccessful for non existent author`,
             (done) => {
               chai.request(app)
-                .post('/api/v4/books')
+                .post('/api/v1/books')
                 .set('x-access-token', goodToken)
                 .send({
                   quantity: 1,
@@ -439,7 +439,7 @@ describe('Book Controller tests:', () => {
           it('should return 400 and error when Publish year is invalid',
             (done) => {
               chai.request(app)
-                .post('/api/v4/books')
+                .post('/api/v1/books')
                 .set('x-access-token', goodToken)
                 .send({
                   quantity: 1,
@@ -473,7 +473,7 @@ describe('Book Controller tests:', () => {
         describe('When valid information is provided', () => {
           it('should return 201 Book Created', (done) => {
             chai.request(app)
-              .post('/api/v4/books')
+              .post('/api/v1/books')
               .set('x-access-token', goodToken)
               .send({
                 quantity: 1,
@@ -501,7 +501,7 @@ describe('Book Controller tests:', () => {
           });
           it('should return 201 Book Created', (done) => {
             chai.request(app)
-              .post('/api/v4/books')
+              .post('/api/v1/books')
               .set('x-access-token', goodToken)
               .send({
                 quantity: 1,
@@ -529,7 +529,7 @@ describe('Book Controller tests:', () => {
           });
           it('should return 201 Book Created', (done) => {
             chai.request(app)
-              .post('/api/v4/books')
+              .post('/api/v1/books')
               .set('x-access-token', goodToken)
               .send({
                 quantity: 2,
@@ -557,7 +557,7 @@ describe('Book Controller tests:', () => {
           });
           it('should return 201 Book Created for multiple authors', (done) => {
             chai.request(app)
-              .post('/api/v4/books')
+              .post('/api/v1/books')
               .set('x-access-token', goodToken)
               .send({
                 quantity: 1,
@@ -585,7 +585,7 @@ describe('Book Controller tests:', () => {
           describe('When duplicate information is added', () => {
             it('should return 400 Info', (done) => {
               chai.request(app)
-                .post('/api/v4/books')
+                .post('/api/v1/books')
                 .set('x-access-token', goodToken)
                 .send({
                   quantity: 1,
@@ -615,11 +615,11 @@ describe('Book Controller tests:', () => {
       });
     });
   });
-  describe('PUT /api/v4/books/:bookId version 4', () => {
+  describe('PUT /api/v1/books/:bookId version 1', () => {
     describe('When non admin token is provided', () => {
       it('Should return a 401 error', (done) => {
         chai.request(app)
-          .put(`/api/v4/books/${bookId}`)
+          .put(`/api/v1/books/${bookId}`)
           .set('x-access-token', nonAdminToken)
           .send({
             bookISBN: '0-7405-8100-5',
@@ -638,7 +638,7 @@ describe('Book Controller tests:', () => {
       it('should return 404 Unsuccessful for wrong Book Id type',
         (done) => {
           chai.request(app)
-            .put('/api/v4/books/a')
+            .put('/api/v1/books/a')
             .set('x-access-token', goodToken)
             .send({
               bookname: 'Harry Potter and the Order of the Phoenix',
@@ -663,7 +663,7 @@ describe('Book Controller tests:', () => {
       it('should return 404 Unsuccessful for wrong Book Id',
         (done) => {
           chai.request(app)
-            .put('/api/v4/books/102')
+            .put('/api/v1/books/102')
             .set('x-access-token', goodToken)
             .send({
               bookname: 'Harry Potter and the Order of the Phoenix',
@@ -691,7 +691,7 @@ describe('Book Controller tests:', () => {
         it('should return 400 Unsuccessful when ISBN already used',
           (done) => {
             chai.request(app)
-              .put(`/api/v4/books/${bookId}`)
+              .put(`/api/v1/books/${bookId}`)
               .send({
                 bookISBN: '1742374662',
               })
@@ -710,7 +710,7 @@ describe('Book Controller tests:', () => {
         it('should return 400 Unsuccessful when no info supplied',
           (done) => {
             chai.request(app)
-              .put(`/api/v4/books/${bookId}`)
+              .put(`/api/v1/books/${bookId}`)
               .set('x-access-token', goodToken)
               .end((error, response) => {
                 should.exist(error);
@@ -725,7 +725,7 @@ describe('Book Controller tests:', () => {
       describe('When Information is provided', () => {
         it('should return 200 Success when ISBN changed', (done) => {
           chai.request(app)
-            .put(`/api/v4/books/${bookId}`)
+            .put(`/api/v1/books/${bookId}`)
             .set('x-access-token', goodToken)
             .send({
               bookISBN: '0-7405-8100-5',
@@ -742,7 +742,7 @@ describe('Book Controller tests:', () => {
         it('should return 200 Success when published year is changed',
           (done) => {
             chai.request(app)
-              .put(`/api/v4/books/${bookId}`)
+              .put(`/api/v1/books/${bookId}`)
               .set('x-access-token', goodToken)
               .send({
                 publishYear: '2000',
@@ -759,7 +759,7 @@ describe('Book Controller tests:', () => {
         it('should return 200 Success when book Description is changed',
           (done) => {
             chai.request(app)
-              .put(`/api/v4/books/${bookId}`)
+              .put(`/api/v1/books/${bookId}`)
               .set('x-access-token', goodToken)
               .send({
                 description: `During another summer with his Aunt 
@@ -780,7 +780,7 @@ describe('Book Controller tests:', () => {
         describe('When multiple information is provided', () => {
           it('should return 200 Success when book name is changed', (done) => {
             chai.request(app)
-              .put(`/api/v4/books/${bookId}`)
+              .put(`/api/v1/books/${bookId}`)
               .set('x-access-token', goodToken)
               .send({
                 bookname: 'Harry Potter and the Order of the Phoenix',
@@ -799,11 +799,11 @@ describe('Book Controller tests:', () => {
       });
     });
   });
-  describe('GET /api/v4/books version 4', () => {
+  describe('GET /api/v1/books version 1', () => {
     describe('When no book ID is provided (get all books)', () => {
       it('should return 202 and list all books', (done) => {
         chai.request(app)
-          .get('/api/v4/books')
+          .get('/api/v1/books')
           .set('x-access-token', goodToken)
           .end((error, response) => {
             should.not.exist(error);
@@ -817,7 +817,7 @@ describe('Book Controller tests:', () => {
     describe('When book ID is provided (get book and author info)', () => {
       it('should return 202 and info about the Book', (done) => {
         chai.request(app)
-          .get('/api/v4/books')
+          .get('/api/v1/books')
           .set('x-access-token', goodToken)
           .query({
             id: 1,
@@ -832,11 +832,11 @@ describe('Book Controller tests:', () => {
       });
     });
   });
-  describe('POST /api/v4/books/:bookId/quantity version 4', () => {
+  describe('POST /api/v1/books/:bookId/quantity version 1', () => {
     describe('When non admin token is provided', () => {
       it('Should return a 401 error', (done) => {
         chai.request(app)
-          .post(`/api/v4/books/${bookId}/quantity`)
+          .post(`/api/v1/books/${bookId}/quantity`)
           .set('x-access-token', nonAdminToken)
           .send({
             quantity: 3,
@@ -854,7 +854,7 @@ describe('Book Controller tests:', () => {
     describe('When invalid Details are presented', () => {
       it('should return 404 Invalid for invalid bookId character', (done) => {
         chai.request(app)
-          .post('/api/v4/books/a/quantity')
+          .post('/api/v1/books/a/quantity')
           .set('x-access-token', goodToken)
           .send({
             quantity: 3,
@@ -870,7 +870,7 @@ describe('Book Controller tests:', () => {
       });
       it('should return 404 Invalid for invalid bookId', (done) => {
         chai.request(app)
-          .post('/api/v4/books/209/quantity')
+          .post('/api/v1/books/209/quantity')
           .set('x-access-token', goodToken)
           .send({
             quantity: 3,
@@ -888,7 +888,7 @@ describe('Book Controller tests:', () => {
     describe('When Valid Details are presented', () => {
       it('should return 400 Missing Info for no quantity provided', (done) => {
         chai.request(app)
-          .post(`/api/v4/books/${bookId}/quantity`)
+          .post(`/api/v1/books/${bookId}/quantity`)
           .set('x-access-token', goodToken)
           .end((error, response) => {
             should.exist(error);
@@ -901,7 +901,7 @@ describe('Book Controller tests:', () => {
       });
       it('should return 200 Successful', (done) => {
         chai.request(app)
-          .post(`/api/v4/books/${bookId}/quantity`)
+          .post(`/api/v1/books/${bookId}/quantity`)
           .set('x-access-token', goodToken)
           .send({
             quantity: -9,
@@ -917,7 +917,7 @@ describe('Book Controller tests:', () => {
       });
       it('should return 200 Successful', (done) => {
         chai.request(app)
-          .post(`/api/v4/books/${bookId}/quantity`)
+          .post(`/api/v1/books/${bookId}/quantity`)
           .set('x-access-token', goodToken)
           .send({
             quantity: 3,
@@ -933,11 +933,11 @@ describe('Book Controller tests:', () => {
       });
     });
   });
-  describe('GET /api/v4/authors version 4', () => {
+  describe('GET /api/v1/authors version 1', () => {
     describe('When no author ID is provided (get all authors)', () => {
       it('should return 202 and list all authors', (done) => {
         chai.request(app)
-          .get('/api/v4/authors')
+          .get('/api/v1/authors')
           .set('x-access-token', goodToken)
           .end((error, response) => {
             should.not.exist(error);
@@ -951,7 +951,7 @@ describe('Book Controller tests:', () => {
     describe('When author ID is provided get author and books', () => {
       it('should return 202 and info about the author', (done) => {
         chai.request(app)
-          .get('/api/v4/authors')
+          .get('/api/v1/authors')
           .query({
             id: 1,
           })
@@ -966,11 +966,11 @@ describe('Book Controller tests:', () => {
       });
     });
   });
-  describe('GET /api/v4/search/authors?q=', () => {
+  describe('GET /api/v1/search/authors?q=', () => {
     describe('When no details are provided', () => {
       it('should return 200 type Author details', (done) => {
         chai.request(app)
-          .get('/api/v4/search/authors')
+          .get('/api/v1/search/authors')
           .set('x-access-token', goodToken)
           .end((error, response) => {
             should.not.exist(error);
@@ -986,7 +986,7 @@ describe('Book Controller tests:', () => {
       it('should return 200 NO Author found when no author exists',
         (done) => {
           chai.request(app)
-            .get('/api/v4/search/authors?q=gegegegegegegeg')
+            .get('/api/v1/search/authors?q=gegegegegegegeg')
             .set('x-access-token', goodToken)
             .end((error, response) => {
               should.not.exist(error);
@@ -1000,7 +1000,7 @@ describe('Book Controller tests:', () => {
       it('should return 202 and author details',
         (done) => {
           chai.request(app)
-            .get('/api/v4/search/authors?q=jo')
+            .get('/api/v1/search/authors?q=jo')
             .set('x-access-token', goodToken)
             .end((error, response) => {
               should.not.exist(error);
@@ -1012,11 +1012,11 @@ describe('Book Controller tests:', () => {
         });
     });
   });
-  describe('GET /api/v4/books/list/:page version 4', () => {
+  describe('GET /api/v1/books/list/:page version 1', () => {
     describe('when incomplete details are passed in', () => {
       it('should return a 400 when invalid page is sent', (done) => {
         chai.request(app)
-          .get('/api/v4/books/list/invalidNumber?limit=0')
+          .get('/api/v1/books/list/invalidNumber?limit=0')
           .set('x-access-token', goodToken)
           .end((error, response) => {
             should.exist(error);
@@ -1034,7 +1034,7 @@ describe('Book Controller tests:', () => {
       });
       it('should return a 400 when page is less than 1', (done) => {
         chai.request(app)
-          .get('/api/v4/books/list/0?limit=0')
+          .get('/api/v1/books/list/0?limit=0')
           .set('x-access-token', goodToken)
           .end((error, response) => {
             should.exist(error);
@@ -1052,7 +1052,7 @@ describe('Book Controller tests:', () => {
       });
       it('should return a 400 when no limit is sent', (done) => {
         chai.request(app)
-          .get('/api/v4/books/list/1')
+          .get('/api/v1/books/list/1')
           .set('x-access-token', goodToken)
           .end((error, response) => {
             should.exist(error);
@@ -1070,7 +1070,7 @@ describe('Book Controller tests:', () => {
       });
       it('should return a 400 when invalid limit is sent', (done) => {
         chai.request(app)
-          .get('/api/v4/books/list/1?limit=-10')
+          .get('/api/v1/books/list/1?limit=-10')
           .set('x-access-token', goodToken)
           .end((error, response) => {
             should.exist(error);
@@ -1088,7 +1088,7 @@ describe('Book Controller tests:', () => {
       });
       it('should return 400 when multiple details are invalid', (done) => {
         chai.request(app)
-          .get('/api/v4/books/list/invalid?limit=invalid')
+          .get('/api/v1/books/list/invalid?limit=invalid')
           .set('x-access-token', goodToken)
           .end((error, response) => {
             should.exist(error);
@@ -1112,7 +1112,7 @@ describe('Book Controller tests:', () => {
     describe('when Complete details are passed in', () => {
       it('should return a 200 with information', (done) => {
         chai.request(app)
-          .get('/api/v4/books/list/1?limit=10')
+          .get('/api/v1/books/list/1?limit=10')
           .set('x-access-token', goodToken)
           .end((error, response) => {
             should.not.exist(error);
@@ -1134,7 +1134,7 @@ describe('Book Controller tests:', () => {
       });
       it('should return a 200 with information', (done) => {
         chai.request(app)
-          .get('/api/v4/books/list/1?limit=10&sort=rating')
+          .get('/api/v1/books/list/1?limit=10&sort=rating')
           .set('x-access-token', goodToken)
           .end((error, response) => {
             should.not.exist(error);
@@ -1156,7 +1156,7 @@ describe('Book Controller tests:', () => {
       });
       it('should return a 200 with information', (done) => {
         chai.request(app)
-          .get('/api/v4/books/list/1?limit=10&sort=alphabetical')
+          .get('/api/v1/books/list/1?limit=10&sort=alphabetical')
           .set('x-access-token', goodToken)
           .end((error, response) => {
             should.not.exist(error);
@@ -1178,7 +1178,7 @@ describe('Book Controller tests:', () => {
       });
     });
   });
-  describe('GET /api/v1/sorted/books version 4', () => {
+  describe('GET /api/v1/sorted/books version 1', () => {
     describe('when Complete details are passed in', () => {
       it('should return a 200 with information', (done) => {
         chai.request(app)
