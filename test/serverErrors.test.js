@@ -953,5 +953,153 @@ describe('Database errors Simulations', () => {
           });
       });
     });
+    describe('When trying to Add Book to Category', () => {
+      let promiseAll;
+      before((done) => {
+        promiseAll = Promise.all;
+        done();
+      });
+      after((done) => {
+        Promise.all = promiseAll;
+        done();
+      });
+      it('should return 500 Unsuccessful', (done) => {
+        Promise.all = () =>
+          Promise.reject(new Error('WRONG!!!'));
+        chai.request(app)
+          .put('/api/v1/books/category')// a is wrong here
+          .set('x-access-token', goodToken)
+          .send({
+            bookId: 1,
+            categoryId: 1
+          })
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(500);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            done();
+          });
+      });
+    });
+    describe('When trying to view Categories', () => {
+      let categoryFindAll;
+      before((done) => {
+        categoryFindAll = db.Category.findAll;
+        done();
+      });
+      after((done) => {
+        db.Category.findAll = categoryFindAll;
+        done();
+      });
+      it('should return 500 Unsuccessful', (done) => {
+        db.Category.findAll = () =>
+          Promise.reject(new Error('WRONG!!!'));
+
+        chai.request(app)
+          .get('/api/v1/books/lists/categories')
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(500);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            response.body
+              .message.should.equal('Something went wrong!');
+            done();
+          });
+      });
+    });
+    describe('When trying to view books by categories', () => {
+      let promiseAll;
+      before((done) => {
+        promiseAll = Promise.all;
+        done();
+      });
+      after((done) => {
+        Promise.all = promiseAll;
+        done();
+      });
+      it('should return 500 Unsuccessful', (done) => {
+        Promise.all = () =>
+          Promise.reject(new Error('WRONG!!!'));
+        chai.request(app)
+          .get('/api/v1/books/category/1')
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(500);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            response.body
+              .message.should.equal('Something went wrong!');
+            done();
+          });
+      });
+    });
+    describe('When trying to Delete categories', () => {
+      let categoryDelete;
+      before((done) => {
+        categoryDelete = db.Category.destroy;
+        done();
+      });
+      after((done) => {
+        db.Category.destroy = categoryDelete;
+        done();
+      });
+      it('should return 500 Unsuccessful', (done) => {
+        db.Category.destroy = () =>
+          Promise.reject(new Error('WRONG!!!'));
+        chai.request(app)
+          .delete('/api/v1/books/category')
+          .send({
+            categoryId: 1
+          })
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(500);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            response.body
+              .message.should.equal('Something went wrong!');
+            done();
+          });
+      });
+    });
+    describe('When trying to remove Books from categories', () => {
+      let promiseAll;
+      before((done) => {
+        promiseAll = Promise.all;
+        done();
+      });
+      after((done) => {
+        Promise.all = promiseAll;
+        done();
+      });
+      it('should return 500 Unsuccessful', (done) => {
+        Promise.all = () =>
+          Promise.reject(new Error('WRONG!!!'));
+        chai.request(app)
+          .delete('/api/v1/book/category')
+          .send({
+            categoryId: 1,
+            bookId: 1
+          })
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(500);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            done();
+          });
+      });
+    });
   });
 });

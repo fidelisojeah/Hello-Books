@@ -10,6 +10,10 @@ import {
 } from '../../actions/newBookAction';
 
 import NewBookForm from '../../NewBookForm';
+import ConnectedNewCategory from
+  '../../book-category-components/NewCategory';
+import ConnectedEditCategory from
+  '../../book-category-components/EditCategory';
 import NewAuthorForm from '../../NewAuthorForm';
 import BreadCrumbs from '../../common/BreadCrumbs';
 import LayoutHeader from '../../common/LayoutHeader';
@@ -115,6 +119,8 @@ class StockMgtPage extends React.Component {
                 <NewAuthorForm
                   newAuthorRequest={this.props.newAuthorRequest}
                 />
+                <ConnectedNewCategory />
+                <ConnectedEditCategory />
               </div>
             </div>
           </div>

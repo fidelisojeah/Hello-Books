@@ -5,12 +5,16 @@ import { Link } from 'react-router-dom';
 // /books/:bookId
 import Ratings from './Ratings';
 import AuthorList from '../lists/AuthorList';
+import EditBar from '../view-book-components/EditBar';
+
 
 const BookCard = ({ bookName,
   bookID,
   synopsis,
   ratingSum,
   ratingCount,
+  allowEdit,
+  removeFromCategory,
   imgHref,
   bookAuthors }) => {
   const rateCount = parseInt(ratingCount, 10);
@@ -44,21 +48,30 @@ const BookCard = ({ bookName,
           </span>
         </div>
       </div>
-    </li >
+      {allowEdit &&
+        <EditBar
+          element={bookID.toString()}
+          editFunction={removeFromCategory}
+        />
+      }
+    </li>
   );
 };
 BookCard.defaultProps = {
   ratingSum: null,
+  allowEdit: false
 };
 
 BookCard.propTypes = {
   bookID: PropTypes.number.isRequired,
   bookName: PropTypes.string.isRequired,
+  allowEdit: PropTypes.bool,
   synopsis: PropTypes.string.isRequired,
   imgHref: PropTypes.string.isRequired,
   ratingCount: PropTypes.string.isRequired,
   ratingSum: PropTypes.string,
   bookAuthors: PropTypes.arrayOf(PropTypes.object).isRequired,
+  removeFromCategory: PropTypes.func.isRequired
 };
 
 export default BookCard;

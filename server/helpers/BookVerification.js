@@ -1,3 +1,5 @@
+import toTitleCase from './toTitleCase';
+
 export default class BookVerification {
   /**
   *
@@ -47,7 +49,7 @@ export default class BookVerification {
         )
       ) {
         const newBookDetails = {
-          bookName: bookname,
+          bookName: toTitleCase(bookname),
           bookISBN: ISBN,
           description,
           bookQuantity: quantity,

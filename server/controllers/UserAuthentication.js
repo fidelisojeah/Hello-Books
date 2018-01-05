@@ -1,11 +1,15 @@
 import bcrypt from 'bcrypt';
+
 import {
   UserDetails,
   Memberships,
 } from '../models';
+
 import JwTokens from '../helpers/JwTokens';
-import CheckSession from '../middleware/CheckSession';
 import UserHelper from '../helpers/UserHelper';
+import toTitleCase from '../helpers/toTitleCase';
+
+import CheckSession from '../middleware/CheckSession';
 import HelloBooksSendMail from '../helpers/HelloBooksSendMail';
 
 class UserAuthentication {
@@ -225,8 +229,8 @@ class UserAuthentication {
           .then(([activationBuf, hashPassword]) => {
             UserDetails
               .create({
-                firstname: firstName,
-                lastname: lastName,
+                firstname: toTitleCase(firstName),
+                lastname: toTitleCase(lastName),
                 emailaddress: email.toLowerCase(),
                 phonenumber: phone,
                 username: userName.toLowerCase(),

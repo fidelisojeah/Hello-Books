@@ -9,6 +9,8 @@ import PrivateRoute from './components/PrivateRoute';
 import App from './components/App';
 import UserLoginPage from './components/pages/LoginPage';
 import StockMgtPage from './components/pages/admin/StockMgtPage';
+import ConnectedViewByCategory from
+  './components/pages/ViewByCategory';
 import ViewBook from './components/pages/ViewBook';
 import LogIndexPage from './components/pages/LogIndex';
 import ConnectedProfilePage from './components/pages/ProfilePage';
@@ -31,6 +33,12 @@ const Main = () => (
       <PrivateRoute exact path="/profile" Component={ConnectedProfilePage} />
       <PrivateRoute exact path="/books/:bookId" Component={ViewBook} />
       <PrivateRoute exact path="/bookmgt" Component={StockMgtPage} />
+      <PrivateRoute
+        exact path="/categories"
+        Component={ConnectedViewByCategory} />
+      <PrivateRoute
+        exact path="/categories/:categoryId"
+        Component={ConnectedViewByCategory} />
     </Switch>
   </App>
 );

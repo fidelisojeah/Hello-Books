@@ -308,7 +308,7 @@ class NewBookForm extends React.Component {
         <div className="tabs-item-content">
           <h2 className="tabs-title">
             New<span>
-              book...
+              Book...
               </span>
           </h2>
           <form onSubmit={this.onSubmit}>

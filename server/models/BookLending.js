@@ -2,11 +2,11 @@ module.exports = (sequelize, DataTypes) => {
   const BookLending = sequelize.define('BookLendings', {
     borrowDate: {
       allowNull: false,
-      type: DataTypes.DATEONLY,
+      type: DataTypes.DATE,
     },
     dueDate: {
       allowNull: false,
-      type: DataTypes.DATEONLY,
+      type: DataTypes.DATE,
     },
     actualReturnDate: {
       default: null,

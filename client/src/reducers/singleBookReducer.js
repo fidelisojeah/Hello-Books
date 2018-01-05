@@ -26,7 +26,6 @@ export default function singleBookReducer(state =
   switch (action.type) {
     case FETCH_BOOK_CLEAR: {
       return {
-        ...state,
         fetchedBook: {},
         fetching: true,
         fetched: false,
@@ -98,6 +97,7 @@ export default function singleBookReducer(state =
           }
         };
       }
+      return state;
     }
     default:
       return state;

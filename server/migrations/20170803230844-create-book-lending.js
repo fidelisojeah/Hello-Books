@@ -27,11 +27,11 @@ module.exports = {
       },
       borrowDate: {
         allowNull: false,
-        type: Sequelize.DATEONLY,
+        type: Sequelize.DATE,
       },
       dueDate: {
         allowNull: false,
-        type: Sequelize.DATEONLY,
+        type: Sequelize.DATE,
       },
       actualReturnDate: {
         default: null,

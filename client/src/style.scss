@@ -3160,3 +3160,36 @@
       font-size: 18px;
     }
   }
+
+  .category-grid {
+    margin-top: 30px;
+    columns: 4;
+    li {
+      padding-top: 20px;
+    }
+  }
+
+  .-categories {
+    .edit-icon {
+      @include box-shadow-none;
+      &:before {
+        content: "\f12a";
+      }
+    }
+    .edit-bar {
+      top: -10px;
+      right: -27px;
+    }
+  }
+
+  #EditCategory {
+    select {
+      color: black;
+      font-size: $mf-font-size;
+      font-family: inherit;
+      background-color: transparent;
+      width: 100%;
+      padding: 4px 0;
+      border: none; // border-bottom: 1px solid $select-border-color;
+    }
+  }

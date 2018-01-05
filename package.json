@@ -164,7 +164,6 @@
     "style-loader": "^0.18.2",
     "superagent": "^3.6.0",
     "svg-inline-loader": "^0.8.0",
-    "sweetalert": "^2.0.3",
     "uglifyjs-webpack-plugin": "^0.4.6",
     "url-loader": "^0.6.0",
     "webpack": "^3.5.6",

@@ -8,6 +8,7 @@ import {
 
 import CheckSession from '../middleware/CheckSession';
 import BookVerification from '../helpers/BookVerification';
+import toTitleCase from '../helpers/toTitleCase';
 
 class BookProps {
   /**
@@ -85,10 +86,10 @@ class BookProps {
           && lastName !== null) {
           Authors// create new author
             .create({
-              authorFirstName: firstName,
-              authorLastName: lastName,
+              authorFirstName: toTitleCase(firstName),
+              authorLastName: toTitleCase(lastName),
               dateofBirth: dateOB,
-              authorAKA: knownAs,
+              authorAKA: toTitleCase(knownAs),
             })
             .then(() => { // if author creation was successful
               response.status(201).json({
@@ -232,37 +233,7 @@ class BookProps {
           where: {
             isActive: true,
           },
-          include: [
-            {
-              model: Authors,
-              attributes: ['id', 'authorAKA'],
-              through: { attributes: [] }
-            },
-            {
-              model: BookRatings,
-              attributes: [],
-            }],
-          group: ['Books.id',
-            'Authors.id',
-            'Authors->BookAuthors.authorId',
-            'Authors->BookAuthors.bookId',
-          ],
-          attributes: ['id', 'bookName', 'bookISBN',
-            'description', 'bookImage',
-            'publishYear',
-            [sequelize
-              .fn('count', sequelize.col('BookRatings.id')),
-              'RatingCount'
-            ],
-            [sequelize
-              .fn('sum', sequelize.col('BookRatings.rating')),
-              'RatingSum'
-            ],
-            [sequelize
-              .fn('AVG', sequelize.col('BookRatings.rating')),
-              'Ratingavg'
-            ]
-          ],
+          attributes: ['id', 'bookName', 'bookISBN']
         })
         .then((allBooks) => {
           if (!allBooks ||

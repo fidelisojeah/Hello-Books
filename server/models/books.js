@@ -49,11 +49,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'bookId',
       otherKey: 'categoryId',
     });
-    Books.belongsToMany(models.Category, {
-      through: 'BookStars',
-      foreignKey: 'bookId',
-      otherKey: 'categoryId',
-    });
     Books.hasMany(models.BookRatings, {
       foreignKey: 'bookId',
     });
