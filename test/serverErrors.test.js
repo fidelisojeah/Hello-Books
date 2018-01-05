@@ -953,5 +953,36 @@ describe('Database errors Simulations', () => {
           });
       });
     });
+    describe('When trying to Add Book to Category', () => {
+      let promiseAll;
+      before((done) => {
+        promiseAll = Promise.all;
+        done();
+      });
+      after((done) => {
+        Promise.all = promiseAll;
+        done();
+      });
+      it('should return 500 Unsuccessful', (done) => {
+        Promise.all = () =>
+          Promise.reject(new Error('WRONG!!!'));
+        chai.request(app)
+          .put('/api/v1/books/category')// a is wrong here
+          .set('x-access-token', goodToken)
+          .send({
+            bookId: 1,
+            categoryId: 1
+          })
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(500);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            done();
+          });
+      });
+    });
   });
 });

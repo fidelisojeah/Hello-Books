@@ -8,9 +8,11 @@ import http from 'http';
 import path from 'path';
 
 import BookProps from './controllers/BookProps';
+import BookCategory from './controllers/BookCategory';
 import UserAuthentication from './controllers/UserAuthentication';
 import UserBookInteraction from './controllers/UserBookInteraction';
 import CheckSession from './middleware/CheckSession';
+
 
 const app = express();
 // load environmental variables
@@ -103,11 +105,21 @@ app.get('/api/v1/books/list/:page',
 app.get('/api/v1/books', CheckSession.checkLogin,
   BookProps.viewBooks);
 
+app.post('/api/v1/books/category',
+  CheckSession.checkLogin, BookCategory.newCategory);
+
+app.put('/api/v1/books/category',
+  CheckSession.checkLogin, BookCategory.addBookCategory);
+
+app.get('/api/v1/books/category/:categoryId',
+  CheckSession.checkLogin, BookCategory.viewByCategory);
+
 app.put('/api/v1/books/:bookId',
   CheckSession.checkLogin, BookProps.modifyBook);
 
 app.post('/api/v1/books/:bookId/quantity',
   CheckSession.checkLogin, BookProps.updateBookQuantity);
+
 
 app.get('/api/v1/users/logout', CheckSession.clearLogin);
 
