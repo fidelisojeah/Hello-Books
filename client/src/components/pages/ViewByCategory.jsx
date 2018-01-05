@@ -2,18 +2,26 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { logout } from '../actions/login';
+
 import LayoutHeader from '../common/LayoutHeader';
 import BookGrid from '../common/BookGrid';
-import {
-  fetchBooks,
-  clearAllBookState
-} from '../actions/loadBooks';
-import { logout } from '../actions/login';
 import BreadCrumbs from '../common/BreadCrumbs';
-
 import LoadingPage from './LoadingPage';
 
-export class ViewAllBooks extends React.Component {
+import {
+  clearAllBookState,
+  fetchBooks,
+  viewBookByCategory
+} from '../actions/loadBooks';
+import {
+  fetchCategoryList,
+  removeBookFromCategory
+} from '../actions/categoryActions';
+
+import NotFoundComponent from '../common/NotFoundComponent';
+
+export class ViewByCategory extends React.Component {
   constructor(props) {
     super(props);
     const pageLinks = [];
@@ -27,7 +35,6 @@ export class ViewAllBooks extends React.Component {
       linkName: 'Library',
       link: 'books'
     });
-
     this.state = {
       limit: 10,
       page: 1,
@@ -35,27 +42,32 @@ export class ViewAllBooks extends React.Component {
       totalPages: 1,
       sort: 'newest',
       allBooks: [],
+      title: 'Categories',
+      titleGrid: 'All In Library',
       pageLinks
     };
   }
   componentDidMount() {
     this.fetchAll();
+    this.props.fetchCategoryList();
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.error && nextProps.error.status === 504) {
-      // reload on timeout failure
       if (!this.timeOutClear) {
         this.timeOutClear =
           window
             .setInterval(this.refreshOnTimeOutError, 10000);
       }
     } else if (nextProps.error &&
-      nextProps.error.message) {
+      nextProps.error.message === 'unauthenticated') {
       this.props.logout();
       this.context.router.history.push('/signin');
     } else {
       window.clearInterval(this.timeOutClear);
       this.setState({
+        error: nextProps.error,
+        bookCategories: nextProps.bookCategories,
+        fetching: nextProps.fetching,
         totalBooks: nextProps.totalBooks,
         totalPages: nextProps.totalPages
       });
@@ -69,11 +81,23 @@ export class ViewAllBooks extends React.Component {
     this.fetchAll();
   }
   fetchAll = () => {
-    this.props.fetchBooks(
-      this.state.page,
-      this.state.limit,
-      this.state.sort
-    );
+    const { categoryId } = this.props.match.params;
+    if (categoryId) {
+      this.props.viewBookByCategory(
+        {
+          categoryId,
+          page: this.state.page,
+          limit: this.state.limit,
+          sort: this.state.sort
+        }
+      );
+    } else {
+      this.props.fetchBooks(
+        this.state.page,
+        this.state.limit,
+        this.state.sort
+      );
+    }
   }
   sortFunction = (event, index) => {
     event.preventDefault();
@@ -106,66 +130,101 @@ export class ViewAllBooks extends React.Component {
       });
     }
   }
-  emptyFunction = (event) => {
+  removeFromCategory = (event, book) => {
     event.preventDefault();
-    return 1;
+    const { categoryId } = this.props.match.params;
+    if (categoryId) {
+      this.props.removeBookFromCategory({
+        categoryId,
+        bookId: book
+      });
+    }
   }
   render() {
-    if (!this.props.allBooks) {
+    if (this.state.fetching) {
       return (
         <LoadingPage />
       );
     }
-    const { totalBooks, allBooks } = this.props;
+    if (this.state.error
+      && this.state.error.message === 'No Books in Category') {
+      return (
+        <NotFoundComponent
+          title={this.state.error.message}
+          errorMessage="No Books in Category"
+          links={this.state.pageLinks}
+        />
+      );
+    }
+    const {
+      totalBooks,
+      allBooks,
+      isAdmin
+     } = this.props;
     const { page,
       totalPages,
       limit,
-      pageLinks, sort } = this.state;
+      pageLinks,
+      sort,
+      title,
+      titleGrid
+    } = this.state;
+    const { categoryId } = this.props.match.params;
     return (
-      <div className="layout--container">
-
+      <div className="layout--container -categories">
         <LayoutHeader
-          headerTitle="Library"
+          headerTitle={title}
         />
         <BreadCrumbs
           breadCrumbLinks={pageLinks}
         />
         <BookGrid
-          removeFromCategory={this.emptyFunction}
           limit={limit}
+          allowEdit={(categoryId && isAdmin)}
           page={page}
           totalPages={totalPages}
+          removeFromCategory={this.removeFromCategory}
           totalBooks={totalBooks}
           allBooks={allBooks}
           perPageFunction={this.perPageFunction}
           paginationFunction={this.paginationFunction}
           sortFunction={this.sortFunction}
           sort={sort}
-          title="All Books In Library"
+          title={titleGrid}
         />
       </div>
     );
   }
 }
-ViewAllBooks.propTypes = {
+ViewByCategory.propTypes = {
   allBooks: PropTypes.arrayOf(PropTypes.object),
-  fetchBooks: PropTypes.func.isRequired,
+  bookCategories: PropTypes.array,
   clearAllBookState: PropTypes.func.isRequired,
+  error: PropTypes.object,
+  fetchBooks: PropTypes.func.isRequired,
+  fetchCategoryList: PropTypes.func.isRequired,
+  fetching: PropTypes.bool.isRequired,
+  isAdmin: PropTypes.bool,
+  logout: PropTypes.func.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.object
+  }).isRequired,
+  removeBookFromCategory: PropTypes.func.isRequired,
   totalBooks: PropTypes.number,
   totalPages: PropTypes.number,
-  error: PropTypes.object,
-  logout: PropTypes.func.isRequired,
+  viewBookByCategory: PropTypes.func.isRequired,
 };
-ViewAllBooks.contextTypes = {
+ViewByCategory.contextTypes = {
   router: PropTypes.object.isRequired,
 };
-ViewAllBooks.defaultProps = {
+ViewByCategory.defaultProps = {
+  bookCategories: [],
   totalBooks: 0,
   error: null,
+  isAdmin: false,
   allBooks: null,
   totalPages: 0
 };
-
 /**
  * @param {object} state
  *
@@ -173,15 +232,21 @@ ViewAllBooks.defaultProps = {
  */
 function mapStateToProps(state) {
   return {
+    isAdmin: (state.auth.user.role === 'Admin'),
     allBooks: state.bookReducer.fetchedBooks.bookLists,
+    bookCategories: state.bookCategoryListReducer.bookCategories,
+    fetching: state.bookReducer.fetching,
+    fetched: state.bookReducer.fetched,
     totalPages: state.bookReducer.fetchedBooks.totalPages,
     totalBooks: state.bookReducer.fetchedBooks.totalBooksCount,
     error: state.bookReducer.error
   };
 }
-
 export default connect(mapStateToProps, {
-  fetchBooks,
   clearAllBookState,
-  logout
-})(ViewAllBooks);
+  logout,
+  viewBookByCategory,
+  fetchBooks,
+  fetchCategoryList,
+  removeBookFromCategory
+})(ViewByCategory);

@@ -26,6 +26,7 @@ class NewAuthorForm extends React.Component {
   }
   componentWillReceiveProps(nextprops) {
     if (nextprops.error) {
+      const { error } = nextprops;
       if (error.data.message === 'Not allowed') {
         this.context.router.history.push('/Books');
       } else if (error.data.message === 'Unauthenticated') {
@@ -64,7 +65,7 @@ class NewAuthorForm extends React.Component {
         <div className="tabs-item-content">
           <h2 className="tabs-title">
             New<span>
-              author...
+              Author...
               </span>
           </h2>
           <form onSubmit={this.onSubmit}>

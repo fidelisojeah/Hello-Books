@@ -27,13 +27,15 @@ describe('LogIndex Component', () => {
   describe('Non Life Cycle Tests', () => {
     const props = {
       loadAllBooks: jest.fn(),
-      logout: jest.fn()
+      logout: jest.fn(),
+      fetchCategoryList: jest.fn(),
     };
     test('Should render component with just loading page', () => {
       const wrapper = shallow(
         <LogIndex
           logout={props.logout}
           loadAllBooks={props.loadAllBooks}
+          fetchCategoryList={props.fetchCategoryList}
         />,
         options
       );
@@ -47,6 +49,7 @@ describe('LogIndex Component', () => {
       const wrapper = shallow(
         <LogIndex
           logout={props.logout}
+          fetchCategoryList={props.fetchCategoryList}
           loadAllBooks={props.loadAllBooks}
         />,
         options
@@ -68,6 +71,7 @@ describe('LogIndex Component', () => {
           <LogIndex
             logout={props.logout}
             loadAllBooks={props.loadAllBooks}
+            fetchCategoryList={props.fetchCategoryList}
           />,
           options
         );
@@ -88,6 +92,7 @@ describe('LogIndex Component', () => {
             <LogIndex
               logout={props.logout}
               loadAllBooks={props.loadAllBooks}
+              fetchCategoryList={props.fetchCategoryList}
             />,
             options
           );
@@ -111,6 +116,7 @@ describe('LogIndex Component', () => {
             <LogIndex
               logout={props.logout}
               loadAllBooks={props.loadAllBooks}
+              fetchCategoryList={props.fetchCategoryList}
             />,
             options
           );
@@ -134,6 +140,7 @@ describe('LogIndex Component', () => {
             <LogIndex
               logout={props.logout}
               loadAllBooks={props.loadAllBooks}
+              fetchCategoryList={props.fetchCategoryList}
             />,
             options
           );
@@ -156,6 +163,7 @@ describe('LogIndex Component', () => {
           const wrapper = mount(
             <LogIndex
               logout={props.logout}
+              fetchCategoryList={props.fetchCategoryList}
               loadAllBooks={props.loadAllBooks}
             />,
             options
@@ -179,6 +187,7 @@ describe('LogIndex Component', () => {
           const wrapper = mount(
             <LogIndex
               logout={props.logout}
+              fetchCategoryList={props.fetchCategoryList}
               loadAllBooks={props.loadAllBooks}
             />,
             options
@@ -233,6 +242,7 @@ describe('LogIndex Component', () => {
     test('Should call Component Did Mount Life Cycle', () => {
       const wrapper = shallow(<ComponentTest
         logout={jest.fn()}
+        fetchCategoryList={jest.fn()}
         loadAllBooks={jest.fn()}
       />, options);
       expect(wrapper).toBeDefined();
@@ -243,6 +253,7 @@ describe('LogIndex Component', () => {
     test('Should call Component will unmount Life Cycle', () => {
       const wrapper = mount(<ComponentTest
         logout={jest.fn()}
+        fetchCategoryList={jest.fn()}
         loadAllBooks={jest.fn()}
       />, options);
       expect(wrapper).toBeDefined();

@@ -32,6 +32,8 @@ describe('Book Card Component', () => {
 
     const wrapper = shallow(<BookCard
       bookID={1}
+      removeFromCategory={jest.fn()}
+      allowEdit={false}
       bookName="Some random Book"
       synopsis="Random description about random Books"
       imgHref="xyz.jpg"

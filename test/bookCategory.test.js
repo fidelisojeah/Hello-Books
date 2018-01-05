@@ -275,3 +275,98 @@ describe('PUT /api/v1/books/category', () => {
       });
   });
 });
+describe('DELETE /api/v1/book/category', () => {
+  describe('When Invalid Entries are entered', () => {
+    it('should return 400 Unsuccessful when no Book Id is sent',
+      (done) => {
+        chai.request(app)
+          .delete('/api/v1/book/category')
+          .set('x-access-token', goodAdminToken)
+          .send({
+            bookId: 1,
+          })
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(400);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Incomplete details');
+            done();
+          });
+      });
+    it('should return 400 Unsuccessful when no Category Id is sent',
+      (done) => {
+        chai.request(app)
+          .delete('/api/v1/book/category')
+          .set('x-access-token', goodAdminToken)
+          .send({
+            categoryId: 1
+          })
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(400);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Incomplete details');
+            done();
+          });
+      });
+    it('should return 400 Unsuccessful when wrong Book Id is sent',
+      (done) => {
+        chai.request(app)
+          .delete('/api/v1/book/category')
+          .set('x-access-token', goodAdminToken)
+          .send({
+            bookId: 140,
+            categoryId: 1
+          })
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(400);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Invalid Book/Category');
+            done();
+          });
+      });
+    it('should return 400 Unsuccessful when wrong Category Id is sent',
+      (done) => {
+        chai.request(app)
+          .delete('/api/v1/book/category')
+          .set('x-access-token', goodAdminToken)
+          .send({
+            bookId: 1,
+            categoryId: 1213
+          })
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(400);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Invalid Book/Category');
+            done();
+          });
+      });
+  });
+  describe('When Valid enteries are entered', () => {
+    it('should return 200 Successful',
+      (done) => {
+        chai.request(app)
+          .delete('/api/v1/book/category')
+          .set('x-access-token', goodAdminToken)
+          .send({
+            bookId: 1,
+            categoryId: 1
+          })
+          .end((error, response) => {
+            should.not.exist(error);
+            response.status.should.equal(200);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Success');
+            response.body
+              .message.should.eql('Book Removed from Category Successfully');
+            done();
+          });
+      });
+  });
+});

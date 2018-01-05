@@ -1,10 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import BookCard from '../common/BookCard';
 import { loadAllBooks } from '../actions/loadBooks';
 import { logout } from '../actions/login';
+import {
+  fetchCategoryList
+} from '../actions/categoryActions';
 
 import LoadingPage from './LoadingPage';
 
@@ -30,6 +34,7 @@ export class LogIndex extends React.Component {
 
   componentDidMount() {
     this.fetchAll();
+    this.props.fetchCategoryList();
     window.addEventListener('optimizedResize', this.calculateSizes);
   }
 
@@ -42,13 +47,12 @@ export class LogIndex extends React.Component {
       }
     } else if (nextProps.error &&
       nextProps.error.message) {
-      // extra check cos why not?
-      // ideally, this should never happen
       this.props.logout();
       this.context.router.history.push('/signin');
     } else {
       window.clearInterval(this.timeOutClear);
       this.setState({
+        bookCategories: nextProps.bookCategories,
         ratedBooks: nextProps.ratedBooks,
         byLendingBooks: nextProps.byLendingBooks,
         slideWidths:
@@ -185,7 +189,10 @@ export class LogIndex extends React.Component {
         this.calculateSizes()
     );
   }
-
+  emptyFunction = (event) => {
+    event.preventDefault();
+    return 1;
+  }
   render() {
     if (!this.state.ratedBooks) {
       return (
@@ -241,6 +248,7 @@ export class LogIndex extends React.Component {
                         {this.state.byLendingBooks.map(bookInfos =>
                           (<BookCard
                             key={bookInfos.id}
+                            removeFromCategory={this.emptyFunction}
                             bookName={bookInfos.bookName}
                             bookID={bookInfos.id}
                             synopsis={bookInfos.description}
@@ -316,6 +324,7 @@ export class LogIndex extends React.Component {
                         {this.state.ratedBooks.map(bookInfos =>
                           (<BookCard
                             key={bookInfos.id}
+                            removeFromCategory={this.emptyFunction}
                             bookName={bookInfos.bookName}
                             bookID={bookInfos.id}
                             synopsis={bookInfos.description}
@@ -355,26 +364,49 @@ export class LogIndex extends React.Component {
         </div>
         <div className="section_divider" />
         <div className="section">
-          <div className="container">
-            <div className="innerSection">
-              <h1 className="page_header--title -black -top-picks -browse">
-                Browse Authors
+          {this.state.bookCategories
+            &&
+            <div className="container">
+              <div className="innerSection">
+                <h1 className="page_header--title -black -top-picks -browse">
+                  Categories
               </h1>
-            </div>
-          </div>
+              </div>
+              <div className="row">
+                <div className="col-md-12">
+                  <ul className="category-grid">
+                    {this.state.bookCategories.map(bookCategories =>
+                      (<li
+                        key={bookCategories.id}
+                      >
+                        <Link
+                          to={`/categories/${bookCategories.id}`}
+                          href={`/categories/${bookCategories.id}`}
+                        >
+                          {bookCategories.categoryName}
+                        </Link>
+                      </li>)
+                    )}
+                  </ul>
+                </div>
+              </div>
+            </div>}
         </div>
-      </div >
+      </div>
     );
   }
 }
 LogIndex.defaultProps = {
+  bookCategories: [],
   byLendingBooks: [],
   error: null,
   ratedBooks: []
 };
 LogIndex.propTypes = {
+  bookCategories: PropTypes.array,
   byLendingBooks: PropTypes.array,
   error: PropTypes.object,
+  fetchCategoryList: PropTypes.func.isRequired,
   loadAllBooks: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
   ratedBooks: PropTypes.array,
@@ -383,11 +415,13 @@ LogIndex.contextTypes = {
   router: PropTypes.object.isRequired
 };
 /**
- * @param {*} state
+ * @param {object} state
+ *
  * @returns {object} nextprops
  */
 function mapStateToProps(state) {
   return {
+    bookCategories: state.bookCategoryListReducer.bookCategories,
     ratedBooks: state.homeBooksReducer.ratedBooks,
     byLendingBooks: state.homeBooksReducer.byLendingBooks,
     error: state.homeBooksReducer.error
@@ -395,6 +429,7 @@ function mapStateToProps(state) {
 }
 export default connect(mapStateToProps,
   {
+    fetchCategoryList,
     loadAllBooks,
     logout
   }

@@ -2,13 +2,13 @@ import 'raf/polyfill';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ConnectedViewAllBooks, { ViewAllBooks } from
-  '../../../src/components/pages/ViewAllBooks';
+import ConnectedViewByCategory, { ViewByCategory } from
+  '../../../src/components/pages/ViewByCategory';
 import mockStoreData from '../../__mock__/mockStoreData';
 
 jest.mock('react-router-dom');
 let store;
-describe('ViewAllBooks Component', () => {
+describe('ViewByCategory Component', () => {
   const options = {
     context: {
       router: {
@@ -27,13 +27,23 @@ describe('ViewAllBooks Component', () => {
   describe('Non Life Cycle Tests', () => {
     const props = {
       fetchBooks: jest.fn(),
-      logout: jest.fn()
+      viewBookByCategory: jest.fn(),
+      logout: jest.fn(),
+      fetching: false,
+      match: {
+        params: {}
+      }
     };
     test('Should render component with just loading page', () => {
       const wrapper = shallow(
-        <ViewAllBooks
+        <ViewByCategory
+          match={props.match}
           logout={props.logout}
+          clearAllBookState={jest.fn()}
+          fetchCategoryList={jest.fn()}
           fetchBooks={props.fetchBooks}
+          fetching
+          viewBookByCategory={props.viewBookByCategory}
         />,
         options
       );
@@ -45,9 +55,14 @@ describe('ViewAllBooks Component', () => {
     test('Should render component with 504 error', () => {
       jest.useFakeTimers();
       const wrapper = shallow(
-        <ViewAllBooks
+        <ViewByCategory
+          match={props.match}
+          fetchCategoryList={jest.fn()}
+          fetching={props.fetching}
           logout={props.logout}
           fetchBooks={props.fetchBooks}
+          clearAllBookState={jest.fn()}
+          viewBookByCategory={props.viewBookByCategory}
         />,
         options
       );
@@ -65,8 +80,13 @@ describe('ViewAllBooks Component', () => {
     test('Should render component and logout on unauthenticated error',
       () => {
         const wrapper = shallow(
-          <ViewAllBooks
+          <ViewByCategory
+            match={props.match}
+            fetching={props.fetching}
+            fetchCategoryList={jest.fn()}
             logout={props.logout}
+            clearAllBookState={jest.fn()}
+            viewBookByCategory={props.viewBookByCategory}
             fetchBooks={props.fetchBooks}
           />,
           options
@@ -85,7 +105,12 @@ describe('ViewAllBooks Component', () => {
       test('Should fully render component ',
         () => {
           const wrapper = mount(
-            <ViewAllBooks
+            <ViewByCategory
+              match={props.match}
+              fetching={props.fetching}
+              viewBookByCategory={props.viewBookByCategory}
+              fetchCategoryList={jest.fn()}
+              clearAllBookState={jest.fn()}
               logout={props.logout}
               fetchBooks={props.fetchBooks}
             />,
@@ -114,8 +139,13 @@ describe('ViewAllBooks Component', () => {
       test('Should simulate sorting click ',
         () => {
           const wrapper = mount(
-            <ViewAllBooks
+            <ViewByCategory
+              fetching={props.fetching}
+              match={props.match}
               logout={props.logout}
+              clearAllBookState={jest.fn()}
+              fetchCategoryList={jest.fn()}
+              viewBookByCategory={props.viewBookByCategory}
               fetchBooks={props.fetchBooks}
             />,
             options
@@ -145,8 +175,13 @@ describe('ViewAllBooks Component', () => {
       test('Should simulate Page Change click ',
         () => {
           const wrapper = mount(
-            <ViewAllBooks
+            <ViewByCategory
               logout={props.logout}
+              match={props.match}
+              viewBookByCategory={props.viewBookByCategory}
+              fetchCategoryList={jest.fn()}
+              fetching={props.fetching}
+              clearAllBookState={jest.fn()}
               fetchBooks={props.fetchBooks}
             />,
             options
@@ -176,8 +211,13 @@ describe('ViewAllBooks Component', () => {
       test('Should simulate Limit Change click ',
         () => {
           const wrapper = mount(
-            <ViewAllBooks
+            <ViewByCategory
               logout={props.logout}
+              fetchCategoryList={jest.fn()}
+              fetching={props.fetching}
+              clearAllBookState={jest.fn()}
+              match={props.match}
+              viewBookByCategory={props.viewBookByCategory}
               fetchBooks={props.fetchBooks}
             />,
             options
@@ -208,7 +248,9 @@ describe('ViewAllBooks Component', () => {
         store = mockStore(mockStoreData);
       });
       test('Should mount connnected component', () => {
-        const wrapper = mount(<ConnectedViewAllBooks
+        const wrapper = mount(<ConnectedViewByCategory
+          match={props.match}
+          fetching={false}
           store={store}
         />,
           options
@@ -224,7 +266,7 @@ describe('ViewAllBooks Component', () => {
     const componentDidMount = jest.fn();
     const componentWillReceiveProps = jest.fn();
     const componentWillUnmount = jest.fn();
-    class ComponentTest extends ViewAllBooks {
+    class ComponentTest extends ViewByCategory {
       constructor(props) {
         super(props);
         this.componentDidMount = componentDidMount;
@@ -232,14 +274,20 @@ describe('ViewAllBooks Component', () => {
         this.componentWillUnmount = componentWillUnmount;
       }
       render() {
-        return (<ViewAllBooks {...this.props} />);
+        return (<ViewByCategory {...this.props} />);
       }
     }
     test('Should call Component Did Mount Life Cycle', () => {
       const wrapper = shallow(<ComponentTest
         logout={jest.fn()}
+        fetchCategoryList={jest.fn()}
         fetchBooks={jest.fn()}
+        fetching={false}
+        viewBookByCategory={jest.fn()}
         clearAllBookState={jest.fn()}
+        match={{
+          params: {}
+        }}
       />, options);
       expect(wrapper).toBeDefined();
       expect(wrapper.length).toBe(1);
@@ -250,7 +298,13 @@ describe('ViewAllBooks Component', () => {
       const wrapper = mount(<ComponentTest
         logout={jest.fn()}
         fetchBooks={jest.fn()}
+        fetching={false}
+        fetchCategoryList={jest.fn()}
+        viewBookByCategory={jest.fn()}
         clearAllBookState={jest.fn()}
+        match={{
+          params: {}
+        }}
       />, options);
       expect(wrapper).toBeDefined();
       expect(wrapper.length).toBe(1);

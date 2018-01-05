@@ -1,6 +1,9 @@
 import {
+  CLEAR_BOOKS,
   FETCH_BOOKS_COMPLETE,
-  FETCH_BOOKS_REJECT
+  FETCH_BOOKS_REJECT,
+  FETCH_BOOKS_INVALID,
+  REMOVE_BOOK_FROM_CATEGORY_SUCCESS
 } from '../components/actions/types';
 
 /**
@@ -31,6 +34,44 @@ export default function bookReducer(state = {
         ...state,
         fetching: false,
         error: action.error
+      };
+    }
+    case CLEAR_BOOKS: {
+      return {
+        fetchedBooks: {},
+        fetching: false,
+        fetched: false,
+        error: null
+      };
+    }
+    case FETCH_BOOKS_INVALID: {
+      return {
+        ...state,
+        error: action.messageContent,
+        fetching: false
+      };
+    }
+    case REMOVE_BOOK_FROM_CATEGORY_SUCCESS: {
+      if (state.fetchedBooks.totalBooksCount - 1 > 1) {
+        return {
+          ...state,
+          fetching: false,
+          fetched: false,
+          error: null,
+          fetchedBooks: {
+            ...state.fetchedBooks,
+            totalBooksCount: state.fetchedBooks.totalBooksCount - 1,
+            bookLists: state.fetchedBooks.bookLists.filter(book =>
+              book.id !== parseInt(action.response.book, 10))
+          }
+        };
+      }
+      return {
+        ...state,
+        fetching: false,
+        error: {
+          message: 'No Books in Category'
+        }
       };
     }
     default:

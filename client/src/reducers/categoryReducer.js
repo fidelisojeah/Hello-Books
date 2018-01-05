@@ -1,29 +1,29 @@
 import {
-  AUTHOR_CREATED_SUCCESS,
-  AUTHOR_CREATED_FAILURE
+  CATEGORY_CREATE_COMPLETE,
+  CATEGORY_CREATE_FAILURE,
+  ADD_BOOK_CATEGORY_SUCCESS,
+  ADD_BOOK_CATEGORY_FAILURE
 } from '../components/actions/types';
 
 /**
- *
  * @param {object} state
  *
  * @param {object} action
  *
  * @returns {object} new state
  */
-export default function authorReducer(state = {
-  authorCreated: false,
-  error: {}
+export default function categoryReducer(state = {
+
 }, action) {
   switch (action.type) {
-    case AUTHOR_CREATED_SUCCESS: {
+    case CATEGORY_CREATE_COMPLETE: {
       return {
         ...state,
-        authorCreated: true,
-        error: {}
+        newMessage: action.message,
+        error: null
       };
     }
-    case AUTHOR_CREATED_FAILURE: {
+    case CATEGORY_CREATE_FAILURE: {
       return {
         ...state,
         error: action.error

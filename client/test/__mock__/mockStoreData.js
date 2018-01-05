@@ -1,4 +1,7 @@
 export default {
+  bookCategoryListReducer: {
+    bookCategories: []
+  },
   userActionReducer: {
     message: {
 

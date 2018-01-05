@@ -108,11 +108,21 @@ app.get('/api/v1/books', CheckSession.checkLogin,
 app.post('/api/v1/books/category',
   CheckSession.checkLogin, BookCategory.newCategory);
 
+app.delete('/api/v1/books/category',
+  CheckSession.checkLogin, BookCategory.deleteCategory);
+
+app.delete('/api/v1/book/category',
+  CheckSession.checkLogin, BookCategory.deleteBookCategory);
+
+
 app.put('/api/v1/books/category',
   CheckSession.checkLogin, BookCategory.addBookCategory);
 
 app.get('/api/v1/books/category/:categoryId',
   CheckSession.checkLogin, BookCategory.viewByCategory);
+
+app.get('/api/v1/books/lists/categories',
+  CheckSession.checkLogin, BookCategory.viewCategories);
 
 app.put('/api/v1/books/:bookId',
   CheckSession.checkLogin, BookProps.modifyBook);

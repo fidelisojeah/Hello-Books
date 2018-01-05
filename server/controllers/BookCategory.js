@@ -7,6 +7,7 @@ import {
 } from '../models';
 
 import CheckSession from '../middleware/CheckSession';
+import toTitleCase from '../helpers/toTitleCase';
 
 class BookCategory {
   /**
@@ -69,18 +70,21 @@ class BookCategory {
       .then(() => {
         Category// create new category
           .create({
-            categoryName
+            categoryName: toTitleCase(categoryName)
           })
-          .then(() => { // if Category creation was successful
+          .then((createdCategory) => { // if Category creation was successful
             response.status(201).json({
               status: 'Success',
               message: 'Category Created Successfully',
+              categoryId: createdCategory.id,
+              categoryName: createdCategory.categoryName
             });
           })
           .catch(errorMessage =>
             response.status(400).json({
               status: 'Unsuccessful',
               message: errorMessage.errors[0].message,
+              inputError: errorMessage.errors[0].path
             })
           );
       })
@@ -279,7 +283,153 @@ class BookCategory {
             error
           });
         });
+    } else {
+      response.status(400).json({
+        status: 'Unsuccessful',
+        message: 'Category not Specified',
+        error: 'Category not Specified',
+      });
     }
+  }
+  /**
+  * @description method View List of all Categories
+  *
+  * @param {object} request HTTP Request object
+  *
+  * @param {object} response HTTP Response object
+  */
+  static viewCategories(request, response) {
+    Category
+      .findAll({
+        attributes: ['id', 'categoryName']
+      })
+      .then((bookCategories) => {
+        if (bookCategories) {
+          response.status(202).json({
+            status: 'Success',
+            bookCategories
+          });
+        }
+      })
+      .catch(error =>
+        response.status(500).json({
+          status: 'Unsuccessful',
+          message: 'Something went wrong!',
+          error
+        }));
+  }
+  /**
+   * @description method Delete Category
+   *
+   * @param {object} request HTTP Request object
+   *
+   * @param {object} response HTTP Response object
+   */
+  static deleteCategory(request, response) {
+    const categoryId = request.body.categoryId || null;
+    BookCategory
+      .validateEntries(
+      request.decoded,
+      'categoryName',
+      categoryId,
+      1)
+      .then(() => {
+        Category// create new category
+          .destroy({
+            where: {
+              id: categoryId
+            }
+          })
+          .then((deleted) => {
+            response.status(200).json({
+              status: 'Success',
+              message: 'Category Deleted Successfully',
+              deleted: categoryId
+            });
+          })
+          .catch((error) => {
+            if (error.name === 'SequelizeForeignKeyConstraintError') {
+              response.status(403).json({
+                status: 'Unsuccessful',
+                message:
+                  'Cannot Delete Category, Remove Books From Category First'
+              });
+            } else {
+              response.status(500).json({
+                status: 'Unsuccessful',
+                message: 'Something went wrong!',
+                error
+              });
+            }
+          });
+      })
+      .catch(error =>
+        response.status(error.errorCode).json({
+          status: error.status,
+          message: error.message
+        })
+      );
+  }
+  /**
+  * @description method Remove Book from Category
+  *
+  * @param {object} request HTTP Request object
+  *
+  * @param {object} response HTTP Response object
+  */
+  static deleteBookCategory(request, response) {
+    const bookId = request.body.bookId || null;
+    const categoryId = request.body.categoryId || null;
+
+    BookCategory
+      .validateEntries(
+      request.decoded,
+      'categoryName',
+      categoryId,
+      bookId)
+      .then(() => {
+        Promise.all([
+          Books.findOne({
+            where: {
+              id: bookId,
+            }
+          }),
+          Category.findOne({
+            where: {
+              id: categoryId
+            }
+          })
+        ])
+          .then(([foundBook, foundCategory]) => {
+            if (foundBook === null || foundCategory === null) {
+              response.status(400).json({
+                status: 'Unsuccessful',
+                message: 'Invalid Book/Category'
+              });
+            } else {
+              foundBook
+                .removeCategory(foundCategory)
+                .then(() => {
+                  response.status(200).json({
+                    status: 'Success',
+                    message: 'Book Removed from Category Successfully',
+                    book: bookId
+                  });
+                });
+            }
+          })
+          .catch(errorMessage =>
+            response.status(500).json({
+              status: 'Unsuccessful',
+              error: errorMessage,
+            }));
+      })
+      .catch(error =>
+        response.status(error.errorCode).json({
+          status: error.status,
+          message: error.message
+        })
+      );
   }
 }
 export default BookCategory;

@@ -16,8 +16,11 @@ import {
   FETCH_BORROWED_BOOKS_HISTORY_COMPLETE,
   FETCH_BORROWED_BOOKS_HISTORY_REJECT,
   FETCH_BOOK_CLEAR,
+  CLEAR_BOOKS,
   HOME_PAGE_BOOKS_REJECT,
-  HOME_PAGE_BOOKS_COMPLETE
+  HOME_PAGE_BOOKS_COMPLETE,
+  FETCH_BOOKS_INVALID,
+  LOAD_ALL_BOOKS_SUCCESS
 } from './types';
 
 import { getMoment } from '../common/calculateMoment';
@@ -27,6 +30,23 @@ import { getMoment } from '../common/calculateMoment';
  */
 export const clearBookStore = () => (
   { type: FETCH_BOOK_CLEAR }
+);
+/**
+ * @returns {object} action
+ */
+export const clearAllBooks = () => (
+  { type: CLEAR_BOOKS }
+);
+/**
+ * @returns {object} action
+ *
+ * @param {object} messageContent
+ */
+export const fetchBooksInvalid = messageContent => (
+  {
+    type: FETCH_BOOKS_INVALID,
+    messageContent
+  }
 );
 /**
  *
@@ -181,18 +201,44 @@ export const userBookReturnFailure = error => (
     error
   }
 );
+/**
+ *
+ * @param {object} error
+ *
+ * @returns {object} action
+ */
 export const getHomePageBooksError = error => (
   {
     type: HOME_PAGE_BOOKS_REJECT,
     error
   }
 );
+/**
+ *
+ * @param {object} books
+ *
+ * @returns {object} action
+ */
 export const getHomePageBooksSuccess = books => (
   {
     type: HOME_PAGE_BOOKS_COMPLETE,
     books
   }
 );
+
+/**
+ * @returns {function} dispatch to reducer
+ */
+export const clearBookState = () =>
+  dispatch =>
+    dispatch(clearBookStore({}));
+/**
+ * @returns {function} dispatch to reducer
+ */
+export const clearAllBookState = () =>
+  dispatch =>
+    dispatch(clearAllBooks({}));
+
 /**
  * @return {Promise} Axios request
  */
@@ -230,7 +276,9 @@ export const viewOneBook = bookID =>
 
 /**
  * @param {number} page
+ *
  * @param {number} limit
+ *
  * @param {String} sort
  *
  * @returns {function} dispatch
@@ -294,10 +342,6 @@ export const borrowBook = info =>
         dispatch(userBorrowBookFailure(error.response));
       });
 
-export const clearBookState = () =>
-  dispatch =>
-    dispatch(clearBookStore({}));
-
 /**
  *
  * @param {object} userData
@@ -353,4 +397,48 @@ export const returnBook = userData =>
       .catch((error) => {
         dispatch(userBookReturnFailure(error.response));
       });
-
+/**
+ *
+ * @param {object} bookCategoryInfo
+ *
+ * @returns {function} Dispatch to reducers
+ *
+ */
+export function viewBookByCategory(bookCategoryInfo) {
+  return dispatch =>
+    axios
+      .get(`/api/v1/books/category/${bookCategoryInfo.categoryId}`,
+      {
+        params: {
+          limit: bookCategoryInfo.limit,
+          sort: bookCategoryInfo.sort,
+          page: bookCategoryInfo.page
+        }
+      })
+      .then((response) => {
+        if (response.data.bookLists) {
+          dispatch(fetchBooksComplete(response.data));
+        } else {
+          dispatch(fetchBooksInvalid(response.data));
+        }
+      }
+      )
+      .catch(error =>
+        dispatch(fetchBooksReject(error.response))
+      );
+}
+export const loadAllBooksAction = response => ({
+  type: LOAD_ALL_BOOKS_SUCCESS,
+  response
+});
+/**
+ * @returns {object} All Books in Library
+ */
+export function fetchAllBooks() {
+  return (dispatch) =>
+    axios
+      .get('/api/v1/books')
+      .then(response =>
+        dispatch(loadAllBooksAction(response.data))
+      );
+}
