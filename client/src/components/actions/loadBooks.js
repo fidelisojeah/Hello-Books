@@ -435,7 +435,7 @@ export const loadAllBooksAction = response => ({
  * @returns {object} All Books in Library
  */
 export function fetchAllBooks() {
-  return (dispatch) =>
+  return dispatch =>
     axios
       .get('/api/v1/books')
       .then(response =>

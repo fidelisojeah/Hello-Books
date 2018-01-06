@@ -252,6 +252,18 @@
                     <a href="#update-book-quantity" class="toc-h2 toc-link" data-title="Update Book Quantity">Update Book Quantity</a>
                   </li>
                   <li>
+                    <a href="#create-book-category" class="toc-h2 toc-link" data-title="Create Book Category">Create Book Category</a>
+                  </li>
+                  <li>
+                    <a href="#add-books-to-category" class="toc-h2 toc-link" data-title="Add Books to Category">Add Books to Category</a>
+                  </li>
+                  <li>
+                    <a href="#remove-book-from-category" class="toc-h2 toc-link" data-title="Remove Book From Category">Remove Book From Category</a>
+                  </li>
+                  <li>
+                    <a href="#delete-book-category" class="toc-h2 toc-link" data-title="Delete Book Category">Delete Book Category</a>
+                  </li>
+                  <li>
                     <a href="#common-errors" class="toc-h2 toc-link" data-title="Common Errors">Common Errors</a>
                   </li>
               </ul>
@@ -264,6 +276,9 @@
                   </li>
                   <li>
                     <a href="#get-books" class="toc-h2 toc-link" data-title="Get Books">Get Books</a>
+                  </li>
+                  <li>
+                    <a href="#get-books-by-category" class="toc-h2 toc-link" data-title="Get Books By Category">Get Books By Category</a>
                   </li>
               </ul>
           </li>
@@ -896,6 +911,292 @@ The minimum number of a particular book can be 0, if quantity specified above is
 <p>Error code <strong>400</strong> indicate that No quantity field was specified</p>
 
 <p>Error code <strong>404</strong> indicate that Book ID has not been specified or book was not found in the library</p>
+<h2 id='create-book-category'>Create Book Category</h2><pre class="highlight shell tab-shell"><code>curl
+    -X POST <span class="s2">"https://fidelishellobooks.herokuapp.com/api/v1/books/category"</span> -d <span class="s2">"categoryName=drama"</span>
+    -H <span class="s2">"x-access-token:
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FtcGxldXNlciIsImZpcnN0TmFtZSI6IlNhbXBsZSIsImxhc3ROYW1lIjoiVXNlciIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNTEzMTc1OTQxLCJleHAiOjE1MTM1MjE1NDF9.OPD-w85wL8ELcF8xnX7bDHUqA3yISsS3FIehGsrp0v4"</span>
+</code></pre>
+<blockquote>
+<p>Sample Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Category Created Successfully"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"categoryId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"categoryName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Drama"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Creates a new Category</p>
+
+<p><code>POST https://fidelishellobooks.herokuapp.com/api/v1/books/category</code></p>
+<h3 id='create-book-category-parameters'>Create Book Category Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>isRequired</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>categoryName</td>
+<td>true</td>
+<td>The Name of the category to be added</td>
+</tr>
+</tbody></table>
+
+<aside class="warning">
+Category Name must be unique
+</aside>
+<h3 id='create-category-responses-and-errors'>Create Category Responses and Errors</h3>
+<blockquote>
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>201</td>
+<td>Category Created Successfully</td>
+<td>Specifies that the category has been created successfully</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Incomplete Details</td>
+<td>Specifies that API has been called without Category Name Supplied</td>
+</tr>
+<tr>
+<td>400</td>
+<td>CategoryName must be unique</td>
+<td>Specifies that the category name already exists</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>Unsuccessful</td>
+<td>A server error has occured (from our end)</td>
+</tr>
+</tbody></table>
+</blockquote>
+
+<p>Once a <strong>201</strong> response code is returned, it can be expected that the category has been created and added to library</p>
+
+<p>Error code <strong>400</strong> indicate that either the category name is invalid or incomplete details have been entered</p>
+<h2 id='add-books-to-category'>Add Books to Category</h2><pre class="highlight shell tab-shell"><code>curl
+    -X PUT <span class="s2">"https://fidelishellobooks.herokuapp.com/api/v1/books/category"</span> -d <span class="s2">"categoryId=1&amp;bookId=1"</span>
+    -H <span class="s2">"x-access-token:
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FtcGxldXNlciIsImZpcnN0TmFtZSI6IlNhbXBsZSIsImxhc3ROYW1lIjoiVXNlciIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNTEzMTc1OTQxLCJleHAiOjE1MTM1MjE1NDF9.OPD-w85wL8ELcF8xnX7bDHUqA3yISsS3FIehGsrp0v4"</span>
+</code></pre>
+<blockquote>
+<p>Sample Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Book Added to Category Successfully"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Adds a certain book to a category</p>
+
+<p><code>PUT https://fidelishellobooks.herokuapp.com/api/v1/books/category</code></p>
+<h3 id='add-book-to-category-parameters'>Add Book to Category Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>isRequired</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>categoryId</td>
+<td>true</td>
+<td>The Id of the category</td>
+</tr>
+<tr>
+<td>bookId</td>
+<td>true</td>
+<td>The Id of the Book to be added</td>
+</tr>
+</tbody></table>
+<h3 id='add-books-to-category-responses-and-errors'>Add Books to Category Responses and Errors</h3>
+<blockquote>
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Book Added to Category Successfully</td>
+<td>Specifies that the book has been added to the category successfully</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Incomplete Details</td>
+<td>Specifies that API has been called without Category Id or Book Id Supplied</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Book/Category</td>
+<td>Specifies that either the bookId or categoryId does not exist on database</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>Unsuccessful</td>
+<td>A server error has occured (from our end)</td>
+</tr>
+</tbody></table>
+</blockquote>
+
+<p>A <strong>200</strong> Indicates that the book has been successfully added to the category</p>
+
+<p>Error code <strong>400</strong> indicate that either the category/book Id is invalid or incomplete details have been entered</p>
+<h2 id='remove-book-from-category'>Remove Book From Category</h2><pre class="highlight shell tab-shell"><code>curl
+    -X DELETE <span class="s2">"https://fidelishellobooks.herokuapp.com/api/v1/book/category"</span> -d <span class="s2">"categoryId=1&amp;bookId=1"</span>
+    -H <span class="s2">"x-access-token:
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FtcGxldXNlciIsImZpcnN0TmFtZSI6IlNhbXBsZSIsImxhc3ROYW1lIjoiVXNlciIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNTEzMTc1OTQxLCJleHAiOjE1MTM1MjE1NDF9.OPD-w85wL8ELcF8xnX7bDHUqA3yISsS3FIehGsrp0v4"</span>
+</code></pre>
+<blockquote>
+<p>Sample Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Book Removed from Category Successfully"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"book"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Removes a certain book from a category</p>
+
+<p><code>DELETE https://fidelishellobooks.herokuapp.com/api/v1/book/category</code></p>
+<h3 id='remove-book-from-category-parameters'>Remove Book from Category Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>isRequired</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>categoryId</td>
+<td>true</td>
+<td>The Id of the category</td>
+</tr>
+<tr>
+<td>bookId</td>
+<td>true</td>
+<td>The Id of the Book to be added</td>
+</tr>
+</tbody></table>
+<h3 id='remove-books-from-category-responses-and-errors'>Remove Books from Category Responses and Errors</h3>
+<blockquote>
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Book Removed from Category Successfully</td>
+<td>Specifies that the book has been removed from the category successfully</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Incomplete Details</td>
+<td>Specifies that API has been called without Category Id or Book Id Supplied</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Invalid Book/Category</td>
+<td>Specifies that either the bookId or categoryId does not exist on database</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>Unsuccessful</td>
+<td>A server error has occured (from our end)</td>
+</tr>
+</tbody></table>
+</blockquote>
+
+<p>A <strong>200</strong> Indicates that the book has been successfully removed from the category specified</p>
+
+<p>Error code <strong>400</strong> indicate that either the category/book Id is invalid or incomplete details have been entered</p>
+<h2 id='delete-book-category'>Delete Book Category</h2><pre class="highlight shell tab-shell"><code>curl
+    -X DELETE <span class="s2">"https://fidelishellobooks.herokuapp.com/api/v1/books/category"</span> -d <span class="s2">"categoryId=1"</span>
+    -H <span class="s2">"x-access-token:
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FtcGxldXNlciIsImZpcnN0TmFtZSI6IlNhbXBsZSIsImxhc3ROYW1lIjoiVXNlciIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNTEzMTc1OTQxLCJleHAiOjE1MTM1MjE1NDF9.OPD-w85wL8ELcF8xnX7bDHUqA3yISsS3FIehGsrp0v4"</span>
+</code></pre>
+<blockquote>
+<p>Sample Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Category Deleted Successfully"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"deleted"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span></code></pre>
+<p>Deletes a Category from the list of categories,</p>
+
+<p><code>DELETE https://fidelishellobooks.herokuapp.com/api/v1/books/category</code></p>
+<h3 id='delete-book-category-parameters'>Delete Book Category Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>isRequired</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>categoryId</td>
+<td>true</td>
+<td>The Id of the category to be deleted</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+A category must be empty before it can be deleted (No books present in the category)
+</aside>
+<h3 id='delete-category-responses-and-errors'>Delete Category Responses and Errors</h3>
+<blockquote>
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>Category Deleted Successfully</td>
+<td>Specifies that the category has been created successfully</td>
+</tr>
+<tr>
+<td>400</td>
+<td>Incomplete Details</td>
+<td>Specifies that API has been called without Category Name Supplied</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Cannot Delete Category, Remove Books from Category First</td>
+<td>Specifies that there are still books present in the category</td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>Unsuccessful</td>
+<td>A server error has occured (from our end)</td>
+</tr>
+</tbody></table>
+</blockquote>
+
+<p>Once a <strong>200</strong> response code is returned, it can be expected that the category has been deleted from the library</p>
+
+<p>Error code <strong>400</strong> indicate that either the category Id is invalid or incomplete details have been entered</p>
+
+<p>Error code <strong>403</strong> indicate that the category cannot be deleted yet</p>
 <h2 id='common-errors'>Common Errors</h2>
 <blockquote>
 <table><thead>
@@ -1079,6 +1380,110 @@ The minimum number of a particular book can be 0, if quantity specified above is
 <td>400</td>
 <td>[Invalid {<strong>field</strong>} sent]</td>
 <td>Returns an array of errors (for limit or/and page fields) e.g <code>[{&quot;field&quot;:&quot;page&quot;,&quot;error&quot;:&quot;Invalid Page sent&quot;},{&quot;field&quot;:&quot;limit&quot;,&quot;error&quot;:&quot;Invalid limit sent&quot;}]</code></td>
+</tr>
+<tr>
+<td>5xx</td>
+<td>Unsuccessful</td>
+<td>A server error has occured (from our end)</td>
+</tr>
+</tbody></table>
+</blockquote>
+
+<p>Once a <strong>200</strong> response code is returned, expect to receive a paginated list of books</p>
+
+<p>Status codes in the <em>5XX</em> range mostly indicate the error that has occured is from our end, You could report these errors by <a href="mailto://fidelis.ojeah@andela.com">sending an email</a></p>
+<h2 id='get-books-by-category'>Get Books By Category</h2><pre class="highlight shell tab-shell"><code>curl
+  -X GET <span class="s2">"https://fidelishellobooks.herokuapp.com/api/v1/books/category/1?page=1&amp;limit=10"</span>
+  -H <span class="s2">"x-access-token:
+  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoic2FtcGxldXNlciIsImZpcnN0TmFtZSI6IlNhbXBsZSIsImxhc3ROYW1lIjoiVXNlciIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNTEzMTc1OTQxLCJleHAiOjE1MTM1MjE1NDF9.OPD-w85wL8ELcF8xnX7bDHUqA3yISsS3FIehGsrp0v4"</span>
+</code></pre>
+<blockquote>
+<p>Sample Response</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"status"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Success"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"bookLists"</span><span class="w"> </span><span class="p">:</span><span class="w">
+    </span><span class="p">[{</span><span class="w">
+        </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"bookName"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Sample Book"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"bookISBN"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"1029-1820-1381-11"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"description"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"This is a new description hehe"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"bookImage"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"xyz.jpg"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"publishYear"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-01-01T00:00:00.000Z"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"RatingCount"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"RatingSum"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"ratingAvg"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"Authors"</span><span class="w"> </span><span class="p">:</span><span class="w">
+        </span><span class="p">[{</span><span class="w">
+            </span><span class="s2">"id"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"authorAKA"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"Anonymous"</span><span class="w">
+        </span><span class="p">}],</span><span class="w">
+        </span><span class="s2">"Categories"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"categoryName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Drama"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}],</span><span class="w">
+    </span><span class="s2">"totalBooksCount"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"totalPages"</span><span class="p">:</span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+<p>Lists of all Books Created and placed in the category</p>
+
+<p><code>GET https://fidelishellobooks.herokuapp.com/api/v1/books/category/&lt;categoryId&gt;</code></p>
+<h3 id='get-books-by-category-parameters'>Get Books By Category Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>type</th>
+<th>isRequired</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>categoryId</td>
+<td>params</td>
+<td>The ID of the category to be sorted by</td>
+<td></td>
+</tr>
+<tr>
+<td>page</td>
+<td>query</td>
+<td>false</td>
+<td>The page number (based of offset) (defaults to 1)</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>query</td>
+<td>false</td>
+<td>The number of books expected to be displayed per API call (defaults to 10)</td>
+</tr>
+<tr>
+<td>sort</td>
+<td>query</td>
+<td>false</td>
+<td>if specified, sorts the result either <em>Alphabetically</em> or by <em>Rating</em> otherwise sorts from newest first values could be <code>alphabetical</code>,<code>rating</code> (case insensitive)</td>
+</tr>
+</tbody></table>
+<h3 id='get-books-by-category-response-and-errors'>GET Books By Category Response and Errors</h3>
+<blockquote>
+<table><thead>
+<tr>
+<th>Code</th>
+<th>Message</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>200</td>
+<td>None</td>
+<td>Request was successful, A list of books would be returned (or an empty array) with total number of pages</td>
+</tr>
+<tr>
+<td>400</td>
+<td>[Invalid {<strong>field</strong>} sent]</td>
+<td>Returns errors for incomplete details</td>
 </tr>
 <tr>
 <td>5xx</td>
