@@ -1,6 +1,42 @@
 export default {
+  singleBookReducer: {
+    fetching: false,
+    fetched: true,
+    error: null,
+    fetchedBook: {
+      id: 1,
+      bookName: 'Sample Book',
+      bookISBN: '09-293912-190-1',
+      description: 'some random description',
+      bookImage: 'xyz.jpg',
+      publishYear: '2017-01-01T00:00:00.000Z',
+      bookQuantity: 4,
+      RatingCount: '3',
+      RatingSum: '150',
+      Authors: [{
+        id: 1,
+        authorFirstName: 'Jane',
+        authorLastName: 'Doe',
+        authorAKA: 'Jane Doe',
+        dateofBirth: '1900-01-01'
+      }]
+    }
+  },
   bookCategoryListReducer: {
-    bookCategories: []
+    bookCategories: [
+      {
+        id: 1,
+        categoryName: 'Adventure'
+      },
+      {
+        id: 2,
+        categoryName: 'Drama'
+      },
+      {
+        id: 3,
+        categoryName: 'History'
+      }
+    ]
   },
   userActionReducer: {
     message: {
@@ -11,6 +47,8 @@ export default {
     }
   },
   bookReducer: {
+    fetching: false,
+    fetched: true,
     fetchedBooks: {
       totalBooksCount: 2,
       totalPages: 1,

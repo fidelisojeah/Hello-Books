@@ -1,79 +1,7 @@
 import React from 'react';
 import 'raf/polyfill';
 
-import ToastrComponent from '../../../src/components/ToastrComponent';
-import ToastrModal from '../../../src/components/ToastrModal';
-import SiteCache from '../../../src/components/SiteCache';
-
-import LoadingPage from '../../../src/components/pages/LoadingPage';
-import BreadCrumbs from '../../../src/components/common/BreadCrumbs';
-import LayoutHeader from '../../../src/components/common/LayoutHeader';
 import PerPage from '../../../src/components/common/PerPage';
-
-
-describe('Toastr Component', () => {
-  test('should render toastr component', () => {
-    const wrapper = shallow(<ToastrComponent />);
-    expect(wrapper.length).toBe(1);
-    expect(wrapper).toMatchSnapshot();
-  });
-});
-describe('Toastr Modal Component', () => {
-  test('should render Toastr Modalcomponent', () => {
-    const wrapper = shallow(<ToastrModal />);
-    expect(wrapper.length).toBe(1);
-    expect(wrapper).toMatchSnapshot();
-  });
-  test('should close modal', () => {
-    const wrapper = shallow(<ToastrModal />);
-    wrapper.find('.close').simulate('click',
-      { preventDefault() { } });
-    expect(wrapper.length).toBe(1);
-    expect(wrapper).toMatchSnapshot();
-  });
-});
-describe('LoadingPage', () => {
-  test('should render LoadingPage component', () => {
-    const wrapper = shallow(<LoadingPage />);
-    expect(wrapper.length).toBe(1);
-    expect(wrapper).toMatchSnapshot();
-  });
-});
-describe('Site Cache Overlay', () => {
-  test('should render site Cache component', () => {
-    const onClick = jest.fn();
-    const wrapper = shallow(<SiteCache
-      handleClick={onClick}
-    />);
-    expect(wrapper).toMatchSnapshot();
-    expect(wrapper.length).toBe(1);
-    wrapper.find('div').simulate('click');
-    expect(onClick).toHaveBeenCalled();
-  });
-});
-describe('BreadCrumbs', () => {
-  test('should render breadcrumb component', () => {
-    const wrapper = shallow(<BreadCrumbs
-      breadCrumbLinks={[
-        {
-          linkName: 'Home',
-          link: '/'
-        }
-      ]}
-    />);
-    expect(wrapper.length).toBe(1);
-    expect(wrapper).toMatchSnapshot();
-  });
-});
-describe('Layout Header', () => {
-  test('should render Title Header Component', () => {
-    const wrapper = shallow(<LayoutHeader
-      headerTitle="Test Header"
-    />);
-    expect(wrapper.length).toBe(1);
-    expect(wrapper).toMatchSnapshot();
-  });
-});
 
 describe('Page Limit Selector', () => {
   test('should render Page Limit Changer Component with 50 as active', () => {

@@ -13,7 +13,7 @@ import {
  * @returns {object} new state
  */
 export default function categoryReducer(state = {
-
+  newMessage: ''
 }, action) {
   switch (action.type) {
     case CATEGORY_CREATE_COMPLETE: {

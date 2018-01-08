@@ -25,10 +25,15 @@ export default class BookVerification {
     description,
     bookimage,
     quantity,
-    authors
+    authors,
+    categories
   ) {
     const errors = [];
     return new Promise((resolve, reject) => {
+      if (categories && categories !== null) {
+        categories = categories.split(',')
+          .map(Number);
+      }
       if (authors && authors !== null) {
         authors = authors.split(',')
           .map(Number); // convert to object array
@@ -47,6 +52,10 @@ export default class BookVerification {
           (authors && authors !== null)
           && authors.every(x => !isNaN(x) && x > 0)
         )
+        && (
+          (categories && categories !== null)
+          && categories.every(x => !isNaN(x) && x > 0)
+        )
       ) {
         const newBookDetails = {
           bookName: toTitleCase(bookname),
@@ -58,7 +67,8 @@ export default class BookVerification {
               'default.jpg',
           publishYear: (pubYear !== null) ? pubYear :
             '1900',
-          authors
+          authors,
+          categories
         };
         resolve(newBookDetails);// send book details
       } else {
@@ -97,6 +107,19 @@ export default class BookVerification {
           errors.push({
             field: 'authorField',
             error: 'Invalid Authors'
+          });
+        }
+        if (!categories || categories === null) {
+          errors.push({
+            field: 'categoryField',
+            error: 'No categories Selected'
+          });
+        }
+        if (Array.isArray(categories) &&
+          categories.every(x => isNaN(x))) {
+          errors.push({
+            field: 'categoryField',
+            error: 'Invalid categories'
           });
         }
         reject(errors);

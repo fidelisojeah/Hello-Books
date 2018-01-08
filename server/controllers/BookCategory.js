@@ -11,6 +11,52 @@ import toTitleCase from '../helpers/toTitleCase';
 
 class BookCategory {
   /**
+   * @description method perfofms active search on database
+   *
+   * @param {object} request HTTP Request object
+   *
+   * @param {object} response HTTP response Object
+   */
+  static searchCategories(request, response) {
+    const categoryDetails = request.query.q || null;
+    if (categoryDetails !== null && categoryDetails.length >= 1) {
+      Category
+        .findAll({
+          where: {
+            categoryName: {
+              $iLike: `%${categoryDetails}%`
+            }
+          },
+          attributes: ['id', 'categoryName']
+        })
+        .then((foundCategories) => {
+          if (!foundCategories ||
+            foundCategories === null
+            || foundCategories.length === 0) {
+            response.status(200).json({
+              status: 'None',
+              message: 'No Categories',
+            });
+          } else {
+            response.status(202).json({
+              status: 'Success',
+              foundCategories,
+            });
+          }
+        })
+        .catch(errorMessage =>
+          response.status(500).json({
+            status: 'Unsuccessful',
+            error: errorMessage,
+          }));
+    } else {
+      response.status(200).json({
+        status: 'None',
+        message: 'Type Category details'
+      });
+    }
+  }
+  /**
    *
    * @param {object} decoded -decoded token object
    *

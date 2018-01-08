@@ -40,6 +40,7 @@ describe('ViewByCategory Component', () => {
           match={props.match}
           logout={props.logout}
           clearAllBookState={jest.fn()}
+          removeBookFromCategory={jest.fn()}
           fetchCategoryList={jest.fn()}
           fetchBooks={props.fetchBooks}
           fetching
@@ -57,6 +58,7 @@ describe('ViewByCategory Component', () => {
       const wrapper = shallow(
         <ViewByCategory
           match={props.match}
+          removeBookFromCategory={jest.fn()}
           fetchCategoryList={jest.fn()}
           fetching={props.fetching}
           logout={props.logout}
@@ -85,6 +87,7 @@ describe('ViewByCategory Component', () => {
             fetching={props.fetching}
             fetchCategoryList={jest.fn()}
             logout={props.logout}
+            removeBookFromCategory={jest.fn()}
             clearAllBookState={jest.fn()}
             viewBookByCategory={props.viewBookByCategory}
             fetchBooks={props.fetchBooks}
@@ -110,6 +113,7 @@ describe('ViewByCategory Component', () => {
               fetching={props.fetching}
               viewBookByCategory={props.viewBookByCategory}
               fetchCategoryList={jest.fn()}
+              removeBookFromCategory={jest.fn()}
               clearAllBookState={jest.fn()}
               logout={props.logout}
               fetchBooks={props.fetchBooks}
@@ -142,6 +146,7 @@ describe('ViewByCategory Component', () => {
             <ViewByCategory
               fetching={props.fetching}
               match={props.match}
+              removeBookFromCategory={jest.fn()}
               logout={props.logout}
               clearAllBookState={jest.fn()}
               fetchCategoryList={jest.fn()}
@@ -179,6 +184,7 @@ describe('ViewByCategory Component', () => {
               logout={props.logout}
               match={props.match}
               viewBookByCategory={props.viewBookByCategory}
+              removeBookFromCategory={jest.fn()}
               fetchCategoryList={jest.fn()}
               fetching={props.fetching}
               clearAllBookState={jest.fn()}
@@ -214,6 +220,7 @@ describe('ViewByCategory Component', () => {
             <ViewByCategory
               logout={props.logout}
               fetchCategoryList={jest.fn()}
+              removeBookFromCategory={jest.fn()}
               fetching={props.fetching}
               clearAllBookState={jest.fn()}
               match={props.match}
@@ -274,7 +281,10 @@ describe('ViewByCategory Component', () => {
         this.componentWillUnmount = componentWillUnmount;
       }
       render() {
-        return (<ViewByCategory {...this.props} />);
+        return (<ViewByCategory
+          {...this.props}
+          fetching={false}
+        />);
       }
     }
     test('Should call Component Did Mount Life Cycle', () => {
@@ -282,6 +292,7 @@ describe('ViewByCategory Component', () => {
         logout={jest.fn()}
         fetchCategoryList={jest.fn()}
         fetchBooks={jest.fn()}
+        removeBookFromCategory={jest.fn()}
         fetching={false}
         viewBookByCategory={jest.fn()}
         clearAllBookState={jest.fn()}
@@ -301,6 +312,7 @@ describe('ViewByCategory Component', () => {
         fetching={false}
         fetchCategoryList={jest.fn()}
         viewBookByCategory={jest.fn()}
+        removeBookFromCategory={jest.fn()}
         clearAllBookState={jest.fn()}
         match={{
           params: {}

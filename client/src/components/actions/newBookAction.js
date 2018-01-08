@@ -41,7 +41,7 @@ export function newBookRequest(bookData) {
  * @return {promise} return dispatch
  */
 export function checkAuthorsRequest(authorInfo) {
-  return dispatch => {
+  return () => {
     return axios.get(`/api/v1/search/authors?q=${authorInfo}`);
   };
 }

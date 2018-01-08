@@ -38,7 +38,8 @@ function Navbar(props) {
                 href="/"
                 className="usrBtn mobile-view"
               >
-                <span>{props.user.username}</span><i className="acc-button" />
+                <span>{props.user.username}</span>
+                <i className="acc-button" />
               </a>
               <div id="profile-stuff" className="profile-dropdown">
                 <ul className="sub-menu">

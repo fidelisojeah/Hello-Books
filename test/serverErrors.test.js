@@ -1101,5 +1101,34 @@ describe('Database errors Simulations', () => {
           });
       });
     });
+    describe('When trying to search categories', () => {
+      let categoryFindAAll;
+      before((done) => {
+        categoryFindAAll = db.Category.findAll;
+        done();
+      });
+      after((done) => {
+        db.Category.findAll = categoryFindAAll;
+        done();
+      });
+      it('should return 500 Unsuccessful', (done) => {
+        db.Category.findAll = () =>
+          Promise.reject(new Error('WRONG!!!'));
+        chai.request(app)
+          .get('/api/v1/search/categories')
+          .query({
+            q: 'a',
+          })
+          .set('x-access-token', goodToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(500);
+            response.type.should.equal('application/json');
+            response.body.status.should.equal('Unsuccessful');
+            should.exist(response.body.error);
+            done();
+          });
+      });
+    });
   });
 });
