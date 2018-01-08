@@ -20,10 +20,15 @@ import {
   HOME_PAGE_BOOKS_REJECT,
   HOME_PAGE_BOOKS_COMPLETE,
   FETCH_BOOKS_INVALID,
-  LOAD_ALL_BOOKS_SUCCESS
+  LOAD_ALL_BOOKS_SUCCESS,
+  CLEAR_ALL_INDEX
 } from './types';
 
 import { getMoment } from '../common/calculateMoment';
+
+export const clearAllIndex = () => ({
+  type: CLEAR_ALL_INDEX
+});
 
 /**
  * @returns {object} action

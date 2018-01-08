@@ -186,7 +186,9 @@ export class LoginPage extends React.Component {
         });
       })
       .catch((error) => {
-        signInError.inputError = error.field;
+        signInError
+          .inputError = (error.field === 'username')
+            ? 'signInUsername' : 'signInPassword';
         signInError.message = error.message;
         this.setState({
           signInError,

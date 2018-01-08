@@ -1,7 +1,6 @@
 import express from 'express';
 import http from 'http';
 import path from 'path';
-// import app from 'index.js';
 
 const app = express();
 

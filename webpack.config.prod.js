@@ -51,7 +51,13 @@ module.exports = {
         collapseWhitespace: true,
         collapseInlineTagWhitespace: true,
         removeComments: true,
-        removeRedundantAttributes: true
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true
       }
     }),
     new webpack.optimize.ModuleConcatenationPlugin()

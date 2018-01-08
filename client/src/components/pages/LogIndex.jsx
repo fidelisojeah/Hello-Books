@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import BookCard from '../common/BookCard';
-import { loadAllBooks } from '../actions/loadBooks';
+import {
+  loadAllBooks,
+  clearAllIndex
+} from '../actions/loadBooks';
 import { logout } from '../actions/login';
 import {
   fetchCategoryList
@@ -65,6 +68,7 @@ export class LogIndex extends React.Component {
 
   componentWillUnmount() {
     window.clearInterval(this.timeOutClear);
+    this.props.clearAllIndex();
     window.removeEventListener('optimizedResize', this.calculateSizes);
   }
   getModifierValues = (
@@ -405,6 +409,7 @@ LogIndex.defaultProps = {
 LogIndex.propTypes = {
   bookCategories: PropTypes.array,
   byLendingBooks: PropTypes.array,
+  clearAllIndex: PropTypes.func.isRequired,
   error: PropTypes.object,
   fetchCategoryList: PropTypes.func.isRequired,
   loadAllBooks: PropTypes.func.isRequired,
@@ -431,6 +436,7 @@ export default connect(mapStateToProps,
   {
     fetchCategoryList,
     loadAllBooks,
+    clearAllIndex,
     logout
   }
 )(LogIndex);

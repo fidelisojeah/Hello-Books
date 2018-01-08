@@ -10,7 +10,7 @@ import CheckSession from '../middleware/CheckSession';
 import BookVerification from '../helpers/BookVerification';
 import toTitleCase from '../helpers/toTitleCase';
 
-class BookProps {
+class BookController {
   /**
    * @description method perfofms active search on database
    *
@@ -730,4 +730,4 @@ class BookProps {
   }
 }
 
-export default BookProps;
+export default BookController;

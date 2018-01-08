@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 class YearList extends React.Component {
   constructor(props) {
     super(props);
-    // this.YearListFull = this.props.
   }
 
 }
