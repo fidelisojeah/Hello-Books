@@ -340,7 +340,7 @@ class BookCategory {
               id: categoryId
             }
           })
-          .then((deleted) => {
+          .then(() => {
             response.status(200).json({
               status: 'Success',
               message: 'Category Deleted Successfully',

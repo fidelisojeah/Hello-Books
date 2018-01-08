@@ -7,7 +7,7 @@ import session from 'express-session';
 import http from 'http';
 import path from 'path';
 
-import BookProps from './controllers/BookProps';
+import BookController from './controllers/BookController';
 import BookCategory from './controllers/BookCategory';
 import UserAuthentication from './controllers/UserAuthentication';
 import UserBookInteraction from './controllers/UserBookInteraction';
@@ -84,26 +84,26 @@ app.get('/api/v1/users/history/:bookId',
 );
 
 app.get('/api/v1/sorted/books', CheckSession.checkLogin,
-  BookProps.viewBooksHomePage);
+  BookController.viewBooksHomePage);
 
 // for book stuff
 app.post('/api/v1/authors', CheckSession.checkLogin,
-  BookProps.newAuthor);
+  BookController.newAuthor);
 
 app.get('/api/v1/authors', CheckSession.checkLogin,
-  BookProps.getAuthors);
+  BookController.getAuthors);
 
 app.get('/api/v1/search/authors',
-  CheckSession.checkLogin, BookProps.searchAuthors);
+  CheckSession.checkLogin, BookController.searchAuthors);
 
 app.post('/api/v1/books', CheckSession.checkLogin,
-  BookProps.newBook);
+  BookController.newBook);
 
 app.get('/api/v1/books/list/:page',
-  CheckSession.checkLogin, BookProps.viewAllBooks);
+  CheckSession.checkLogin, BookController.viewAllBooks);
 
 app.get('/api/v1/books', CheckSession.checkLogin,
-  BookProps.viewBooks);
+  BookController.viewBooks);
 
 app.post('/api/v1/books/category',
   CheckSession.checkLogin, BookCategory.newCategory);
@@ -125,10 +125,10 @@ app.get('/api/v1/books/lists/categories',
   CheckSession.checkLogin, BookCategory.viewCategories);
 
 app.put('/api/v1/books/:bookId',
-  CheckSession.checkLogin, BookProps.modifyBook);
+  CheckSession.checkLogin, BookController.modifyBook);
 
 app.post('/api/v1/books/:bookId/quantity',
-  CheckSession.checkLogin, BookProps.updateBookQuantity);
+  CheckSession.checkLogin, BookController.updateBookQuantity);
 
 
 app.get('/api/v1/users/logout', CheckSession.clearLogin);

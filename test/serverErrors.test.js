@@ -14,10 +14,10 @@ import {
 } from './mockData';
 
 require('./userAuthentication.test');
-require('./bookProp.test');
+require('./bookController.test');
 require('./helpers.test');
 require('./middleware.test');
-require('./userBooksnteraction.test');
+require('./userBooksInteraction.test');
 
 const should = chai.should();
 chai.use(chaiHttp);

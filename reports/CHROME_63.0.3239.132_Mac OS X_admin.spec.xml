@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="0"
+            tests="1">
+
+  <testsuite name="admin.spec"
+    errors="0" failures="0" hostname="" id="" package="admin.spec" skipped="0"
+    tests="1" time="10.05" timestamp="Mon, 08 Jan 2018 13:00:31 GMT">
+  
+    <testcase name="admin pages tabs are present (Edit Category)" classname="admin.spec" time="10.05" assertions="6">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+
+  
+
+  
+  </testsuite>
+</testsuites>

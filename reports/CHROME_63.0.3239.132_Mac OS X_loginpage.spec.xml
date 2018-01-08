@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="0"
+            tests="0">
+
+  <testsuite name="loginpage.spec"
+    errors="0" failures="0" hostname="" id="" package="loginpage.spec" skipped="0"
+    tests="0" time="0.000" timestamp="Mon, 08 Jan 2018 13:00:41 GMT">
+  
+
+  
+
+  
+  </testsuite>
+</testsuites>

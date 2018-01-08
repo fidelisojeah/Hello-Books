@@ -1,6 +1,7 @@
 import {
   HOME_PAGE_BOOKS_COMPLETE,
-  HOME_PAGE_BOOKS_REJECT
+  HOME_PAGE_BOOKS_REJECT,
+  CLEAR_ALL_INDEX
 } from '../components/actions/types';
 
 /**
@@ -33,6 +34,15 @@ export default function homeBooksReducer(state = {
         fetching: false,
         fetched: false,
         error: action.error
+      };
+    }
+    case CLEAR_ALL_INDEX: {
+      return {
+        ratedBooks: [],
+        byLendingBooks: [],
+        fetching: false,
+        fetched: false,
+        error: null
       };
     }
     default:
