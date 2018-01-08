@@ -77,7 +77,6 @@ class BookController {
     CheckSession
       .checkAdmin(request.decoded)
       .then(() => {
-        // console.log('here');
         const firstName = request.body.firstname || null;
         const lastName = request.body.lastname || null;
         const dateOB = request.body.authorDOB || null;
@@ -323,7 +322,7 @@ class BookController {
         const ISBN = request.body.ISBN || null;
         const description = request.body.description || null;
         const authors = request.body.authorIds || null; // author or anonymous
-
+        const categories = request.body.categoryIds || null; // author or anonymous
         // true if every element is int
         BookVerification
           .checkNewBookVariables(bookName,
@@ -332,7 +331,8 @@ class BookController {
           description,
           bookImage,
           bookQuantity,
-          authors
+          authors,
+          categories
           )
           .then((completeBookDetails) => {
             // if book details are verified complete

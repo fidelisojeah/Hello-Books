@@ -96,6 +96,9 @@ app.get('/api/v1/authors', CheckSession.checkLogin,
 app.get('/api/v1/search/authors',
   CheckSession.checkLogin, BookController.searchAuthors);
 
+app.get('/api/v1/search/categories',
+  CheckSession.checkLogin, BookCategory.searchCategories);
+
 app.post('/api/v1/books', CheckSession.checkLogin,
   BookController.newBook);
 

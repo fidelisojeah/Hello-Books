@@ -27,13 +27,15 @@ describe('ViewAllBooks Component', () => {
   describe('Non Life Cycle Tests', () => {
     const props = {
       fetchBooks: jest.fn(),
-      logout: jest.fn()
+      logout: jest.fn(),
+      clearAllBookState: jest.fn()
     };
     test('Should render component with just loading page', () => {
       const wrapper = shallow(
         <ViewAllBooks
           logout={props.logout}
           fetchBooks={props.fetchBooks}
+          clearAllBookState={props.clearAllBookState}
         />,
         options
       );
@@ -47,6 +49,7 @@ describe('ViewAllBooks Component', () => {
       const wrapper = shallow(
         <ViewAllBooks
           logout={props.logout}
+          clearAllBookState={props.clearAllBookState}
           fetchBooks={props.fetchBooks}
         />,
         options
@@ -67,6 +70,7 @@ describe('ViewAllBooks Component', () => {
         const wrapper = shallow(
           <ViewAllBooks
             logout={props.logout}
+            clearAllBookState={props.clearAllBookState}
             fetchBooks={props.fetchBooks}
           />,
           options
@@ -86,6 +90,7 @@ describe('ViewAllBooks Component', () => {
         () => {
           const wrapper = mount(
             <ViewAllBooks
+              clearAllBookState={props.clearAllBookState}
               logout={props.logout}
               fetchBooks={props.fetchBooks}
             />,
@@ -115,6 +120,7 @@ describe('ViewAllBooks Component', () => {
         () => {
           const wrapper = mount(
             <ViewAllBooks
+              clearAllBookState={props.clearAllBookState}
               logout={props.logout}
               fetchBooks={props.fetchBooks}
             />,
@@ -147,6 +153,7 @@ describe('ViewAllBooks Component', () => {
           const wrapper = mount(
             <ViewAllBooks
               logout={props.logout}
+              clearAllBookState={props.clearAllBookState}
               fetchBooks={props.fetchBooks}
             />,
             options
@@ -178,6 +185,7 @@ describe('ViewAllBooks Component', () => {
           const wrapper = mount(
             <ViewAllBooks
               logout={props.logout}
+              clearAllBookState={props.clearAllBookState}
               fetchBooks={props.fetchBooks}
             />,
             options

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { newAuthorRequest } from '../../actions/authorActions';
+import { checkCategoryRequest } from '../../actions/categoryActions';
 import {
   bookImageUpload,
   newBookRequest,
@@ -10,8 +11,10 @@ import {
 } from '../../actions/newBookAction';
 
 import NewBookForm from '../../NewBookForm';
+
 import ConnectedNewCategory from
   '../../book-category-components/NewCategory';
+
 import ConnectedEditCategory from
   '../../book-category-components/EditCategory';
 import NewAuthorForm from '../../NewAuthorForm';
@@ -115,6 +118,7 @@ class StockMgtPage extends React.Component {
                   bookImageUpload={this.props.bookImageUpload}
                   newBookRequest={this.props.newBookRequest}
                   checkAuthorsRequest={this.props.checkAuthorsRequest}
+                  checkCategoryRequest={this.props.checkCategoryRequest}
                 />
                 <NewAuthorForm
                   newAuthorRequest={this.props.newAuthorRequest}
@@ -134,7 +138,8 @@ StockMgtPage.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
   bookImageUpload: PropTypes.func.isRequired,
   newBookRequest: PropTypes.func.isRequired,
-  checkAuthorsRequest: PropTypes.func.isRequired
+  checkAuthorsRequest: PropTypes.func.isRequired,
+  checkCategoryRequest: PropTypes.func.isRequired,
 };
 StockMgtPage.contextTypes = {
   router: PropTypes.object.isRequired,
@@ -155,5 +160,6 @@ export default connect(mapStateToProps,
     newAuthorRequest,
     bookImageUpload,
     newBookRequest,
-    checkAuthorsRequest
+    checkAuthorsRequest,
+    checkCategoryRequest
   })(StockMgtPage);

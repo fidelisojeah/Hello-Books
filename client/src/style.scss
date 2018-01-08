@@ -1821,6 +1821,7 @@
   }
 
   .author-list,
+  .category-list,
   .year-list {
     z-index: 100;
     display: none;
@@ -1840,6 +1841,7 @@
     0.1)));
     a,
     .author-list-span,
+    .category-list-span,
     .year-list-span {
       display: block;
       position: relative;
@@ -1894,7 +1896,8 @@
     }
   }
 
-  .selected-Authors {
+  .selected-Authors,
+  .selected-Categories {
     margin-top: -25px;
     margin-bottom: 38px;
     color: #fff;

@@ -6,6 +6,8 @@ import BookVerification from '../../../server/helpers/BookVerification';
 
 import AuthorSearch from './common/AuthorSearch';
 
+import CategorySearch from './common/CategorySearch';
+
 import Toastr from './common/Toastr';
 
 import ImageUploader from './common/ImageUploader';
@@ -23,7 +25,12 @@ class NewBookForm extends React.Component {
       authorList: [],
       bookAuthors: [],
       bookAuthorDetails: [],
+      bookCategories: [],
       bookname: '',
+      categoryDetails: [],
+      categoryField: '',
+      categoryIds: '',
+      categoryList: [],
       description: '',
       errors: [],
       image: '',
@@ -88,7 +95,8 @@ class NewBookForm extends React.Component {
       this.state.description,
       this.state.image,
       1,
-      this.state.authorIds
+      this.state.authorIds,
+      this.state.categoryIds
       )
       .then(() => {
         this
@@ -102,6 +110,10 @@ class NewBookForm extends React.Component {
               authorIds: '',
               authorList: [],
               bookAuthors: [],
+              categoryDetails: [],
+              categoryField: '',
+              categoryIds: '',
+              categoryList: [],
               bookAuthorDetails: [],
               description: '',
               errors: [],
@@ -141,7 +153,9 @@ class NewBookForm extends React.Component {
   onBlurEvent = () => {
     document.getElementById('listAuthors').style.display = 'none';
   }
-
+  onCategoryBlur = () => {
+    document.getElementById('listCategories').style.display = 'none';
+  }
   onAuthorChange = (event) => {
     this.setState({ authorField: event.target.value });
     if (event.target.value.length >= 1) {
@@ -172,6 +186,36 @@ class NewBookForm extends React.Component {
       });
     }
   }
+  onCategoryChange = (event) => {
+    this.setState({ categoryField: event.target.value });
+    if (event.target.value.length >= 1) {
+      document.getElementById('listCategories').style.display = 'block';
+      this
+        .props
+        .checkCategoryRequest(event.target.value)
+        .then((response) => {
+          if (response.data.status === 'Success') {
+            this.setState({
+              categoryList: response.data.foundCategories,
+            });
+          } else {
+            this.setState({
+              categoryList: response.data.message,
+            });
+          }
+        })
+        .catch(() => {
+          this.setState({
+            categoryList: [],
+          });
+        });
+    } else {
+      document.getElementById('listCategories').style.display = 'none';
+      this.setState({
+        categoryList: [],
+      });
+    }
+  }
 
   onAuthorMouseDown = (event, author) => {
     event.preventDefault();
@@ -190,6 +234,25 @@ class NewBookForm extends React.Component {
       authorList: [],
       bookAuthors,
       bookAuthorDetails,
+    });
+  }
+  onCategoryMouseDown = (event, category) => {
+    event.preventDefault();
+    const bookCategories = this.state.bookCategories;
+    const categoryDetails = this.state.categoryDetails;
+
+    bookCategories.push(category.id);
+
+    categoryDetails.push({
+      id: category.id,
+      name: category.categoryName
+    });
+    this.setState({
+      categoryField: '',
+      categoryIds: bookCategories.join(),
+      categoryList: [],
+      bookCategories,
+      categoryDetails,
     });
   }
   handleYearChangeClick = (event, yearValue) => {
@@ -280,6 +343,20 @@ class NewBookForm extends React.Component {
       bookAuthorDetails,
     });
   }
+  handleCategoryRemove = (event, position) => {
+    event.preventDefault();
+    const categoryDetails = this.state.categoryDetails;
+    const bookCategories = this.state.bookCategories;
+
+    categoryDetails.splice(position, 1);
+    bookCategories.splice(position, 1);
+
+    this.setState({
+      categoryIds: bookCategories.join(),
+      bookCategories,
+      categoryDetails,
+    });
+  }
   allYears = (minYear) => {
     const yearArray = [];
     if (parseInt(minYear, 10) > 0) {
@@ -358,6 +435,21 @@ class NewBookForm extends React.Component {
               </div>
             </div>
             <div className="row">
+              <div className="col-md-6">
+                <CategorySearch
+                  compoundError={errors}
+                  onCategoryMouseDown={this.onCategoryMouseDown}
+                  onBlurEvent={this.onCategoryBlur}
+                  handleCategoryRemove={this.handleCategoryRemove}
+                  categoryList={this.state.categoryList}
+                  categoryDetails={this.state.categoryDetails}
+                  bookCategories={this.state.bookCategories}
+                  categoryField={this.state.categoryField}
+                  onCategoryChange={this.onCategoryChange}
+                />
+              </div>
+            </div>
+            <div className="row">
               <div className="col-md-6 publish-year-book">
                 <TextField
                   compoundError={errors}
@@ -394,17 +486,6 @@ class NewBookForm extends React.Component {
                         </li>))}
                     </ul>
                   </div>}
-                {/* <TextField
-                  label="Publish Year..."
-                  compoundError={errors}
-                  onChange={this.onChange}
-                  field="publishyear"
-                  value={publishyear}
-                  formField="form-group"
-                  isRequired={false}
-                  type="text"
-                /> */}
-
               </div>
             </div>
 
@@ -470,7 +551,8 @@ class NewBookForm extends React.Component {
 NewBookForm.propTypes = {
   bookImageUpload: PropTypes.func.isRequired,
   newBookRequest: PropTypes.func.isRequired,
-  checkAuthorsRequest: PropTypes.func.isRequired
+  checkAuthorsRequest: PropTypes.func.isRequired,
+  checkCategoryRequest: PropTypes.func.isRequired,
 };
 
 NewBookForm.contextTypes = {

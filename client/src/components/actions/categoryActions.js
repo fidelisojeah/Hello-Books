@@ -212,3 +212,14 @@ export function removeBookFromCategory(bookCategoryInfo) {
         Toastr.Failure(error.response.data.message, 4000);
       });
 }
+/**
+ *
+ * @param {object} categoryInfo
+ *
+ * @return {promise} return dispatch
+ */
+export function checkCategoryRequest(categoryInfo) {
+  return () => {
+    return axios.get(`/api/v1/search/categories?q=${categoryInfo}`);
+  };
+}

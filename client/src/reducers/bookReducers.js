@@ -52,11 +52,11 @@ export default function bookReducer(state = {
       };
     }
     case REMOVE_BOOK_FROM_CATEGORY_SUCCESS: {
-      if (state.fetchedBooks.totalBooksCount - 1 > 1) {
+      if (state.fetchedBooks.totalBooksCount - 1 >= 1) {
         return {
           ...state,
           fetching: false,
-          fetched: false,
+          fetched: true,
           error: null,
           fetchedBooks: {
             ...state.fetchedBooks,

@@ -25,10 +25,15 @@ export default class BookVerification {
     description,
     bookimage,
     quantity,
-    authors
+    authors,
+    categories
   ) {
     const errors = [];
     return new Promise((resolve, reject) => {
+      if (categories && categories !== null) {
+        categories = categories.split(',')
+          .map(Number);
+      }
       if (authors && authors !== null) {
         authors = authors.split(',')
           .map(Number); // convert to object array
@@ -58,7 +63,8 @@ export default class BookVerification {
               'default.jpg',
           publishYear: (pubYear !== null) ? pubYear :
             '1900',
-          authors
+          authors,
+          categories
         };
         resolve(newBookDetails);// send book details
       } else {
