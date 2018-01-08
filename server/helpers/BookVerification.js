@@ -52,10 +52,6 @@ export default class BookVerification {
           (authors && authors !== null)
           && authors.every(x => !isNaN(x) && x > 0)
         )
-        && (
-          (categories && categories !== null)
-          && categories.every(x => !isNaN(x) && x > 0)
-        )
       ) {
         const newBookDetails = {
           bookName: toTitleCase(bookname),
@@ -107,19 +103,6 @@ export default class BookVerification {
           errors.push({
             field: 'authorField',
             error: 'Invalid Authors'
-          });
-        }
-        if (!categories || categories === null) {
-          errors.push({
-            field: 'categoryField',
-            error: 'No categories Selected'
-          });
-        }
-        if (Array.isArray(categories) &&
-          categories.every(x => isNaN(x))) {
-          errors.push({
-            field: 'categoryField',
-            error: 'Invalid categories'
           });
         }
         reject(errors);
