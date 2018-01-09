@@ -24,25 +24,6 @@ class NewAuthorForm extends React.Component {
       invalid: false
     };
   }
-  componentWillReceiveProps(nextprops) {
-    if (nextprops.error) {
-      const { error } = nextprops;
-      if (error.data.message === 'Not allowed') {
-        this.context.router.history.push('/Books');
-      } else if (error.data.message === 'Unauthenticated') {
-        this.context.router.history.push('/signin');
-      }
-      return this.setState({ isLoading: false });
-    }
-    this.setState({
-      firstname: '',
-      lastname: '',
-      authorAKA: '',
-      isLoading: false,
-      authorDOB: null,
-      error: nextprops.error
-    });
-  }
   onChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   }
@@ -51,7 +32,16 @@ class NewAuthorForm extends React.Component {
     this.setState({ errors: {}, isLoading: true });
     this
       .props
-      .newAuthorRequest(this.state);
+      .newAuthorRequest(this.state)
+      .then(() => {
+        this.setState({
+          firstname: '',
+          lastname: '',
+          authorAKA: '',
+          isLoading: false,
+          authorDOB: null,
+        });
+      });
   }
   handleDateChange = (date) => {
     this.setState({
@@ -161,10 +151,11 @@ NewAuthorForm.contextTypes = {
  *
  * @returns {object} nextprops
  */
-function mapStateToProps(state) {
-  return {
-    authorCreated: state.authorReducer.authorCreated,
-    authorCreateError: state.authorReducer.error
-  };
-}
-export default connect(mapStateToProps, null)(NewAuthorForm);
+// function mapStateToProps(state) {
+//   return {
+//     authorCreated: state.authorReducer.authorCreated,
+//     authorCreateError: state.authorReducer.error
+//   };
+// }
+// export default connect(mapStateToProps, null)(NewAuthorForm);
+export default NewAuthorForm;

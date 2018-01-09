@@ -3,7 +3,8 @@ import {
   Authors,
   Books,
   BookRatings,
-  BookLendings
+  BookLendings,
+  Category
 } from '../models';
 
 import CheckSession from '../middleware/CheckSession';
@@ -336,13 +337,21 @@ class BookController {
           )
           .then((completeBookDetails) => {
             // if book details are verified complete
-            Authors
-              .findAll({
-                where: {
-                  id: completeBookDetails.authors,
-                },
-              })
-              .then((bookAuthors) => {
+            Promise.all([
+              Authors
+                .findAll({
+                  where: {
+                    id: completeBookDetails.authors,
+                  },
+                }),
+              Category
+                .findAll({
+                  where: {
+                    id: completeBookDetails.categories,
+                  },
+                })
+            ])
+              .then(([bookAuthors, bookCategories]) => {
                 if (bookAuthors &&
                   bookAuthors !== null &&
                   bookAuthors.length >= 1
@@ -350,6 +359,10 @@ class BookController {
                   Books
                     .create(completeBookDetails)
                     .then((createdBook) => {
+                      if (bookCategories) {
+                        createdBook
+                          .addCategory(bookCategories);
+                      }
                       createdBook
                         .addAuthor(bookAuthors)
                         .then(() =>

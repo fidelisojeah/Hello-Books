@@ -152,7 +152,7 @@ StockMgtPage.contextTypes = {
  */
 function mapStateToProps(state) {
   return {
-    isAdmin: (state.auth.user.role === 'Admin'),
+    isAdmin: (state.auth.user.role === 'Admin')
   };
 }
 export default connect(mapStateToProps,

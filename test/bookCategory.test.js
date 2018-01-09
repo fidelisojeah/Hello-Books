@@ -274,6 +274,25 @@ describe('PUT /api/v1/books/category', () => {
             done();
           });
       });
+    it('should return 200 Successful',
+      (done) => {
+        chai.request(app)
+          .put('/api/v1/books/category')
+          .set('x-access-token', goodAdminToken)
+          .send({
+            bookId: 1,
+            categoryId: 3
+          })
+          .end((error, response) => {
+            should.not.exist(error);
+            response.status.should.equal(200);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Success');
+            response.body
+              .message.should.eql('Book Added to Category Successfully');
+            done();
+          });
+      });
   });
 });
 describe('GET /api/v1/books/category/:categoryId version 1', () => {
@@ -295,7 +314,7 @@ describe('GET /api/v1/books/category/:categoryId version 1', () => {
   describe('when Complete details are passed in', () => {
     it('should return a 200 with information', (done) => {
       chai.request(app)
-        .get('/api/v1/books/category/1')
+        .get('/api/v1/books/category/2')
         .query({
           limit: 10,
           page: 1
@@ -305,17 +324,8 @@ describe('GET /api/v1/books/category/:categoryId version 1', () => {
           should.not.exist(error);
           response.status.should.equal(200);
           response.type.should.equal('application/json');
-          response.body.status.should.eql('Success');
-          response.body.bookLists.should.all.have.property('id');
-          response.body.bookLists.should.all.have.property('bookName');
-          response.body.bookLists.should.all.have.property('description');
-          response.body.bookLists.should.all.have.property('bookImage');
-          response.body.bookLists.should.all.have.property('publishYear');
-          response.body.bookLists.should.all.have.property('RatingCount');
-          response.body.bookLists.should.all.have.property('RatingSum');
-          response.body.bookLists.should.all.have.property('ratingAvg');
-          should.exist(response.body.totalPages);
-          should.exist(response.body.totalBooksCount);
+          response.body.status.should.eql('None');
+          response.body.message.should.eql('No Books in Category');
           done();
         });
     });
@@ -374,7 +384,7 @@ describe('GET /api/v1/books/category/:categoryId version 1', () => {
 });
 describe('DELETE /api/v1/book/category', () => {
   describe('When Invalid Entries are entered', () => {
-    it('should return 400 Unsuccessful when no Book Id is sent',
+    it('should return 400 Unsuccessful when no category Id is sent',
       (done) => {
         chai.request(app)
           .delete('/api/v1/book/category')
@@ -391,7 +401,7 @@ describe('DELETE /api/v1/book/category', () => {
             done();
           });
       });
-    it('should return 400 Unsuccessful when no Category Id is sent',
+    it('should return 400 Unsuccessful when no Book Id is sent',
       (done) => {
         chai.request(app)
           .delete('/api/v1/book/category')
@@ -517,6 +527,75 @@ describe('GET /api/v1/search/categories', () => {
             response.body.status.should.eql('Success');
             done();
           });
+      });
+  });
+});
+describe('DELETE /api/v1/books/category', () => {
+  describe('When Invalid Entries are entered', () => {
+    it('should return 400 Unsuccessful when no category Id is sent',
+      (done) => {
+        chai.request(app)
+          .delete('/api/v1/books/category')
+          .set('x-access-token', goodAdminToken)
+          .end((error, response) => {
+            should.exist(error);
+            response.status.should.equal(400);
+            response.type.should.equal('application/json');
+            response.body.status.should.eql('Unsuccessful');
+            response.body.message.should.eql('Incomplete details');
+            done();
+          });
+      });
+  });
+  it('Should return 403 Unsuccessful for populated category', (done) => {
+    chai.request(app)
+      .delete('/api/v1/books/category')
+      .set('x-access-token', goodAdminToken)
+      .send({
+        categoryId: 3
+      })
+      .end((error, response) => {
+        should.exist(error);
+        response.status.should.equal(403);
+        response.type.should.equal('application/json');
+        response.body.status.should.eql('Unsuccessful');
+        response.body
+          .message.should.eql('Cannot Delete Category, Remove Books From Category First');
+        done();
+      });
+  });
+  it('Should successfully delete category', (done) => {
+    chai.request(app)
+      .delete('/api/v1/books/category')
+      .set('x-access-token', goodAdminToken)
+      .send({
+        categoryId: 1
+      })
+      .end((error, response) => {
+        should.not.exist(error);
+        response.status.should.equal(200);
+        response.type.should.equal('application/json');
+        response.body.status.should.eql('Success');
+        response.body
+          .message.should.eql('Category Deleted Successfully');
+        response.body
+          .deleted.should.eql(1);
+        done();
+      });
+  });
+});
+describe('GET /api/v1/books/lists/categories', () => {
+  it('should list all categories present', (done) => {
+    chai.request(app)
+      .get('/api/v1/books/lists/categories')
+      .set('x-access-token', goodAdminToken)
+      .end((error, response) => {
+        should.not.exist(error);
+        response.status.should.equal(202);
+        response.type.should.equal('application/json');
+        response.body.status.should.eql('Success');
+        should.exist(response.body.bookCategories);
+        done();
       });
   });
 });
