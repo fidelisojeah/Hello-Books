@@ -246,6 +246,7 @@ describe('Book Controller tests:', () => {
               when she comes to visit after she insults 
               Harry and his parents.`,
               authorIds: '2',
+              categoryIds: '1'
             })
             .end((error, response) => {
               should.exist(error);

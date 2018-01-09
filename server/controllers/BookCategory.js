@@ -350,12 +350,10 @@ class BookCategory {
         attributes: ['id', 'categoryName']
       })
       .then((bookCategories) => {
-        if (bookCategories) {
-          response.status(202).json({
-            status: 'Success',
-            bookCategories
-          });
-        }
+        response.status(202).json({
+          status: 'Success',
+          bookCategories
+        });
       })
       .catch(error =>
         response.status(500).json({
