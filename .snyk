@@ -12,3 +12,21 @@ patch:
         patched: '2017-12-16T18:16:41.265Z'
     - gulp > vinyl-fs > glob-watcher > gaze > globule > glob > minimatch:
         patched: '2017-12-16T18:16:41.265Z'
+  'npm:debug:20170905':
+    - style-ext-html-webpack-plugin > available-versions > debug:
+        patched: '2018-01-10T05:17:18.053Z'
+    - style-ext-html-webpack-plugin > available-versions > simple-bin-help > debug:
+        patched: '2018-01-10T05:17:18.053Z'
+    - style-ext-html-webpack-plugin > available-versions > npm-utils > debug:
+        patched: '2018-01-10T05:17:18.053Z'
+    - style-ext-html-webpack-plugin > available-versions > npm-utils > chdir-promise > debug:
+        patched: '2018-01-10T05:17:18.053Z'
+    - style-ext-html-webpack-plugin > available-versions > npm-utils > ggit > debug:
+        patched: '2018-01-10T05:17:18.053Z'
+    - style-ext-html-webpack-plugin > available-versions > npm-utils > ggit > chdir-promise > debug:
+        patched: '2018-01-10T05:17:18.053Z'
+  'npm:moment:20170905':
+    - style-ext-html-webpack-plugin > available-versions > moment:
+        patched: '2018-01-10T05:17:18.053Z'
+    - style-ext-html-webpack-plugin > available-versions > npm-utils > ggit > moment:
+        patched: '2018-01-10T05:17:18.053Z'
