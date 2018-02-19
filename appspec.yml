@@ -1,0 +1,22 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/hello-books
+hooks:
+  BeforeInstall:
+    - location: aws-deploy/before_install.sh
+      timeout: 300
+      runas: ec2-user
+  AfterInstall:
+    - location: aws-deploy/after_install.sh
+      timeout: 300
+      runas: ec2-user
+  ApplicationStart:
+    - location: aws-deploy/start_server.sh
+      timeout: 300
+      runas: ec2-user
+  ApplicationStop:
+    - location: aws-deploy/stop_server.sh
+      timeout: 300
+      runas: ec2-user

@@ -1,7 +1,6 @@
 {
   "presets": [
-    "es2015",
-    "stage-2",
+    "env",
     "react"
   ],
   "plugins": [
@@ -16,10 +15,10 @@
     "test": {
       "plugins": [
         [
-      "add-module-exports"
+          "add-module-exports"
         ],
         [
-        "istanbul"
+          "istanbul"
         ]
       ]
     }
