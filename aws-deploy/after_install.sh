@@ -10,4 +10,6 @@ npm install pm2 -g
 npm run build:webpack
 npm run build:docs
 
+chmod a+x /home/ec2-user/local-configurations/deploy.sh
+
 ./home/ec2-user/local-configurations/deploy.sh
