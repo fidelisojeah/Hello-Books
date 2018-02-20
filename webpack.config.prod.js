@@ -76,7 +76,7 @@ module.exports = {
         ],
         query: {
           cacheDirectory: true,
-          presets: ['react', 'env'],
+          presets: ['react', 'es2015'],
           plugins: [[
             'transform-class-properties',
             {
