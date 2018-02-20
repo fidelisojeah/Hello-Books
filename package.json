@@ -13,6 +13,9 @@
     "sourceMap": false,
     "instrument": false
   },
+  "engines": {
+    "node": ">=9.0.0"
+  },
   "scripts": {
     "build": "babel server/ -d build",
     "build:docs": "cp -r slate dist/apidocs",
