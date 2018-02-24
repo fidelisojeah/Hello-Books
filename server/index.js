@@ -139,6 +139,19 @@ app.get('/api/v1/users/logout', CheckSession.clearLogin);
 app.use('/apidocs/', express.static(path.resolve(__dirname, '../slate/')));
 
 if (environment === 'production') {
+  app.get('*.js', (request, response, next) => {
+    request.url += '.gz';
+    response.set('Content-Encoding', 'gzip');
+    response.set('Content-Type', 'text/javascript');
+    next();
+  });
+
+  app.get('*.css', (request, response, next) => {
+    request.url += '.gz';
+    response.set('Content-Encoding', 'gzip');
+    response.set('Content-Type', 'text/css');
+    next();
+  });
   app.use(express.static(DIST_DIR));
   app.get('/*', (request, response) => response.sendFile(HTML_FILE));
 } else {
