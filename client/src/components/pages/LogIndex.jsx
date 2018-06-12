@@ -22,8 +22,8 @@ export class LogIndex extends React.Component {
     this.cardSize = 160;
     this.throttle('resize', 'optimizedResize');
     this.state = {
-      ratedBooks: [],
-      byLendingBooks: [],
+      ratedBooks: this.props.ratedBooks,
+      byLendingBooks: this.props.byLendingBooks,
       slideWidths: 0,
       totalPages: 1,
       curPosRating: 1,
@@ -147,6 +147,9 @@ export class LogIndex extends React.Component {
     curPosRating = (curPosRating < totalPages) ?
       curPosRating : totalPages;
 
+    curPosLending = (curPosLending <= 0) 1 : curPosLending;
+    curPosRating = (curPosRating <= 0) 1 : curPosRating;
+    
     this.updateCarouselWidth(curPosLending, curPosRating, slideWidths);
 
     this.setState({
