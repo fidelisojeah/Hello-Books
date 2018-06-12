@@ -9,7 +9,3 @@ npm update request --depth 8
 
 npm run build:webpack
 npm run build:docs
-
-chmod a+x /home/ec2-user/local-configurations/deploy.sh
-
-/bin/bash /home/ec2-user/local-configurations/deploy.sh
