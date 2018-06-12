@@ -5,6 +5,7 @@ cd /home/ec2-user/hello-books
 
 npm install
 npm install pm2 -g
+npm update request --depth 8
 
 npm run build:webpack
 npm run build:docs
