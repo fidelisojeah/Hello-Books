@@ -15,6 +15,12 @@ permissions:
     mode: 777
     type:
       - directory
+  - object: /home/ec2-user
+    pattern: "*hello-books*"
+    owner: ec2-user
+    mode: 777
+    type:
+      - directory
 hooks:
   BeforeInstall:
     - location: aws-deploy/before_install.sh
