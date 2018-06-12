@@ -15,7 +15,7 @@ import CheckSession from './middleware/CheckSession';
 
 
 const app = express();
-// load environmental variables
+
 require('dotenv').config();
 
 const jsonSecretKey = process.env.JSONWEB_SECRET;
