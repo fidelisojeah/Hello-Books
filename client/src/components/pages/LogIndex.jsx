@@ -147,8 +147,8 @@ export class LogIndex extends React.Component {
     curPosRating = (curPosRating < totalPages) ?
       curPosRating : totalPages;
 
-    curPosLending = (curPosLending <= 0) 1 : curPosLending;
-    curPosRating = (curPosRating <= 0) 1 : curPosRating;
+    curPosLending = (curPosLending <= 0) ? 1 : curPosLending;
+    curPosRating = (curPosRating <= 0) ? 1 : curPosRating;
     
     this.updateCarouselWidth(curPosLending, curPosRating, slideWidths);
 
