@@ -23,6 +23,7 @@ function SignInForm(props) {
       }
       <div className="row">
         <TextField
+          autocomplete=""username
           errorMessage={errors.message}
           field="signInUsername"
           formField="form-group"
@@ -45,7 +46,7 @@ function SignInForm(props) {
           isRequired
           type="password"
           value={signInPassword}
-          autocomplete="new-password"
+          autocomplete="current-password"
         />
       </div>
       <div className="row">
