@@ -36,6 +36,7 @@ export class ViewByCategory extends React.Component {
       link: 'books'
     });
     this.state = {
+      categoryId: this.props.match.params.categoryId,
       limit: 10,
       page: 1,
       totalBooks: 0,
@@ -64,8 +65,12 @@ export class ViewByCategory extends React.Component {
       this.context.router.history.push('/signin');
     } else {
       window.clearInterval(this.timeOutClear);
+      const { categoryId } = this.state;
+      const title = nextProps.bookCategories.find(o => o.id === categoryId).categoryName || 'Categories'
       this.setState({
         error: nextProps.error,
+        title,
+        titleGrid: title === 'Categories' ? 'All In Library' : `All ${title} Books`,
         bookCategories: nextProps.bookCategories,
         fetching: nextProps.fetching,
         totalBooks: nextProps.totalBooks,
