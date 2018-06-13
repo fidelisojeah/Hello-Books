@@ -25,17 +25,25 @@ class HelloBooksSendMail {
    */
   sendVerificationEmail() {
     return new Promise((resolve, reject) => {
-      const transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        port: process.env.EMAIL_PORT,
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASSWORD
-        }
-      });
+      
+      const transporter = process.env.SERVICE ?
+        nodemailer.createTransport({
+          service: process.env.SERVICE,
+          auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASSWORD
+          }
+      }) : nodemailer.createTransport({
+          host: process.env.EMAIL_HOST,
+          port: process.env.EMAIL_PORT,
+          auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASSWORD
+          }
+        });
       this.emailContent();
       const message = {
-        from: 'Hello-Books <noreply@hello-books.com',
+        from: 'Hello Books <${process.env.EMAIL_USER}>',
         to: `${this.recipientName} <${this.recipientEmail}>`,
         subject: this.subject,
         text: `Please Verify Your email Address with link ${this.verificationEmailLink}`,
