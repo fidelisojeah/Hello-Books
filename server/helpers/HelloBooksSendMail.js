@@ -25,12 +25,13 @@ class HelloBooksSendMail {
    */
   sendVerificationEmail() {
     return new Promise((resolve, reject) => {
-      
+      console.log(process.env.DKIM,'process.env.DKIM');
       const transporter =
         nodemailer.createTransport({
           host: process.env.EMAIL_HOST,
           port: process.env.EMAIL_PORT,
           secure: true,
+          dkim: process.env.DKIM ? process.env.DKIM : undefined,
           auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASSWORD
@@ -39,7 +40,7 @@ class HelloBooksSendMail {
       
       this.emailContent();
       const message = {
-        from: '"Hello Books" <hello.books@delis.xyz>',
+        from: 'hello.books@delis.xyz',
         to: `${this.recipientName} <${this.recipientEmail}>`,
         subject: this.subject,
         text: `Please Verify Your email Address with link ${this.verificationEmailLink}`,
