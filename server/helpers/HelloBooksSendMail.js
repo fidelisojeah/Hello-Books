@@ -25,18 +25,23 @@ class HelloBooksSendMail {
    */
   sendVerificationEmail() {
     return new Promise((resolve, reject) => {
-      console.log(process.env.DKIM,'process.env.DKIM');
-      const transporter =
-        nodemailer.createTransport({
+
+      const transporter = process.env.AWS ? 
+        nodemailer.createTransport('SMTP', {
+          service: process.env.EMAIL_SERVICE,
           host: process.env.EMAIL_HOST,
           port: process.env.EMAIL_PORT,
-          secure: true,
           auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASSWORD
-          },
-          tls:{
-            ciphers:'SSLv3'
+          }
+      }):
+        nodemailer.createTransport({
+          host: process.env.EMAIL_HOST,
+          port: process.env.EMAIL_PORT,
+          auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASSWORD
           }
       });
       
