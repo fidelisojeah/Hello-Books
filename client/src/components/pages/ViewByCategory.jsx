@@ -66,7 +66,8 @@ export class ViewByCategory extends React.Component {
     } else {
       window.clearInterval(this.timeOutClear);
       const { categoryId } = this.state;
-      const title = nextProps.bookCategories.find(o => o.id === categoryId).categoryName || 'Categories'
+      const catName = nextProps.bookCategories.find(o => o.id === categoryId);
+      const title = catName ? catName.categoryName : 'Categories'
       this.setState({
         error: nextProps.error,
         title,
