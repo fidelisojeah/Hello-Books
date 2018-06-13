@@ -15,12 +15,16 @@ import CheckSession from './middleware/CheckSession';
 
 
 const app = express();
-require('dotenv').config();
+const environment = process.env.NODE_ENV;
+if (environment !== 'production'){
+  require('dotenv').config();
+}
+
 
 const jsonSecretKey = process.env.JSONWEB_SECRET;
 const cookieSecretKey = process.env.COOKIE_SECRET_KEY;
 const sessionSecretKey = process.env.SESSION_SECRET_KEY;
-const environment = process.env.NODE_ENV;
+
 
 const DIST_DIR = path.join(__dirname, '../dist');
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
