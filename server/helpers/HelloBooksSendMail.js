@@ -28,12 +28,9 @@ class HelloBooksSendMail {
       
       const transporter =
         nodemailer.createTransport({
-          service: process.env.EMAIL_SERVICE ? process.env.EMAIL_SERVICE : undefined,
           host: process.env.EMAIL_HOST,
           port: process.env.EMAIL_PORT,
-          secure: (process.env.EMAIL_SECURE === false) ? process.env.EMAIL_SECURE : undefined,
-          ignoreTLS: (process.env.EMAIL_SECURE === false) ? true : undefined,
-          requireTLS: (process.env.EMAIL_SECURE === false) ? process.env.EMAIL_SECURE : undefined,
+          secure: true,
           auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASSWORD
