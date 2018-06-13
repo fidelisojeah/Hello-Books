@@ -8,9 +8,10 @@ import {
 import JwTokens from '../helpers/JwTokens';
 import UserHelper from '../helpers/UserHelper';
 import toTitleCase from '../helpers/toTitleCase';
+import HelloBooksSendMail from '../helpers/HelloBooksSendMail';
 
 import CheckSession from '../middleware/CheckSession';
-import HelloBooksSendMail from '../helpers/HelloBooksSendMail';
+
 
 class UserAuthentication {
   /**
