@@ -43,7 +43,7 @@ class HelloBooksSendMail {
         });
       this.emailContent();
       const message = {
-        from: process.env.EMAIL_USER,
+        from: `Fidelis Ojeah <${process.env.EMAIL_USER}>`,
         to: `${this.recipientName} <${this.recipientEmail}>`,
         subject: this.subject,
         text: `Please Verify Your email Address with link ${this.verificationEmailLink}`,
