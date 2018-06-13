@@ -26,21 +26,20 @@ class HelloBooksSendMail {
   sendVerificationEmail() {
     return new Promise((resolve, reject) => {
       
-      const transporter = process.env.SERVICE ?
+      const transporter =
         nodemailer.createTransport({
-          service: process.env.SERVICE,
-          auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASSWORD
-          }
-      }) : nodemailer.createTransport({
+          service: process.env.EMAIL_SERVICE ? process.env.EMAIL_SERVICE : undefined,
           host: process.env.EMAIL_HOST,
           port: process.env.EMAIL_PORT,
+          secure: (process.env.EMAIL_SECURE === false) ? process.env.EMAIL_SECURE : undefined,
+          ignoreTLS: (process.env.EMAIL_SECURE === false) ? true : undefined,
+          requireTLS: (process.env.EMAIL_SECURE === false) ? process.env.EMAIL_SECURE : undefined,
           auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASSWORD
           }
-        });
+      });
+      
       this.emailContent();
       const message = {
         from: '"Hello Books" <hello.books@delis.xyz>',
