@@ -37,8 +37,10 @@ function SignUpForm(props) {
           formField="form-group col-xs-6"
           isRequired
           type="text"
+          autocomplete="given-name"
         />
         <TextField
+          autocomplete="family-name"
           inputError={errors.inputError}
           errorMessage={errors.message}
           label="Last Name"
@@ -52,6 +54,7 @@ function SignUpForm(props) {
       </div>
       <div className="row">
         <TextField
+          autocomplete="username"
           errorMessage={errors.message}
           errField={errors.signUpUsername}
           field="signUpUsername"
@@ -68,6 +71,7 @@ function SignUpForm(props) {
       </div>
       <div className="row">
         <TextField
+          autocomplete="email"
           inputError={errors.inputError}
           errField={errors.email}
           label="Email Address"
