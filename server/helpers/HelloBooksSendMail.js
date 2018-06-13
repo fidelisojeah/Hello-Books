@@ -31,7 +31,6 @@ class HelloBooksSendMail {
           host: process.env.EMAIL_HOST,
           port: process.env.EMAIL_PORT,
           secure: true,
-          dkim: process.env.DKIM ? process.env.DKIM : undefined,
           auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASSWORD
