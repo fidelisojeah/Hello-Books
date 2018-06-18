@@ -36,7 +36,9 @@
     "start:front": "webpack-dev-server --open --config ./webpack.config.dev.js",
     "test": "NODE_ENV=test nyc mocha test/index.js",
     "test:client": "jest ./client --coverage",
-    "test:e2e": "nightwatch"
+    "test:e2e": "nightwatch",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "jest": {
     "setupFiles": [
@@ -162,7 +164,7 @@
     "sequelize": "^4.4.2",
     "sequelize-cli": "^3.2.0",
     "shortid": "^2.2.8",
-    "snyk": "^1.67.0",
+    "snyk": "^1.83.0",
     "style-ext-html-webpack-plugin": "^3.4.5",
     "style-loader": "^0.18.2",
     "superagent": "^3.6.0",
