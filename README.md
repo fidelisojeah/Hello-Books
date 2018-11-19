@@ -141,7 +141,7 @@ The following Environment variables need to be set and exported for application 
 
 * **APP_URL** : Domain Name where app is located
 
-While App is hosted on [Heroku](<https://fidelishellobooks.herokuapp.com>), a mock email service is used [mock email service is used](<ethereal.email>). Emails would not be delivered to your email address but to the ethereal.email address. You can [contact me](mailto://fidelis.ojeah@andela.com) for access to it.
+While App is hosted on [Heroku](<https://fidelishellobooks.herokuapp.com>), a mock email service is used [mock email service is used](<https://ethereal.email>). Emails would not be delivered to your email address but to the ethereal.email address. You can [contact me](mailto://fidelis.ojeah@andela.com) for access to it.
 
 ## Features
 
