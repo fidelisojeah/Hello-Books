@@ -18,7 +18,7 @@
   },
   "scripts": {
     "build": "babel server/ -d build",
-    "build:docs": "cp -r ./slate dist/apidocs",
+    "build:docs": "cp -r ./slate /app/dist/apidocs",
     "build:webpack": "webpack --config ./webpack.config.prod.js --progress",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "coveralls": "npm run coverage -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
