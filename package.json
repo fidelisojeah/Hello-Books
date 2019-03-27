@@ -25,7 +25,7 @@
     "release": "babel src --out-dir lib",
     "e2e-start": "selenium-standalone start",
     "e2e-setup": "selenium-standalone install",
-    "heroku-postbuild": "npm run build:webpack && npm run build:docs",
+    "heroku-postbuild": "npm run build:webpack && mkdir -p /app/dist/apidocs && npm run build:docs",
     "install:config": "npm prune && npm install",
     "lint": "markdownlint --config linters/.markdownlint.json",
     "migrate:test": "sequelize db:migrate --env test",
