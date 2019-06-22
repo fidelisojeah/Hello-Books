@@ -161,7 +161,7 @@
     "resolve-url-loader": "^2.1.0",
     "sass-loader": "^6.0.6",
     "save": "^2.3.1",
-    "sequelize": "^4.4.2",
+    "sequelize": "^5.8.11",
     "sequelize-cli": "^5.0.1",
     "shortid": "^2.2.8",
     "snyk": "^1.85.0",
