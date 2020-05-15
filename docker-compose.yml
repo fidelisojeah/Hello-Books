@@ -1,0 +1,10 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:9.6.2-alpine
+    ports:
+      - '127.0.0.1:5432:5432'
+    environment:
+      POSTGRES_USER: usrhello
+      POSTGRES_DB: dbhellobooks_test
+      POSTGRES_PASSWORD: HelloBooksPassword
