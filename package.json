@@ -143,7 +143,7 @@
     "moment": "^2.19.2",
     "morgan": "^1.8.2",
     "node-sass": "^4.9.0",
-    "nodemailer": "^4.6.6",
+    "nodemailer": "^6.4.16",
     "pg": "^7.0.2",
     "pg-hstore": "^2.3.2",
     "postcss-loader": "^2.0.9",
