@@ -108,7 +108,7 @@
     "supertest": "^3.0.0"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^1.6.3",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.26.0",
     "babel-eslint": "^7.2.3",
