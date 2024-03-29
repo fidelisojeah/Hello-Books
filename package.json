@@ -134,7 +134,7 @@
     "express-session": "^1.15.5",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^6.0.0",
-    "gulp": "^4.0.0",
+    "gulp": "^5.0.0",
     "html-webpack-plugin": "^5.0.0",
     "jsonwebtoken": "^9.0.0",
     "jwt-decode": "^2.2.0",
